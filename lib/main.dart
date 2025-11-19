@@ -7,13 +7,14 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'core/utility/client.dart';
+
 final container = ProviderContainer();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Configs().configLoading();
-  // Client.init();
-
+  Client.init();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(UncontrolledProviderScope(container: container, child: MyApp()));
 }
