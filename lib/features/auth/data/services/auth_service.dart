@@ -1,4 +1,5 @@
 import 'package:asset_shield/core/utility/client.dart';
+import 'package:asset_shield/core/utility/helpers.dart';
 import 'package:asset_shield/core/utility/storage_service.dart';
 import 'package:asset_shield/features/auth/data/models/login_request_model.dart';
 import 'package:asset_shield/features/auth/data/models/login_response_model.dart';
@@ -29,7 +30,7 @@ class AuthService {
 
       return loginResponse;
     } on DioException catch (e) {
-      throw _handleError(e);
+      throw Helpers.handleError(e);
     }
   }
 
@@ -67,32 +68,6 @@ class AuthService {
       return response.data['success'] == true;
     } catch (e) {
       return false;
-    }
-  }
-
-  /// Handle Dio errors
-  String _handleError(DioException error) {
-    switch (error.type) {
-      case DioExceptionType.connectionTimeout:
-      case DioExceptionType.sendTimeout:
-      case DioExceptionType.receiveTimeout:
-        return 'Connection timeout. Please try again.';
-      case DioExceptionType.badResponse:
-        final statusCode = error.response?.statusCode;
-        if (statusCode == 401) {
-          return 'Invalid credentials. Please try again.';
-        } else if (statusCode == 404) {
-          return 'Service not found. Please contact support.';
-        } else if (statusCode == 500) {
-          return 'Server error. Please try again later.';
-        }
-        return error.response?.data['message'] ?? 'An error occurred';
-      case DioExceptionType.cancel:
-        return 'Request cancelled';
-      case DioExceptionType.connectionError:
-        return 'No internet connection';
-      default:
-        return 'An unexpected error occurred';
     }
   }
 }
