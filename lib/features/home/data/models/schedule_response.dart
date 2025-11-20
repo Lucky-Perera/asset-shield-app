@@ -7,11 +7,35 @@ part 'schedule_response.g.dart';
 abstract class ScheduleResponse with _$ScheduleResponse {
   const factory ScheduleResponse({
     required bool success,
-    required List<Schedule> data,
+    required ScheduleData data,
   }) = _ScheduleResponse;
 
   factory ScheduleResponse.fromJson(Map<String, dynamic> json) =>
       _$ScheduleResponseFromJson(json);
+}
+
+@freezed
+abstract class ScheduleData with _$ScheduleData {
+  const factory ScheduleData({
+    required List<Schedule> data,
+    required Pagination pagination,
+  }) = _ScheduleData;
+
+  factory ScheduleData.fromJson(Map<String, dynamic> json) =>
+      _$ScheduleDataFromJson(json);
+}
+
+@freezed
+abstract class Pagination with _$Pagination {
+  const factory Pagination({
+    required int total,
+    required int page,
+    required int limit,
+    required int totalPages,
+  }) = _Pagination;
+
+  factory Pagination.fromJson(Map<String, dynamic> json) =>
+      _$PaginationFromJson(json);
 }
 
 @freezed

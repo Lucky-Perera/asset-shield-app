@@ -6,9 +6,15 @@ import 'package:dio/dio.dart';
 class SheduleService {
   final Dio _dio = Client.dio;
 
-  Future<ScheduleResponse> fetchSchedules() async {
+  Future<ScheduleResponse> fetchSchedules({
+    int page = 1,
+    int limit = 10,
+  }) async {
     try {
-      final response = await _dio.get('/schedules');
+      final response = await _dio.get(
+        '/schedules',
+        queryParameters: {'page': page, 'limit': limit},
+      );
       return ScheduleResponse.fromJson(response.data);
     } on DioException catch (e) {
       throw Helpers.handleError(e);

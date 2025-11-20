@@ -9,13 +9,39 @@ part of 'schedule_response.dart';
 _ScheduleResponse _$ScheduleResponseFromJson(Map<String, dynamic> json) =>
     _ScheduleResponse(
       success: json['success'] as bool,
-      data: (json['data'] as List<dynamic>)
-          .map((e) => Schedule.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      data: ScheduleData.fromJson(json['data'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ScheduleResponseToJson(_ScheduleResponse instance) =>
     <String, dynamic>{'success': instance.success, 'data': instance.data};
+
+_ScheduleData _$ScheduleDataFromJson(Map<String, dynamic> json) =>
+    _ScheduleData(
+      data: (json['data'] as List<dynamic>)
+          .map((e) => Schedule.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      pagination: Pagination.fromJson(
+        json['pagination'] as Map<String, dynamic>,
+      ),
+    );
+
+Map<String, dynamic> _$ScheduleDataToJson(_ScheduleData instance) =>
+    <String, dynamic>{'data': instance.data, 'pagination': instance.pagination};
+
+_Pagination _$PaginationFromJson(Map<String, dynamic> json) => _Pagination(
+  total: (json['total'] as num).toInt(),
+  page: (json['page'] as num).toInt(),
+  limit: (json['limit'] as num).toInt(),
+  totalPages: (json['totalPages'] as num).toInt(),
+);
+
+Map<String, dynamic> _$PaginationToJson(_Pagination instance) =>
+    <String, dynamic>{
+      'total': instance.total,
+      'page': instance.page,
+      'limit': instance.limit,
+      'totalPages': instance.totalPages,
+    };
 
 _Schedule _$ScheduleFromJson(Map<String, dynamic> json) => _Schedule(
   id: json['id'] as String,
