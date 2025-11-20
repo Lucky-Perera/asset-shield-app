@@ -14,14 +14,14 @@ class ScheduleItem extends StatelessWidget {
       onTap: onTap,
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: ColorPalette.white,
+          color: ColorPalette.whiteSwatch.shade100,
+          border: Border.all(color: ColorPalette.black, width: 0.5),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: ColorPalette.grey300, width: 1),
           boxShadow: [
             BoxShadow(
-              color: ColorPalette.black.withValues(alpha: 0.5),
+              color: ColorPalette.black.withValues(alpha: 0.1),
               blurRadius: 4,
               offset: const Offset(0, 2),
             ),
