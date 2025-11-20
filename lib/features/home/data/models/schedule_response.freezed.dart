@@ -861,7 +861,8 @@ as int,
 /// @nodoc
 mixin _$Schedule {
 
- String get id; DateTime get createdAt; DateTime get updatedAt; String get scheduleID; String get equipmentId; Equipment? get equipment; List<ScheduleComponent> get components; String get description; String get scheduleTypeId; ReferenceData? get scheduleType; String get status; DateTime get dueDate; String get operationId; ReferenceData? get operation; bool get isRBISchedule; bool get isRecurring; int? get inspectionInterval; bool get isScopeAttached; String? get comments; String? get aiSummary; List<Attachment> get attachments; List<RecordCreditedItem> get linkedItems; Scope? get scope; bool? get isDeleted;
+ String get id; DateTime get createdAt; DateTime get updatedAt; String get scheduleID; String get equipmentId; Equipment? get equipment; List<ScheduleComponent> get components; String get description; String get scheduleTypeId; ReferenceData? get scheduleType; String get status; DateTime get dueDate; String get operationId; ReferenceData? get operation; bool get isRBISchedule; bool get isRecurring; int? get inspectionInterval; bool get isScopeAttached; String? get comments; String? get aiSummary; List<Attachment> get attachments; List<RecordCreditedItem> get linkedItems;// Scope? scope,
+ bool? get isDeleted;
 /// Create a copy of Schedule
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -874,16 +875,16 @@ $ScheduleCopyWith<Schedule> get copyWith => _$ScheduleCopyWithImpl<Schedule>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Schedule&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.scheduleID, scheduleID) || other.scheduleID == scheduleID)&&(identical(other.equipmentId, equipmentId) || other.equipmentId == equipmentId)&&(identical(other.equipment, equipment) || other.equipment == equipment)&&const DeepCollectionEquality().equals(other.components, components)&&(identical(other.description, description) || other.description == description)&&(identical(other.scheduleTypeId, scheduleTypeId) || other.scheduleTypeId == scheduleTypeId)&&(identical(other.scheduleType, scheduleType) || other.scheduleType == scheduleType)&&(identical(other.status, status) || other.status == status)&&(identical(other.dueDate, dueDate) || other.dueDate == dueDate)&&(identical(other.operationId, operationId) || other.operationId == operationId)&&(identical(other.operation, operation) || other.operation == operation)&&(identical(other.isRBISchedule, isRBISchedule) || other.isRBISchedule == isRBISchedule)&&(identical(other.isRecurring, isRecurring) || other.isRecurring == isRecurring)&&(identical(other.inspectionInterval, inspectionInterval) || other.inspectionInterval == inspectionInterval)&&(identical(other.isScopeAttached, isScopeAttached) || other.isScopeAttached == isScopeAttached)&&(identical(other.comments, comments) || other.comments == comments)&&(identical(other.aiSummary, aiSummary) || other.aiSummary == aiSummary)&&const DeepCollectionEquality().equals(other.attachments, attachments)&&const DeepCollectionEquality().equals(other.linkedItems, linkedItems)&&(identical(other.scope, scope) || other.scope == scope)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Schedule&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.scheduleID, scheduleID) || other.scheduleID == scheduleID)&&(identical(other.equipmentId, equipmentId) || other.equipmentId == equipmentId)&&(identical(other.equipment, equipment) || other.equipment == equipment)&&const DeepCollectionEquality().equals(other.components, components)&&(identical(other.description, description) || other.description == description)&&(identical(other.scheduleTypeId, scheduleTypeId) || other.scheduleTypeId == scheduleTypeId)&&(identical(other.scheduleType, scheduleType) || other.scheduleType == scheduleType)&&(identical(other.status, status) || other.status == status)&&(identical(other.dueDate, dueDate) || other.dueDate == dueDate)&&(identical(other.operationId, operationId) || other.operationId == operationId)&&(identical(other.operation, operation) || other.operation == operation)&&(identical(other.isRBISchedule, isRBISchedule) || other.isRBISchedule == isRBISchedule)&&(identical(other.isRecurring, isRecurring) || other.isRecurring == isRecurring)&&(identical(other.inspectionInterval, inspectionInterval) || other.inspectionInterval == inspectionInterval)&&(identical(other.isScopeAttached, isScopeAttached) || other.isScopeAttached == isScopeAttached)&&(identical(other.comments, comments) || other.comments == comments)&&(identical(other.aiSummary, aiSummary) || other.aiSummary == aiSummary)&&const DeepCollectionEquality().equals(other.attachments, attachments)&&const DeepCollectionEquality().equals(other.linkedItems, linkedItems)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,createdAt,updatedAt,scheduleID,equipmentId,equipment,const DeepCollectionEquality().hash(components),description,scheduleTypeId,scheduleType,status,dueDate,operationId,operation,isRBISchedule,isRecurring,inspectionInterval,isScopeAttached,comments,aiSummary,const DeepCollectionEquality().hash(attachments),const DeepCollectionEquality().hash(linkedItems),scope,isDeleted]);
+int get hashCode => Object.hashAll([runtimeType,id,createdAt,updatedAt,scheduleID,equipmentId,equipment,const DeepCollectionEquality().hash(components),description,scheduleTypeId,scheduleType,status,dueDate,operationId,operation,isRBISchedule,isRecurring,inspectionInterval,isScopeAttached,comments,aiSummary,const DeepCollectionEquality().hash(attachments),const DeepCollectionEquality().hash(linkedItems),isDeleted]);
 
 @override
 String toString() {
-  return 'Schedule(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, scheduleID: $scheduleID, equipmentId: $equipmentId, equipment: $equipment, components: $components, description: $description, scheduleTypeId: $scheduleTypeId, scheduleType: $scheduleType, status: $status, dueDate: $dueDate, operationId: $operationId, operation: $operation, isRBISchedule: $isRBISchedule, isRecurring: $isRecurring, inspectionInterval: $inspectionInterval, isScopeAttached: $isScopeAttached, comments: $comments, aiSummary: $aiSummary, attachments: $attachments, linkedItems: $linkedItems, scope: $scope, isDeleted: $isDeleted)';
+  return 'Schedule(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, scheduleID: $scheduleID, equipmentId: $equipmentId, equipment: $equipment, components: $components, description: $description, scheduleTypeId: $scheduleTypeId, scheduleType: $scheduleType, status: $status, dueDate: $dueDate, operationId: $operationId, operation: $operation, isRBISchedule: $isRBISchedule, isRecurring: $isRecurring, inspectionInterval: $inspectionInterval, isScopeAttached: $isScopeAttached, comments: $comments, aiSummary: $aiSummary, attachments: $attachments, linkedItems: $linkedItems, isDeleted: $isDeleted)';
 }
 
 
@@ -894,11 +895,11 @@ abstract mixin class $ScheduleCopyWith<$Res>  {
   factory $ScheduleCopyWith(Schedule value, $Res Function(Schedule) _then) = _$ScheduleCopyWithImpl;
 @useResult
 $Res call({
- String id, DateTime createdAt, DateTime updatedAt, String scheduleID, String equipmentId, Equipment? equipment, List<ScheduleComponent> components, String description, String scheduleTypeId, ReferenceData? scheduleType, String status, DateTime dueDate, String operationId, ReferenceData? operation, bool isRBISchedule, bool isRecurring, int? inspectionInterval, bool isScopeAttached, String? comments, String? aiSummary, List<Attachment> attachments, List<RecordCreditedItem> linkedItems, Scope? scope, bool? isDeleted
+ String id, DateTime createdAt, DateTime updatedAt, String scheduleID, String equipmentId, Equipment? equipment, List<ScheduleComponent> components, String description, String scheduleTypeId, ReferenceData? scheduleType, String status, DateTime dueDate, String operationId, ReferenceData? operation, bool isRBISchedule, bool isRecurring, int? inspectionInterval, bool isScopeAttached, String? comments, String? aiSummary, List<Attachment> attachments, List<RecordCreditedItem> linkedItems, bool? isDeleted
 });
 
 
-$EquipmentCopyWith<$Res>? get equipment;$ReferenceDataCopyWith<$Res>? get scheduleType;$ReferenceDataCopyWith<$Res>? get operation;$ScopeCopyWith<$Res>? get scope;
+$EquipmentCopyWith<$Res>? get equipment;$ReferenceDataCopyWith<$Res>? get scheduleType;$ReferenceDataCopyWith<$Res>? get operation;
 
 }
 /// @nodoc
@@ -911,7 +912,7 @@ class _$ScheduleCopyWithImpl<$Res>
 
 /// Create a copy of Schedule
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? scheduleID = null,Object? equipmentId = null,Object? equipment = freezed,Object? components = null,Object? description = null,Object? scheduleTypeId = null,Object? scheduleType = freezed,Object? status = null,Object? dueDate = null,Object? operationId = null,Object? operation = freezed,Object? isRBISchedule = null,Object? isRecurring = null,Object? inspectionInterval = freezed,Object? isScopeAttached = null,Object? comments = freezed,Object? aiSummary = freezed,Object? attachments = null,Object? linkedItems = null,Object? scope = freezed,Object? isDeleted = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? scheduleID = null,Object? equipmentId = null,Object? equipment = freezed,Object? components = null,Object? description = null,Object? scheduleTypeId = null,Object? scheduleType = freezed,Object? status = null,Object? dueDate = null,Object? operationId = null,Object? operation = freezed,Object? isRBISchedule = null,Object? isRecurring = null,Object? inspectionInterval = freezed,Object? isScopeAttached = null,Object? comments = freezed,Object? aiSummary = freezed,Object? attachments = null,Object? linkedItems = null,Object? isDeleted = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
@@ -935,8 +936,7 @@ as bool,comments: freezed == comments ? _self.comments : comments // ignore: cas
 as String?,aiSummary: freezed == aiSummary ? _self.aiSummary : aiSummary // ignore: cast_nullable_to_non_nullable
 as String?,attachments: null == attachments ? _self.attachments : attachments // ignore: cast_nullable_to_non_nullable
 as List<Attachment>,linkedItems: null == linkedItems ? _self.linkedItems : linkedItems // ignore: cast_nullable_to_non_nullable
-as List<RecordCreditedItem>,scope: freezed == scope ? _self.scope : scope // ignore: cast_nullable_to_non_nullable
-as Scope?,isDeleted: freezed == isDeleted ? _self.isDeleted : isDeleted // ignore: cast_nullable_to_non_nullable
+as List<RecordCreditedItem>,isDeleted: freezed == isDeleted ? _self.isDeleted : isDeleted // ignore: cast_nullable_to_non_nullable
 as bool?,
   ));
 }
@@ -975,18 +975,6 @@ $ReferenceDataCopyWith<$Res>? get operation {
 
   return $ReferenceDataCopyWith<$Res>(_self.operation!, (value) {
     return _then(_self.copyWith(operation: value));
-  });
-}/// Create a copy of Schedule
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$ScopeCopyWith<$Res>? get scope {
-    if (_self.scope == null) {
-    return null;
-  }
-
-  return $ScopeCopyWith<$Res>(_self.scope!, (value) {
-    return _then(_self.copyWith(scope: value));
   });
 }
 }
@@ -1070,10 +1058,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  String scheduleID,  String equipmentId,  Equipment? equipment,  List<ScheduleComponent> components,  String description,  String scheduleTypeId,  ReferenceData? scheduleType,  String status,  DateTime dueDate,  String operationId,  ReferenceData? operation,  bool isRBISchedule,  bool isRecurring,  int? inspectionInterval,  bool isScopeAttached,  String? comments,  String? aiSummary,  List<Attachment> attachments,  List<RecordCreditedItem> linkedItems,  Scope? scope,  bool? isDeleted)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  String scheduleID,  String equipmentId,  Equipment? equipment,  List<ScheduleComponent> components,  String description,  String scheduleTypeId,  ReferenceData? scheduleType,  String status,  DateTime dueDate,  String operationId,  ReferenceData? operation,  bool isRBISchedule,  bool isRecurring,  int? inspectionInterval,  bool isScopeAttached,  String? comments,  String? aiSummary,  List<Attachment> attachments,  List<RecordCreditedItem> linkedItems,  bool? isDeleted)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Schedule() when $default != null:
-return $default(_that.id,_that.createdAt,_that.updatedAt,_that.scheduleID,_that.equipmentId,_that.equipment,_that.components,_that.description,_that.scheduleTypeId,_that.scheduleType,_that.status,_that.dueDate,_that.operationId,_that.operation,_that.isRBISchedule,_that.isRecurring,_that.inspectionInterval,_that.isScopeAttached,_that.comments,_that.aiSummary,_that.attachments,_that.linkedItems,_that.scope,_that.isDeleted);case _:
+return $default(_that.id,_that.createdAt,_that.updatedAt,_that.scheduleID,_that.equipmentId,_that.equipment,_that.components,_that.description,_that.scheduleTypeId,_that.scheduleType,_that.status,_that.dueDate,_that.operationId,_that.operation,_that.isRBISchedule,_that.isRecurring,_that.inspectionInterval,_that.isScopeAttached,_that.comments,_that.aiSummary,_that.attachments,_that.linkedItems,_that.isDeleted);case _:
   return orElse();
 
 }
@@ -1091,10 +1079,10 @@ return $default(_that.id,_that.createdAt,_that.updatedAt,_that.scheduleID,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  String scheduleID,  String equipmentId,  Equipment? equipment,  List<ScheduleComponent> components,  String description,  String scheduleTypeId,  ReferenceData? scheduleType,  String status,  DateTime dueDate,  String operationId,  ReferenceData? operation,  bool isRBISchedule,  bool isRecurring,  int? inspectionInterval,  bool isScopeAttached,  String? comments,  String? aiSummary,  List<Attachment> attachments,  List<RecordCreditedItem> linkedItems,  Scope? scope,  bool? isDeleted)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  String scheduleID,  String equipmentId,  Equipment? equipment,  List<ScheduleComponent> components,  String description,  String scheduleTypeId,  ReferenceData? scheduleType,  String status,  DateTime dueDate,  String operationId,  ReferenceData? operation,  bool isRBISchedule,  bool isRecurring,  int? inspectionInterval,  bool isScopeAttached,  String? comments,  String? aiSummary,  List<Attachment> attachments,  List<RecordCreditedItem> linkedItems,  bool? isDeleted)  $default,) {final _that = this;
 switch (_that) {
 case _Schedule():
-return $default(_that.id,_that.createdAt,_that.updatedAt,_that.scheduleID,_that.equipmentId,_that.equipment,_that.components,_that.description,_that.scheduleTypeId,_that.scheduleType,_that.status,_that.dueDate,_that.operationId,_that.operation,_that.isRBISchedule,_that.isRecurring,_that.inspectionInterval,_that.isScopeAttached,_that.comments,_that.aiSummary,_that.attachments,_that.linkedItems,_that.scope,_that.isDeleted);case _:
+return $default(_that.id,_that.createdAt,_that.updatedAt,_that.scheduleID,_that.equipmentId,_that.equipment,_that.components,_that.description,_that.scheduleTypeId,_that.scheduleType,_that.status,_that.dueDate,_that.operationId,_that.operation,_that.isRBISchedule,_that.isRecurring,_that.inspectionInterval,_that.isScopeAttached,_that.comments,_that.aiSummary,_that.attachments,_that.linkedItems,_that.isDeleted);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -1111,10 +1099,10 @@ return $default(_that.id,_that.createdAt,_that.updatedAt,_that.scheduleID,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  DateTime createdAt,  DateTime updatedAt,  String scheduleID,  String equipmentId,  Equipment? equipment,  List<ScheduleComponent> components,  String description,  String scheduleTypeId,  ReferenceData? scheduleType,  String status,  DateTime dueDate,  String operationId,  ReferenceData? operation,  bool isRBISchedule,  bool isRecurring,  int? inspectionInterval,  bool isScopeAttached,  String? comments,  String? aiSummary,  List<Attachment> attachments,  List<RecordCreditedItem> linkedItems,  Scope? scope,  bool? isDeleted)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  DateTime createdAt,  DateTime updatedAt,  String scheduleID,  String equipmentId,  Equipment? equipment,  List<ScheduleComponent> components,  String description,  String scheduleTypeId,  ReferenceData? scheduleType,  String status,  DateTime dueDate,  String operationId,  ReferenceData? operation,  bool isRBISchedule,  bool isRecurring,  int? inspectionInterval,  bool isScopeAttached,  String? comments,  String? aiSummary,  List<Attachment> attachments,  List<RecordCreditedItem> linkedItems,  bool? isDeleted)?  $default,) {final _that = this;
 switch (_that) {
 case _Schedule() when $default != null:
-return $default(_that.id,_that.createdAt,_that.updatedAt,_that.scheduleID,_that.equipmentId,_that.equipment,_that.components,_that.description,_that.scheduleTypeId,_that.scheduleType,_that.status,_that.dueDate,_that.operationId,_that.operation,_that.isRBISchedule,_that.isRecurring,_that.inspectionInterval,_that.isScopeAttached,_that.comments,_that.aiSummary,_that.attachments,_that.linkedItems,_that.scope,_that.isDeleted);case _:
+return $default(_that.id,_that.createdAt,_that.updatedAt,_that.scheduleID,_that.equipmentId,_that.equipment,_that.components,_that.description,_that.scheduleTypeId,_that.scheduleType,_that.status,_that.dueDate,_that.operationId,_that.operation,_that.isRBISchedule,_that.isRecurring,_that.inspectionInterval,_that.isScopeAttached,_that.comments,_that.aiSummary,_that.attachments,_that.linkedItems,_that.isDeleted);case _:
   return null;
 
 }
@@ -1126,7 +1114,7 @@ return $default(_that.id,_that.createdAt,_that.updatedAt,_that.scheduleID,_that.
 @JsonSerializable()
 
 class _Schedule implements Schedule {
-  const _Schedule({required this.id, required this.createdAt, required this.updatedAt, required this.scheduleID, required this.equipmentId, this.equipment, final  List<ScheduleComponent> components = const [], required this.description, required this.scheduleTypeId, this.scheduleType, required this.status, required this.dueDate, required this.operationId, this.operation, required this.isRBISchedule, required this.isRecurring, this.inspectionInterval, required this.isScopeAttached, this.comments, this.aiSummary, final  List<Attachment> attachments = const [], final  List<RecordCreditedItem> linkedItems = const [], this.scope, this.isDeleted}): _components = components,_attachments = attachments,_linkedItems = linkedItems;
+  const _Schedule({required this.id, required this.createdAt, required this.updatedAt, required this.scheduleID, required this.equipmentId, this.equipment, final  List<ScheduleComponent> components = const [], required this.description, required this.scheduleTypeId, this.scheduleType, required this.status, required this.dueDate, required this.operationId, this.operation, required this.isRBISchedule, required this.isRecurring, this.inspectionInterval, required this.isScopeAttached, this.comments, this.aiSummary, final  List<Attachment> attachments = const [], final  List<RecordCreditedItem> linkedItems = const [], this.isDeleted}): _components = components,_attachments = attachments,_linkedItems = linkedItems;
   factory _Schedule.fromJson(Map<String, dynamic> json) => _$ScheduleFromJson(json);
 
 @override final  String id;
@@ -1169,7 +1157,7 @@ class _Schedule implements Schedule {
   return EqualUnmodifiableListView(_linkedItems);
 }
 
-@override final  Scope? scope;
+// Scope? scope,
 @override final  bool? isDeleted;
 
 /// Create a copy of Schedule
@@ -1185,16 +1173,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Schedule&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.scheduleID, scheduleID) || other.scheduleID == scheduleID)&&(identical(other.equipmentId, equipmentId) || other.equipmentId == equipmentId)&&(identical(other.equipment, equipment) || other.equipment == equipment)&&const DeepCollectionEquality().equals(other._components, _components)&&(identical(other.description, description) || other.description == description)&&(identical(other.scheduleTypeId, scheduleTypeId) || other.scheduleTypeId == scheduleTypeId)&&(identical(other.scheduleType, scheduleType) || other.scheduleType == scheduleType)&&(identical(other.status, status) || other.status == status)&&(identical(other.dueDate, dueDate) || other.dueDate == dueDate)&&(identical(other.operationId, operationId) || other.operationId == operationId)&&(identical(other.operation, operation) || other.operation == operation)&&(identical(other.isRBISchedule, isRBISchedule) || other.isRBISchedule == isRBISchedule)&&(identical(other.isRecurring, isRecurring) || other.isRecurring == isRecurring)&&(identical(other.inspectionInterval, inspectionInterval) || other.inspectionInterval == inspectionInterval)&&(identical(other.isScopeAttached, isScopeAttached) || other.isScopeAttached == isScopeAttached)&&(identical(other.comments, comments) || other.comments == comments)&&(identical(other.aiSummary, aiSummary) || other.aiSummary == aiSummary)&&const DeepCollectionEquality().equals(other._attachments, _attachments)&&const DeepCollectionEquality().equals(other._linkedItems, _linkedItems)&&(identical(other.scope, scope) || other.scope == scope)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Schedule&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.scheduleID, scheduleID) || other.scheduleID == scheduleID)&&(identical(other.equipmentId, equipmentId) || other.equipmentId == equipmentId)&&(identical(other.equipment, equipment) || other.equipment == equipment)&&const DeepCollectionEquality().equals(other._components, _components)&&(identical(other.description, description) || other.description == description)&&(identical(other.scheduleTypeId, scheduleTypeId) || other.scheduleTypeId == scheduleTypeId)&&(identical(other.scheduleType, scheduleType) || other.scheduleType == scheduleType)&&(identical(other.status, status) || other.status == status)&&(identical(other.dueDate, dueDate) || other.dueDate == dueDate)&&(identical(other.operationId, operationId) || other.operationId == operationId)&&(identical(other.operation, operation) || other.operation == operation)&&(identical(other.isRBISchedule, isRBISchedule) || other.isRBISchedule == isRBISchedule)&&(identical(other.isRecurring, isRecurring) || other.isRecurring == isRecurring)&&(identical(other.inspectionInterval, inspectionInterval) || other.inspectionInterval == inspectionInterval)&&(identical(other.isScopeAttached, isScopeAttached) || other.isScopeAttached == isScopeAttached)&&(identical(other.comments, comments) || other.comments == comments)&&(identical(other.aiSummary, aiSummary) || other.aiSummary == aiSummary)&&const DeepCollectionEquality().equals(other._attachments, _attachments)&&const DeepCollectionEquality().equals(other._linkedItems, _linkedItems)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,createdAt,updatedAt,scheduleID,equipmentId,equipment,const DeepCollectionEquality().hash(_components),description,scheduleTypeId,scheduleType,status,dueDate,operationId,operation,isRBISchedule,isRecurring,inspectionInterval,isScopeAttached,comments,aiSummary,const DeepCollectionEquality().hash(_attachments),const DeepCollectionEquality().hash(_linkedItems),scope,isDeleted]);
+int get hashCode => Object.hashAll([runtimeType,id,createdAt,updatedAt,scheduleID,equipmentId,equipment,const DeepCollectionEquality().hash(_components),description,scheduleTypeId,scheduleType,status,dueDate,operationId,operation,isRBISchedule,isRecurring,inspectionInterval,isScopeAttached,comments,aiSummary,const DeepCollectionEquality().hash(_attachments),const DeepCollectionEquality().hash(_linkedItems),isDeleted]);
 
 @override
 String toString() {
-  return 'Schedule(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, scheduleID: $scheduleID, equipmentId: $equipmentId, equipment: $equipment, components: $components, description: $description, scheduleTypeId: $scheduleTypeId, scheduleType: $scheduleType, status: $status, dueDate: $dueDate, operationId: $operationId, operation: $operation, isRBISchedule: $isRBISchedule, isRecurring: $isRecurring, inspectionInterval: $inspectionInterval, isScopeAttached: $isScopeAttached, comments: $comments, aiSummary: $aiSummary, attachments: $attachments, linkedItems: $linkedItems, scope: $scope, isDeleted: $isDeleted)';
+  return 'Schedule(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, scheduleID: $scheduleID, equipmentId: $equipmentId, equipment: $equipment, components: $components, description: $description, scheduleTypeId: $scheduleTypeId, scheduleType: $scheduleType, status: $status, dueDate: $dueDate, operationId: $operationId, operation: $operation, isRBISchedule: $isRBISchedule, isRecurring: $isRecurring, inspectionInterval: $inspectionInterval, isScopeAttached: $isScopeAttached, comments: $comments, aiSummary: $aiSummary, attachments: $attachments, linkedItems: $linkedItems, isDeleted: $isDeleted)';
 }
 
 
@@ -1205,11 +1193,11 @@ abstract mixin class _$ScheduleCopyWith<$Res> implements $ScheduleCopyWith<$Res>
   factory _$ScheduleCopyWith(_Schedule value, $Res Function(_Schedule) _then) = __$ScheduleCopyWithImpl;
 @override @useResult
 $Res call({
- String id, DateTime createdAt, DateTime updatedAt, String scheduleID, String equipmentId, Equipment? equipment, List<ScheduleComponent> components, String description, String scheduleTypeId, ReferenceData? scheduleType, String status, DateTime dueDate, String operationId, ReferenceData? operation, bool isRBISchedule, bool isRecurring, int? inspectionInterval, bool isScopeAttached, String? comments, String? aiSummary, List<Attachment> attachments, List<RecordCreditedItem> linkedItems, Scope? scope, bool? isDeleted
+ String id, DateTime createdAt, DateTime updatedAt, String scheduleID, String equipmentId, Equipment? equipment, List<ScheduleComponent> components, String description, String scheduleTypeId, ReferenceData? scheduleType, String status, DateTime dueDate, String operationId, ReferenceData? operation, bool isRBISchedule, bool isRecurring, int? inspectionInterval, bool isScopeAttached, String? comments, String? aiSummary, List<Attachment> attachments, List<RecordCreditedItem> linkedItems, bool? isDeleted
 });
 
 
-@override $EquipmentCopyWith<$Res>? get equipment;@override $ReferenceDataCopyWith<$Res>? get scheduleType;@override $ReferenceDataCopyWith<$Res>? get operation;@override $ScopeCopyWith<$Res>? get scope;
+@override $EquipmentCopyWith<$Res>? get equipment;@override $ReferenceDataCopyWith<$Res>? get scheduleType;@override $ReferenceDataCopyWith<$Res>? get operation;
 
 }
 /// @nodoc
@@ -1222,7 +1210,7 @@ class __$ScheduleCopyWithImpl<$Res>
 
 /// Create a copy of Schedule
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? scheduleID = null,Object? equipmentId = null,Object? equipment = freezed,Object? components = null,Object? description = null,Object? scheduleTypeId = null,Object? scheduleType = freezed,Object? status = null,Object? dueDate = null,Object? operationId = null,Object? operation = freezed,Object? isRBISchedule = null,Object? isRecurring = null,Object? inspectionInterval = freezed,Object? isScopeAttached = null,Object? comments = freezed,Object? aiSummary = freezed,Object? attachments = null,Object? linkedItems = null,Object? scope = freezed,Object? isDeleted = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? scheduleID = null,Object? equipmentId = null,Object? equipment = freezed,Object? components = null,Object? description = null,Object? scheduleTypeId = null,Object? scheduleType = freezed,Object? status = null,Object? dueDate = null,Object? operationId = null,Object? operation = freezed,Object? isRBISchedule = null,Object? isRecurring = null,Object? inspectionInterval = freezed,Object? isScopeAttached = null,Object? comments = freezed,Object? aiSummary = freezed,Object? attachments = null,Object? linkedItems = null,Object? isDeleted = freezed,}) {
   return _then(_Schedule(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
@@ -1246,8 +1234,7 @@ as bool,comments: freezed == comments ? _self.comments : comments // ignore: cas
 as String?,aiSummary: freezed == aiSummary ? _self.aiSummary : aiSummary // ignore: cast_nullable_to_non_nullable
 as String?,attachments: null == attachments ? _self._attachments : attachments // ignore: cast_nullable_to_non_nullable
 as List<Attachment>,linkedItems: null == linkedItems ? _self._linkedItems : linkedItems // ignore: cast_nullable_to_non_nullable
-as List<RecordCreditedItem>,scope: freezed == scope ? _self.scope : scope // ignore: cast_nullable_to_non_nullable
-as Scope?,isDeleted: freezed == isDeleted ? _self.isDeleted : isDeleted // ignore: cast_nullable_to_non_nullable
+as List<RecordCreditedItem>,isDeleted: freezed == isDeleted ? _self.isDeleted : isDeleted // ignore: cast_nullable_to_non_nullable
 as bool?,
   ));
 }
@@ -1287,18 +1274,6 @@ $ReferenceDataCopyWith<$Res>? get operation {
 
   return $ReferenceDataCopyWith<$Res>(_self.operation!, (value) {
     return _then(_self.copyWith(operation: value));
-  });
-}/// Create a copy of Schedule
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$ScopeCopyWith<$Res>? get scope {
-    if (_self.scope == null) {
-    return null;
-  }
-
-  return $ScopeCopyWith<$Res>(_self.scope!, (value) {
-    return _then(_self.copyWith(scope: value));
   });
 }
 }
@@ -3979,1053 +3954,6 @@ as String?,
 }
 
 
-}
-
-
-/// @nodoc
-mixin _$Scope {
-
- String? get id; DateTime? get createdAt; DateTime? get updatedAt; String? get scheduleId; String? get damageMechanism; String? get inspectionEffectiveness; List<InspectionMethod> get inspectionMethods; List<Attachment> get scopeImages; List<PotentialEmergentWork> get potentialEmergentWorks; bool? get isDeleted;
-/// Create a copy of Scope
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$ScopeCopyWith<Scope> get copyWith => _$ScopeCopyWithImpl<Scope>(this as Scope, _$identity);
-
-  /// Serializes this Scope to a JSON map.
-  Map<String, dynamic> toJson();
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Scope&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.scheduleId, scheduleId) || other.scheduleId == scheduleId)&&(identical(other.damageMechanism, damageMechanism) || other.damageMechanism == damageMechanism)&&(identical(other.inspectionEffectiveness, inspectionEffectiveness) || other.inspectionEffectiveness == inspectionEffectiveness)&&const DeepCollectionEquality().equals(other.inspectionMethods, inspectionMethods)&&const DeepCollectionEquality().equals(other.scopeImages, scopeImages)&&const DeepCollectionEquality().equals(other.potentialEmergentWorks, potentialEmergentWorks)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted));
-}
-
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,id,createdAt,updatedAt,scheduleId,damageMechanism,inspectionEffectiveness,const DeepCollectionEquality().hash(inspectionMethods),const DeepCollectionEquality().hash(scopeImages),const DeepCollectionEquality().hash(potentialEmergentWorks),isDeleted);
-
-@override
-String toString() {
-  return 'Scope(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, scheduleId: $scheduleId, damageMechanism: $damageMechanism, inspectionEffectiveness: $inspectionEffectiveness, inspectionMethods: $inspectionMethods, scopeImages: $scopeImages, potentialEmergentWorks: $potentialEmergentWorks, isDeleted: $isDeleted)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class $ScopeCopyWith<$Res>  {
-  factory $ScopeCopyWith(Scope value, $Res Function(Scope) _then) = _$ScopeCopyWithImpl;
-@useResult
-$Res call({
- String? id, DateTime? createdAt, DateTime? updatedAt, String? scheduleId, String? damageMechanism, String? inspectionEffectiveness, List<InspectionMethod> inspectionMethods, List<Attachment> scopeImages, List<PotentialEmergentWork> potentialEmergentWorks, bool? isDeleted
-});
-
-
-
-
-}
-/// @nodoc
-class _$ScopeCopyWithImpl<$Res>
-    implements $ScopeCopyWith<$Res> {
-  _$ScopeCopyWithImpl(this._self, this._then);
-
-  final Scope _self;
-  final $Res Function(Scope) _then;
-
-/// Create a copy of Scope
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? scheduleId = freezed,Object? damageMechanism = freezed,Object? inspectionEffectiveness = freezed,Object? inspectionMethods = null,Object? scopeImages = null,Object? potentialEmergentWorks = null,Object? isDeleted = freezed,}) {
-  return _then(_self.copyWith(
-id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,scheduleId: freezed == scheduleId ? _self.scheduleId : scheduleId // ignore: cast_nullable_to_non_nullable
-as String?,damageMechanism: freezed == damageMechanism ? _self.damageMechanism : damageMechanism // ignore: cast_nullable_to_non_nullable
-as String?,inspectionEffectiveness: freezed == inspectionEffectiveness ? _self.inspectionEffectiveness : inspectionEffectiveness // ignore: cast_nullable_to_non_nullable
-as String?,inspectionMethods: null == inspectionMethods ? _self.inspectionMethods : inspectionMethods // ignore: cast_nullable_to_non_nullable
-as List<InspectionMethod>,scopeImages: null == scopeImages ? _self.scopeImages : scopeImages // ignore: cast_nullable_to_non_nullable
-as List<Attachment>,potentialEmergentWorks: null == potentialEmergentWorks ? _self.potentialEmergentWorks : potentialEmergentWorks // ignore: cast_nullable_to_non_nullable
-as List<PotentialEmergentWork>,isDeleted: freezed == isDeleted ? _self.isDeleted : isDeleted // ignore: cast_nullable_to_non_nullable
-as bool?,
-  ));
-}
-
-}
-
-
-/// Adds pattern-matching-related methods to [Scope].
-extension ScopePatterns on Scope {
-/// A variant of `map` that fallback to returning `orElse`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
-
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _Scope value)?  $default,{required TResult orElse(),}){
-final _that = this;
-switch (_that) {
-case _Scope() when $default != null:
-return $default(_that);case _:
-  return orElse();
-
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// Callbacks receives the raw object, upcasted.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case final Subclass2 value:
-///     return ...;
-/// }
-/// ```
-
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _Scope value)  $default,){
-final _that = this;
-switch (_that) {
-case _Scope():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
-}
-/// A variant of `map` that fallback to returning `null`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
-
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _Scope value)?  $default,){
-final _that = this;
-switch (_that) {
-case _Scope() when $default != null:
-return $default(_that);case _:
-  return null;
-
-}
-}
-/// A variant of `when` that fallback to an `orElse` callback.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
-
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  DateTime? createdAt,  DateTime? updatedAt,  String? scheduleId,  String? damageMechanism,  String? inspectionEffectiveness,  List<InspectionMethod> inspectionMethods,  List<Attachment> scopeImages,  List<PotentialEmergentWork> potentialEmergentWorks,  bool? isDeleted)?  $default,{required TResult orElse(),}) {final _that = this;
-switch (_that) {
-case _Scope() when $default != null:
-return $default(_that.id,_that.createdAt,_that.updatedAt,_that.scheduleId,_that.damageMechanism,_that.inspectionEffectiveness,_that.inspectionMethods,_that.scopeImages,_that.potentialEmergentWorks,_that.isDeleted);case _:
-  return orElse();
-
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// As opposed to `map`, this offers destructuring.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case Subclass2(:final field2):
-///     return ...;
-/// }
-/// ```
-
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  DateTime? createdAt,  DateTime? updatedAt,  String? scheduleId,  String? damageMechanism,  String? inspectionEffectiveness,  List<InspectionMethod> inspectionMethods,  List<Attachment> scopeImages,  List<PotentialEmergentWork> potentialEmergentWorks,  bool? isDeleted)  $default,) {final _that = this;
-switch (_that) {
-case _Scope():
-return $default(_that.id,_that.createdAt,_that.updatedAt,_that.scheduleId,_that.damageMechanism,_that.inspectionEffectiveness,_that.inspectionMethods,_that.scopeImages,_that.potentialEmergentWorks,_that.isDeleted);case _:
-  throw StateError('Unexpected subclass');
-
-}
-}
-/// A variant of `when` that fallback to returning `null`
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
-
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  DateTime? createdAt,  DateTime? updatedAt,  String? scheduleId,  String? damageMechanism,  String? inspectionEffectiveness,  List<InspectionMethod> inspectionMethods,  List<Attachment> scopeImages,  List<PotentialEmergentWork> potentialEmergentWorks,  bool? isDeleted)?  $default,) {final _that = this;
-switch (_that) {
-case _Scope() when $default != null:
-return $default(_that.id,_that.createdAt,_that.updatedAt,_that.scheduleId,_that.damageMechanism,_that.inspectionEffectiveness,_that.inspectionMethods,_that.scopeImages,_that.potentialEmergentWorks,_that.isDeleted);case _:
-  return null;
-
-}
-}
-
-}
-
-/// @nodoc
-@JsonSerializable()
-
-class _Scope implements Scope {
-  const _Scope({this.id, this.createdAt, this.updatedAt, this.scheduleId, this.damageMechanism, this.inspectionEffectiveness, final  List<InspectionMethod> inspectionMethods = const [], final  List<Attachment> scopeImages = const [], final  List<PotentialEmergentWork> potentialEmergentWorks = const [], this.isDeleted}): _inspectionMethods = inspectionMethods,_scopeImages = scopeImages,_potentialEmergentWorks = potentialEmergentWorks;
-  factory _Scope.fromJson(Map<String, dynamic> json) => _$ScopeFromJson(json);
-
-@override final  String? id;
-@override final  DateTime? createdAt;
-@override final  DateTime? updatedAt;
-@override final  String? scheduleId;
-@override final  String? damageMechanism;
-@override final  String? inspectionEffectiveness;
- final  List<InspectionMethod> _inspectionMethods;
-@override@JsonKey() List<InspectionMethod> get inspectionMethods {
-  if (_inspectionMethods is EqualUnmodifiableListView) return _inspectionMethods;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_inspectionMethods);
-}
-
- final  List<Attachment> _scopeImages;
-@override@JsonKey() List<Attachment> get scopeImages {
-  if (_scopeImages is EqualUnmodifiableListView) return _scopeImages;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_scopeImages);
-}
-
- final  List<PotentialEmergentWork> _potentialEmergentWorks;
-@override@JsonKey() List<PotentialEmergentWork> get potentialEmergentWorks {
-  if (_potentialEmergentWorks is EqualUnmodifiableListView) return _potentialEmergentWorks;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_potentialEmergentWorks);
-}
-
-@override final  bool? isDeleted;
-
-/// Create a copy of Scope
-/// with the given fields replaced by the non-null parameter values.
-@override @JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-_$ScopeCopyWith<_Scope> get copyWith => __$ScopeCopyWithImpl<_Scope>(this, _$identity);
-
-@override
-Map<String, dynamic> toJson() {
-  return _$ScopeToJson(this, );
-}
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Scope&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.scheduleId, scheduleId) || other.scheduleId == scheduleId)&&(identical(other.damageMechanism, damageMechanism) || other.damageMechanism == damageMechanism)&&(identical(other.inspectionEffectiveness, inspectionEffectiveness) || other.inspectionEffectiveness == inspectionEffectiveness)&&const DeepCollectionEquality().equals(other._inspectionMethods, _inspectionMethods)&&const DeepCollectionEquality().equals(other._scopeImages, _scopeImages)&&const DeepCollectionEquality().equals(other._potentialEmergentWorks, _potentialEmergentWorks)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted));
-}
-
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,id,createdAt,updatedAt,scheduleId,damageMechanism,inspectionEffectiveness,const DeepCollectionEquality().hash(_inspectionMethods),const DeepCollectionEquality().hash(_scopeImages),const DeepCollectionEquality().hash(_potentialEmergentWorks),isDeleted);
-
-@override
-String toString() {
-  return 'Scope(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, scheduleId: $scheduleId, damageMechanism: $damageMechanism, inspectionEffectiveness: $inspectionEffectiveness, inspectionMethods: $inspectionMethods, scopeImages: $scopeImages, potentialEmergentWorks: $potentialEmergentWorks, isDeleted: $isDeleted)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class _$ScopeCopyWith<$Res> implements $ScopeCopyWith<$Res> {
-  factory _$ScopeCopyWith(_Scope value, $Res Function(_Scope) _then) = __$ScopeCopyWithImpl;
-@override @useResult
-$Res call({
- String? id, DateTime? createdAt, DateTime? updatedAt, String? scheduleId, String? damageMechanism, String? inspectionEffectiveness, List<InspectionMethod> inspectionMethods, List<Attachment> scopeImages, List<PotentialEmergentWork> potentialEmergentWorks, bool? isDeleted
-});
-
-
-
-
-}
-/// @nodoc
-class __$ScopeCopyWithImpl<$Res>
-    implements _$ScopeCopyWith<$Res> {
-  __$ScopeCopyWithImpl(this._self, this._then);
-
-  final _Scope _self;
-  final $Res Function(_Scope) _then;
-
-/// Create a copy of Scope
-/// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? scheduleId = freezed,Object? damageMechanism = freezed,Object? inspectionEffectiveness = freezed,Object? inspectionMethods = null,Object? scopeImages = null,Object? potentialEmergentWorks = null,Object? isDeleted = freezed,}) {
-  return _then(_Scope(
-id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,scheduleId: freezed == scheduleId ? _self.scheduleId : scheduleId // ignore: cast_nullable_to_non_nullable
-as String?,damageMechanism: freezed == damageMechanism ? _self.damageMechanism : damageMechanism // ignore: cast_nullable_to_non_nullable
-as String?,inspectionEffectiveness: freezed == inspectionEffectiveness ? _self.inspectionEffectiveness : inspectionEffectiveness // ignore: cast_nullable_to_non_nullable
-as String?,inspectionMethods: null == inspectionMethods ? _self._inspectionMethods : inspectionMethods // ignore: cast_nullable_to_non_nullable
-as List<InspectionMethod>,scopeImages: null == scopeImages ? _self._scopeImages : scopeImages // ignore: cast_nullable_to_non_nullable
-as List<Attachment>,potentialEmergentWorks: null == potentialEmergentWorks ? _self._potentialEmergentWorks : potentialEmergentWorks // ignore: cast_nullable_to_non_nullable
-as List<PotentialEmergentWork>,isDeleted: freezed == isDeleted ? _self.isDeleted : isDeleted // ignore: cast_nullable_to_non_nullable
-as bool?,
-  ));
-}
-
-
-}
-
-
-/// @nodoc
-mixin _$InspectionMethod {
-
- String? get id; DateTime? get createdAt; DateTime? get updatedAt; String? get scopeId; String? get methodId; ReferenceData? get method; String? get specialAccessId; ReferenceData? get specialAccess; String? get insulationRemovalId; ReferenceData? get insulationRemoval; String? get cleaningId; ReferenceData? get cleaning; String? get location; String? get notes; bool? get isDeleted;
-/// Create a copy of InspectionMethod
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$InspectionMethodCopyWith<InspectionMethod> get copyWith => _$InspectionMethodCopyWithImpl<InspectionMethod>(this as InspectionMethod, _$identity);
-
-  /// Serializes this InspectionMethod to a JSON map.
-  Map<String, dynamic> toJson();
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is InspectionMethod&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.scopeId, scopeId) || other.scopeId == scopeId)&&(identical(other.methodId, methodId) || other.methodId == methodId)&&(identical(other.method, method) || other.method == method)&&(identical(other.specialAccessId, specialAccessId) || other.specialAccessId == specialAccessId)&&(identical(other.specialAccess, specialAccess) || other.specialAccess == specialAccess)&&(identical(other.insulationRemovalId, insulationRemovalId) || other.insulationRemovalId == insulationRemovalId)&&(identical(other.insulationRemoval, insulationRemoval) || other.insulationRemoval == insulationRemoval)&&(identical(other.cleaningId, cleaningId) || other.cleaningId == cleaningId)&&(identical(other.cleaning, cleaning) || other.cleaning == cleaning)&&(identical(other.location, location) || other.location == location)&&(identical(other.notes, notes) || other.notes == notes)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted));
-}
-
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,id,createdAt,updatedAt,scopeId,methodId,method,specialAccessId,specialAccess,insulationRemovalId,insulationRemoval,cleaningId,cleaning,location,notes,isDeleted);
-
-@override
-String toString() {
-  return 'InspectionMethod(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, scopeId: $scopeId, methodId: $methodId, method: $method, specialAccessId: $specialAccessId, specialAccess: $specialAccess, insulationRemovalId: $insulationRemovalId, insulationRemoval: $insulationRemoval, cleaningId: $cleaningId, cleaning: $cleaning, location: $location, notes: $notes, isDeleted: $isDeleted)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class $InspectionMethodCopyWith<$Res>  {
-  factory $InspectionMethodCopyWith(InspectionMethod value, $Res Function(InspectionMethod) _then) = _$InspectionMethodCopyWithImpl;
-@useResult
-$Res call({
- String? id, DateTime? createdAt, DateTime? updatedAt, String? scopeId, String? methodId, ReferenceData? method, String? specialAccessId, ReferenceData? specialAccess, String? insulationRemovalId, ReferenceData? insulationRemoval, String? cleaningId, ReferenceData? cleaning, String? location, String? notes, bool? isDeleted
-});
-
-
-$ReferenceDataCopyWith<$Res>? get method;$ReferenceDataCopyWith<$Res>? get specialAccess;$ReferenceDataCopyWith<$Res>? get insulationRemoval;$ReferenceDataCopyWith<$Res>? get cleaning;
-
-}
-/// @nodoc
-class _$InspectionMethodCopyWithImpl<$Res>
-    implements $InspectionMethodCopyWith<$Res> {
-  _$InspectionMethodCopyWithImpl(this._self, this._then);
-
-  final InspectionMethod _self;
-  final $Res Function(InspectionMethod) _then;
-
-/// Create a copy of InspectionMethod
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? scopeId = freezed,Object? methodId = freezed,Object? method = freezed,Object? specialAccessId = freezed,Object? specialAccess = freezed,Object? insulationRemovalId = freezed,Object? insulationRemoval = freezed,Object? cleaningId = freezed,Object? cleaning = freezed,Object? location = freezed,Object? notes = freezed,Object? isDeleted = freezed,}) {
-  return _then(_self.copyWith(
-id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,scopeId: freezed == scopeId ? _self.scopeId : scopeId // ignore: cast_nullable_to_non_nullable
-as String?,methodId: freezed == methodId ? _self.methodId : methodId // ignore: cast_nullable_to_non_nullable
-as String?,method: freezed == method ? _self.method : method // ignore: cast_nullable_to_non_nullable
-as ReferenceData?,specialAccessId: freezed == specialAccessId ? _self.specialAccessId : specialAccessId // ignore: cast_nullable_to_non_nullable
-as String?,specialAccess: freezed == specialAccess ? _self.specialAccess : specialAccess // ignore: cast_nullable_to_non_nullable
-as ReferenceData?,insulationRemovalId: freezed == insulationRemovalId ? _self.insulationRemovalId : insulationRemovalId // ignore: cast_nullable_to_non_nullable
-as String?,insulationRemoval: freezed == insulationRemoval ? _self.insulationRemoval : insulationRemoval // ignore: cast_nullable_to_non_nullable
-as ReferenceData?,cleaningId: freezed == cleaningId ? _self.cleaningId : cleaningId // ignore: cast_nullable_to_non_nullable
-as String?,cleaning: freezed == cleaning ? _self.cleaning : cleaning // ignore: cast_nullable_to_non_nullable
-as ReferenceData?,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
-as String?,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
-as String?,isDeleted: freezed == isDeleted ? _self.isDeleted : isDeleted // ignore: cast_nullable_to_non_nullable
-as bool?,
-  ));
-}
-/// Create a copy of InspectionMethod
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$ReferenceDataCopyWith<$Res>? get method {
-    if (_self.method == null) {
-    return null;
-  }
-
-  return $ReferenceDataCopyWith<$Res>(_self.method!, (value) {
-    return _then(_self.copyWith(method: value));
-  });
-}/// Create a copy of InspectionMethod
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$ReferenceDataCopyWith<$Res>? get specialAccess {
-    if (_self.specialAccess == null) {
-    return null;
-  }
-
-  return $ReferenceDataCopyWith<$Res>(_self.specialAccess!, (value) {
-    return _then(_self.copyWith(specialAccess: value));
-  });
-}/// Create a copy of InspectionMethod
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$ReferenceDataCopyWith<$Res>? get insulationRemoval {
-    if (_self.insulationRemoval == null) {
-    return null;
-  }
-
-  return $ReferenceDataCopyWith<$Res>(_self.insulationRemoval!, (value) {
-    return _then(_self.copyWith(insulationRemoval: value));
-  });
-}/// Create a copy of InspectionMethod
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$ReferenceDataCopyWith<$Res>? get cleaning {
-    if (_self.cleaning == null) {
-    return null;
-  }
-
-  return $ReferenceDataCopyWith<$Res>(_self.cleaning!, (value) {
-    return _then(_self.copyWith(cleaning: value));
-  });
-}
-}
-
-
-/// Adds pattern-matching-related methods to [InspectionMethod].
-extension InspectionMethodPatterns on InspectionMethod {
-/// A variant of `map` that fallback to returning `orElse`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
-
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _InspectionMethod value)?  $default,{required TResult orElse(),}){
-final _that = this;
-switch (_that) {
-case _InspectionMethod() when $default != null:
-return $default(_that);case _:
-  return orElse();
-
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// Callbacks receives the raw object, upcasted.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case final Subclass2 value:
-///     return ...;
-/// }
-/// ```
-
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _InspectionMethod value)  $default,){
-final _that = this;
-switch (_that) {
-case _InspectionMethod():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
-}
-/// A variant of `map` that fallback to returning `null`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
-
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _InspectionMethod value)?  $default,){
-final _that = this;
-switch (_that) {
-case _InspectionMethod() when $default != null:
-return $default(_that);case _:
-  return null;
-
-}
-}
-/// A variant of `when` that fallback to an `orElse` callback.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
-
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  DateTime? createdAt,  DateTime? updatedAt,  String? scopeId,  String? methodId,  ReferenceData? method,  String? specialAccessId,  ReferenceData? specialAccess,  String? insulationRemovalId,  ReferenceData? insulationRemoval,  String? cleaningId,  ReferenceData? cleaning,  String? location,  String? notes,  bool? isDeleted)?  $default,{required TResult orElse(),}) {final _that = this;
-switch (_that) {
-case _InspectionMethod() when $default != null:
-return $default(_that.id,_that.createdAt,_that.updatedAt,_that.scopeId,_that.methodId,_that.method,_that.specialAccessId,_that.specialAccess,_that.insulationRemovalId,_that.insulationRemoval,_that.cleaningId,_that.cleaning,_that.location,_that.notes,_that.isDeleted);case _:
-  return orElse();
-
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// As opposed to `map`, this offers destructuring.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case Subclass2(:final field2):
-///     return ...;
-/// }
-/// ```
-
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  DateTime? createdAt,  DateTime? updatedAt,  String? scopeId,  String? methodId,  ReferenceData? method,  String? specialAccessId,  ReferenceData? specialAccess,  String? insulationRemovalId,  ReferenceData? insulationRemoval,  String? cleaningId,  ReferenceData? cleaning,  String? location,  String? notes,  bool? isDeleted)  $default,) {final _that = this;
-switch (_that) {
-case _InspectionMethod():
-return $default(_that.id,_that.createdAt,_that.updatedAt,_that.scopeId,_that.methodId,_that.method,_that.specialAccessId,_that.specialAccess,_that.insulationRemovalId,_that.insulationRemoval,_that.cleaningId,_that.cleaning,_that.location,_that.notes,_that.isDeleted);case _:
-  throw StateError('Unexpected subclass');
-
-}
-}
-/// A variant of `when` that fallback to returning `null`
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
-
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  DateTime? createdAt,  DateTime? updatedAt,  String? scopeId,  String? methodId,  ReferenceData? method,  String? specialAccessId,  ReferenceData? specialAccess,  String? insulationRemovalId,  ReferenceData? insulationRemoval,  String? cleaningId,  ReferenceData? cleaning,  String? location,  String? notes,  bool? isDeleted)?  $default,) {final _that = this;
-switch (_that) {
-case _InspectionMethod() when $default != null:
-return $default(_that.id,_that.createdAt,_that.updatedAt,_that.scopeId,_that.methodId,_that.method,_that.specialAccessId,_that.specialAccess,_that.insulationRemovalId,_that.insulationRemoval,_that.cleaningId,_that.cleaning,_that.location,_that.notes,_that.isDeleted);case _:
-  return null;
-
-}
-}
-
-}
-
-/// @nodoc
-@JsonSerializable()
-
-class _InspectionMethod implements InspectionMethod {
-  const _InspectionMethod({this.id, this.createdAt, this.updatedAt, this.scopeId, this.methodId, this.method, this.specialAccessId, this.specialAccess, this.insulationRemovalId, this.insulationRemoval, this.cleaningId, this.cleaning, this.location, this.notes, this.isDeleted});
-  factory _InspectionMethod.fromJson(Map<String, dynamic> json) => _$InspectionMethodFromJson(json);
-
-@override final  String? id;
-@override final  DateTime? createdAt;
-@override final  DateTime? updatedAt;
-@override final  String? scopeId;
-@override final  String? methodId;
-@override final  ReferenceData? method;
-@override final  String? specialAccessId;
-@override final  ReferenceData? specialAccess;
-@override final  String? insulationRemovalId;
-@override final  ReferenceData? insulationRemoval;
-@override final  String? cleaningId;
-@override final  ReferenceData? cleaning;
-@override final  String? location;
-@override final  String? notes;
-@override final  bool? isDeleted;
-
-/// Create a copy of InspectionMethod
-/// with the given fields replaced by the non-null parameter values.
-@override @JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-_$InspectionMethodCopyWith<_InspectionMethod> get copyWith => __$InspectionMethodCopyWithImpl<_InspectionMethod>(this, _$identity);
-
-@override
-Map<String, dynamic> toJson() {
-  return _$InspectionMethodToJson(this, );
-}
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _InspectionMethod&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.scopeId, scopeId) || other.scopeId == scopeId)&&(identical(other.methodId, methodId) || other.methodId == methodId)&&(identical(other.method, method) || other.method == method)&&(identical(other.specialAccessId, specialAccessId) || other.specialAccessId == specialAccessId)&&(identical(other.specialAccess, specialAccess) || other.specialAccess == specialAccess)&&(identical(other.insulationRemovalId, insulationRemovalId) || other.insulationRemovalId == insulationRemovalId)&&(identical(other.insulationRemoval, insulationRemoval) || other.insulationRemoval == insulationRemoval)&&(identical(other.cleaningId, cleaningId) || other.cleaningId == cleaningId)&&(identical(other.cleaning, cleaning) || other.cleaning == cleaning)&&(identical(other.location, location) || other.location == location)&&(identical(other.notes, notes) || other.notes == notes)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted));
-}
-
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,id,createdAt,updatedAt,scopeId,methodId,method,specialAccessId,specialAccess,insulationRemovalId,insulationRemoval,cleaningId,cleaning,location,notes,isDeleted);
-
-@override
-String toString() {
-  return 'InspectionMethod(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, scopeId: $scopeId, methodId: $methodId, method: $method, specialAccessId: $specialAccessId, specialAccess: $specialAccess, insulationRemovalId: $insulationRemovalId, insulationRemoval: $insulationRemoval, cleaningId: $cleaningId, cleaning: $cleaning, location: $location, notes: $notes, isDeleted: $isDeleted)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class _$InspectionMethodCopyWith<$Res> implements $InspectionMethodCopyWith<$Res> {
-  factory _$InspectionMethodCopyWith(_InspectionMethod value, $Res Function(_InspectionMethod) _then) = __$InspectionMethodCopyWithImpl;
-@override @useResult
-$Res call({
- String? id, DateTime? createdAt, DateTime? updatedAt, String? scopeId, String? methodId, ReferenceData? method, String? specialAccessId, ReferenceData? specialAccess, String? insulationRemovalId, ReferenceData? insulationRemoval, String? cleaningId, ReferenceData? cleaning, String? location, String? notes, bool? isDeleted
-});
-
-
-@override $ReferenceDataCopyWith<$Res>? get method;@override $ReferenceDataCopyWith<$Res>? get specialAccess;@override $ReferenceDataCopyWith<$Res>? get insulationRemoval;@override $ReferenceDataCopyWith<$Res>? get cleaning;
-
-}
-/// @nodoc
-class __$InspectionMethodCopyWithImpl<$Res>
-    implements _$InspectionMethodCopyWith<$Res> {
-  __$InspectionMethodCopyWithImpl(this._self, this._then);
-
-  final _InspectionMethod _self;
-  final $Res Function(_InspectionMethod) _then;
-
-/// Create a copy of InspectionMethod
-/// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? scopeId = freezed,Object? methodId = freezed,Object? method = freezed,Object? specialAccessId = freezed,Object? specialAccess = freezed,Object? insulationRemovalId = freezed,Object? insulationRemoval = freezed,Object? cleaningId = freezed,Object? cleaning = freezed,Object? location = freezed,Object? notes = freezed,Object? isDeleted = freezed,}) {
-  return _then(_InspectionMethod(
-id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,scopeId: freezed == scopeId ? _self.scopeId : scopeId // ignore: cast_nullable_to_non_nullable
-as String?,methodId: freezed == methodId ? _self.methodId : methodId // ignore: cast_nullable_to_non_nullable
-as String?,method: freezed == method ? _self.method : method // ignore: cast_nullable_to_non_nullable
-as ReferenceData?,specialAccessId: freezed == specialAccessId ? _self.specialAccessId : specialAccessId // ignore: cast_nullable_to_non_nullable
-as String?,specialAccess: freezed == specialAccess ? _self.specialAccess : specialAccess // ignore: cast_nullable_to_non_nullable
-as ReferenceData?,insulationRemovalId: freezed == insulationRemovalId ? _self.insulationRemovalId : insulationRemovalId // ignore: cast_nullable_to_non_nullable
-as String?,insulationRemoval: freezed == insulationRemoval ? _self.insulationRemoval : insulationRemoval // ignore: cast_nullable_to_non_nullable
-as ReferenceData?,cleaningId: freezed == cleaningId ? _self.cleaningId : cleaningId // ignore: cast_nullable_to_non_nullable
-as String?,cleaning: freezed == cleaning ? _self.cleaning : cleaning // ignore: cast_nullable_to_non_nullable
-as ReferenceData?,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
-as String?,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
-as String?,isDeleted: freezed == isDeleted ? _self.isDeleted : isDeleted // ignore: cast_nullable_to_non_nullable
-as bool?,
-  ));
-}
-
-/// Create a copy of InspectionMethod
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$ReferenceDataCopyWith<$Res>? get method {
-    if (_self.method == null) {
-    return null;
-  }
-
-  return $ReferenceDataCopyWith<$Res>(_self.method!, (value) {
-    return _then(_self.copyWith(method: value));
-  });
-}/// Create a copy of InspectionMethod
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$ReferenceDataCopyWith<$Res>? get specialAccess {
-    if (_self.specialAccess == null) {
-    return null;
-  }
-
-  return $ReferenceDataCopyWith<$Res>(_self.specialAccess!, (value) {
-    return _then(_self.copyWith(specialAccess: value));
-  });
-}/// Create a copy of InspectionMethod
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$ReferenceDataCopyWith<$Res>? get insulationRemoval {
-    if (_self.insulationRemoval == null) {
-    return null;
-  }
-
-  return $ReferenceDataCopyWith<$Res>(_self.insulationRemoval!, (value) {
-    return _then(_self.copyWith(insulationRemoval: value));
-  });
-}/// Create a copy of InspectionMethod
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$ReferenceDataCopyWith<$Res>? get cleaning {
-    if (_self.cleaning == null) {
-    return null;
-  }
-
-  return $ReferenceDataCopyWith<$Res>(_self.cleaning!, (value) {
-    return _then(_self.copyWith(cleaning: value));
-  });
-}
-}
-
-
-/// @nodoc
-mixin _$PotentialEmergentWork {
-
- String? get id; DateTime? get createdAt; DateTime? get updatedAt; String? get scopeId; String? get potentialEmergentWorkId; ReferenceData? get potentialEmergentWork; String? get likelihoodId; ReferenceData? get likelihood; String? get notes; bool? get isDeleted;
-/// Create a copy of PotentialEmergentWork
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$PotentialEmergentWorkCopyWith<PotentialEmergentWork> get copyWith => _$PotentialEmergentWorkCopyWithImpl<PotentialEmergentWork>(this as PotentialEmergentWork, _$identity);
-
-  /// Serializes this PotentialEmergentWork to a JSON map.
-  Map<String, dynamic> toJson();
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PotentialEmergentWork&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.scopeId, scopeId) || other.scopeId == scopeId)&&(identical(other.potentialEmergentWorkId, potentialEmergentWorkId) || other.potentialEmergentWorkId == potentialEmergentWorkId)&&(identical(other.potentialEmergentWork, potentialEmergentWork) || other.potentialEmergentWork == potentialEmergentWork)&&(identical(other.likelihoodId, likelihoodId) || other.likelihoodId == likelihoodId)&&(identical(other.likelihood, likelihood) || other.likelihood == likelihood)&&(identical(other.notes, notes) || other.notes == notes)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted));
-}
-
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,id,createdAt,updatedAt,scopeId,potentialEmergentWorkId,potentialEmergentWork,likelihoodId,likelihood,notes,isDeleted);
-
-@override
-String toString() {
-  return 'PotentialEmergentWork(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, scopeId: $scopeId, potentialEmergentWorkId: $potentialEmergentWorkId, potentialEmergentWork: $potentialEmergentWork, likelihoodId: $likelihoodId, likelihood: $likelihood, notes: $notes, isDeleted: $isDeleted)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class $PotentialEmergentWorkCopyWith<$Res>  {
-  factory $PotentialEmergentWorkCopyWith(PotentialEmergentWork value, $Res Function(PotentialEmergentWork) _then) = _$PotentialEmergentWorkCopyWithImpl;
-@useResult
-$Res call({
- String? id, DateTime? createdAt, DateTime? updatedAt, String? scopeId, String? potentialEmergentWorkId, ReferenceData? potentialEmergentWork, String? likelihoodId, ReferenceData? likelihood, String? notes, bool? isDeleted
-});
-
-
-$ReferenceDataCopyWith<$Res>? get potentialEmergentWork;$ReferenceDataCopyWith<$Res>? get likelihood;
-
-}
-/// @nodoc
-class _$PotentialEmergentWorkCopyWithImpl<$Res>
-    implements $PotentialEmergentWorkCopyWith<$Res> {
-  _$PotentialEmergentWorkCopyWithImpl(this._self, this._then);
-
-  final PotentialEmergentWork _self;
-  final $Res Function(PotentialEmergentWork) _then;
-
-/// Create a copy of PotentialEmergentWork
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? scopeId = freezed,Object? potentialEmergentWorkId = freezed,Object? potentialEmergentWork = freezed,Object? likelihoodId = freezed,Object? likelihood = freezed,Object? notes = freezed,Object? isDeleted = freezed,}) {
-  return _then(_self.copyWith(
-id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,scopeId: freezed == scopeId ? _self.scopeId : scopeId // ignore: cast_nullable_to_non_nullable
-as String?,potentialEmergentWorkId: freezed == potentialEmergentWorkId ? _self.potentialEmergentWorkId : potentialEmergentWorkId // ignore: cast_nullable_to_non_nullable
-as String?,potentialEmergentWork: freezed == potentialEmergentWork ? _self.potentialEmergentWork : potentialEmergentWork // ignore: cast_nullable_to_non_nullable
-as ReferenceData?,likelihoodId: freezed == likelihoodId ? _self.likelihoodId : likelihoodId // ignore: cast_nullable_to_non_nullable
-as String?,likelihood: freezed == likelihood ? _self.likelihood : likelihood // ignore: cast_nullable_to_non_nullable
-as ReferenceData?,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
-as String?,isDeleted: freezed == isDeleted ? _self.isDeleted : isDeleted // ignore: cast_nullable_to_non_nullable
-as bool?,
-  ));
-}
-/// Create a copy of PotentialEmergentWork
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$ReferenceDataCopyWith<$Res>? get potentialEmergentWork {
-    if (_self.potentialEmergentWork == null) {
-    return null;
-  }
-
-  return $ReferenceDataCopyWith<$Res>(_self.potentialEmergentWork!, (value) {
-    return _then(_self.copyWith(potentialEmergentWork: value));
-  });
-}/// Create a copy of PotentialEmergentWork
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$ReferenceDataCopyWith<$Res>? get likelihood {
-    if (_self.likelihood == null) {
-    return null;
-  }
-
-  return $ReferenceDataCopyWith<$Res>(_self.likelihood!, (value) {
-    return _then(_self.copyWith(likelihood: value));
-  });
-}
-}
-
-
-/// Adds pattern-matching-related methods to [PotentialEmergentWork].
-extension PotentialEmergentWorkPatterns on PotentialEmergentWork {
-/// A variant of `map` that fallback to returning `orElse`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
-
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _PotentialEmergentWork value)?  $default,{required TResult orElse(),}){
-final _that = this;
-switch (_that) {
-case _PotentialEmergentWork() when $default != null:
-return $default(_that);case _:
-  return orElse();
-
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// Callbacks receives the raw object, upcasted.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case final Subclass2 value:
-///     return ...;
-/// }
-/// ```
-
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _PotentialEmergentWork value)  $default,){
-final _that = this;
-switch (_that) {
-case _PotentialEmergentWork():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
-}
-/// A variant of `map` that fallback to returning `null`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
-
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _PotentialEmergentWork value)?  $default,){
-final _that = this;
-switch (_that) {
-case _PotentialEmergentWork() when $default != null:
-return $default(_that);case _:
-  return null;
-
-}
-}
-/// A variant of `when` that fallback to an `orElse` callback.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
-
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  DateTime? createdAt,  DateTime? updatedAt,  String? scopeId,  String? potentialEmergentWorkId,  ReferenceData? potentialEmergentWork,  String? likelihoodId,  ReferenceData? likelihood,  String? notes,  bool? isDeleted)?  $default,{required TResult orElse(),}) {final _that = this;
-switch (_that) {
-case _PotentialEmergentWork() when $default != null:
-return $default(_that.id,_that.createdAt,_that.updatedAt,_that.scopeId,_that.potentialEmergentWorkId,_that.potentialEmergentWork,_that.likelihoodId,_that.likelihood,_that.notes,_that.isDeleted);case _:
-  return orElse();
-
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// As opposed to `map`, this offers destructuring.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case Subclass2(:final field2):
-///     return ...;
-/// }
-/// ```
-
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  DateTime? createdAt,  DateTime? updatedAt,  String? scopeId,  String? potentialEmergentWorkId,  ReferenceData? potentialEmergentWork,  String? likelihoodId,  ReferenceData? likelihood,  String? notes,  bool? isDeleted)  $default,) {final _that = this;
-switch (_that) {
-case _PotentialEmergentWork():
-return $default(_that.id,_that.createdAt,_that.updatedAt,_that.scopeId,_that.potentialEmergentWorkId,_that.potentialEmergentWork,_that.likelihoodId,_that.likelihood,_that.notes,_that.isDeleted);case _:
-  throw StateError('Unexpected subclass');
-
-}
-}
-/// A variant of `when` that fallback to returning `null`
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
-
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  DateTime? createdAt,  DateTime? updatedAt,  String? scopeId,  String? potentialEmergentWorkId,  ReferenceData? potentialEmergentWork,  String? likelihoodId,  ReferenceData? likelihood,  String? notes,  bool? isDeleted)?  $default,) {final _that = this;
-switch (_that) {
-case _PotentialEmergentWork() when $default != null:
-return $default(_that.id,_that.createdAt,_that.updatedAt,_that.scopeId,_that.potentialEmergentWorkId,_that.potentialEmergentWork,_that.likelihoodId,_that.likelihood,_that.notes,_that.isDeleted);case _:
-  return null;
-
-}
-}
-
-}
-
-/// @nodoc
-@JsonSerializable()
-
-class _PotentialEmergentWork implements PotentialEmergentWork {
-  const _PotentialEmergentWork({this.id, this.createdAt, this.updatedAt, this.scopeId, this.potentialEmergentWorkId, this.potentialEmergentWork, this.likelihoodId, this.likelihood, this.notes, this.isDeleted});
-  factory _PotentialEmergentWork.fromJson(Map<String, dynamic> json) => _$PotentialEmergentWorkFromJson(json);
-
-@override final  String? id;
-@override final  DateTime? createdAt;
-@override final  DateTime? updatedAt;
-@override final  String? scopeId;
-@override final  String? potentialEmergentWorkId;
-@override final  ReferenceData? potentialEmergentWork;
-@override final  String? likelihoodId;
-@override final  ReferenceData? likelihood;
-@override final  String? notes;
-@override final  bool? isDeleted;
-
-/// Create a copy of PotentialEmergentWork
-/// with the given fields replaced by the non-null parameter values.
-@override @JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-_$PotentialEmergentWorkCopyWith<_PotentialEmergentWork> get copyWith => __$PotentialEmergentWorkCopyWithImpl<_PotentialEmergentWork>(this, _$identity);
-
-@override
-Map<String, dynamic> toJson() {
-  return _$PotentialEmergentWorkToJson(this, );
-}
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PotentialEmergentWork&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.scopeId, scopeId) || other.scopeId == scopeId)&&(identical(other.potentialEmergentWorkId, potentialEmergentWorkId) || other.potentialEmergentWorkId == potentialEmergentWorkId)&&(identical(other.potentialEmergentWork, potentialEmergentWork) || other.potentialEmergentWork == potentialEmergentWork)&&(identical(other.likelihoodId, likelihoodId) || other.likelihoodId == likelihoodId)&&(identical(other.likelihood, likelihood) || other.likelihood == likelihood)&&(identical(other.notes, notes) || other.notes == notes)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted));
-}
-
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,id,createdAt,updatedAt,scopeId,potentialEmergentWorkId,potentialEmergentWork,likelihoodId,likelihood,notes,isDeleted);
-
-@override
-String toString() {
-  return 'PotentialEmergentWork(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, scopeId: $scopeId, potentialEmergentWorkId: $potentialEmergentWorkId, potentialEmergentWork: $potentialEmergentWork, likelihoodId: $likelihoodId, likelihood: $likelihood, notes: $notes, isDeleted: $isDeleted)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class _$PotentialEmergentWorkCopyWith<$Res> implements $PotentialEmergentWorkCopyWith<$Res> {
-  factory _$PotentialEmergentWorkCopyWith(_PotentialEmergentWork value, $Res Function(_PotentialEmergentWork) _then) = __$PotentialEmergentWorkCopyWithImpl;
-@override @useResult
-$Res call({
- String? id, DateTime? createdAt, DateTime? updatedAt, String? scopeId, String? potentialEmergentWorkId, ReferenceData? potentialEmergentWork, String? likelihoodId, ReferenceData? likelihood, String? notes, bool? isDeleted
-});
-
-
-@override $ReferenceDataCopyWith<$Res>? get potentialEmergentWork;@override $ReferenceDataCopyWith<$Res>? get likelihood;
-
-}
-/// @nodoc
-class __$PotentialEmergentWorkCopyWithImpl<$Res>
-    implements _$PotentialEmergentWorkCopyWith<$Res> {
-  __$PotentialEmergentWorkCopyWithImpl(this._self, this._then);
-
-  final _PotentialEmergentWork _self;
-  final $Res Function(_PotentialEmergentWork) _then;
-
-/// Create a copy of PotentialEmergentWork
-/// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? scopeId = freezed,Object? potentialEmergentWorkId = freezed,Object? potentialEmergentWork = freezed,Object? likelihoodId = freezed,Object? likelihood = freezed,Object? notes = freezed,Object? isDeleted = freezed,}) {
-  return _then(_PotentialEmergentWork(
-id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,scopeId: freezed == scopeId ? _self.scopeId : scopeId // ignore: cast_nullable_to_non_nullable
-as String?,potentialEmergentWorkId: freezed == potentialEmergentWorkId ? _self.potentialEmergentWorkId : potentialEmergentWorkId // ignore: cast_nullable_to_non_nullable
-as String?,potentialEmergentWork: freezed == potentialEmergentWork ? _self.potentialEmergentWork : potentialEmergentWork // ignore: cast_nullable_to_non_nullable
-as ReferenceData?,likelihoodId: freezed == likelihoodId ? _self.likelihoodId : likelihoodId // ignore: cast_nullable_to_non_nullable
-as String?,likelihood: freezed == likelihood ? _self.likelihood : likelihood // ignore: cast_nullable_to_non_nullable
-as ReferenceData?,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
-as String?,isDeleted: freezed == isDeleted ? _self.isDeleted : isDeleted // ignore: cast_nullable_to_non_nullable
-as bool?,
-  ));
-}
-
-/// Create a copy of PotentialEmergentWork
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$ReferenceDataCopyWith<$Res>? get potentialEmergentWork {
-    if (_self.potentialEmergentWork == null) {
-    return null;
-  }
-
-  return $ReferenceDataCopyWith<$Res>(_self.potentialEmergentWork!, (value) {
-    return _then(_self.copyWith(potentialEmergentWork: value));
-  });
-}/// Create a copy of PotentialEmergentWork
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$ReferenceDataCopyWith<$Res>? get likelihood {
-    if (_self.likelihood == null) {
-    return null;
-  }
-
-  return $ReferenceDataCopyWith<$Res>(_self.likelihood!, (value) {
-    return _then(_self.copyWith(likelihood: value));
-  });
-}
 }
 
 // dart format on
