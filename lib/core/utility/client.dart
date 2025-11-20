@@ -1,4 +1,5 @@
 import 'package:asset_shield/core/config/configs.dart';
+import 'package:asset_shield/core/utility/storage_service.dart';
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
@@ -38,17 +39,18 @@ class Client {
 }
 
 class TokenInterceptor extends Interceptor {
+  final _storageService = StorageService();
+
   @override
   void onRequest(
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    // final token = await StorageService().getToken();
-    // if (token != null) {
-    //   // log("Token: $token");
-    //   options.headers['Authorization'] = "Bearer $token";
-    // }
-    // return handler.next(options);
+    final token = await _storageService.getToken();
+    if (token != null) {
+      options.headers['Authorization'] = "Bearer $token";
+    }
+    return handler.next(options);
   }
 
   @override
