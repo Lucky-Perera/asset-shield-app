@@ -1,9 +1,9 @@
 import 'package:asset_shield/core/theme/color_palette.dart';
-import 'package:asset_shield/features/home/data/models/schedule_model.dart';
+import 'package:asset_shield/features/home/data/models/schedule_response.dart';
 import 'package:flutter/material.dart';
 
 class ScheduleItem extends StatelessWidget {
-  final ScheduleModel schedule;
+  final Schedule schedule;
   final VoidCallback? onTap;
 
   const ScheduleItem({super.key, required this.schedule, this.onTap});

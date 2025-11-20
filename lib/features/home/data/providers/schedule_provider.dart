@@ -1,4 +1,4 @@
-import 'package:asset_shield/features/home/data/models/schedule_model.dart';
+import 'package:asset_shield/features/home/data/models/schedule_response.dart';
 import 'package:asset_shield/features/home/data/services/shedule_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -7,11 +7,11 @@ part 'schedule_provider.g.dart';
 @Riverpod(keepAlive: true)
 class Schedules extends _$Schedules {
   @override
-  Future<List<ScheduleModel>> build() async {
+  Future<List<Schedule>> build() async {
     return fetchSchedules();
   }
 
-  Future<List<ScheduleModel>> fetchSchedules() async {
+  Future<List<Schedule>> fetchSchedules() async {
     final service = SheduleService();
     final response = await service.fetchSchedules();
     return response.data;
