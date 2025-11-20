@@ -68,10 +68,7 @@ class HomeScreen extends ConsumerWidget {
                             final schedule = scheduleState.schedules[index];
                             return ScheduleItem(
                               schedule: schedule,
-                              onTap: () {
-                                // TODO: Navigate to schedule details
-                                debugPrint('Tapped schedule: ${schedule.id}');
-                              },
+                              onTap: () {},
                             );
                           },
                         ),

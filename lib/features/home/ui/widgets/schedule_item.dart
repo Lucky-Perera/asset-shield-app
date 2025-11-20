@@ -48,7 +48,7 @@ class ScheduleItem extends StatelessWidget {
                           style: TextStyle(fontWeight: FontWeight.w600),
                         ),
                         TextSpan(
-                          text: schedule.id.toUpperCase(),
+                          text: schedule.scheduleID,
                           style: const TextStyle(fontWeight: FontWeight.w500),
                         ),
                       ],
