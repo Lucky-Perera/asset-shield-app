@@ -1,6 +1,7 @@
 import 'package:asset_shield/core/theme/color_palette.dart';
 import 'package:asset_shield/features/common/widgets/app_scaffold.dart';
 import 'package:asset_shield/features/home/data/providers/schedule_provider.dart';
+import 'package:asset_shield/features/home/ui/widgets/pagination_bar.dart';
 import 'package:asset_shield/features/home/ui/widgets/schedule_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -41,8 +42,8 @@ class HomeScreen extends ConsumerWidget {
           // List
           Expanded(
             child: schedulesAsync.when(
-              data: (schedules) {
-                if (schedules.isEmpty) {
+              data: (scheduleState) {
+                if (scheduleState.schedules.isEmpty) {
                   return const Center(
                     child: Text(
                       'No schedules available',
@@ -53,24 +54,38 @@ class HomeScreen extends ConsumerWidget {
                     ),
                   );
                 }
-                return RefreshIndicator(
-                  onRefresh: () async {
-                    await ref.read(schedulesProvider.notifier).refresh();
-                  },
-                  child: ListView.builder(
-                    itemCount: schedules.length,
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    itemBuilder: (context, index) {
-                      final schedule = schedules[index];
-                      return ScheduleItem(
-                        schedule: schedule,
-                        onTap: () {
-                          // TODO: Navigate to schedule details
-                          debugPrint('Tapped schedule: ${schedule.id}');
+                return Column(
+                  children: [
+                    Expanded(
+                      child: RefreshIndicator(
+                        onRefresh: () async {
+                          await ref.read(schedulesProvider.notifier).refresh();
                         },
-                      );
-                    },
-                  ),
+                        child: ListView.builder(
+                          itemCount: scheduleState.schedules.length,
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          itemBuilder: (context, index) {
+                            final schedule = scheduleState.schedules[index];
+                            return ScheduleItem(
+                              schedule: schedule,
+                              onTap: () {
+                                // TODO: Navigate to schedule details
+                                debugPrint('Tapped schedule: ${schedule.id}');
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                    // Pagination Bar
+                    PaginationBar(
+                      currentPage: scheduleState.pagination.page,
+                      totalPages: scheduleState.pagination.totalPages,
+                      onPageChanged: (page) {
+                        ref.read(schedulesProvider.notifier).goToPage(page);
+                      },
+                    ),
+                  ],
                 );
               },
               loading: () => const Center(

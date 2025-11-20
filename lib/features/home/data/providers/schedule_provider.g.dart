@@ -13,7 +13,7 @@ part of 'schedule_provider.dart';
 const schedulesProvider = SchedulesProvider._();
 
 final class SchedulesProvider
-    extends $AsyncNotifierProvider<Schedules, List<Schedule>> {
+    extends $AsyncNotifierProvider<Schedules, ScheduleState> {
   const SchedulesProvider._()
     : super(
         from: null,
@@ -33,20 +33,20 @@ final class SchedulesProvider
   Schedules create() => Schedules();
 }
 
-String _$schedulesHash() => r'b4939dd19173760fe94d25ca91193f2aa89f6e40';
+String _$schedulesHash() => r'89114863fe8b50c1738ce07e876c2e39c11c5b23';
 
-abstract class _$Schedules extends $AsyncNotifier<List<Schedule>> {
-  FutureOr<List<Schedule>> build();
+abstract class _$Schedules extends $AsyncNotifier<ScheduleState> {
+  FutureOr<ScheduleState> build();
   @$mustCallSuper
   @override
   void runBuild() {
     final created = build();
-    final ref = this.ref as $Ref<AsyncValue<List<Schedule>>, List<Schedule>>;
+    final ref = this.ref as $Ref<AsyncValue<ScheduleState>, ScheduleState>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<AsyncValue<List<Schedule>>, List<Schedule>>,
-              AsyncValue<List<Schedule>>,
+              AnyNotifier<AsyncValue<ScheduleState>, ScheduleState>,
+              AsyncValue<ScheduleState>,
               Object?,
               Object?
             >;

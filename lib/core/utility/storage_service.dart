@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:asset_shield/features/auth/data/models/user_model.dart';
 
 class StorageService {
   static FlutterSecureStorage get _storage => const FlutterSecureStorage();
@@ -8,6 +6,7 @@ class StorageService {
   // Storage keys
   static const String _tokenKey = 'Token';
   static const String _userKey = 'User';
+  static const String _userIdKey = 'UserId';
 
   // Token methods
   Future<void> saveToken(String token) async {
@@ -22,22 +21,21 @@ class StorageService {
     await _storage.delete(key: _tokenKey);
   }
 
-  // User methods
-  Future<void> saveUser(UserModel user) async {
-    final userJson = jsonEncode(user.toJson());
-    await _storage.write(key: _userKey, value: userJson);
-  }
-
-  Future<UserModel?> getUser() async {
-    final userJson = await _storage.read(key: _userKey);
-    if (userJson != null) {
-      return UserModel.fromJson(jsonDecode(userJson));
-    }
-    return null;
-  }
-
   Future<void> deleteUser() async {
     await _storage.delete(key: _userKey);
+  }
+
+  // User ID methods
+  Future<void> saveUserId(String userId) async {
+    await _storage.write(key: _userIdKey, value: userId);
+  }
+
+  Future<String?> getUserId() async {
+    return await _storage.read(key: _userIdKey);
+  }
+
+  Future<void> deleteUserId() async {
+    await _storage.delete(key: _userIdKey);
   }
 
   // Clear all stored data

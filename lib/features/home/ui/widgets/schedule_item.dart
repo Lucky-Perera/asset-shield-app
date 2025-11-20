@@ -21,7 +21,7 @@ class ScheduleItem extends StatelessWidget {
           border: Border.all(color: ColorPalette.grey300, width: 1),
           boxShadow: [
             BoxShadow(
-              color: ColorPalette.black.withOpacity(0.05),
+              color: ColorPalette.black.withValues(alpha: 0.5),
               blurRadius: 4,
               offset: const Offset(0, 2),
             ),
@@ -72,7 +72,7 @@ class ScheduleItem extends StatelessWidget {
                     style: TextStyle(fontWeight: FontWeight.w600),
                   ),
                   TextSpan(
-                    text: "schedule.equipmentID.toUpperCase()",
+                    text: schedule.equipmentId,
                     style: const TextStyle(fontWeight: FontWeight.w500),
                   ),
                 ],

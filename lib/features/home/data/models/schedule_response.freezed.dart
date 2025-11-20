@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ScheduleResponse {
 
- bool get success; List<Schedule> get data;
+ bool get success; ScheduleData get data;
 /// Create a copy of ScheduleResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,12 +28,12 @@ $ScheduleResponseCopyWith<ScheduleResponse> get copyWith => _$ScheduleResponseCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ScheduleResponse&&(identical(other.success, success) || other.success == success)&&const DeepCollectionEquality().equals(other.data, data));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ScheduleResponse&&(identical(other.success, success) || other.success == success)&&(identical(other.data, data) || other.data == data));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,success,const DeepCollectionEquality().hash(data));
+int get hashCode => Object.hash(runtimeType,success,data);
 
 @override
 String toString() {
@@ -48,11 +48,11 @@ abstract mixin class $ScheduleResponseCopyWith<$Res>  {
   factory $ScheduleResponseCopyWith(ScheduleResponse value, $Res Function(ScheduleResponse) _then) = _$ScheduleResponseCopyWithImpl;
 @useResult
 $Res call({
- bool success, List<Schedule> data
+ bool success, ScheduleData data
 });
 
 
-
+$ScheduleDataCopyWith<$Res> get data;
 
 }
 /// @nodoc
@@ -69,10 +69,19 @@ class _$ScheduleResponseCopyWithImpl<$Res>
   return _then(_self.copyWith(
 success: null == success ? _self.success : success // ignore: cast_nullable_to_non_nullable
 as bool,data: null == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
-as List<Schedule>,
+as ScheduleData,
   ));
 }
-
+/// Create a copy of ScheduleResponse
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ScheduleDataCopyWith<$Res> get data {
+  
+  return $ScheduleDataCopyWith<$Res>(_self.data, (value) {
+    return _then(_self.copyWith(data: value));
+  });
+}
 }
 
 
@@ -154,7 +163,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool success,  List<Schedule> data)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool success,  ScheduleData data)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ScheduleResponse() when $default != null:
 return $default(_that.success,_that.data);case _:
@@ -175,7 +184,7 @@ return $default(_that.success,_that.data);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool success,  List<Schedule> data)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool success,  ScheduleData data)  $default,) {final _that = this;
 switch (_that) {
 case _ScheduleResponse():
 return $default(_that.success,_that.data);case _:
@@ -195,7 +204,7 @@ return $default(_that.success,_that.data);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool success,  List<Schedule> data)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool success,  ScheduleData data)?  $default,) {final _that = this;
 switch (_that) {
 case _ScheduleResponse() when $default != null:
 return $default(_that.success,_that.data);case _:
@@ -210,17 +219,11 @@ return $default(_that.success,_that.data);case _:
 @JsonSerializable()
 
 class _ScheduleResponse implements ScheduleResponse {
-  const _ScheduleResponse({required this.success, required final  List<Schedule> data}): _data = data;
+  const _ScheduleResponse({required this.success, required this.data});
   factory _ScheduleResponse.fromJson(Map<String, dynamic> json) => _$ScheduleResponseFromJson(json);
 
 @override final  bool success;
- final  List<Schedule> _data;
-@override List<Schedule> get data {
-  if (_data is EqualUnmodifiableListView) return _data;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_data);
-}
-
+@override final  ScheduleData data;
 
 /// Create a copy of ScheduleResponse
 /// with the given fields replaced by the non-null parameter values.
@@ -235,12 +238,12 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ScheduleResponse&&(identical(other.success, success) || other.success == success)&&const DeepCollectionEquality().equals(other._data, _data));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ScheduleResponse&&(identical(other.success, success) || other.success == success)&&(identical(other.data, data) || other.data == data));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,success,const DeepCollectionEquality().hash(_data));
+int get hashCode => Object.hash(runtimeType,success,data);
 
 @override
 String toString() {
@@ -255,11 +258,11 @@ abstract mixin class _$ScheduleResponseCopyWith<$Res> implements $ScheduleRespon
   factory _$ScheduleResponseCopyWith(_ScheduleResponse value, $Res Function(_ScheduleResponse) _then) = __$ScheduleResponseCopyWithImpl;
 @override @useResult
 $Res call({
- bool success, List<Schedule> data
+ bool success, ScheduleData data
 });
 
 
-
+@override $ScheduleDataCopyWith<$Res> get data;
 
 }
 /// @nodoc
@@ -275,8 +278,579 @@ class __$ScheduleResponseCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? success = null,Object? data = null,}) {
   return _then(_ScheduleResponse(
 success: null == success ? _self.success : success // ignore: cast_nullable_to_non_nullable
-as bool,data: null == data ? _self._data : data // ignore: cast_nullable_to_non_nullable
-as List<Schedule>,
+as bool,data: null == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
+as ScheduleData,
+  ));
+}
+
+/// Create a copy of ScheduleResponse
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ScheduleDataCopyWith<$Res> get data {
+  
+  return $ScheduleDataCopyWith<$Res>(_self.data, (value) {
+    return _then(_self.copyWith(data: value));
+  });
+}
+}
+
+
+/// @nodoc
+mixin _$ScheduleData {
+
+ List<Schedule> get data; Pagination get pagination;
+/// Create a copy of ScheduleData
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ScheduleDataCopyWith<ScheduleData> get copyWith => _$ScheduleDataCopyWithImpl<ScheduleData>(this as ScheduleData, _$identity);
+
+  /// Serializes this ScheduleData to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ScheduleData&&const DeepCollectionEquality().equals(other.data, data)&&(identical(other.pagination, pagination) || other.pagination == pagination));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(data),pagination);
+
+@override
+String toString() {
+  return 'ScheduleData(data: $data, pagination: $pagination)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ScheduleDataCopyWith<$Res>  {
+  factory $ScheduleDataCopyWith(ScheduleData value, $Res Function(ScheduleData) _then) = _$ScheduleDataCopyWithImpl;
+@useResult
+$Res call({
+ List<Schedule> data, Pagination pagination
+});
+
+
+$PaginationCopyWith<$Res> get pagination;
+
+}
+/// @nodoc
+class _$ScheduleDataCopyWithImpl<$Res>
+    implements $ScheduleDataCopyWith<$Res> {
+  _$ScheduleDataCopyWithImpl(this._self, this._then);
+
+  final ScheduleData _self;
+  final $Res Function(ScheduleData) _then;
+
+/// Create a copy of ScheduleData
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? data = null,Object? pagination = null,}) {
+  return _then(_self.copyWith(
+data: null == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
+as List<Schedule>,pagination: null == pagination ? _self.pagination : pagination // ignore: cast_nullable_to_non_nullable
+as Pagination,
+  ));
+}
+/// Create a copy of ScheduleData
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$PaginationCopyWith<$Res> get pagination {
+  
+  return $PaginationCopyWith<$Res>(_self.pagination, (value) {
+    return _then(_self.copyWith(pagination: value));
+  });
+}
+}
+
+
+/// Adds pattern-matching-related methods to [ScheduleData].
+extension ScheduleDataPatterns on ScheduleData {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ScheduleData value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _ScheduleData() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ScheduleData value)  $default,){
+final _that = this;
+switch (_that) {
+case _ScheduleData():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ScheduleData value)?  $default,){
+final _that = this;
+switch (_that) {
+case _ScheduleData() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<Schedule> data,  Pagination pagination)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _ScheduleData() when $default != null:
+return $default(_that.data,_that.pagination);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<Schedule> data,  Pagination pagination)  $default,) {final _that = this;
+switch (_that) {
+case _ScheduleData():
+return $default(_that.data,_that.pagination);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<Schedule> data,  Pagination pagination)?  $default,) {final _that = this;
+switch (_that) {
+case _ScheduleData() when $default != null:
+return $default(_that.data,_that.pagination);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _ScheduleData implements ScheduleData {
+  const _ScheduleData({required final  List<Schedule> data, required this.pagination}): _data = data;
+  factory _ScheduleData.fromJson(Map<String, dynamic> json) => _$ScheduleDataFromJson(json);
+
+ final  List<Schedule> _data;
+@override List<Schedule> get data {
+  if (_data is EqualUnmodifiableListView) return _data;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_data);
+}
+
+@override final  Pagination pagination;
+
+/// Create a copy of ScheduleData
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ScheduleDataCopyWith<_ScheduleData> get copyWith => __$ScheduleDataCopyWithImpl<_ScheduleData>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$ScheduleDataToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ScheduleData&&const DeepCollectionEquality().equals(other._data, _data)&&(identical(other.pagination, pagination) || other.pagination == pagination));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_data),pagination);
+
+@override
+String toString() {
+  return 'ScheduleData(data: $data, pagination: $pagination)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ScheduleDataCopyWith<$Res> implements $ScheduleDataCopyWith<$Res> {
+  factory _$ScheduleDataCopyWith(_ScheduleData value, $Res Function(_ScheduleData) _then) = __$ScheduleDataCopyWithImpl;
+@override @useResult
+$Res call({
+ List<Schedule> data, Pagination pagination
+});
+
+
+@override $PaginationCopyWith<$Res> get pagination;
+
+}
+/// @nodoc
+class __$ScheduleDataCopyWithImpl<$Res>
+    implements _$ScheduleDataCopyWith<$Res> {
+  __$ScheduleDataCopyWithImpl(this._self, this._then);
+
+  final _ScheduleData _self;
+  final $Res Function(_ScheduleData) _then;
+
+/// Create a copy of ScheduleData
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? data = null,Object? pagination = null,}) {
+  return _then(_ScheduleData(
+data: null == data ? _self._data : data // ignore: cast_nullable_to_non_nullable
+as List<Schedule>,pagination: null == pagination ? _self.pagination : pagination // ignore: cast_nullable_to_non_nullable
+as Pagination,
+  ));
+}
+
+/// Create a copy of ScheduleData
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$PaginationCopyWith<$Res> get pagination {
+  
+  return $PaginationCopyWith<$Res>(_self.pagination, (value) {
+    return _then(_self.copyWith(pagination: value));
+  });
+}
+}
+
+
+/// @nodoc
+mixin _$Pagination {
+
+ int get total; int get page; int get limit; int get totalPages;
+/// Create a copy of Pagination
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$PaginationCopyWith<Pagination> get copyWith => _$PaginationCopyWithImpl<Pagination>(this as Pagination, _$identity);
+
+  /// Serializes this Pagination to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Pagination&&(identical(other.total, total) || other.total == total)&&(identical(other.page, page) || other.page == page)&&(identical(other.limit, limit) || other.limit == limit)&&(identical(other.totalPages, totalPages) || other.totalPages == totalPages));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,total,page,limit,totalPages);
+
+@override
+String toString() {
+  return 'Pagination(total: $total, page: $page, limit: $limit, totalPages: $totalPages)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $PaginationCopyWith<$Res>  {
+  factory $PaginationCopyWith(Pagination value, $Res Function(Pagination) _then) = _$PaginationCopyWithImpl;
+@useResult
+$Res call({
+ int total, int page, int limit, int totalPages
+});
+
+
+
+
+}
+/// @nodoc
+class _$PaginationCopyWithImpl<$Res>
+    implements $PaginationCopyWith<$Res> {
+  _$PaginationCopyWithImpl(this._self, this._then);
+
+  final Pagination _self;
+  final $Res Function(Pagination) _then;
+
+/// Create a copy of Pagination
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? total = null,Object? page = null,Object? limit = null,Object? totalPages = null,}) {
+  return _then(_self.copyWith(
+total: null == total ? _self.total : total // ignore: cast_nullable_to_non_nullable
+as int,page: null == page ? _self.page : page // ignore: cast_nullable_to_non_nullable
+as int,limit: null == limit ? _self.limit : limit // ignore: cast_nullable_to_non_nullable
+as int,totalPages: null == totalPages ? _self.totalPages : totalPages // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [Pagination].
+extension PaginationPatterns on Pagination {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _Pagination value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _Pagination() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _Pagination value)  $default,){
+final _that = this;
+switch (_that) {
+case _Pagination():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _Pagination value)?  $default,){
+final _that = this;
+switch (_that) {
+case _Pagination() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int total,  int page,  int limit,  int totalPages)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _Pagination() when $default != null:
+return $default(_that.total,_that.page,_that.limit,_that.totalPages);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int total,  int page,  int limit,  int totalPages)  $default,) {final _that = this;
+switch (_that) {
+case _Pagination():
+return $default(_that.total,_that.page,_that.limit,_that.totalPages);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int total,  int page,  int limit,  int totalPages)?  $default,) {final _that = this;
+switch (_that) {
+case _Pagination() when $default != null:
+return $default(_that.total,_that.page,_that.limit,_that.totalPages);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _Pagination implements Pagination {
+  const _Pagination({required this.total, required this.page, required this.limit, required this.totalPages});
+  factory _Pagination.fromJson(Map<String, dynamic> json) => _$PaginationFromJson(json);
+
+@override final  int total;
+@override final  int page;
+@override final  int limit;
+@override final  int totalPages;
+
+/// Create a copy of Pagination
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$PaginationCopyWith<_Pagination> get copyWith => __$PaginationCopyWithImpl<_Pagination>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$PaginationToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Pagination&&(identical(other.total, total) || other.total == total)&&(identical(other.page, page) || other.page == page)&&(identical(other.limit, limit) || other.limit == limit)&&(identical(other.totalPages, totalPages) || other.totalPages == totalPages));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,total,page,limit,totalPages);
+
+@override
+String toString() {
+  return 'Pagination(total: $total, page: $page, limit: $limit, totalPages: $totalPages)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$PaginationCopyWith<$Res> implements $PaginationCopyWith<$Res> {
+  factory _$PaginationCopyWith(_Pagination value, $Res Function(_Pagination) _then) = __$PaginationCopyWithImpl;
+@override @useResult
+$Res call({
+ int total, int page, int limit, int totalPages
+});
+
+
+
+
+}
+/// @nodoc
+class __$PaginationCopyWithImpl<$Res>
+    implements _$PaginationCopyWith<$Res> {
+  __$PaginationCopyWithImpl(this._self, this._then);
+
+  final _Pagination _self;
+  final $Res Function(_Pagination) _then;
+
+/// Create a copy of Pagination
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? total = null,Object? page = null,Object? limit = null,Object? totalPages = null,}) {
+  return _then(_Pagination(
+total: null == total ? _self.total : total // ignore: cast_nullable_to_non_nullable
+as int,page: null == page ? _self.page : page // ignore: cast_nullable_to_non_nullable
+as int,limit: null == limit ? _self.limit : limit // ignore: cast_nullable_to_non_nullable
+as int,totalPages: null == totalPages ? _self.totalPages : totalPages // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 

@@ -1,9 +1,11 @@
+import 'dart:developer';
 import 'package:asset_shield/core/utility/client.dart';
 import 'package:asset_shield/core/utility/helpers.dart';
 import 'package:asset_shield/core/utility/storage_service.dart';
 import 'package:asset_shield/features/auth/data/models/login_request_model.dart';
 import 'package:asset_shield/features/auth/data/models/login_response_model.dart';
 import 'package:dio/dio.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 class AuthService {
   final Dio _dio = Client.dio;
@@ -26,7 +28,18 @@ class AuthService {
 
       // Store token and user data
       await _storageService.saveToken(loginResponse.data.accessToken);
-      await _storageService.saveUser(loginResponse.data.user);
+
+      // Decode token and save user ID
+      try {
+        final decodedToken = JwtDecoder.decode(loginResponse.data.accessToken);
+        final userId = decodedToken['sub'] as String?;
+        if (userId != null) {
+          await _storageService.saveUserId(userId);
+          log('User ID saved from token: $userId', name: 'AuthService');
+        }
+      } catch (e) {
+        log('Error decoding token: $e', name: 'AuthService', error: e);
+      }
 
       return loginResponse;
     } on DioException catch (e) {
