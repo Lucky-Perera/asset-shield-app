@@ -8,4 +8,5 @@ class RoutePaths {
   // Main App
   static const String home = '/home';
   static const String scheduleDetails = '/schedule-details';
+  static const String addRecord = '/add-record';
 }

@@ -1,6 +1,7 @@
 import 'package:asset_shield/core/routes/route_paths.dart';
 import 'package:asset_shield/features/auth/ui/screens/login_screen.dart';
 import 'package:asset_shield/features/home/data/models/schedule_response.dart';
+import 'package:asset_shield/features/home/ui/screens/add_record_screen.dart';
 import 'package:asset_shield/features/home/ui/screens/home_screen.dart';
 import 'package:asset_shield/features/home/ui/screens/schedule_details_screen.dart';
 import 'package:asset_shield/features/splash/splash_screen.dart';
@@ -19,6 +20,10 @@ class Routes {
   void home() => router.go(RoutePaths.home);
   void scheduleDetails(Schedule schedule) => router.go(
     "${RoutePaths.home}${RoutePaths.scheduleDetails}",
+    extra: schedule,
+  );
+  void addRecord(Schedule schedule) => router.go(
+    "${RoutePaths.home}${RoutePaths.scheduleDetails}${RoutePaths.addRecord}",
     extra: schedule,
   );
 }
@@ -52,6 +57,15 @@ final router = GoRouter(
             final schedule = state.extra as Schedule;
             return ScheduleDetailsScreen(schedule: schedule);
           },
+          routes: [
+            GoRoute(
+              path: RoutePaths.addRecord,
+              builder: (context, state) {
+                final schedule = state.extra as Schedule;
+                return AddRecordScreen(schedule: schedule);
+              },
+            ),
+          ],
         ),
       ],
     ),
