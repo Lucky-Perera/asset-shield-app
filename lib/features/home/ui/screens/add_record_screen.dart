@@ -1,10 +1,12 @@
 import 'dart:io';
+import 'package:asset_shield/core/routes/router.dart';
 import 'package:asset_shield/core/theme/app_text_styles.dart';
 import 'package:asset_shield/core/theme/color_palette.dart';
 import 'package:asset_shield/features/common/widgets/app_scaffold.dart';
 import 'package:asset_shield/features/common/widgets/form_date_field.dart';
 import 'package:asset_shield/features/common/widgets/form_dropdown_field.dart';
 import 'package:asset_shield/features/common/widgets/form_file_picker_field.dart';
+import 'package:asset_shield/features/common/widgets/form_multi_select_field.dart';
 import 'package:asset_shield/features/common/widgets/form_text_field.dart';
 import 'package:asset_shield/features/common/widgets/reusable_button.dart';
 import 'package:asset_shield/features/home/data/models/schedule_response.dart';
@@ -23,19 +25,33 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
   final _formKey = GlobalKey<FormState>();
 
   // Controllers
+  final _equipmentController = TextEditingController();
+  final _scheduleItemController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _actionCreatedController = TextEditingController();
   final _commentsController = TextEditingController();
+  final _scheduleTypeController = TextEditingController();
 
   // Form values
-  String? _selectedEquipment;
-  String? _selectedCreditedItems;
   DateTime? _recordCreatedDate;
-  String? _selectedInspectedComponents;
-  String? _selectedScheduleType;
+  List<String> _selectedInspectedComponents = [];
   String? _selectedStatus;
   DateTime? _inspectionDate;
   List<File> _selectedFiles = [];
+
+  List<MultiSelectItem<String>> get _componentItems => widget
+      .schedule
+      .components
+      .where(
+        (sc) => sc.component?.name != null && sc.component!.name!.isNotEmpty,
+      )
+      .map(
+        (sc) => MultiSelectItem<String>(
+          value: sc.componentId ?? '',
+          label: sc.component!.name!,
+        ),
+      )
+      .toList();
 
   @override
   void initState() {
@@ -43,6 +59,14 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
     // Set default dates to today
     _recordCreatedDate = DateTime.now();
     _inspectionDate = DateTime.now();
+    _initialiseFields();
+  }
+
+  void _initialiseFields() {
+    // Pre-fill equipment field based on schedule data
+    _equipmentController.text = widget.schedule.equipment?.name ?? '';
+    _scheduleItemController.text = widget.schedule.scheduleID;
+    _scheduleTypeController.text = widget.schedule.scheduleTypeId;
   }
 
   @override
@@ -58,13 +82,13 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
   void _handleUploadFiles() {}
 
   void _handleClose() {
-    Navigator.of(context).pop();
+    router.pop();
   }
 
   void _handleCreate() {
     if (_formKey.currentState?.validate() ?? false) {
       // Show success message or navigate back
-      Navigator.of(context).pop();
+      router.pop();
     }
   }
 
@@ -98,32 +122,11 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       // Equipment Dropdown
-                      FormDropdownField<String>(
+                      FormTextField(
                         label: 'Equipment',
-                        hint: 'Select equipment',
-                        value: _selectedEquipment,
-                        isRequired: true,
-                        items: const [
-                          DropdownMenuItem(
-                            value: 'equipment1',
-                            child: Text('Equipment 1'),
-                          ),
-                          DropdownMenuItem(
-                            value: 'equipment2',
-                            child: Text('Equipment 2'),
-                          ),
-                        ],
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedEquipment = value;
-                          });
-                        },
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please select equipment';
-                          }
-                          return null;
-                        },
+                        hint: 'Enter equipment',
+                        controller: _equipmentController,
+                        enabled: false,
                       ),
                       SizedBox(height: 20.h),
 
@@ -145,25 +148,11 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
                       SizedBox(height: 20.h),
 
                       // Credited Items Dropdown
-                      FormDropdownField<String>(
-                        label: 'Credited Items',
-                        hint: 'Select credited items',
-                        value: _selectedCreditedItems,
-                        items: const [
-                          DropdownMenuItem(
-                            value: 'item1',
-                            child: Text('Item 1'),
-                          ),
-                          DropdownMenuItem(
-                            value: 'item2',
-                            child: Text('Item 2'),
-                          ),
-                        ],
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedCreditedItems = value;
-                          });
-                        },
+                      FormTextField(
+                        label: 'Schedule Item',
+                        hint: ' ',
+                        controller: _scheduleItemController,
+                        enabled: false,
                       ),
                       SizedBox(height: 20.h),
 
@@ -180,30 +169,31 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
                       ),
                       SizedBox(height: 20.h),
 
-                      // Inspected Components Dropdown
-                      FormDropdownField<String>(
+                      // Inspected Components Multi-Select
+                      FormMultiSelectField<String>(
                         label: 'Inspected components',
                         hint: 'Select components',
-                        value: _selectedInspectedComponents,
+                        selectedValues: _selectedInspectedComponents,
                         isRequired: true,
-                        items: const [
-                          DropdownMenuItem(
-                            value: 'component1',
-                            child: Text('Component 1'),
-                          ),
-                          DropdownMenuItem(
-                            value: 'component2',
-                            child: Text('Component 2'),
-                          ),
-                        ],
-                        onChanged: (value) {
+                        items: _componentItems,
+                        itemLabel: (componentId) {
+                          // Find the component name by ID
+                          final component = widget.schedule.components
+                              .firstWhere(
+                                (sc) => sc.componentId == componentId,
+                                orElse: () => const ScheduleComponent(),
+                              )
+                              .component;
+                          return component?.name ?? '';
+                        },
+                        onChanged: (values) {
                           setState(() {
-                            _selectedInspectedComponents = value;
+                            _selectedInspectedComponents = values;
                           });
                         },
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please select components';
+                        validator: (values) {
+                          if (values == null || values.isEmpty) {
+                            return 'Please select at least one component';
                           }
                           return null;
                         },
@@ -211,32 +201,11 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
                       SizedBox(height: 20.h),
 
                       // Schedule Type Dropdown
-                      FormDropdownField<String>(
+                      FormTextField(
                         label: 'Schedule Type',
-                        hint: 'Select a schedule type',
-                        value: _selectedScheduleType,
-                        isRequired: true,
-                        items: const [
-                          DropdownMenuItem(
-                            value: 'type1',
-                            child: Text('Type 1'),
-                          ),
-                          DropdownMenuItem(
-                            value: 'type2',
-                            child: Text('Type 2'),
-                          ),
-                        ],
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedScheduleType = value;
-                          });
-                        },
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please select schedule type';
-                          }
-                          return null;
-                        },
+                        hint: ' ',
+                        controller: _scheduleTypeController,
+                        enabled: false,
                       ),
                       SizedBox(height: 20.h),
 
@@ -245,19 +214,27 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
                         label: 'Status',
                         hint: 'Select status',
                         value: _selectedStatus,
-                        isRequired: true,
-                        items: const [
+                        items: [
                           DropdownMenuItem(
                             value: 'pending',
-                            child: Text('Pending'),
+                            child: Text(
+                              'Pending',
+                              style: TextStyle(fontSize: 14.sp),
+                            ),
                           ),
                           DropdownMenuItem(
                             value: 'completed',
-                            child: Text('Completed'),
+                            child: Text(
+                              'Completed',
+                              style: TextStyle(fontSize: 14.sp),
+                            ),
                           ),
                           DropdownMenuItem(
                             value: 'in_progress',
-                            child: Text('In Progress'),
+                            child: Text(
+                              'In Progress',
+                              style: TextStyle(fontSize: 14.sp),
+                            ),
                           ),
                         ],
                         onChanged: (value) {

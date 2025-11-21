@@ -62,7 +62,10 @@ class FormTextField extends StatelessWidget {
           onChanged: onChanged,
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: TextStyle(color: ColorPalette.grey400, fontSize: 14.sp),
+            hintStyle: TextStyle(
+              color: enabled ? ColorPalette.grey400 : ColorPalette.grey200,
+              fontSize: 14.sp,
+            ),
             contentPadding: EdgeInsets.symmetric(
               horizontal: 16.w,
               vertical: 14.h,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/theme/color_palette.dart';
 
-/// A reusable dropdown field widget with consistent styling
 class FormDropdownField<T> extends StatelessWidget {
   final String label;
   final String? hint;
@@ -47,10 +46,11 @@ class FormDropdownField<T> extends StatelessWidget {
         ),
         SizedBox(height: 8.h),
         DropdownButtonFormField<T>(
-          value: value,
+          initialValue: value,
           items: items,
           onChanged: onChanged,
           validator: validator,
+          style: TextStyle(fontSize: 14.sp, color: ColorPalette.black),
           decoration: InputDecoration(
             hintText: hint,
             hintStyle: TextStyle(color: ColorPalette.grey400, fontSize: 14.sp),
