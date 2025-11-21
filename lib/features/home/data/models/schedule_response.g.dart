@@ -84,9 +84,6 @@ _Schedule _$ScheduleFromJson(Map<String, dynamic> json) => _Schedule(
           ?.map((e) => RecordCreditedItem.fromJson(e as Map<String, dynamic>))
           .toList() ??
       const [],
-  scope: json['scope'] == null
-      ? null
-      : Scope.fromJson(json['scope'] as Map<String, dynamic>),
   isDeleted: json['isDeleted'] as bool?,
 );
 
@@ -113,7 +110,6 @@ Map<String, dynamic> _$ScheduleToJson(_Schedule instance) => <String, dynamic>{
   'aiSummary': instance.aiSummary,
   'attachments': instance.attachments,
   'linkedItems': instance.linkedItems,
-  'scope': instance.scope,
   'isDeleted': instance.isDeleted,
 };
 
@@ -531,141 +527,3 @@ Map<String, dynamic> _$RecordCreditedItemToJson(_RecordCreditedItem instance) =>
       'recordId': instance.recordId,
       'scheduleId': instance.scheduleId,
     };
-
-_Scope _$ScopeFromJson(Map<String, dynamic> json) => _Scope(
-  id: json['id'] as String?,
-  createdAt: json['createdAt'] == null
-      ? null
-      : DateTime.parse(json['createdAt'] as String),
-  updatedAt: json['updatedAt'] == null
-      ? null
-      : DateTime.parse(json['updatedAt'] as String),
-  scheduleId: json['scheduleId'] as String?,
-  damageMechanism: json['damageMechanism'] as String?,
-  inspectionEffectiveness: json['inspectionEffectiveness'] as String?,
-  inspectionMethods:
-      (json['inspectionMethods'] as List<dynamic>?)
-          ?.map((e) => InspectionMethod.fromJson(e as Map<String, dynamic>))
-          .toList() ??
-      const [],
-  scopeImages:
-      (json['scopeImages'] as List<dynamic>?)
-          ?.map((e) => Attachment.fromJson(e as Map<String, dynamic>))
-          .toList() ??
-      const [],
-  potentialEmergentWorks:
-      (json['potentialEmergentWorks'] as List<dynamic>?)
-          ?.map(
-            (e) => PotentialEmergentWork.fromJson(e as Map<String, dynamic>),
-          )
-          .toList() ??
-      const [],
-  isDeleted: json['isDeleted'] as bool?,
-);
-
-Map<String, dynamic> _$ScopeToJson(_Scope instance) => <String, dynamic>{
-  'id': instance.id,
-  'createdAt': instance.createdAt?.toIso8601String(),
-  'updatedAt': instance.updatedAt?.toIso8601String(),
-  'scheduleId': instance.scheduleId,
-  'damageMechanism': instance.damageMechanism,
-  'inspectionEffectiveness': instance.inspectionEffectiveness,
-  'inspectionMethods': instance.inspectionMethods,
-  'scopeImages': instance.scopeImages,
-  'potentialEmergentWorks': instance.potentialEmergentWorks,
-  'isDeleted': instance.isDeleted,
-};
-
-_InspectionMethod _$InspectionMethodFromJson(Map<String, dynamic> json) =>
-    _InspectionMethod(
-      id: json['id'] as String?,
-      createdAt: json['createdAt'] == null
-          ? null
-          : DateTime.parse(json['createdAt'] as String),
-      updatedAt: json['updatedAt'] == null
-          ? null
-          : DateTime.parse(json['updatedAt'] as String),
-      scopeId: json['scopeId'] as String?,
-      methodId: json['methodId'] as String?,
-      method: json['method'] == null
-          ? null
-          : ReferenceData.fromJson(json['method'] as Map<String, dynamic>),
-      specialAccessId: json['specialAccessId'] as String?,
-      specialAccess: json['specialAccess'] == null
-          ? null
-          : ReferenceData.fromJson(
-              json['specialAccess'] as Map<String, dynamic>,
-            ),
-      insulationRemovalId: json['insulationRemovalId'] as String?,
-      insulationRemoval: json['insulationRemoval'] == null
-          ? null
-          : ReferenceData.fromJson(
-              json['insulationRemoval'] as Map<String, dynamic>,
-            ),
-      cleaningId: json['cleaningId'] as String?,
-      cleaning: json['cleaning'] == null
-          ? null
-          : ReferenceData.fromJson(json['cleaning'] as Map<String, dynamic>),
-      location: json['location'] as String?,
-      notes: json['notes'] as String?,
-      isDeleted: json['isDeleted'] as bool?,
-    );
-
-Map<String, dynamic> _$InspectionMethodToJson(_InspectionMethod instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'createdAt': instance.createdAt?.toIso8601String(),
-      'updatedAt': instance.updatedAt?.toIso8601String(),
-      'scopeId': instance.scopeId,
-      'methodId': instance.methodId,
-      'method': instance.method,
-      'specialAccessId': instance.specialAccessId,
-      'specialAccess': instance.specialAccess,
-      'insulationRemovalId': instance.insulationRemovalId,
-      'insulationRemoval': instance.insulationRemoval,
-      'cleaningId': instance.cleaningId,
-      'cleaning': instance.cleaning,
-      'location': instance.location,
-      'notes': instance.notes,
-      'isDeleted': instance.isDeleted,
-    };
-
-_PotentialEmergentWork _$PotentialEmergentWorkFromJson(
-  Map<String, dynamic> json,
-) => _PotentialEmergentWork(
-  id: json['id'] as String?,
-  createdAt: json['createdAt'] == null
-      ? null
-      : DateTime.parse(json['createdAt'] as String),
-  updatedAt: json['updatedAt'] == null
-      ? null
-      : DateTime.parse(json['updatedAt'] as String),
-  scopeId: json['scopeId'] as String?,
-  potentialEmergentWorkId: json['potentialEmergentWorkId'] as String?,
-  potentialEmergentWork: json['potentialEmergentWork'] == null
-      ? null
-      : ReferenceData.fromJson(
-          json['potentialEmergentWork'] as Map<String, dynamic>,
-        ),
-  likelihoodId: json['likelihoodId'] as String?,
-  likelihood: json['likelihood'] == null
-      ? null
-      : ReferenceData.fromJson(json['likelihood'] as Map<String, dynamic>),
-  notes: json['notes'] as String?,
-  isDeleted: json['isDeleted'] as bool?,
-);
-
-Map<String, dynamic> _$PotentialEmergentWorkToJson(
-  _PotentialEmergentWork instance,
-) => <String, dynamic>{
-  'id': instance.id,
-  'createdAt': instance.createdAt?.toIso8601String(),
-  'updatedAt': instance.updatedAt?.toIso8601String(),
-  'scopeId': instance.scopeId,
-  'potentialEmergentWorkId': instance.potentialEmergentWorkId,
-  'potentialEmergentWork': instance.potentialEmergentWork,
-  'likelihoodId': instance.likelihoodId,
-  'likelihood': instance.likelihood,
-  'notes': instance.notes,
-  'isDeleted': instance.isDeleted,
-};

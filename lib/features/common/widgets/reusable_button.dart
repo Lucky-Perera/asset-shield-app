@@ -35,7 +35,7 @@ class ReusableButton extends StatelessWidget {
     super.key,
     required this.text,
     this.onPressed,
-    this.width,
+    this.width = double.infinity,
     this.height = 50,
     this.borderRadius = 8,
     this.textStyle,

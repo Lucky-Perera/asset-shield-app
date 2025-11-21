@@ -1,5 +1,7 @@
 import 'package:asset_shield/core/config/configs.dart';
+import 'package:asset_shield/core/routes/router.dart';
 import 'package:asset_shield/core/utility/storage_service.dart';
+import 'package:asset_shield/features/auth/data/services/auth_service.dart';
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
@@ -62,8 +64,8 @@ class TokenInterceptor extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     final status = err.response?.statusCode;
     if (status == 401 || status == 402) {
-      // await AuthService().logout();
-      // Routes().login();
+      await AuthService().logout();
+      Routes().login();
       // await AuthService().logout();
       // If a 401 response is received, refresh the access token
       // final token = await StorageService().getLoginObject();
