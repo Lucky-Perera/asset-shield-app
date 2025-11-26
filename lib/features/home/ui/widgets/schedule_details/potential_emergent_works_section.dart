@@ -1,10 +1,10 @@
 import 'package:asset_shield/core/theme/app_text_styles.dart';
 import 'package:asset_shield/core/theme/color_palette.dart';
-import 'package:asset_shield/features/home/data/models/scope_model.dart';
+import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
 import 'package:flutter/material.dart';
 
 class PotentialEmergentWorksSection extends StatelessWidget {
-  final List<PotentialEmergentWork> potentialEmergentWorks;
+  final List<PotentialEmergentWorkV2> potentialEmergentWorks;
 
   const PotentialEmergentWorksSection({
     super.key,
@@ -81,7 +81,7 @@ class _SectionHeaderWithCount extends StatelessWidget {
 }
 
 class _EmergentWorkCard extends StatelessWidget {
-  final PotentialEmergentWork work;
+  final PotentialEmergentWorkV2 work;
   final int index;
 
   const _EmergentWorkCard({required this.work, required this.index});
@@ -101,7 +101,7 @@ class _EmergentWorkCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final likelihoodColor = _getLikelihoodColor(work.likelihood.value);
+    final likelihoodColor = _getLikelihoodColor(work.likelihood?.value ?? '');
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -133,7 +133,7 @@ class _EmergentWorkCard extends StatelessWidget {
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
-                  work.potentialEmergentWork.value,
+                  work.potentialEmergentWork?.value ?? 'N/A',
                   style: AppTextStyles.base(
                     context,
                   ).copyWith(fontWeight: FontWeight.w600),
@@ -160,7 +160,7 @@ class _EmergentWorkCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
-                  work.likelihood.value,
+                  work.likelihood?.value ?? 'N/A',
                   style: AppTextStyles.label(context).copyWith(
                     color: ColorPalette.white,
                     fontWeight: FontWeight.w600,
@@ -169,9 +169,9 @@ class _EmergentWorkCard extends StatelessWidget {
               ),
             ],
           ),
-          if (work.notes.isNotEmpty) ...[
+          if (work.notes != null && work.notes!.isNotEmpty) ...[
             const SizedBox(height: 8),
-            _MethodDetail(label: 'Notes', value: work.notes),
+            _MethodDetail(label: 'Notes', value: work.notes ?? 'N/A'),
           ],
         ],
       ),

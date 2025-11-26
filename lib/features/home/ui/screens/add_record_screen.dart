@@ -9,12 +9,12 @@ import 'package:asset_shield/features/common/widgets/form_file_picker_field.dart
 import 'package:asset_shield/features/common/widgets/form_multi_select_field.dart';
 import 'package:asset_shield/features/common/widgets/form_text_field.dart';
 import 'package:asset_shield/features/common/widgets/reusable_button.dart';
-import 'package:asset_shield/features/home/data/models/schedule_response.dart';
+import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AddRecordScreen extends StatefulWidget {
-  final Schedule schedule;
+  final ScheduleV2 schedule;
   const AddRecordScreen({super.key, required this.schedule});
 
   @override
@@ -181,7 +181,7 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
                           final component = widget.schedule.components
                               .firstWhere(
                                 (sc) => sc.componentId == componentId,
-                                orElse: () => const ScheduleComponent(),
+                                orElse: () => const ScheduleComponentV2(),
                               )
                               .component;
                           return component?.name ?? '';

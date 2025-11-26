@@ -1,12 +1,12 @@
 import 'package:asset_shield/core/routes/router.dart';
 import 'package:asset_shield/core/theme/color_palette.dart';
-import 'package:asset_shield/features/home/data/models/schedule_response.dart';
+import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
 import 'package:asset_shield/features/home/ui/widgets/pagination_bar.dart';
 import 'package:asset_shield/features/home/ui/widgets/schedule_item.dart';
 import 'package:flutter/material.dart';
 
 class ScheduleList extends StatelessWidget {
-  final List<Schedule> schedules;
+  final List<ScheduleV2> schedules;
   final Pagination pagination;
   final String searchQuery;
   final VoidCallback onRefresh;
@@ -21,7 +21,7 @@ class ScheduleList extends StatelessWidget {
     required this.onPageChanged,
   });
 
-  List<Schedule> get _filteredSchedules {
+  List<ScheduleV2> get _filteredSchedules {
     if (searchQuery.isEmpty) return schedules;
     return schedules
         .where(

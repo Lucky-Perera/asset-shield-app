@@ -1,6 +1,6 @@
 import 'package:asset_shield/core/routes/route_paths.dart';
 import 'package:asset_shield/features/auth/ui/screens/login_screen.dart';
-import 'package:asset_shield/features/home/data/models/schedule_response.dart';
+import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
 import 'package:asset_shield/features/home/ui/screens/add_record_screen.dart';
 import 'package:asset_shield/features/home/ui/screens/home_screen.dart';
 import 'package:asset_shield/features/home/ui/screens/schedule_details_screen.dart';
@@ -18,11 +18,11 @@ class Routes {
   void splash() => router.go(RoutePaths.splash);
   void login() => router.go(RoutePaths.login);
   void home() => router.go(RoutePaths.home);
-  void scheduleDetails(Schedule schedule) => router.go(
+  void scheduleDetails(ScheduleV2 schedule) => router.go(
     "${RoutePaths.home}${RoutePaths.scheduleDetails}",
     extra: schedule,
   );
-  void addRecord(Schedule schedule) => router.go(
+  void addRecord(ScheduleV2 schedule) => router.go(
     "${RoutePaths.home}${RoutePaths.scheduleDetails}${RoutePaths.addRecord}",
     extra: schedule,
   );
@@ -54,14 +54,14 @@ final router = GoRouter(
         GoRoute(
           path: RoutePaths.scheduleDetails,
           builder: (context, state) {
-            final schedule = state.extra as Schedule;
+            final schedule = state.extra as ScheduleV2;
             return ScheduleDetailsScreen(schedule: schedule);
           },
           routes: [
             GoRoute(
               path: RoutePaths.addRecord,
               builder: (context, state) {
-                final schedule = state.extra as Schedule;
+                final schedule = state.extra as ScheduleV2;
                 return AddRecordScreen(schedule: schedule);
               },
             ),

@@ -1,9 +1,9 @@
 import 'package:asset_shield/core/theme/app_text_styles.dart';
-import 'package:asset_shield/features/home/data/models/schedule_response.dart';
+import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
 import 'package:flutter/material.dart';
 
 class ScheduleInfoCard extends StatelessWidget {
-  final Schedule schedule;
+  final ScheduleV2 schedule;
 
   const ScheduleInfoCard({super.key, required this.schedule});
 

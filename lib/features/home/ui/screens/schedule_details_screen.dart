@@ -3,20 +3,17 @@ import 'package:asset_shield/core/theme/app_text_styles.dart';
 import 'package:asset_shield/core/theme/color_palette.dart';
 import 'package:asset_shield/features/common/widgets/app_scaffold.dart';
 import 'package:asset_shield/features/common/widgets/reusable_button.dart';
-import 'package:asset_shield/features/home/data/models/schedule_response.dart';
-import 'package:asset_shield/features/home/data/models/scope_model.dart';
-import 'package:asset_shield/features/home/data/services/shedule_service.dart';
+import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
 import 'package:asset_shield/features/home/ui/widgets/schedule_details/inspection_methods_section.dart';
 import 'package:asset_shield/features/home/ui/widgets/schedule_details/potential_emergent_works_section.dart';
 import 'package:asset_shield/features/home/ui/widgets/schedule_details/schedule_error_state.dart';
 import 'package:asset_shield/features/home/ui/widgets/schedule_details/schedule_info_card.dart';
-import 'package:asset_shield/features/home/ui/widgets/schedule_details/scope_overview_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ScheduleDetailsScreen extends StatefulWidget {
-  final Schedule schedule;
+  final ScheduleV2 schedule;
   const ScheduleDetailsScreen({super.key, required this.schedule});
 
   @override
@@ -24,9 +21,9 @@ class ScheduleDetailsScreen extends StatefulWidget {
 }
 
 class _ScheduleDetailsScreenState extends State<ScheduleDetailsScreen> {
-  final SheduleService _scheduleService = SheduleService();
+  // final SheduleService _scheduleService = SheduleService();
   String? _errorMessage;
-  Scope? _scopeData;
+  // Scope? _scopeData;
 
   @override
   void initState() {
@@ -41,12 +38,12 @@ class _ScheduleDetailsScreenState extends State<ScheduleDetailsScreen> {
     EasyLoading.show();
 
     try {
-      final response = await _scheduleService.fetchScopeDetailsByScheduleId(
-        widget.schedule.id,
-      );
-      setState(() {
-        _scopeData = response?.data;
-      });
+      // final response = await _scheduleService.fetchScopeDetailsByScheduleId(
+      //   widget.schedule.id,
+      // );
+      // setState(() {
+      //   _scopeData = response?.data;
+      // });
       EasyLoading.dismiss();
     } catch (e) {
       setState(() {
@@ -82,10 +79,6 @@ class _ScheduleDetailsScreenState extends State<ScheduleDetailsScreen> {
       );
     }
 
-    if (_scopeData == null) {
-      return const SizedBox.shrink();
-    }
-
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -93,14 +86,14 @@ class _ScheduleDetailsScreenState extends State<ScheduleDetailsScreen> {
         children: [
           ScheduleInfoCard(schedule: widget.schedule),
           SizedBox(height: 16.h),
-          ScopeOverviewCard(scopeData: _scopeData!),
+          // ScopeOverviewCard(scopeData: _scopeData!),
           SizedBox(height: 16.h),
           InspectionMethodsSection(
-            inspectionMethods: _scopeData!.inspectionMethods,
+            inspectionMethods: widget.schedule.inspectionMethods,
           ),
           SizedBox(height: 16.h),
           PotentialEmergentWorksSection(
-            potentialEmergentWorks: _scopeData!.potentialEmergentWorks,
+            potentialEmergentWorks: widget.schedule.potentialEmergentWorks,
           ),
           SizedBox(height: 16.h),
           ReusableButton(

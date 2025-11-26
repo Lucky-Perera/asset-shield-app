@@ -1,10 +1,10 @@
 import 'package:asset_shield/core/theme/app_text_styles.dart';
 import 'package:asset_shield/core/theme/color_palette.dart';
-import 'package:asset_shield/features/home/data/models/scope_model.dart';
+import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
 import 'package:flutter/material.dart';
 
 class InspectionMethodsSection extends StatelessWidget {
-  final List<InspectionMethod> inspectionMethods;
+  final List<InspectionMethodV2> inspectionMethods;
 
   const InspectionMethodsSection({super.key, required this.inspectionMethods});
 
@@ -78,7 +78,7 @@ class _SectionHeaderWithCount extends StatelessWidget {
 }
 
 class _InspectionMethodCard extends StatelessWidget {
-  final InspectionMethod method;
+  final InspectionMethodV2 method;
   final int index;
 
   const _InspectionMethodCard({required this.method, required this.index});
@@ -115,7 +115,7 @@ class _InspectionMethodCard extends StatelessWidget {
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
-                  method.method.value,
+                  method.method?.value ?? 'N/A',
                   style: AppTextStyles.base(
                     context,
                   ).copyWith(fontWeight: FontWeight.w600),
@@ -124,18 +124,21 @@ class _InspectionMethodCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 12),
-          _MethodDetail(label: 'Location', value: method.location),
+          _MethodDetail(label: 'Location', value: method.location ?? 'N/A'),
           _MethodDetail(
             label: 'Special Access',
-            value: method.specialAccess.value,
+            value: method.specialAccess?.value ?? 'N/A',
           ),
           _MethodDetail(
             label: 'Insulation Removal',
-            value: method.insulationRemoval.value,
+            value: method.insulationRemoval?.value ?? 'N/A',
           ),
-          _MethodDetail(label: 'Cleaning', value: method.cleaning.value),
-          if (method.notes.isNotEmpty)
-            _MethodDetail(label: 'Notes', value: method.notes),
+          _MethodDetail(
+            label: 'Cleaning',
+            value: method.cleaning?.value ?? 'N/A',
+          ),
+          if (method.notes != null && method.notes!.isNotEmpty)
+            _MethodDetail(label: 'Notes', value: method.notes!),
         ],
       ),
     );
