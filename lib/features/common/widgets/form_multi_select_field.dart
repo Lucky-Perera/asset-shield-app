@@ -26,8 +26,11 @@ class FormMultiSelectField<T> extends StatelessWidget {
     this.isRequired = false,
   });
 
-  Future<void> _showMultiSelectDialog(BuildContext context) async {
-    final List<T> tempSelected = List.from(selectedValues);
+  Future<void> _showMultiSelectDialog(
+    BuildContext context,
+    FormFieldState<List<T>> state,
+  ) async {
+    final List<T> tempSelected = List.from(state.value ?? selectedValues);
 
     await showDialog(
       context: context,
@@ -74,7 +77,9 @@ class FormMultiSelectField<T> extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {
+                    // Update external value and form field state so validator sees change
                     onChanged(tempSelected);
+                    state.didChange(tempSelected);
                     router.pop();
                   },
                   child: const Text('Done'),
@@ -122,7 +127,7 @@ class FormMultiSelectField<T> extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 InkWell(
-                  onTap: () => _showMultiSelectDialog(context),
+                  onTap: () => _showMultiSelectDialog(context, state),
                   child: Container(
                     padding: EdgeInsets.symmetric(
                       horizontal: 16.w,

@@ -1,6 +1,8 @@
 import 'package:asset_shield/core/utility/client.dart';
 import 'package:asset_shield/core/utility/helpers.dart';
 import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
+import 'package:asset_shield/features/home/data/models/record_create_request.dart';
+import 'package:asset_shield/features/home/data/models/record_response.dart';
 import 'package:asset_shield/features/home/data/models/scope_model.dart';
 import 'package:dio/dio.dart';
 
@@ -28,6 +30,40 @@ class SheduleService {
     try {
       final response = await _dio.get('/scopes/schedule/$scheduleId');
       return ScopeResponse.fromJson(response.data);
+    } on DioException catch (e) {
+      throw Helpers.handleError(e);
+    }
+  }
+
+  /// Create a record for a schedule (mobile API)
+  Future<RecordResponse> createRecord({
+    required String scheduleId,
+    required RecordCreateRequest payload,
+  }) async {
+    try {
+      final requestData = payload.toJson();
+      final response = await _dio.post(
+        '/schedules/$scheduleId/record',
+        data: requestData,
+      );
+
+      final respData = response.data;
+
+      // API typically returns { success: true, data: { ... } }
+      if (respData is Map<String, dynamic>) {
+        if (respData['success'] == true && respData['data'] != null) {
+          return RecordResponse.fromJson(
+            respData['data'] as Map<String, dynamic>,
+          );
+        }
+
+        // Sometimes API returns the created object directly
+        if (respData['id'] != null || respData['recordID'] != null) {
+          return RecordResponse.fromJson(respData);
+        }
+      }
+
+      throw Exception('Unexpected API response when creating record');
     } on DioException catch (e) {
       throw Helpers.handleError(e);
     }

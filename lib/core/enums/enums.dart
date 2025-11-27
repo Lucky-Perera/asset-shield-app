@@ -12,3 +12,5 @@ enum ScheduleStatus {
   @JsonValue('CANCELLED')
   cancelled,
 }
+
+enum RecordStatus { draft, pendingApproval, approved }

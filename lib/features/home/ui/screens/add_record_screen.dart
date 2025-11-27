@@ -1,5 +1,11 @@
+import 'dart:developer';
 import 'dart:io';
+import 'package:asset_shield/core/enums/enums.dart';
+import 'package:asset_shield/core/utility/toast_service.dart';
+import 'package:asset_shield/features/home/data/models/record_create_request.dart';
+import 'package:asset_shield/features/home/data/services/shedule_service.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:asset_shield/core/routes/router.dart';
 import 'package:asset_shield/core/theme/app_text_styles.dart';
@@ -37,7 +43,7 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
   // Form values
   DateTime? _recordCreatedDate;
   List<String> _selectedInspectedComponents = [];
-  String? _selectedStatus;
+  RecordStatus? _selectedStatus;
   DateTime? _inspectionDate;
   final List<File> _selectedFiles = [];
 
@@ -62,6 +68,18 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
     _recordCreatedDate = DateTime.now();
     _inspectionDate = DateTime.now();
     _initialiseFields();
+  }
+
+  String _statusToServerString(RecordStatus? status) {
+    switch (status) {
+      case RecordStatus.pendingApproval:
+        return 'PendingApproval';
+      case RecordStatus.approved:
+        return 'Approved';
+      case RecordStatus.draft:
+      default:
+        return 'Draft';
+    }
   }
 
   void _initialiseFields() {
@@ -164,9 +182,39 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
     router.pop();
   }
 
-  void _handleCreate() {
+  void _handleCreate() async {
+    EasyLoading.show();
     if (_formKey.currentState?.validate() ?? false) {
-      router.pop();
+      try {
+        final RecordCreateRequest payload = RecordCreateRequest(
+          description: _descriptionController.text.trim(),
+          recordCreatedDate: _recordCreatedDate!,
+          status: _statusToServerString(_selectedStatus),
+          inspectionDate: _inspectionDate!,
+          actionCreated: _actionCreatedController.text.trim(),
+          comments: _commentsController.text.trim().isEmpty
+              ? null
+              : _commentsController.text.trim(),
+          equipmentID: widget.schedule.equipmentId,
+          inspectedComponentIDs: _selectedInspectedComponents,
+          scheduleTypeID: widget.schedule.scheduleTypeId,
+          attachmentIDs: [], // send empty array when no attachments yet
+        );
+        final recordResponse = await SheduleService().createRecord(
+          scheduleId: widget.schedule.id,
+          payload: payload,
+        );
+        log('Record created: ${recordResponse.toString()}');
+        router.pop();
+        ToastService.show('Record created successfully');
+      } catch (e) {
+        ToastService.show('Failed to create record: $e');
+      } finally {
+        EasyLoading.dismiss();
+      }
+    } else {
+      EasyLoading.dismiss();
+      ToastService.show('Please fill all required fields');
     }
   }
 
@@ -287,30 +335,30 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
                       ),
                       SizedBox(height: 20.h),
 
-                      // Status Dropdown
-                      FormDropdownField<String>(
+                      // Status Dropdown (uses Status enum)
+                      FormDropdownField<RecordStatus>(
                         label: 'Status',
                         hint: 'Select status',
                         value: _selectedStatus,
                         items: [
                           DropdownMenuItem(
-                            value: 'pending',
+                            value: RecordStatus.pendingApproval,
                             child: Text(
-                              'Pending',
+                              'Pending Approval',
                               style: TextStyle(fontSize: 14.sp),
                             ),
                           ),
                           DropdownMenuItem(
-                            value: 'completed',
+                            value: RecordStatus.approved,
                             child: Text(
-                              'Completed',
+                              'Approved',
                               style: TextStyle(fontSize: 14.sp),
                             ),
                           ),
                           DropdownMenuItem(
-                            value: 'in_progress',
+                            value: RecordStatus.draft,
                             child: Text(
-                              'In Progress',
+                              'Draft',
                               style: TextStyle(fontSize: 14.sp),
                             ),
                           ),
@@ -321,7 +369,7 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
                           });
                         },
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          if (value == null) {
                             return 'Please select status';
                           }
                           return null;
