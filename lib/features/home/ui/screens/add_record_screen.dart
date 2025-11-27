@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:file_picker/file_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:asset_shield/core/routes/router.dart';
 import 'package:asset_shield/core/theme/app_text_styles.dart';
 import 'package:asset_shield/core/theme/color_palette.dart';
@@ -77,9 +79,86 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
     super.dispose();
   }
 
-  void _handleSelectFiles() {}
+  Future<void> _handleSelectFiles() async {
+    // Request appropriate permissions on Android before picking files.
+    if (Platform.isAndroid) {
+      // Request both storage and manage external storage where available.
+      final statuses = await [
+        Permission.storage,
+        Permission.manageExternalStorage,
+      ].request();
 
-  void _handleUploadFiles() {}
+      final storageGranted =
+          (statuses[Permission.storage]?.isGranted ?? false) ||
+          (statuses[Permission.manageExternalStorage]?.isGranted ?? false);
+
+      if (!storageGranted) {
+        if (!mounted) return;
+        // If permanently denied, prompt to open app settings.
+        final permanentlyDenied =
+            (statuses[Permission.storage]?.isPermanentlyDenied ?? false) ||
+            (statuses[Permission.manageExternalStorage]?.isPermanentlyDenied ??
+                false);
+        if (permanentlyDenied) {
+          showDialog<void>(
+            context: context,
+            builder: (ctx) => AlertDialog(
+              title: const Text('Permission required'),
+              content: const Text(
+                'Storage permission is permanently denied. Please enable it in app settings to pick files.',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(ctx).pop(),
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    openAppSettings();
+                    router.pop();
+                  },
+                  child: const Text('Open Settings'),
+                ),
+              ],
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Storage permission denied')),
+          );
+        }
+        return;
+      }
+    }
+
+    try {
+      // Explicitly allow any file type and multiple selection.
+      final result = await FilePicker.platform.pickFiles(
+        allowMultiple: true,
+        type: FileType.any,
+      );
+      if (result != null && result.files.isNotEmpty) {
+        final picked = result.files
+            .where((f) => f.path != null)
+            .map((f) => File(f.path!))
+            .toList();
+        setState(() {
+          // Append new files and avoid duplicates by path.
+          for (final file in picked) {
+            final exists = _selectedFiles.any(
+              (existing) => existing.path == file.path,
+            );
+            if (!exists) _selectedFiles.add(file);
+          }
+        });
+      }
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Failed to pick files: $e')));
+    }
+  }
 
   void _handleClose() {
     router.pop();
@@ -87,7 +166,6 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
 
   void _handleCreate() {
     if (_formKey.currentState?.validate() ?? false) {
-      // Show success message or navigate back
       router.pop();
     }
   }
@@ -95,7 +173,7 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      backgroundColor: ColorPalette.grey50,
+      backgroundColor: ColorPalette.white,
       appBar: AppBar(
         backgroundColor: ColorPalette.white,
         elevation: 0,
@@ -284,7 +362,6 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
                         label: 'Attachment',
                         selectedFiles: _selectedFiles,
                         onSelectFiles: _handleSelectFiles,
-                        onUpload: _handleUploadFiles,
                       ),
                       SizedBox(height: 20.h),
 

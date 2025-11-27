@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class Helpers {
   static String handleError(DioException error) {
@@ -26,6 +29,27 @@ class Helpers {
         return 'No internet connection';
       default:
         return 'An unexpected error occurred';
+    }
+  }
+
+  static Future<void> requestInitialPermissions() async {
+    if (Platform.isAndroid) {
+      // Request broad storage and media-related permissions. On Android 13+
+      // scoped media permissions (READ_MEDIA_IMAGES/VIDEO) are used by the
+      // platform; requesting storage and camera/microphone covers common cases.
+      await [
+        Permission.storage,
+        Permission.manageExternalStorage,
+        Permission.camera,
+        Permission.microphone,
+      ].request();
+    } else if (Platform.isIOS) {
+      // Request photo library, camera and microphone on iOS.
+      await [
+        Permission.photos,
+        Permission.camera,
+        Permission.microphone,
+      ].request();
     }
   }
 }

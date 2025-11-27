@@ -1,6 +1,7 @@
 import 'package:asset_shield/core/config/configs.dart';
 import 'package:asset_shield/core/routes/router.dart';
 import 'package:asset_shield/core/theme/app_theme.dart';
+import 'package:asset_shield/core/utility/helpers.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,6 +18,12 @@ void main() async {
   Configs().configLoading();
   Client.init();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+  // Request initial permissions for files, images and videos.
+  try {
+    await Helpers.requestInitialPermissions();
+  } catch (_) {}
+
   runApp(UncontrolledProviderScope(container: container, child: MyApp()));
 }
 
