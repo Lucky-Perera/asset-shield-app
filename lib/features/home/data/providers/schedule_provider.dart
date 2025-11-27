@@ -1,13 +1,12 @@
 import 'dart:developer';
-
-import 'package:asset_shield/features/home/data/models/schedule_response.dart';
+import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
 import 'package:asset_shield/features/home/data/services/shedule_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'schedule_provider.g.dart';
 
 class ScheduleState {
-  final List<Schedule> schedules;
+  final List<ScheduleV2> schedules;
   final Pagination pagination;
 
   ScheduleState({required this.schedules, required this.pagination});

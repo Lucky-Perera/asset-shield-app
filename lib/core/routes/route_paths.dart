@@ -7,11 +7,6 @@ class RoutePaths {
 
   // Main App
   static const String home = '/home';
-  static const String profile = '/profile';
-  static const String settings = '/settings';
-
-  // Settings Sub-routes (relative paths)
-  static const String settingsProfile = 'profile';
-  static const String settingsPreferences = 'preferences';
-  static const String settingsAbout = 'about';
+  static const String scheduleDetails = '/schedule-details';
+  static const String addRecord = '/add-record';
 }

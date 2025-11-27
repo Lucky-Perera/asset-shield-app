@@ -1,5 +1,6 @@
 import 'package:asset_shield/core/config/configs.dart';
 import 'package:asset_shield/core/routes/router.dart';
+import 'package:asset_shield/core/theme/app_theme.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -43,7 +44,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           routerConfig: router,
           title: 'Asset Shield',
-          // theme: AppTheme.lightTheme,
+          theme: AppTheme.lightTheme,
           builder: (context, child) {
             child = EasyLoading.init()(context, child);
             child = BotToastInit()(context, child);

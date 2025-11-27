@@ -1,6 +1,9 @@
 import 'package:asset_shield/core/routes/route_paths.dart';
 import 'package:asset_shield/features/auth/ui/screens/login_screen.dart';
+import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
+import 'package:asset_shield/features/home/ui/screens/add_record_screen.dart';
 import 'package:asset_shield/features/home/ui/screens/home_screen.dart';
+import 'package:asset_shield/features/home/ui/screens/schedule_details_screen.dart';
 import 'package:asset_shield/features/splash/splash_screen.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
@@ -15,10 +18,14 @@ class Routes {
   void splash() => router.go(RoutePaths.splash);
   void login() => router.go(RoutePaths.login);
   void home() => router.go(RoutePaths.home);
-
-  // Push methods for modal-style navigation
-  void pushProfile() => router.push(RoutePaths.profile);
-  void pushSettings() => router.pushNamed(RoutePaths.settings);
+  void scheduleDetails(ScheduleV2 schedule) => router.go(
+    "${RoutePaths.home}${RoutePaths.scheduleDetails}",
+    extra: schedule,
+  );
+  void addRecord(ScheduleV2 schedule) => router.go(
+    "${RoutePaths.home}${RoutePaths.scheduleDetails}${RoutePaths.addRecord}",
+    extra: schedule,
+  );
 }
 
 // Router Configuration
@@ -43,6 +50,24 @@ final router = GoRouter(
     GoRoute(
       path: RoutePaths.home,
       builder: (context, state) => const HomeScreen(),
+      routes: [
+        GoRoute(
+          path: RoutePaths.scheduleDetails,
+          builder: (context, state) {
+            final schedule = state.extra as ScheduleV2;
+            return ScheduleDetailsScreen(schedule: schedule);
+          },
+          routes: [
+            GoRoute(
+              path: RoutePaths.addRecord,
+              builder: (context, state) {
+                final schedule = state.extra as ScheduleV2;
+                return AddRecordScreen(schedule: schedule);
+              },
+            ),
+          ],
+        ),
+      ],
     ),
   ],
 

@@ -12,11 +12,14 @@ class Helpers {
         if (statusCode == 401) {
           return 'Invalid credentials. Please try again.';
         } else if (statusCode == 404) {
-          return 'Service not found. Please contact support.';
+          return error.response?.data['error'] ??
+              error.response?.data['message'] ??
+              'Resource not found.';
         } else if (statusCode == 500) {
           return 'Server error. Please try again later.';
         }
-        return error.response?.data['message'] ?? 'An error occurred';
+        return error.response?.data['error'] ??
+            'An error occurred. Please try again.';
       case DioExceptionType.cancel:
         return 'Request cancelled';
       case DioExceptionType.connectionError:
