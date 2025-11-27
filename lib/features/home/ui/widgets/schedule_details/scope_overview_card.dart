@@ -1,11 +1,11 @@
 import 'package:asset_shield/core/theme/app_text_styles.dart';
-import 'package:asset_shield/features/home/data/models/scope_model.dart';
+import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
 import 'package:flutter/material.dart';
 
 class ScopeOverviewCard extends StatelessWidget {
-  final Scope scopeData;
+  final ScheduleV2 schedule;
 
-  const ScopeOverviewCard({super.key, required this.scopeData});
+  const ScopeOverviewCard({super.key, required this.schedule});
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +25,12 @@ class ScopeOverviewCard extends StatelessWidget {
             const SizedBox(height: 12),
             _InfoRow(
               label: 'Damage Mechanism:',
-              value: scopeData.damageMechanism,
+              value: 'Damage mechanism data not available',
             ),
             _InfoRow(
               label: 'Inspection Effectiveness:',
-              value: scopeData.inspectionEffectiveness,
+              value: 'Inspection effectiveness data not available',
             ),
-            _InfoRow(label: 'Scope ID:', value: scopeData.id),
           ],
         ),
       ),

@@ -8,6 +8,7 @@ import 'package:asset_shield/features/home/ui/widgets/schedule_details/inspectio
 import 'package:asset_shield/features/home/ui/widgets/schedule_details/potential_emergent_works_section.dart';
 import 'package:asset_shield/features/home/ui/widgets/schedule_details/schedule_error_state.dart';
 import 'package:asset_shield/features/home/ui/widgets/schedule_details/schedule_info_card.dart';
+import 'package:asset_shield/features/home/ui/widgets/schedule_details/scope_overview_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -86,7 +87,7 @@ class _ScheduleDetailsScreenState extends State<ScheduleDetailsScreen> {
         children: [
           ScheduleInfoCard(schedule: widget.schedule),
           SizedBox(height: 16.h),
-          // ScopeOverviewCard(scopeData: _scopeData!),
+          ScopeOverviewCard(schedule: widget.schedule),
           SizedBox(height: 16.h),
           InspectionMethodsSection(
             inspectionMethods: widget.schedule.inspectionMethods,

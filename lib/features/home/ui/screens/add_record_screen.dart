@@ -37,7 +37,7 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
   List<String> _selectedInspectedComponents = [];
   String? _selectedStatus;
   DateTime? _inspectionDate;
-  List<File> _selectedFiles = [];
+  final List<File> _selectedFiles = [];
 
   List<MultiSelectItem<String>> get _componentItems => widget
       .schedule
@@ -332,11 +332,10 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
                     ),
                     SizedBox(width: 12.w),
                     Expanded(
-                      flex: 2,
                       child: ReusableButton(
                         text: 'Create',
                         onPressed: _handleCreate,
-                        backgroundColor: Colors.blue,
+                        backgroundColor: ColorPalette.black,
                         height: 48.h,
                       ),
                     ),
