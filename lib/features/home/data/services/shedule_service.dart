@@ -4,6 +4,8 @@ import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart
 import 'package:asset_shield/features/home/data/models/record_create_request.dart';
 import 'package:asset_shield/features/home/data/models/record_response.dart';
 import 'package:asset_shield/features/home/data/models/scope_model.dart';
+import 'package:asset_shield/features/home/data/models/checklist_answer_request.dart';
+import 'package:asset_shield/features/home/data/models/checklist_answer_response.dart';
 import 'package:dio/dio.dart';
 
 class SheduleService {
@@ -64,6 +66,36 @@ class SheduleService {
       }
 
       throw Exception('Unexpected API response when creating record');
+    } on DioException catch (e) {
+      throw Helpers.handleError(e);
+    }
+  }
+
+  /// Submit checklist answers for a schedule (mobile API)
+  Future<ChecklistAnswerResponse> submitChecklistAnswers({
+    required String scheduleId,
+    required ChecklistAnswerRequest payload,
+  }) async {
+    try {
+      final response = await _dio.post(
+        '/schedules/$scheduleId/checklist/answers',
+        data: payload.toJson(),
+      );
+      return ChecklistAnswerResponse.fromJson(response.data);
+    } on DioException catch (e) {
+      throw Helpers.handleError(e);
+    }
+  }
+
+  /// Fetch checklist answers for a schedule (mobile API)
+  Future<ChecklistAnswerResponse> fetchChecklistAnswers({
+    required String scheduleId,
+  }) async {
+    try {
+      final response = await _dio.get(
+        '/schedules/$scheduleId/checklist/answers',
+      );
+      return ChecklistAnswerResponse.fromJson(response.data);
     } on DioException catch (e) {
       throw Helpers.handleError(e);
     }

@@ -1,7 +1,7 @@
 import 'dart:io';
+import 'package:asset_shield/core/theme/color_palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../core/theme/color_palette.dart';
 
 /// A reusable file picker field widget with consistent styling
 class FormFilePickerField extends StatelessWidget {

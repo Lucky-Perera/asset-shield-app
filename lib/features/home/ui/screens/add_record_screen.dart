@@ -18,19 +18,21 @@ import 'package:asset_shield/features/common/widgets/form_multi_select_field.dar
 import 'package:asset_shield/features/common/widgets/form_text_field.dart';
 import 'package:asset_shield/features/common/widgets/reusable_button.dart';
 import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
-import 'package:asset_shield/features/home/ui/widgets/checklist_widgets.dart';
+import 'package:asset_shield/features/home/ui/widgets/checklist_section.dart';
+import 'package:asset_shield/features/home/data/providers/checklist_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AddRecordScreen extends StatefulWidget {
+class AddRecordScreen extends ConsumerStatefulWidget {
   final ScheduleV2 schedule;
   const AddRecordScreen({super.key, required this.schedule});
 
   @override
-  State<AddRecordScreen> createState() => _AddRecordScreenState();
+  ConsumerState<AddRecordScreen> createState() => _AddRecordScreenState();
 }
 
-class _AddRecordScreenState extends State<AddRecordScreen> {
+class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
   final _formKey = GlobalKey<FormState>();
 
   // Controllers
@@ -183,10 +185,50 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
     router.pop();
   }
 
+  void _handleChecklistAnswerChanged(
+    String questionId,
+    String value,
+    String note,
+  ) {
+    ref
+        .read(checklistProvider(widget.schedule.id).notifier)
+        .updateAnswer(questionId: questionId, value: value, note: note);
+  }
+
   void _handleCreate() async {
     EasyLoading.show();
+
+    final checklistNotifier = ref.read(
+      checklistProvider(widget.schedule.id).notifier,
+    );
+    final checklistState = ref.read(checklistProvider(widget.schedule.id));
+
     if (_formKey.currentState?.validate() ?? false) {
+      // Validate that all checklist questions are answered
+      if (widget.schedule.checklistQuestions.isNotEmpty) {
+        final totalQuestions = widget.schedule.checklistQuestions.length;
+
+        if (!checklistNotifier.areAllQuestionsAnswered(totalQuestions)) {
+          final answeredQuestions = checklistState.answers.length;
+          EasyLoading.dismiss();
+          ToastService.show(
+            'Please answer all $totalQuestions checklist questions. '
+            'You have answered $answeredQuestions.',
+          );
+          return;
+        }
+
+        // Validate all answers
+        final validationError = checklistNotifier.validateAnswers();
+        if (validationError != null) {
+          EasyLoading.dismiss();
+          ToastService.show(validationError);
+          return;
+        }
+      }
+
       try {
+        // Step 1: Create the record
         final RecordCreateRequest payload = RecordCreateRequest(
           description: _descriptionController.text.trim(),
           recordCreatedDate: _recordCreatedDate!,
@@ -201,11 +243,20 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
           scheduleTypeID: widget.schedule.scheduleTypeId,
           attachmentIDs: [], // send empty array when no attachments yet
         );
+
         final recordResponse = await SheduleService().createRecord(
           scheduleId: widget.schedule.id,
           payload: payload,
         );
         log('Record created: ${recordResponse.toString()}');
+
+        // Step 2: Submit checklist answers if any exist
+        if (checklistState.answers.isNotEmpty) {
+          final checklistResponse = await checklistNotifier
+              .submitChecklistAnswers(widget.schedule.id);
+          log('Checklist answers submitted: ${checklistResponse.message}');
+        }
+
         router.pop();
         ToastService.show('Record created successfully');
       } catch (e) {
@@ -221,6 +272,20 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final checklistState = ref.watch(checklistProvider(widget.schedule.id));
+
+    // Convert provider state to initialValues format
+    final initialValues = <String, Map<String, String>>{};
+    checklistState.answers.forEach((key, value) {
+      initialValues[key] = {'value': value.value, 'note': value.note};
+    });
+
+    // Debug: Check if answers are submitted
+    if (checklistState.answersAlreadySubmitted) {
+      log('Answers already submitted - fields should be READ ONLY');
+      log('Initial values count: ${initialValues.length}');
+    }
+
     return AppScaffold(
       backgroundColor: ColorPalette.white,
       appBar: AppBar(
@@ -433,9 +498,23 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
                           ).copyWith(fontWeight: FontWeight.w600),
                         ),
                         SizedBox(height: 8.h),
-                        ChecklistSections(
-                          questions: widget.schedule.checklistQuestions,
-                        ),
+                        checklistState.isLoading
+                            ? Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(24.h),
+                                  child: CircularProgressIndicator(),
+                                ),
+                              )
+                            : ChecklistSections(
+                                questions: widget.schedule.checklistQuestions,
+                                onAnswerChanged:
+                                    checklistState.answersAlreadySubmitted
+                                    ? null
+                                    : _handleChecklistAnswerChanged,
+                                readOnly:
+                                    checklistState.answersAlreadySubmitted,
+                                initialValues: initialValues,
+                              ),
                         SizedBox(height: 24.h),
                       ],
                     ],
@@ -475,8 +554,12 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
                     Expanded(
                       child: ReusableButton(
                         text: 'Create',
-                        onPressed: _handleCreate,
-                        backgroundColor: ColorPalette.black,
+                        onPressed: checklistState.answersAlreadySubmitted
+                            ? null
+                            : _handleCreate,
+                        backgroundColor: checklistState.answersAlreadySubmitted
+                            ? ColorPalette.black.withValues(alpha: 0.3)
+                            : ColorPalette.black,
                         height: 48.h,
                       ),
                     ),

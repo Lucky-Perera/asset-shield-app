@@ -211,6 +211,8 @@ _ChecklistQuestionV2 _$ChecklistQuestionV2FromJson(Map<String, dynamic> json) =>
               .toList() ??
           const [],
       isDeleted: json['isDeleted'] as bool?,
+      section: json['section'] as String?,
+      order: (json['order'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$ChecklistQuestionV2ToJson(
@@ -231,6 +233,8 @@ Map<String, dynamic> _$ChecklistQuestionV2ToJson(
   'completedBy': instance.completedBy,
   'attachments': instance.attachments,
   'isDeleted': instance.isDeleted,
+  'section': instance.section,
+  'order': instance.order,
 };
 
 const _$ResponseTypeEnumMap = {

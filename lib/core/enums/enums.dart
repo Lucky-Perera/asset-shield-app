@@ -16,4 +16,60 @@ enum ScheduleStatus {
 enum RecordStatus { draft, pendingApproval, approved }
 
 // ignore: constant_identifier_names
-enum ResponseType { GoodFairPoorNA, YesNo }
+enum ResponseType {
+  @JsonValue('GoodFairPoorNA')
+  GoodFairPoorNA,
+  @JsonValue('YesNo')
+  YesNo,
+}
+
+enum ResponseValue {
+  @JsonValue('Good')
+  good,
+  @JsonValue('Fair')
+  fair,
+  @JsonValue('Poor')
+  poor,
+  @JsonValue('NA')
+  na,
+  @JsonValue('Yes')
+  yes,
+  @JsonValue('No')
+  no,
+}
+
+extension ResponseValueExtension on ResponseValue {
+  String get displayName {
+    switch (this) {
+      case ResponseValue.good:
+        return 'Good';
+      case ResponseValue.fair:
+        return 'Fair';
+      case ResponseValue.poor:
+        return 'Poor';
+      case ResponseValue.na:
+        return 'N/A';
+      case ResponseValue.yes:
+        return 'Yes';
+      case ResponseValue.no:
+        return 'No';
+    }
+  }
+
+  String get apiValue {
+    switch (this) {
+      case ResponseValue.good:
+        return 'Good';
+      case ResponseValue.fair:
+        return 'Fair';
+      case ResponseValue.poor:
+        return 'Poor';
+      case ResponseValue.na:
+        return 'NA';
+      case ResponseValue.yes:
+        return 'Yes';
+      case ResponseValue.no:
+        return 'No';
+    }
+  }
+}
