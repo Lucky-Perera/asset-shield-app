@@ -18,6 +18,7 @@ import 'package:asset_shield/features/common/widgets/form_multi_select_field.dar
 import 'package:asset_shield/features/common/widgets/form_text_field.dart';
 import 'package:asset_shield/features/common/widgets/reusable_button.dart';
 import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
+import 'package:asset_shield/features/home/ui/widgets/checklist_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -421,7 +422,22 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
                         maxLines: 4,
                         minLines: 3,
                       ),
-                      SizedBox(height: 24.h),
+                      SizedBox(height: 12.h),
+
+                      // Checklist Sections (Internal / External)
+                      if (widget.schedule.checklistQuestions.isNotEmpty) ...[
+                        Text(
+                          'Checklist',
+                          style: AppTextStyles.h2(
+                            context,
+                          ).copyWith(fontWeight: FontWeight.w600),
+                        ),
+                        SizedBox(height: 8.h),
+                        ChecklistSections(
+                          questions: widget.schedule.checklistQuestions,
+                        ),
+                        SizedBox(height: 24.h),
+                      ],
                     ],
                   ),
                 ),

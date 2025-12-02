@@ -43,7 +43,7 @@ PODS:
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - permission_handler_apple (9.1.1):
+  - permission_handler_apple (9.3.0):
     - Flutter
   - pointer_interceptor_ios (0.0.1):
     - Flutter
@@ -101,13 +101,13 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   DKImagePickerController: 946cec48c7873164274ecc4624d19e3da4c1ef3c
   DKPhotoGallery: b3834fecb755ee09a593d7c9e389d8b5d6deed60
-  file_picker: 5f42b9d5580e30b57b4863f9d94b448016b702e5
+  file_picker: a0560bc09d61de87f12d246fc47d2119e6ef37be
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
   flutter_keyboard_visibility: 4625131e43015dbbe759d9b20daaf77e0e3f6619
   flutter_native_splash: c32d145d68aeda5502d5f543ee38c192065986cf
   flutter_secure_storage: 1ed9476fba7e7a782b22888f956cce43e2c62f13
   path_provider_foundation: bb55f6dbba17d0dccd6737fe6f7f34fbd0376880
-  permission_handler_apple: 3787117e48f80715ff04a3830ca039283d6a4f29
+  permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
   pointer_interceptor_ios: da06a662d5bfd329602b45b2ab41bc0fb5fdb0f0
   SDWebImage: 16309af6d214ba3f77a7c6f6fdda888cb313a50a
   sqflite_darwin: 20b2a3a3b70e43edae938624ce550a3cbf66a3d0

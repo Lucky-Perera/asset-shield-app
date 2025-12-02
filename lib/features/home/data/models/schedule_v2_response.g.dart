@@ -192,7 +192,10 @@ _ChecklistQuestionV2 _$ChecklistQuestionV2FromJson(Map<String, dynamic> json) =>
       inspectionType: json['inspectionType'] as String?,
       question: json['question'] as String?,
       helpText: json['helpText'] as String?,
-      responseType: json['responseType'] as String?,
+      responseType: $enumDecodeNullable(
+        _$ResponseTypeEnumMap,
+        json['responseType'],
+      ),
       value: json['value'] as String?,
       note: json['note'] as String?,
       completedAt: json['completedAt'] == null
@@ -220,7 +223,7 @@ Map<String, dynamic> _$ChecklistQuestionV2ToJson(
   'inspectionType': instance.inspectionType,
   'question': instance.question,
   'helpText': instance.helpText,
-  'responseType': instance.responseType,
+  'responseType': _$ResponseTypeEnumMap[instance.responseType],
   'value': instance.value,
   'note': instance.note,
   'completedAt': instance.completedAt?.toIso8601String(),
@@ -228,6 +231,11 @@ Map<String, dynamic> _$ChecklistQuestionV2ToJson(
   'completedBy': instance.completedBy,
   'attachments': instance.attachments,
   'isDeleted': instance.isDeleted,
+};
+
+const _$ResponseTypeEnumMap = {
+  ResponseType.GoodFairPoorNA: 'GoodFairPoorNA',
+  ResponseType.YesNo: 'YesNo',
 };
 
 _InspectionMethodV2 _$InspectionMethodV2FromJson(Map<String, dynamic> json) =>

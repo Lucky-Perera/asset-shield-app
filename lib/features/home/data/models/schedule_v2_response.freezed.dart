@@ -1717,7 +1717,7 @@ $ComponentCopyWith<$Res>? get component {
 /// @nodoc
 mixin _$ChecklistQuestionV2 {
 
- String? get id; DateTime? get createdAt; DateTime? get updatedAt; String? get scheduleV2Id; String? get inspectionType; String? get question; String? get helpText; String? get responseType; String? get value; String? get note; DateTime? get completedAt; String? get completedById; User? get completedBy; List<AttachmentV2> get attachments; bool? get isDeleted;
+ String? get id; DateTime? get createdAt; DateTime? get updatedAt; String? get scheduleV2Id; String? get inspectionType; String? get question; String? get helpText; ResponseType? get responseType; String? get value; String? get note; DateTime? get completedAt; String? get completedById; User? get completedBy; List<AttachmentV2> get attachments; bool? get isDeleted;
 /// Create a copy of ChecklistQuestionV2
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1750,7 +1750,7 @@ abstract mixin class $ChecklistQuestionV2CopyWith<$Res>  {
   factory $ChecklistQuestionV2CopyWith(ChecklistQuestionV2 value, $Res Function(ChecklistQuestionV2) _then) = _$ChecklistQuestionV2CopyWithImpl;
 @useResult
 $Res call({
- String? id, DateTime? createdAt, DateTime? updatedAt, String? scheduleV2Id, String? inspectionType, String? question, String? helpText, String? responseType, String? value, String? note, DateTime? completedAt, String? completedById, User? completedBy, List<AttachmentV2> attachments, bool? isDeleted
+ String? id, DateTime? createdAt, DateTime? updatedAt, String? scheduleV2Id, String? inspectionType, String? question, String? helpText, ResponseType? responseType, String? value, String? note, DateTime? completedAt, String? completedById, User? completedBy, List<AttachmentV2> attachments, bool? isDeleted
 });
 
 
@@ -1777,7 +1777,7 @@ as String?,inspectionType: freezed == inspectionType ? _self.inspectionType : in
 as String?,question: freezed == question ? _self.question : question // ignore: cast_nullable_to_non_nullable
 as String?,helpText: freezed == helpText ? _self.helpText : helpText // ignore: cast_nullable_to_non_nullable
 as String?,responseType: freezed == responseType ? _self.responseType : responseType // ignore: cast_nullable_to_non_nullable
-as String?,value: freezed == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
+as ResponseType?,value: freezed == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
 as String?,note: freezed == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
 as String?,completedAt: freezed == completedAt ? _self.completedAt : completedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,completedById: freezed == completedById ? _self.completedById : completedById // ignore: cast_nullable_to_non_nullable
@@ -1881,7 +1881,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  DateTime? createdAt,  DateTime? updatedAt,  String? scheduleV2Id,  String? inspectionType,  String? question,  String? helpText,  String? responseType,  String? value,  String? note,  DateTime? completedAt,  String? completedById,  User? completedBy,  List<AttachmentV2> attachments,  bool? isDeleted)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  DateTime? createdAt,  DateTime? updatedAt,  String? scheduleV2Id,  String? inspectionType,  String? question,  String? helpText,  ResponseType? responseType,  String? value,  String? note,  DateTime? completedAt,  String? completedById,  User? completedBy,  List<AttachmentV2> attachments,  bool? isDeleted)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ChecklistQuestionV2() when $default != null:
 return $default(_that.id,_that.createdAt,_that.updatedAt,_that.scheduleV2Id,_that.inspectionType,_that.question,_that.helpText,_that.responseType,_that.value,_that.note,_that.completedAt,_that.completedById,_that.completedBy,_that.attachments,_that.isDeleted);case _:
@@ -1902,7 +1902,7 @@ return $default(_that.id,_that.createdAt,_that.updatedAt,_that.scheduleV2Id,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  DateTime? createdAt,  DateTime? updatedAt,  String? scheduleV2Id,  String? inspectionType,  String? question,  String? helpText,  String? responseType,  String? value,  String? note,  DateTime? completedAt,  String? completedById,  User? completedBy,  List<AttachmentV2> attachments,  bool? isDeleted)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  DateTime? createdAt,  DateTime? updatedAt,  String? scheduleV2Id,  String? inspectionType,  String? question,  String? helpText,  ResponseType? responseType,  String? value,  String? note,  DateTime? completedAt,  String? completedById,  User? completedBy,  List<AttachmentV2> attachments,  bool? isDeleted)  $default,) {final _that = this;
 switch (_that) {
 case _ChecklistQuestionV2():
 return $default(_that.id,_that.createdAt,_that.updatedAt,_that.scheduleV2Id,_that.inspectionType,_that.question,_that.helpText,_that.responseType,_that.value,_that.note,_that.completedAt,_that.completedById,_that.completedBy,_that.attachments,_that.isDeleted);case _:
@@ -1922,7 +1922,7 @@ return $default(_that.id,_that.createdAt,_that.updatedAt,_that.scheduleV2Id,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  DateTime? createdAt,  DateTime? updatedAt,  String? scheduleV2Id,  String? inspectionType,  String? question,  String? helpText,  String? responseType,  String? value,  String? note,  DateTime? completedAt,  String? completedById,  User? completedBy,  List<AttachmentV2> attachments,  bool? isDeleted)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  DateTime? createdAt,  DateTime? updatedAt,  String? scheduleV2Id,  String? inspectionType,  String? question,  String? helpText,  ResponseType? responseType,  String? value,  String? note,  DateTime? completedAt,  String? completedById,  User? completedBy,  List<AttachmentV2> attachments,  bool? isDeleted)?  $default,) {final _that = this;
 switch (_that) {
 case _ChecklistQuestionV2() when $default != null:
 return $default(_that.id,_that.createdAt,_that.updatedAt,_that.scheduleV2Id,_that.inspectionType,_that.question,_that.helpText,_that.responseType,_that.value,_that.note,_that.completedAt,_that.completedById,_that.completedBy,_that.attachments,_that.isDeleted);case _:
@@ -1947,7 +1947,7 @@ class _ChecklistQuestionV2 implements ChecklistQuestionV2 {
 @override final  String? inspectionType;
 @override final  String? question;
 @override final  String? helpText;
-@override final  String? responseType;
+@override final  ResponseType? responseType;
 @override final  String? value;
 @override final  String? note;
 @override final  DateTime? completedAt;
@@ -1995,7 +1995,7 @@ abstract mixin class _$ChecklistQuestionV2CopyWith<$Res> implements $ChecklistQu
   factory _$ChecklistQuestionV2CopyWith(_ChecklistQuestionV2 value, $Res Function(_ChecklistQuestionV2) _then) = __$ChecklistQuestionV2CopyWithImpl;
 @override @useResult
 $Res call({
- String? id, DateTime? createdAt, DateTime? updatedAt, String? scheduleV2Id, String? inspectionType, String? question, String? helpText, String? responseType, String? value, String? note, DateTime? completedAt, String? completedById, User? completedBy, List<AttachmentV2> attachments, bool? isDeleted
+ String? id, DateTime? createdAt, DateTime? updatedAt, String? scheduleV2Id, String? inspectionType, String? question, String? helpText, ResponseType? responseType, String? value, String? note, DateTime? completedAt, String? completedById, User? completedBy, List<AttachmentV2> attachments, bool? isDeleted
 });
 
 
@@ -2022,7 +2022,7 @@ as String?,inspectionType: freezed == inspectionType ? _self.inspectionType : in
 as String?,question: freezed == question ? _self.question : question // ignore: cast_nullable_to_non_nullable
 as String?,helpText: freezed == helpText ? _self.helpText : helpText // ignore: cast_nullable_to_non_nullable
 as String?,responseType: freezed == responseType ? _self.responseType : responseType // ignore: cast_nullable_to_non_nullable
-as String?,value: freezed == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
+as ResponseType?,value: freezed == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
 as String?,note: freezed == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
 as String?,completedAt: freezed == completedAt ? _self.completedAt : completedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,completedById: freezed == completedById ? _self.completedById : completedById // ignore: cast_nullable_to_non_nullable
