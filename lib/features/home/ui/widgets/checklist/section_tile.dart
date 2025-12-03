@@ -1,7 +1,7 @@
 import 'package:asset_shield/core/theme/app_text_styles.dart';
 import 'package:asset_shield/core/theme/color_palette.dart';
 import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
-import 'package:asset_shield/features/home/ui/widgets/question_tile.dart';
+import 'package:asset_shield/features/home/ui/widgets/checklist/question_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

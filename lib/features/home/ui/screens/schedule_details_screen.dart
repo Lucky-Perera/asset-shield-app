@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:asset_shield/core/routes/router.dart';
 import 'package:asset_shield/core/theme/app_text_styles.dart';
 import 'package:asset_shield/core/theme/color_palette.dart';
@@ -5,13 +7,12 @@ import 'package:asset_shield/features/common/widgets/app_scaffold.dart';
 import 'package:asset_shield/features/common/widgets/reusable_button.dart';
 import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
 import 'package:asset_shield/features/home/data/providers/checklist_provider.dart';
+import 'package:asset_shield/features/home/data/services/shedule_service.dart';
 import 'package:asset_shield/features/home/ui/widgets/schedule_details/inspection_methods_section.dart';
 import 'package:asset_shield/features/home/ui/widgets/schedule_details/potential_emergent_works_section.dart';
-import 'package:asset_shield/features/home/ui/widgets/schedule_details/schedule_error_state.dart';
 import 'package:asset_shield/features/home/ui/widgets/schedule_details/schedule_info_card.dart';
 import 'package:asset_shield/features/home/ui/widgets/schedule_details/scope_overview_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -25,33 +26,20 @@ class ScheduleDetailsScreen extends ConsumerStatefulWidget {
 }
 
 class _ScheduleDetailsScreenState extends ConsumerState<ScheduleDetailsScreen> {
-  String? _errorMessage;
-
   @override
   void initState() {
     super.initState();
-    _fetchScopeDetails();
+    _loadRecord();
   }
 
-  Future<void> _fetchScopeDetails() async {
-    setState(() {
-      _errorMessage = null;
-    });
-    EasyLoading.show();
-
+  void _loadRecord() async {
     try {
-      // final response = await _scheduleService.fetchScopeDetailsByScheduleId(
-      //   widget.schedule.id,
-      // );
-      // setState(() {
-      //   _scopeData = response?.data;
-      // });
-      EasyLoading.dismiss();
+      final res = await SheduleService().fetchRecordByScheduleId(
+        widget.schedule.id,
+      );
+      log('Fetched record: ${res!.toJson()}', name: 'ScheduleDetailsScreen');
     } catch (e) {
-      setState(() {
-        _errorMessage = e.toString();
-      });
-      EasyLoading.dismiss();
+      log('Error fetching record: $e', name: 'ScheduleDetailsScreen');
     }
   }
 
@@ -74,14 +62,9 @@ class _ScheduleDetailsScreenState extends ConsumerState<ScheduleDetailsScreen> {
   }
 
   Widget _buildBody() {
-    final checklistState = ref.watch(checklistProvider(widget.schedule.id));
-
-    if (_errorMessage != null) {
-      return ScheduleErrorState(
-        errorMessage: _errorMessage!,
-        onRetry: _fetchScopeDetails,
-      );
-    }
+    final checklistState = ref
+        .watch(checklistProvider(widget.schedule.id))
+        .value;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
@@ -101,7 +84,7 @@ class _ScheduleDetailsScreenState extends ConsumerState<ScheduleDetailsScreen> {
           ),
           SizedBox(height: 16.h),
           ReusableButton(
-            text: checklistState.answersAlreadySubmitted
+            text: (checklistState?.answersAlreadySubmitted ?? false)
                 ? 'View Record'
                 : 'Add Record',
             onPressed: () => Routes().addRecord(widget.schedule),

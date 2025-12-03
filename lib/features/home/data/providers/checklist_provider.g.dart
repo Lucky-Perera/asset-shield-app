@@ -13,7 +13,7 @@ part of 'checklist_provider.dart';
 const checklistProvider = ChecklistNotifierFamily._();
 
 final class ChecklistNotifierProvider
-    extends $NotifierProvider<ChecklistNotifier, ChecklistState> {
+    extends $AsyncNotifierProvider<ChecklistNotifier, ChecklistState> {
   const ChecklistNotifierProvider._({
     required ChecklistNotifierFamily super.from,
     required String super.argument,
@@ -39,14 +39,6 @@ final class ChecklistNotifierProvider
   @override
   ChecklistNotifier create() => ChecklistNotifier();
 
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(ChecklistState value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<ChecklistState>(value),
-    );
-  }
-
   @override
   bool operator ==(Object other) {
     return other is ChecklistNotifierProvider && other.argument == argument;
@@ -58,15 +50,15 @@ final class ChecklistNotifierProvider
   }
 }
 
-String _$checklistNotifierHash() => r'99de4be2378ac928a0a839696fdffe7bceb80dae';
+String _$checklistNotifierHash() => r'5c61141f127801f4cbd96f1045a1d460d87f4e95';
 
 final class ChecklistNotifierFamily extends $Family
     with
         $ClassFamilyOverride<
           ChecklistNotifier,
+          AsyncValue<ChecklistState>,
           ChecklistState,
-          ChecklistState,
-          ChecklistState,
+          FutureOr<ChecklistState>,
           String
         > {
   const ChecklistNotifierFamily._()
@@ -85,21 +77,21 @@ final class ChecklistNotifierFamily extends $Family
   String toString() => r'checklistProvider';
 }
 
-abstract class _$ChecklistNotifier extends $Notifier<ChecklistState> {
+abstract class _$ChecklistNotifier extends $AsyncNotifier<ChecklistState> {
   late final _$args = ref.$arg as String;
   String get scheduleId => _$args;
 
-  ChecklistState build(String scheduleId);
+  FutureOr<ChecklistState> build(String scheduleId);
   @$mustCallSuper
   @override
   void runBuild() {
     final created = build(_$args);
-    final ref = this.ref as $Ref<ChecklistState, ChecklistState>;
+    final ref = this.ref as $Ref<AsyncValue<ChecklistState>, ChecklistState>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<ChecklistState, ChecklistState>,
-              ChecklistState,
+              AnyNotifier<AsyncValue<ChecklistState>, ChecklistState>,
+              AsyncValue<ChecklistState>,
               Object?,
               Object?
             >;

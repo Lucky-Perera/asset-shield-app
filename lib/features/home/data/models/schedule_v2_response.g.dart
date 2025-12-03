@@ -238,8 +238,8 @@ Map<String, dynamic> _$ChecklistQuestionV2ToJson(
 };
 
 const _$ResponseTypeEnumMap = {
-  ResponseType.GoodFairPoorNA: 'GoodFairPoorNA',
-  ResponseType.YesNo: 'YesNo',
+  ResponseType.goodFairPoorNA: 'GoodFairPoorNA',
+  ResponseType.yesNo: 'YesNo',
 };
 
 _InspectionMethodV2 _$InspectionMethodV2FromJson(Map<String, dynamic> json) =>

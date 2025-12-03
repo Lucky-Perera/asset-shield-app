@@ -83,7 +83,7 @@ class _QuestionTileState extends State<QuestionTile> {
   }
 
   List<ResponseValue> _getResponseOptions() {
-    if (widget.question.responseType == ResponseType.YesNo) {
+    if (widget.question.responseType == ResponseType.yesNo) {
       return [ResponseValue.yes, ResponseValue.no];
     } else {
       return [

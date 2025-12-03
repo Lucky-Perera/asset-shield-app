@@ -71,6 +71,16 @@ class SheduleService {
     }
   }
 
+  /// Fetch record by schedule ID (mobile API)
+  Future<RecordResponse?> fetchRecordByScheduleId(String scheduleId) async {
+    try {
+      final response = await _dio.get('/schedules/$scheduleId/record');
+      return RecordResponse.fromJson(response.data);
+    } on DioException catch (e) {
+      throw Helpers.handleError(e);
+    }
+  }
+
   /// Submit checklist answers for a schedule (mobile API)
   Future<ChecklistAnswerResponse> submitChecklistAnswers({
     required String scheduleId,

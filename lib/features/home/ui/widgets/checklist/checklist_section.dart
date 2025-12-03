@@ -1,4 +1,4 @@
-import 'package:asset_shield/features/home/ui/widgets/section_tile.dart';
+import 'package:asset_shield/features/home/ui/widgets/checklist/section_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
 

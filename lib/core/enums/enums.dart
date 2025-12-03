@@ -18,9 +18,9 @@ enum RecordStatus { draft, pendingApproval, approved }
 // ignore: constant_identifier_names
 enum ResponseType {
   @JsonValue('GoodFairPoorNA')
-  GoodFairPoorNA,
+  goodFairPoorNA,
   @JsonValue('YesNo')
-  YesNo,
+  yesNo,
 }
 
 enum ResponseValue {
