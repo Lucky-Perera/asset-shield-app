@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:asset_shield/core/routes/router.dart';
 import 'package:asset_shield/core/utility/client.dart';
 import 'package:asset_shield/core/utility/helpers.dart';
 import 'package:asset_shield/core/utility/storage_service.dart';
@@ -51,6 +52,7 @@ class AuthService {
   Future<void> logout() async {
     try {
       await _storageService.clearAll();
+      Routes().login();
     } catch (e) {
       rethrow;
     }
