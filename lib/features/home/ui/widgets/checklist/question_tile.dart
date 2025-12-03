@@ -97,13 +97,6 @@ class _QuestionTileState extends State<QuestionTile> {
 
   @override
   Widget build(BuildContext context) {
-    // Debug: Print the readOnly state
-    if (widget.readOnly) {
-      debugPrint(
-        '>>> QuestionTile ${widget.question.id} is READ-ONLY with value: $_selectedValue',
-      );
-    }
-
     return Card(
       margin: EdgeInsets.symmetric(vertical: 6.h),
       color: ColorPalette.whiteSwatch.shade700,

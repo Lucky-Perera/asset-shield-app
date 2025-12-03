@@ -8,7 +8,7 @@ import 'package:asset_shield/features/home/data/models/checklist_answer_request.
 import 'package:asset_shield/features/home/data/models/checklist_answer_response.dart';
 import 'package:dio/dio.dart';
 
-class SheduleService {
+class ScheduleService {
   final Dio _dio = Client.dio;
 
   Future<ScheduleV2Response> fetchSchedules({
@@ -72,10 +72,16 @@ class SheduleService {
   }
 
   /// Fetch record by schedule ID (mobile API)
-  Future<RecordResponse?> fetchRecordByScheduleId(String scheduleId) async {
+  Future<RecordResponse> fetchRecordByScheduleId(String scheduleId) async {
     try {
       final response = await _dio.get('/schedules/$scheduleId/record');
-      return RecordResponse.fromJson(response.data);
+      final api = RecordApiResponse.fromJson(
+        response.data as Map<String, dynamic>,
+      );
+      if (api.success && api.data != null) {
+        return api.data!;
+      }
+      throw Exception(api.error ?? 'Empty record data');
     } on DioException catch (e) {
       throw Helpers.handleError(e);
     }

@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:asset_shield/core/enums/enums.dart';
 import 'package:asset_shield/core/utility/toast_service.dart';
 import 'package:asset_shield/features/home/data/models/record_create_request.dart';
-import 'package:asset_shield/features/home/data/services/shedule_service.dart';
+import 'package:asset_shield/features/home/data/models/record_response.dart';
+import 'package:asset_shield/features/home/data/providers/record_provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -34,6 +35,7 @@ class AddRecordScreen extends ConsumerStatefulWidget {
 
 class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
   final _formKey = GlobalKey<FormState>();
+  bool _prefilled = false;
 
   // Controllers
   final _equipmentController = TextEditingController();
@@ -67,10 +69,8 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
   @override
   void initState() {
     super.initState();
-    // Set default dates to today
     _recordCreatedDate = DateTime.now();
     _inspectionDate = DateTime.now();
-    _initialiseFields();
   }
 
   String _statusToServerString(RecordStatus? status) {
@@ -85,11 +85,34 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     }
   }
 
-  void _initialiseFields() {
-    // Pre-fill equipment field based on schedule data
+  void _initialiseFields(RecordResponse? existingRecord) {
+    // Always fill schedule defaults
     _equipmentController.text = widget.schedule.equipment?.name ?? '';
     _scheduleItemController.text = widget.schedule.scheduleID;
     _scheduleTypeController.text = widget.schedule.scheduleTypeId;
+
+    if (existingRecord != null) {
+      _descriptionController.text = existingRecord.description ?? "";
+      _actionCreatedController.text = existingRecord.actionCreated ?? '';
+      _commentsController.text = existingRecord.comments ?? '';
+
+      _recordCreatedDate = existingRecord.recordCreatedDate ?? DateTime.now();
+      _inspectionDate = existingRecord.inspectionDate ?? DateTime.now();
+
+      _selectedInspectedComponents =
+          existingRecord.inspectedComponents
+              ?.map((e) => e.componentId ?? '')
+              .where((id) => id.isNotEmpty)
+              .toList() ??
+          [];
+
+      _selectedStatus = switch (existingRecord.status) {
+        'PendingApproval' => RecordStatus.pendingApproval,
+        'Approved' => RecordStatus.approved,
+        'Draft' => RecordStatus.draft,
+        _ => null,
+      };
+    }
   }
 
   @override
@@ -245,11 +268,10 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
           scheduleTypeID: widget.schedule.scheduleTypeId,
           attachmentIDs: [], // send empty array when no attachments yet
         );
-
-        final recordResponse = await SheduleService().createRecord(
-          scheduleId: widget.schedule.id,
-          payload: payload,
+        final recordNotifier = ref.read(
+          recordProvider(widget.schedule.id).notifier,
         );
+        final recordResponse = await recordNotifier.createRecord(payload);
         log('Record created: ${recordResponse.toString()}');
 
         // Step 2: Submit checklist answers if any exist
@@ -277,6 +299,15 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     final checklistState = ref
         .watch(checklistProvider(widget.schedule.id))
         .value;
+    final recordAsync = ref.watch(recordProvider(widget.schedule.id));
+    final recordState = recordAsync.value;
+    final existingRecord = recordState?.record;
+    final isReadOnly = existingRecord != null;
+
+    if (!_prefilled && existingRecord != null) {
+      _initialiseFields(existingRecord);
+      _prefilled = true;
+    }
 
     // Convert provider state to initialValues format
     final initialValues = <String, Map<String, String>>{};
@@ -325,7 +356,8 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                         label: 'Description',
                         hint: 'Enter description',
                         controller: _descriptionController,
-                        isRequired: true,
+                        isRequired: isReadOnly ? false : true,
+                        enabled: !isReadOnly,
                         maxLines: 4,
                         minLines: 3,
                         validator: (value) {
@@ -350,7 +382,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                       FormDateField(
                         label: 'Record created date',
                         selectedDate: _recordCreatedDate,
-                        isRequired: true,
+                        isRequired: isReadOnly ? false : true,
                         onDateSelected: (date) {
                           setState(() {
                             _recordCreatedDate = date;
@@ -364,7 +396,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                         label: 'Inspected components',
                         hint: 'Select components',
                         selectedValues: _selectedInspectedComponents,
-                        isRequired: true,
+                        isRequired: isReadOnly ? false : true,
                         items: _componentItems,
                         itemLabel: (componentId) {
                           // Find the component name by ID
@@ -377,16 +409,21 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                           return component?.name ?? '';
                         },
                         onChanged: (values) {
-                          setState(() {
-                            _selectedInspectedComponents = values;
-                          });
-                        },
-                        validator: (values) {
-                          if (values == null || values.isEmpty) {
-                            return 'Please select at least one component';
+                          if (!isReadOnly) {
+                            setState(() {
+                              _selectedInspectedComponents = values;
+                            });
                           }
-                          return null;
                         },
+                        validator: isReadOnly
+                            ? (_) => null
+                            : (values) {
+                                if (values == null || values.isEmpty) {
+                                  return 'Please select at least one component';
+                                }
+                                return null;
+                              },
+                        readOnly: isReadOnly,
                       ),
                       SizedBox(height: 20.h),
 
@@ -445,7 +482,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                       FormDateField(
                         label: 'Inspection Date',
                         selectedDate: _inspectionDate,
-                        isRequired: true,
+                        isRequired: isReadOnly ? false : true,
                         onDateSelected: (date) {
                           setState(() {
                             _inspectionDate = date;
@@ -459,7 +496,8 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                         label: 'Action Created',
                         hint: 'Enter action created',
                         controller: _actionCreatedController,
-                        isRequired: true,
+                        isRequired: isReadOnly ? false : true,
+                        enabled: !isReadOnly,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter action created';

@@ -3,7 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:asset_shield/features/home/data/models/checklist_answer_request.dart';
 import 'package:asset_shield/features/home/data/models/checklist_answer_response.dart';
 import 'package:asset_shield/features/home/data/models/checklist_state.dart';
-import 'package:asset_shield/features/home/data/services/shedule_service.dart';
+import 'package:asset_shield/features/home/data/services/schedule_service.dart';
 
 part 'checklist_provider.g.dart';
 
@@ -21,7 +21,7 @@ class ChecklistNotifier extends _$ChecklistNotifier {
   /// ---- PRIVATE: main fetch logic ----
   Future<ChecklistState> _fetchChecklistAnswers() async {
     try {
-      final response = await SheduleService().fetchChecklistAnswers(
+      final response = await ScheduleService().fetchChecklistAnswers(
         scheduleId: _scheduleId,
       );
 
@@ -87,7 +87,7 @@ class ChecklistNotifier extends _$ChecklistNotifier {
 
     final request = ChecklistAnswerRequest(answers: answerList);
 
-    final response = await SheduleService().submitChecklistAnswers(
+    final response = await ScheduleService().submitChecklistAnswers(
       scheduleId: _scheduleId,
       payload: request,
     );

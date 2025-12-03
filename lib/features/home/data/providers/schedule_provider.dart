@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
-import 'package:asset_shield/features/home/data/services/shedule_service.dart';
+import 'package:asset_shield/features/home/data/services/schedule_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'schedule_provider.g.dart';
@@ -23,7 +23,7 @@ class Schedules extends _$Schedules {
     required int page,
     required int limit,
   }) async {
-    final service = SheduleService();
+    final service = ScheduleService();
     final response = await service.fetchSchedules(page: page, limit: limit);
     log(
       'Schedules fetched: ${response.data.pagination.total} (page $page of ${response.data.pagination.totalPages})',

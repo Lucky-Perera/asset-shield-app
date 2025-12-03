@@ -50,7 +50,7 @@ final class ChecklistNotifierProvider
   }
 }
 
-String _$checklistNotifierHash() => r'5c61141f127801f4cbd96f1045a1d460d87f4e95';
+String _$checklistNotifierHash() => r'dd825a3d443c68bfbfdd41c5f757b7cb5c56841a';
 
 final class ChecklistNotifierFamily extends $Family
     with
