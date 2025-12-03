@@ -19,7 +19,6 @@ void main() async {
   Client.init();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-  // Request initial permissions for files, images and videos.
   try {
     await Helpers.requestInitialPermissions();
   } catch (_) {}

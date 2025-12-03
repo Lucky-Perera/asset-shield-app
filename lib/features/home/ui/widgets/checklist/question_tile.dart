@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:asset_shield/core/theme/color_palette.dart';
 import 'package:asset_shield/core/enums/enums.dart';
 import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
+import 'package:asset_shield/features/home/ui/widgets/checklist/media_label.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 
 class QuestionTile extends StatefulWidget {
   final ChecklistQuestionV2 question;
@@ -18,10 +23,7 @@ class QuestionTile extends StatefulWidget {
     this.readOnly = false,
     this.initialValue,
     this.initialNote,
-  }) : assert(
-         !readOnly || onAnswerChanged == null,
-         'onAnswerChanged must be null when readOnly is true',
-       );
+  });
 
   @override
   State<QuestionTile> createState() => _QuestionTileState();
@@ -31,6 +33,95 @@ class _QuestionTileState extends State<QuestionTile> {
   late TextEditingController _noteController;
   String? _selectedValue;
   bool _isExpanded = false;
+  final List<File> _mediaFiles = [];
+
+  void _showMediaMenu() {
+    final RenderBox box = context.findRenderObject() as RenderBox;
+    final Offset position = box.localToGlobal(Offset.zero);
+
+    showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(
+        position.dx, // adjust X position
+        position.dy + 50, // adjust Y position
+        0,
+        0,
+      ),
+      color: Colors.white,
+      items: [
+        PopupMenuItem(
+          child: const Row(
+            children: [
+              Icon(Icons.attach_file, size: 20),
+              SizedBox(width: 8),
+              Text('Attach files'),
+            ],
+          ),
+          onTap: () =>
+              Future.delayed(const Duration(milliseconds: 100), _pickFiles),
+        ),
+        PopupMenuItem(
+          child: const Row(
+            children: [
+              Icon(Icons.photo_camera, size: 20),
+              SizedBox(width: 8),
+              Text('Take photo'),
+            ],
+          ),
+          onTap: () =>
+              Future.delayed(const Duration(milliseconds: 100), _takePhoto),
+        ),
+        PopupMenuItem(
+          child: const Row(
+            children: [
+              Icon(Icons.videocam, size: 20),
+              SizedBox(width: 8),
+              Text('Take video'),
+            ],
+          ),
+          onTap: () =>
+              Future.delayed(const Duration(milliseconds: 100), _takeVideo),
+        ),
+      ],
+    );
+  }
+
+  Future<void> _pickFiles() async {
+    try {
+      final result = await FilePicker.platform.pickFiles(
+        allowMultiple: true,
+        type: FileType.any,
+      );
+
+      if (result != null) {
+        final files = result.paths
+            .whereType<String>()
+            .map((p) => File(p))
+            .toList();
+        setState(() => _mediaFiles.addAll(files));
+      }
+    } catch (e) {
+      debugPrint("File pick error: $e");
+    }
+  }
+
+  Future<void> _takePhoto() async {
+    final picker = ImagePicker();
+    final image = await picker.pickImage(source: ImageSource.camera);
+
+    if (image != null) {
+      setState(() => _mediaFiles.add(File(image.path)));
+    }
+  }
+
+  Future<void> _takeVideo() async {
+    final picker = ImagePicker();
+    final video = await picker.pickVideo(source: ImageSource.camera);
+
+    if (video != null) {
+      setState(() => _mediaFiles.add(File(video.path)));
+    }
+  }
 
   @override
   void initState() {
@@ -184,6 +275,8 @@ class _QuestionTileState extends State<QuestionTile> {
             ),
 
             SizedBox(height: 8.h),
+
+            MediaLabel(onTap: _showMediaMenu),
           ],
         ),
       ),
