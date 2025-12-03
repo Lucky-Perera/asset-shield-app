@@ -521,6 +521,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                         hint: 'Enter comments',
                         controller: _commentsController,
                         maxLines: 4,
+                        enabled: !isReadOnly,
                         minLines: 3,
                       ),
                       SizedBox(height: 12.h),
