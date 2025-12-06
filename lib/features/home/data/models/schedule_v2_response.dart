@@ -1,3 +1,4 @@
+import 'package:asset_shield/core/enums/enums.dart';
 import 'package:asset_shield/features/home/data/models/schedule_response.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -103,7 +104,7 @@ abstract class ChecklistQuestionV2 with _$ChecklistQuestionV2 {
     String? inspectionType,
     String? question,
     String? helpText,
-    String? responseType,
+    ResponseType? responseType,
     String? value,
     String? note,
     DateTime? completedAt,
@@ -111,6 +112,8 @@ abstract class ChecklistQuestionV2 with _$ChecklistQuestionV2 {
     User? completedBy,
     @Default([]) List<AttachmentV2> attachments,
     bool? isDeleted,
+    String? section,
+    int? order,
   }) = _ChecklistQuestionV2;
 
   factory ChecklistQuestionV2.fromJson(Map<String, dynamic> json) =>

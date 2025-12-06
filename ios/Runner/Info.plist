@@ -47,5 +47,13 @@
 		<true/>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>App needs access to photo library to attach files and images.</string>
+		<key>NSPhotoLibraryAddUsageDescription</key>
+		<string>App needs to add photos to your library for attachments.</string>
+		<key>NSCameraUsageDescription</key>
+		<string>App needs camera access to take photos for attachments.</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>App needs microphone access for recording audio attachments.</string>
 	</dict>
 </plist>

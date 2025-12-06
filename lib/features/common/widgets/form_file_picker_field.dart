@@ -1,7 +1,7 @@
 import 'dart:io';
+import 'package:asset_shield/core/theme/color_palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../core/theme/color_palette.dart';
 
 /// A reusable file picker field widget with consistent styling
 class FormFilePickerField extends StatelessWidget {
@@ -59,35 +59,7 @@ class FormFilePickerField extends StatelessWidget {
                 style: TextStyle(color: ColorPalette.black, fontSize: 14.sp),
               ),
             ),
-            if (onUpload != null) ...[
-              SizedBox(width: 12.w),
-              OutlinedButton(
-                onPressed: selectedFiles.isNotEmpty ? onUpload : null,
-                style: OutlinedButton.styleFrom(
-                  side: BorderSide(
-                    color: selectedFiles.isNotEmpty
-                        ? ColorPalette.grey300
-                        : ColorPalette.grey200,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 20.w,
-                    vertical: 12.h,
-                  ),
-                ),
-                child: Text(
-                  'Upload',
-                  style: TextStyle(
-                    color: selectedFiles.isNotEmpty
-                        ? ColorPalette.black
-                        : ColorPalette.grey400,
-                    fontSize: 14.sp,
-                  ),
-                ),
-              ),
-            ],
+            if (onUpload != null) ...[SizedBox(width: 12.w)],
           ],
         ),
         SizedBox(height: 12.h),

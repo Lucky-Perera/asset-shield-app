@@ -10,6 +10,7 @@ class AppScaffold extends StatelessWidget {
   final FloatingActionButtonLocation? floatingActionButtonLocation;
   final bool resizeToAvoidBottomInset;
   final bool safeBottom;
+  final Widget? drawer;
 
   const AppScaffold({
     super.key,
@@ -21,12 +22,14 @@ class AppScaffold extends StatelessWidget {
     this.floatingActionButtonLocation,
     this.resizeToAvoidBottomInset = true,
     this.safeBottom = true,
+    this.drawer,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: false,
+      drawer: drawer,
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
       appBar: appBar,
       backgroundColor: backgroundColor,
