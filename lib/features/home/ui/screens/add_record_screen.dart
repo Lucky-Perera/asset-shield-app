@@ -257,11 +257,13 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
       try {
         // Prepare checklist answers for the combined API
         final checklistAnswers = checklistState?.answers.entries
-            .map((entry) => ChecklistAnswerItem(
-                  questionId: entry.key,
-                  value: entry.value.value,
-                  note: entry.value.note,
-                ))
+            .map(
+              (entry) => ChecklistAnswerItem(
+                questionId: entry.key,
+                value: entry.value.value,
+                note: entry.value.note,
+              ),
+            )
             .toList();
 
         // Create the record with checklist answers in one API call
@@ -284,8 +286,12 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
         final recordNotifier = ref.read(
           recordProvider(widget.schedule.id).notifier,
         );
-        final response = await recordNotifier.createRecordWithChecklist(payload);
-        log('Record created with ${response.data.answeredQuestions.length} checklist answers');
+        final response = await recordNotifier.createRecordWithChecklist(
+          payload,
+        );
+        log(
+          'Record created with ${response.data.answeredQuestions.length} checklist answers',
+        );
 
         router.pop();
         ToastService.show(response.message ?? 'Record submitted successfully');
@@ -389,6 +395,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                         label: 'Record created date',
                         selectedDate: _recordCreatedDate,
                         isRequired: isReadOnly ? false : true,
+                        readOnly: isReadOnly,
                         onDateSelected: (date) {
                           setState(() {
                             _recordCreatedDate = date;
@@ -444,6 +451,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                         label: 'Status',
                         hint: 'Select status',
                         value: _selectedStatus,
+                        readOnly: isReadOnly,
                         items: [
                           DropdownMenuItem(
                             value: RecordStatus.pendingApproval,
@@ -486,6 +494,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                         label: 'Inspection Date',
                         selectedDate: _inspectionDate,
                         isRequired: isReadOnly ? false : true,
+                        readOnly: isReadOnly,
                         onDateSelected: (date) {
                           setState(() {
                             _inspectionDate = date;

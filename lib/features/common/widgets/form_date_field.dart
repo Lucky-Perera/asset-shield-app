@@ -12,6 +12,7 @@ class FormDateField extends StatelessWidget {
   final bool isRequired;
   final DateTime? firstDate;
   final DateTime? lastDate;
+  final bool readOnly;
 
   const FormDateField({
     super.key,
@@ -22,6 +23,7 @@ class FormDateField extends StatelessWidget {
     this.isRequired = false,
     this.firstDate,
     this.lastDate,
+    this.readOnly = false,
   });
 
   @override
@@ -50,7 +52,7 @@ class FormDateField extends StatelessWidget {
         ),
         SizedBox(height: 8.h),
         GestureDetector(
-          onTap: () => _selectDate(context),
+          onTap: readOnly ? null : () => _selectDate(context),
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
             decoration: BoxDecoration(
