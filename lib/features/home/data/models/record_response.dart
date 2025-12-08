@@ -21,7 +21,7 @@ abstract class RecordApiResponse with _$RecordApiResponse {
 abstract class RecordResponse with _$RecordResponse {
   const factory RecordResponse({
     required String id,
-    required String recordID,
+    String? recordID,
     required String equipmentId,
     String? description,
     @JsonKey(name: 'creditedItems') List<CreditedItem>? creditedItems,

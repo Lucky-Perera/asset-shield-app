@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
 import 'package:asset_shield/features/home/data/services/schedule_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -6,7 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'schedule_provider.g.dart';
 
 class ScheduleState {
-  final List<ScheduleV2> schedules;
+  final List<ScheduleV2Response> schedules;
   final Pagination pagination;
 
   ScheduleState({required this.schedules, required this.pagination});
@@ -25,10 +24,7 @@ class Schedules extends _$Schedules {
   }) async {
     final service = ScheduleService();
     final response = await service.fetchSchedules(page: page, limit: limit);
-    log(
-      'Schedules fetched: ${response.data.pagination.total} (page $page of ${response.data.pagination.totalPages})',
-      name: 'SchedulesProvider',
-    );
+
     return ScheduleState(
       schedules: response.data.data,
       pagination: response.data.pagination,

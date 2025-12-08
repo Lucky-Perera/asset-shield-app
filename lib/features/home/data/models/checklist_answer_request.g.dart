@@ -10,7 +10,9 @@ _ChecklistAnswerRequest _$ChecklistAnswerRequestFromJson(
   Map<String, dynamic> json,
 ) => _ChecklistAnswerRequest(
   answers: (json['answers'] as List<dynamic>)
-      .map((e) => ChecklistAnswer.fromJson(e as Map<String, dynamic>))
+      .map(
+        (e) => ChecklistAnswerRequestItem.fromJson(e as Map<String, dynamic>),
+      )
       .toList(),
 );
 
@@ -18,16 +20,18 @@ Map<String, dynamic> _$ChecklistAnswerRequestToJson(
   _ChecklistAnswerRequest instance,
 ) => <String, dynamic>{'answers': instance.answers};
 
-_ChecklistAnswer _$ChecklistAnswerFromJson(Map<String, dynamic> json) =>
-    _ChecklistAnswer(
-      questionId: json['questionId'] as String,
-      value: json['value'] as String,
-      note: json['note'] as String,
-    );
+_ChecklistAnswerRequestItem _$ChecklistAnswerRequestItemFromJson(
+  Map<String, dynamic> json,
+) => _ChecklistAnswerRequestItem(
+  questionId: json['questionId'] as String,
+  value: json['value'] as String,
+  note: json['note'] as String,
+);
 
-Map<String, dynamic> _$ChecklistAnswerToJson(_ChecklistAnswer instance) =>
-    <String, dynamic>{
-      'questionId': instance.questionId,
-      'value': instance.value,
-      'note': instance.note,
-    };
+Map<String, dynamic> _$ChecklistAnswerRequestItemToJson(
+  _ChecklistAnswerRequestItem instance,
+) => <String, dynamic>{
+  'questionId': instance.questionId,
+  'value': instance.value,
+  'note': instance.note,
+};

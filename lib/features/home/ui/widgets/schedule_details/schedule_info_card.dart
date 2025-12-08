@@ -3,7 +3,7 @@ import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart
 import 'package:flutter/material.dart';
 
 class ScheduleInfoCard extends StatelessWidget {
-  final ScheduleV2 schedule;
+  final ScheduleV2Response schedule;
 
   const ScheduleInfoCard({super.key, required this.schedule});
 
@@ -23,7 +23,7 @@ class ScheduleInfoCard extends StatelessWidget {
               ).copyWith(fontWeight: FontWeight.w700),
             ),
             const SizedBox(height: 12),
-            _InfoRow(label: 'Schedule ID:', value: schedule.scheduleID),
+            _InfoRow(label: 'Schedule ID:', value: schedule.scheduleName),
             _InfoRow(label: 'Description:', value: schedule.description),
             _InfoRow(label: 'Status:', value: schedule.status),
             _InfoRow(
@@ -32,7 +32,7 @@ class ScheduleInfoCard extends StatelessWidget {
                   '${schedule.dueDate.day}/${schedule.dueDate.month}/${schedule.dueDate.year}',
             ),
             if (schedule.equipment?.name != null)
-              _InfoRow(label: 'Equipment:', value: schedule.equipment!.name!),
+              _InfoRow(label: 'Equipment:', value: schedule.equipment!.name),
           ],
         ),
       ),

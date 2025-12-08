@@ -10,7 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 
 class QuestionTile extends StatefulWidget {
-  final ChecklistQuestionV2 question;
+  final ChecklistQuestionTemplate question;
   final Function(String questionId, String value, String note)? onAnswerChanged;
   final bool readOnly;
   final String? initialValue;
@@ -127,9 +127,9 @@ class _QuestionTileState extends State<QuestionTile> {
   void initState() {
     super.initState();
     _noteController = TextEditingController(
-      text: widget.initialNote ?? widget.question.note ?? '',
+      text: widget.initialNote ?? widget.question.helpText ?? '',
     );
-    _selectedValue = widget.initialValue ?? widget.question.value;
+    _selectedValue = widget.initialValue ?? widget.question.question;
   }
 
   @override
@@ -137,10 +137,11 @@ class _QuestionTileState extends State<QuestionTile> {
     super.didUpdateWidget(oldWidget);
     // Update values if they changed
     if (widget.initialValue != oldWidget.initialValue) {
-      _selectedValue = widget.initialValue ?? widget.question.value;
+      _selectedValue = widget.initialValue ?? widget.question.question;
     }
     if (widget.initialNote != oldWidget.initialNote) {
-      _noteController.text = widget.initialNote ?? widget.question.note ?? '';
+      _noteController.text =
+          widget.initialNote ?? widget.question.helpText ?? '';
     }
   }
 
@@ -157,7 +158,7 @@ class _QuestionTileState extends State<QuestionTile> {
       _selectedValue = value;
     });
     if (widget.onAnswerChanged != null) {
-      widget.onAnswerChanged!(widget.question.id!, value, _noteController.text);
+      widget.onAnswerChanged!(widget.question.id, value, _noteController.text);
     }
   }
 
@@ -166,7 +167,7 @@ class _QuestionTileState extends State<QuestionTile> {
 
     if (widget.onAnswerChanged != null && _selectedValue != null) {
       widget.onAnswerChanged!(
-        widget.question.id!,
+        widget.question.id,
         _selectedValue!,
         _noteController.text,
       );
@@ -201,7 +202,7 @@ class _QuestionTileState extends State<QuestionTile> {
             });
           },
           title: Text(
-            widget.question.question ?? '',
+            widget.question.question,
             style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
           ),
           childrenPadding: EdgeInsets.symmetric(

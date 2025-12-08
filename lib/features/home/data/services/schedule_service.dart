@@ -1,17 +1,16 @@
 import 'package:asset_shield/core/utility/client.dart';
 import 'package:asset_shield/core/utility/helpers.dart';
+import 'package:asset_shield/features/home/data/models/checklist_answer_response.dart';
 import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
 import 'package:asset_shield/features/home/data/models/record_create_request.dart';
 import 'package:asset_shield/features/home/data/models/record_response.dart';
-import 'package:asset_shield/features/home/data/models/scope_model.dart';
-import 'package:asset_shield/features/home/data/models/checklist_answer_request.dart';
-import 'package:asset_shield/features/home/data/models/checklist_answer_response.dart';
+import 'package:asset_shield/features/home/data/models/record_with_checklist_response.dart';
 import 'package:dio/dio.dart';
 
 class ScheduleService {
   final Dio _dio = Client.dio;
 
-  Future<ScheduleV2Response> fetchSchedules({
+  Future<ScheduleListResponse> fetchSchedules({
     int page = 1,
     int limit = 10,
   }) async {
@@ -20,52 +19,27 @@ class ScheduleService {
         '/schedules',
         queryParameters: {'page': page, 'limit': limit},
       );
-      return ScheduleV2Response.fromJson(response.data);
+      return ScheduleListResponse.fromJson(response.data);
     } on DioException catch (e) {
       throw Helpers.handleError(e);
     }
   }
 
-  Future<ScopeResponse?> fetchScopeDetailsByScheduleId(
-    String scheduleId,
-  ) async {
-    try {
-      final response = await _dio.get('/scopes/schedule/$scheduleId');
-      return ScopeResponse.fromJson(response.data);
-    } on DioException catch (e) {
-      throw Helpers.handleError(e);
-    }
-  }
-
-  /// Create a record for a schedule (mobile API)
-  Future<RecordResponse> createRecord({
+  /// Create a record with checklist answers (combined mobile API)
+  Future<RecordWithChecklistResponse> createRecordWithChecklist({
     required String scheduleId,
     required RecordCreateRequest payload,
   }) async {
     try {
       final requestData = payload.toJson();
       final response = await _dio.post(
-        '/schedules/$scheduleId/record',
+        '/schedules/$scheduleId/record-with-checklist',
         data: requestData,
       );
 
-      final respData = response.data;
-
-      // API typically returns { success: true, data: { ... } }
-      if (respData is Map<String, dynamic>) {
-        if (respData['success'] == true && respData['data'] != null) {
-          return RecordResponse.fromJson(
-            respData['data'] as Map<String, dynamic>,
-          );
-        }
-
-        // Sometimes API returns the created object directly
-        if (respData['id'] != null || respData['recordID'] != null) {
-          return RecordResponse.fromJson(respData);
-        }
-      }
-
-      throw Exception('Unexpected API response when creating record');
+      return RecordWithChecklistResponse.fromJson(
+        response.data as Map<String, dynamic>,
+      );
     } on DioException catch (e) {
       throw Helpers.handleError(e);
     }
@@ -82,22 +56,6 @@ class ScheduleService {
         return api.data!;
       }
       throw Exception(api.error ?? 'Empty record data');
-    } on DioException catch (e) {
-      throw Helpers.handleError(e);
-    }
-  }
-
-  /// Submit checklist answers for a schedule (mobile API)
-  Future<ChecklistAnswerResponse> submitChecklistAnswers({
-    required String scheduleId,
-    required ChecklistAnswerRequest payload,
-  }) async {
-    try {
-      final response = await _dio.post(
-        '/schedules/$scheduleId/checklist/answers',
-        data: payload.toJson(),
-      );
-      return ChecklistAnswerResponse.fromJson(response.data);
     } on DioException catch (e) {
       throw Helpers.handleError(e);
     }

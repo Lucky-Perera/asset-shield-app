@@ -25,7 +25,7 @@ Map<String, dynamic> _$RecordApiResponseToJson(_RecordApiResponse instance) =>
 _RecordResponse _$RecordResponseFromJson(Map<String, dynamic> json) =>
     _RecordResponse(
       id: json['id'] as String,
-      recordID: json['recordID'] as String,
+      recordID: json['recordID'] as String?,
       equipmentId: json['equipmentId'] as String,
       description: json['description'] as String?,
       creditedItems: (json['creditedItems'] as List<dynamic>?)

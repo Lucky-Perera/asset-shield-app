@@ -1,38 +1,40 @@
 import 'package:asset_shield/core/enums/enums.dart';
-import 'package:asset_shield/features/home/data/models/schedule_response.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'schedule_v2_response.freezed.dart';
 part 'schedule_v2_response.g.dart';
 
+/// ─────────────────────────────────────────────────────────
+/// ROOT RESPONSE
+/// ─────────────────────────────────────────────────────────
 @freezed
-abstract class ScheduleV2Response with _$ScheduleV2Response {
-  const factory ScheduleV2Response({
+abstract class ScheduleListResponse with _$ScheduleListResponse {
+  const factory ScheduleListResponse({
     required bool success,
-    required ScheduleV2Data data,
-  }) = _ScheduleV2Response;
+    required ScheduleListData data,
+  }) = _ScheduleListResponse;
 
-  factory ScheduleV2Response.fromJson(Map<String, dynamic> json) =>
-      _$ScheduleV2ResponseFromJson(json);
+  factory ScheduleListResponse.fromJson(Map<String, dynamic> json) =>
+      _$ScheduleListResponseFromJson(json);
 }
 
 @freezed
-abstract class ScheduleV2Data with _$ScheduleV2Data {
-  const factory ScheduleV2Data({
-    required List<ScheduleV2> data,
+abstract class ScheduleListData with _$ScheduleListData {
+  const factory ScheduleListData({
+    required List<ScheduleV2Response> data,
     required Pagination pagination,
-  }) = _ScheduleV2Data;
+  }) = _ScheduleListData;
 
-  factory ScheduleV2Data.fromJson(Map<String, dynamic> json) =>
-      _$ScheduleV2DataFromJson(json);
+  factory ScheduleListData.fromJson(Map<String, dynamic> json) =>
+      _$ScheduleListDataFromJson(json);
 }
 
 @freezed
 abstract class Pagination with _$Pagination {
   const factory Pagination({
-    required int total,
     required int page,
     required int limit,
+    required int total,
     required int totalPages,
   }) = _Pagination;
 
@@ -40,84 +42,203 @@ abstract class Pagination with _$Pagination {
       _$PaginationFromJson(json);
 }
 
+/// ─────────────────────────────────────────────────────────
+/// SCHEDULE V2 RESPONSE
+/// ─────────────────────────────────────────────────────────
 @freezed
-abstract class ScheduleV2 with _$ScheduleV2 {
-  const factory ScheduleV2({
+abstract class ScheduleV2Response with _$ScheduleV2Response {
+  const factory ScheduleV2Response({
+    required String id,
+    required String scheduleName,
+    required String status,
+    required String description,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    required DateTime dueDate,
+    DateTime? inspectionDate,
+    required bool isRBISchedule,
+    required bool isRecurring,
+    int? inspectionInterval,
+    String? damageMechanism,
+    String? inspectionEffectiveness,
+    String? aiSummary,
+    String? comments,
+    required bool isDeleted,
+    required String scheduleTypeId,
+    required String operationId,
+    required String equipmentId,
+    required String createdById,
+    String? approvedById,
+    String? reviewedById,
+    required List<AttachmentV2> attachments,
+    required List<AttachmentV2> scopeImages,
+    required List<ChecklistQuestionTemplate> checklistQuestionTemplates,
+    required List<InspectionMethodV2> inspectionMethods,
+    required List<PotentialEmergentWorkV2> potentialEmergentWorks,
+    required List<ScheduleComponent> components,
+    User? approvedBy,
+    User? createdBy,
+    User? reviewedBy,
+    Equipment? equipment,
+    ReferenceData? operation,
+    ReferenceData? scheduleType,
+    RecordV2Response? record,
+  }) = _ScheduleV2Response;
+
+  factory ScheduleV2Response.fromJson(Map<String, dynamic> json) =>
+      _$ScheduleV2ResponseFromJson(json);
+}
+
+/// ─────────────────────────────────────────────────────────
+/// USERS
+/// ─────────────────────────────────────────────────────────
+@freezed
+abstract class User with _$User {
+  const factory User({
     required String id,
     required DateTime createdAt,
     required DateTime updatedAt,
-    required String scheduleID,
-    required String status,
-    required String scheduleTypeId,
-    ReferenceData? scheduleType,
-    required String operationId,
-    ReferenceData? operation,
-    required String createdById,
-    User? createdBy,
-    String? submittedById,
-    User? submittedBy,
-    String? reviewedById,
-    User? reviewedBy,
-    String? approvedById,
-    User? approvedBy,
+    required String role,
+    required String title,
+    required String name,
+    required String email,
+    required String password,
+    required bool isDeleted,
+  }) = _User;
+
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+}
+
+/// ─────────────────────────────────────────────────────────
+/// EQUIPMENT
+/// ─────────────────────────────────────────────────────────
+@freezed
+abstract class Equipment with _$Equipment {
+  const factory Equipment({
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
     required String equipmentId,
-    Equipment? equipment,
-    @Default([]) List<ScheduleComponentV2> components,
-    required String description,
-    required DateTime dueDate,
-    @Default([]) List<ChecklistQuestionV2> checklistQuestions,
-    @Default([]) List<InspectionMethodV2> inspectionMethods,
-    @Default([]) List<PotentialEmergentWorkV2> potentialEmergentWorks,
-    @Default([]) List<AttachmentV2> scopeImages,
-    DateTime? inspectionDate,
-    String? comments,
-    @Default([]) List<AttachmentV2> attachments,
-    bool? isDeleted,
-  }) = _ScheduleV2;
+    required String name,
+    required String cmmsSystem,
+    required bool isCorrosionLoopAvailable,
+    String? corrosionLoopId,
+    required bool isDeleted,
+  }) = _Equipment;
 
-  factory ScheduleV2.fromJson(Map<String, dynamic> json) =>
-      _$ScheduleV2FromJson(json);
+  factory Equipment.fromJson(Map<String, dynamic> json) =>
+      _$EquipmentFromJson(json);
 }
 
+/// ─────────────────────────────────────────────────────────
+/// REFERENCE DATA (scheduleType, operation)
+/// ─────────────────────────────────────────────────────────
 @freezed
-abstract class ScheduleComponentV2 with _$ScheduleComponentV2 {
-  const factory ScheduleComponentV2({
-    String? id,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    String? scheduleV2Id,
-    String? componentId,
-    Component? component,
-  }) = _ScheduleComponentV2;
+abstract class ReferenceData with _$ReferenceData {
+  const factory ReferenceData({
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    required String category,
+    required String value,
+    String? displayValue,
+  }) = _ReferenceData;
 
-  factory ScheduleComponentV2.fromJson(Map<String, dynamic> json) =>
-      _$ScheduleComponentV2FromJson(json);
+  factory ReferenceData.fromJson(Map<String, dynamic> json) =>
+      _$ReferenceDataFromJson(json);
 }
 
+/// ─────────────────────────────────────────────────────────
+/// CHECKLIST QUESTION TEMPLATE
+/// ─────────────────────────────────────────────────────────
 @freezed
-abstract class ChecklistQuestionV2 with _$ChecklistQuestionV2 {
-  const factory ChecklistQuestionV2({
-    String? id,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    String? scheduleV2Id,
+abstract class ChecklistQuestionTemplate with _$ChecklistQuestionTemplate {
+  const factory ChecklistQuestionTemplate({
+    required String id,
     String? inspectionType,
-    String? question,
+    required String question,
     String? helpText,
-    ResponseType? responseType,
+    required ResponseType responseType,
+    required bool isDeleted,
+    required String scheduleId,
+    ChecklistAnswer? checklistAnswer,
+  }) = _ChecklistQuestionTemplate;
+
+  factory ChecklistQuestionTemplate.fromJson(Map<String, dynamic> json) =>
+      _$ChecklistQuestionTemplateFromJson(json);
+}
+
+/// ─────────────────────────────────────────────────────────
+/// CHECKLIST ANSWER
+/// ─────────────────────────────────────────────────────────
+@freezed
+abstract class ChecklistAnswer with _$ChecklistAnswer {
+  const factory ChecklistAnswer({
+    required String id,
     String? value,
     String? note,
     DateTime? completedAt,
-    String? completedById,
-    User? completedBy,
-    @Default([]) List<AttachmentV2> attachments,
-    bool? isDeleted,
-    String? section,
-    int? order,
-  }) = _ChecklistQuestionV2;
+    required String recordId,
+    required String questionId,
+    List<AttachmentV2>? attachments,
+  }) = _ChecklistAnswer;
 
-  factory ChecklistQuestionV2.fromJson(Map<String, dynamic> json) =>
-      _$ChecklistQuestionV2FromJson(json);
+  factory ChecklistAnswer.fromJson(Map<String, dynamic> json) =>
+      _$ChecklistAnswerFromJson(json);
+}
+
+/// ─────────────────────────────────────────────────────────
+/// ATTACHMENTS V2
+/// ─────────────────────────────────────────────────────────
+@freezed
+abstract class AttachmentV2 with _$AttachmentV2 {
+  const factory AttachmentV2({
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    required String documentID,
+    required String name,
+    required String url,
+    String? description,
+    String? comments,
+    bool? isDeleted,
+    String? equipmentId,
+    String? scheduleId,
+    String? scopeImageScheduleId,
+    String? checklistAnswerId,
+    String? recordId,
+  }) = _AttachmentV2;
+
+  factory AttachmentV2.fromJson(Map<String, dynamic> json) =>
+      _$AttachmentV2FromJson(json);
+}
+
+/// ─────────────────────────────────────────────────────────
+/// RECORD V2
+/// ─────────────────────────────────────────────────────────
+@freezed
+abstract class RecordV2Response with _$RecordV2Response {
+  const factory RecordV2Response({
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    required String description,
+    required DateTime recordCreatedDate,
+    required String status,
+    required DateTime inspectionDate,
+    required String actionCreated,
+    String? comments,
+    bool? isDeleted,
+    required String scheduleId,
+    String? referenceDataId,
+    required String equipmentId,
+    required String scheduleTypeId,
+    String? submittedById,
+    String? approvedById,
+  }) = _RecordV2Response;
+
+  factory RecordV2Response.fromJson(Map<String, dynamic> json) =>
+      _$RecordV2ResponseFromJson(json);
 }
 
 @freezed
@@ -164,45 +285,26 @@ abstract class PotentialEmergentWorkV2 with _$PotentialEmergentWorkV2 {
 }
 
 @freezed
-abstract class AttachmentV2 with _$AttachmentV2 {
-  const factory AttachmentV2({
-    String? id,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    String? documentID,
-    String? name,
-    String? url,
-    String? description,
-    String? comments,
-    String? equipmentId,
-    String? scheduleV2Id,
-    String? scopeScheduleV2Id,
-    String? checklistQuestionV2Id,
-    bool? isDeleted,
-  }) = _AttachmentV2;
+abstract class ScheduleComponent with _$ScheduleComponent {
+  const factory ScheduleComponent({
+    required String id,
+    required String scheduleId,
+    required String componentId,
+    required MinimalComponent component,
+  }) = _ScheduleComponent;
 
-  factory AttachmentV2.fromJson(Map<String, dynamic> json) =>
-      _$AttachmentV2FromJson(json);
+  factory ScheduleComponent.fromJson(Map<String, dynamic> json) =>
+      _$ScheduleComponentFromJson(json);
 }
 
 @freezed
-abstract class User with _$User {
-  const factory User({
+abstract class MinimalComponent with _$MinimalComponent {
+  const factory MinimalComponent({
     required String id,
-    required DateTime createdAt,
-    required DateTime updatedAt,
-    required String role,
-    required String title,
+    required String componentID,
     required String name,
-    required String email,
-    required String password,
-    @Default([]) List<ScheduleV2> createdSchedulesV2,
-    @Default([]) List<ScheduleV2> submittedSchedulesV2,
-    @Default([]) List<ScheduleV2> reviewedSchedulesV2,
-    @Default([]) List<ScheduleV2> approvedSchedulesV2,
-    @Default([]) List<ChecklistQuestionV2> completedChecklistQuestionsV2,
-    bool? isDeleted,
-  }) = _User;
+  }) = _MinimalComponent;
 
-  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+  factory MinimalComponent.fromJson(Map<String, dynamic> json) =>
+      _$MinimalComponentFromJson(json);
 }

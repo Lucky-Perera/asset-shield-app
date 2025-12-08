@@ -1,7 +1,5 @@
 import 'dart:developer';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:asset_shield/features/home/data/models/checklist_answer_request.dart';
-import 'package:asset_shield/features/home/data/models/checklist_answer_response.dart';
 import 'package:asset_shield/features/home/data/models/checklist_state.dart';
 import 'package:asset_shield/features/home/data/services/schedule_service.dart';
 
@@ -28,10 +26,10 @@ class ChecklistNotifier extends _$ChecklistNotifier {
       final answers = <String, ChecklistAnswerData>{};
 
       for (final answer in response.data) {
-        if (answer.id != null && answer.value != null) {
-          answers[answer.id!] = ChecklistAnswerData(
-            value: answer.value!,
-            note: answer.note ?? '',
+        if (answer.checklistAnswer?.value != null) {
+          answers[answer.id] = ChecklistAnswerData(
+            value: answer.checklistAnswer?.value ?? '',
+            note: answer.checklistAnswer!.note ?? '',
           );
         }
       }
@@ -70,33 +68,36 @@ class ChecklistNotifier extends _$ChecklistNotifier {
     state = AsyncValue.data(current.copyWith(answers: updated));
   }
 
-  /// ---- PUBLIC: Submit all checklist answers ----
-  Future<ChecklistAnswerResponse> submitChecklistAnswers() async {
-    final current = state.value;
-    if (current == null) {
-      throw Exception("Checklist not loaded yet");
-    }
+  /// ---- DEPRECATED: Submit all checklist answers ----
+  /// This method is deprecated. Use createRecordWithChecklist from RecordNotifier instead.
+  /// The new combined API submits record and checklist answers together.
+  // Future<ChecklistAnswerResponse> submitChecklistAnswers() async {
+  //   log("Submitting checklist answers...", name: "ChecklistNotifier");
+  //   final current = state.value;
+  //   if (current == null) {
+  //     throw Exception("Checklist not loaded yet");
+  //   }
 
-    final answerList = current.answers.entries.map((e) {
-      return ChecklistAnswer(
-        questionId: e.key,
-        value: e.value.value,
-        note: e.value.note,
-      );
-    }).toList();
+  //   final answerList = current.answers.entries.map((e) {
+  //     return ChecklistAnswerRequestItem(
+  //       questionId: e.key,
+  //       value: e.value.value,
+  //       note: e.value.note,
+  //     );
+  //   }).toList();
 
-    final request = ChecklistAnswerRequest(answers: answerList);
+  //   final request = ChecklistAnswerRequest(answers: answerList);
 
-    final response = await ScheduleService().submitChecklistAnswers(
-      scheduleId: _scheduleId,
-      payload: request,
-    );
+  //   final response = await ScheduleService().submitChecklistAnswers(
+  //     scheduleId: _scheduleId,
+  //     payload: request,
+  //   );
 
-    // Mark submitted
-    state = AsyncValue.data(current.copyWith(answersAlreadySubmitted: true));
+  //   // Mark submitted
+  //   state = AsyncValue.data(current.copyWith(answersAlreadySubmitted: true));
 
-    return response;
-  }
+  //   return response;
+  // }
 
   /// ---- PUBLIC: Reset checklist ----
   void reset() {

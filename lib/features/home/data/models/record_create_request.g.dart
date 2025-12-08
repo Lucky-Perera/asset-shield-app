@@ -25,6 +25,9 @@ _RecordCreateRequest _$RecordCreateRequestFromJson(Map<String, dynamic> json) =>
           ?.map((e) => e as String)
           .toList(),
       comments: json['comments'] as String?,
+      checklistAnswers: (json['checklistAnswers'] as List<dynamic>?)
+          ?.map((e) => ChecklistAnswerItem.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$RecordCreateRequestToJson(
@@ -41,4 +44,20 @@ Map<String, dynamic> _$RecordCreateRequestToJson(
   'actionCreated': instance.actionCreated,
   'attachmentIDs': instance.attachmentIDs,
   'comments': instance.comments,
+  'checklistAnswers': instance.checklistAnswers,
+};
+
+_ChecklistAnswerItem _$ChecklistAnswerItemFromJson(Map<String, dynamic> json) =>
+    _ChecklistAnswerItem(
+      questionId: json['questionId'] as String,
+      value: json['value'] as String,
+      note: json['note'] as String,
+    );
+
+Map<String, dynamic> _$ChecklistAnswerItemToJson(
+  _ChecklistAnswerItem instance,
+) => <String, dynamic>{
+  'questionId': instance.questionId,
+  'value': instance.value,
+  'note': instance.note,
 };

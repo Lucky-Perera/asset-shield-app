@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SectionTile extends StatelessWidget {
   final String title;
-  final List<ChecklistQuestionV2> items;
+  final List<ChecklistQuestionTemplate> items;
   final Function(String questionId, String value, String note)? onAnswerChanged;
   final bool readOnly;
   final Map<String, Map<String, String>>? initialValues;
@@ -33,7 +33,7 @@ class SectionTile extends StatelessWidget {
           // tilePadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
           title: Text(title, style: AppTextStyles.h2(context)),
           children: items.map((q) {
-            final questionId = q.id ?? '';
+            final questionId = q.id;
             final initial = initialValues?[questionId];
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.w),

@@ -10,6 +10,7 @@ class FormDropdownField<T> extends StatelessWidget {
   final ValueChanged<T?>? onChanged;
   final String? Function(T?)? validator;
   final bool isRequired;
+  final bool readOnly;
 
   const FormDropdownField({
     super.key,
@@ -20,6 +21,7 @@ class FormDropdownField<T> extends StatelessWidget {
     this.onChanged,
     this.validator,
     this.isRequired = false,
+    this.readOnly = false,
   });
 
   @override
@@ -48,7 +50,7 @@ class FormDropdownField<T> extends StatelessWidget {
         DropdownButtonFormField<T>(
           initialValue: value,
           items: items,
-          onChanged: onChanged,
+          onChanged: readOnly ? null : onChanged,
           validator: validator,
           style: TextStyle(fontSize: 14.sp, color: ColorPalette.black),
           decoration: InputDecoration(
