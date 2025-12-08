@@ -6,241 +6,361 @@ part of 'schedule_v2_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_ScheduleV2Response _$ScheduleV2ResponseFromJson(Map<String, dynamic> json) =>
-    _ScheduleV2Response(
-      success: json['success'] as bool,
-      data: ScheduleV2Data.fromJson(json['data'] as Map<String, dynamic>),
-    );
+_ScheduleListResponse _$ScheduleListResponseFromJson(
+  Map<String, dynamic> json,
+) => _ScheduleListResponse(
+  success: json['success'] as bool,
+  data: ScheduleListData.fromJson(json['data'] as Map<String, dynamic>),
+);
 
-Map<String, dynamic> _$ScheduleV2ResponseToJson(_ScheduleV2Response instance) =>
-    <String, dynamic>{'success': instance.success, 'data': instance.data};
+Map<String, dynamic> _$ScheduleListResponseToJson(
+  _ScheduleListResponse instance,
+) => <String, dynamic>{'success': instance.success, 'data': instance.data};
 
-_ScheduleV2Data _$ScheduleV2DataFromJson(Map<String, dynamic> json) =>
-    _ScheduleV2Data(
+_ScheduleListData _$ScheduleListDataFromJson(Map<String, dynamic> json) =>
+    _ScheduleListData(
       data: (json['data'] as List<dynamic>)
-          .map((e) => ScheduleV2.fromJson(e as Map<String, dynamic>))
+          .map((e) => ScheduleV2Response.fromJson(e as Map<String, dynamic>))
           .toList(),
       pagination: Pagination.fromJson(
         json['pagination'] as Map<String, dynamic>,
       ),
     );
 
-Map<String, dynamic> _$ScheduleV2DataToJson(_ScheduleV2Data instance) =>
+Map<String, dynamic> _$ScheduleListDataToJson(_ScheduleListData instance) =>
     <String, dynamic>{'data': instance.data, 'pagination': instance.pagination};
 
 _Pagination _$PaginationFromJson(Map<String, dynamic> json) => _Pagination(
-  total: (json['total'] as num).toInt(),
   page: (json['page'] as num).toInt(),
   limit: (json['limit'] as num).toInt(),
+  total: (json['total'] as num).toInt(),
   totalPages: (json['totalPages'] as num).toInt(),
 );
 
 Map<String, dynamic> _$PaginationToJson(_Pagination instance) =>
     <String, dynamic>{
-      'total': instance.total,
       'page': instance.page,
       'limit': instance.limit,
+      'total': instance.total,
       'totalPages': instance.totalPages,
     };
 
-_ScheduleV2 _$ScheduleV2FromJson(Map<String, dynamic> json) => _ScheduleV2(
+_ScheduleV2Response _$ScheduleV2ResponseFromJson(
+  Map<String, dynamic> json,
+) => _ScheduleV2Response(
   id: json['id'] as String,
+  scheduleName: json['scheduleName'] as String,
+  status: json['status'] as String,
+  description: json['description'] as String,
   createdAt: DateTime.parse(json['createdAt'] as String),
   updatedAt: DateTime.parse(json['updatedAt'] as String),
-  scheduleID: json['scheduleID'] as String,
-  status: json['status'] as String,
-  scheduleTypeId: json['scheduleTypeId'] as String,
-  scheduleType: json['scheduleType'] == null
-      ? null
-      : ReferenceData.fromJson(json['scheduleType'] as Map<String, dynamic>),
-  operationId: json['operationId'] as String,
-  operation: json['operation'] == null
-      ? null
-      : ReferenceData.fromJson(json['operation'] as Map<String, dynamic>),
-  createdById: json['createdById'] as String,
-  createdBy: json['createdBy'] == null
-      ? null
-      : User.fromJson(json['createdBy'] as Map<String, dynamic>),
-  submittedById: json['submittedById'] as String?,
-  submittedBy: json['submittedBy'] == null
-      ? null
-      : User.fromJson(json['submittedBy'] as Map<String, dynamic>),
-  reviewedById: json['reviewedById'] as String?,
-  reviewedBy: json['reviewedBy'] == null
-      ? null
-      : User.fromJson(json['reviewedBy'] as Map<String, dynamic>),
-  approvedById: json['approvedById'] as String?,
-  approvedBy: json['approvedBy'] == null
-      ? null
-      : User.fromJson(json['approvedBy'] as Map<String, dynamic>),
-  equipmentId: json['equipmentId'] as String,
-  equipment: json['equipment'] == null
-      ? null
-      : Equipment.fromJson(json['equipment'] as Map<String, dynamic>),
-  components:
-      (json['components'] as List<dynamic>?)
-          ?.map((e) => ScheduleComponentV2.fromJson(e as Map<String, dynamic>))
-          .toList() ??
-      const [],
-  description: json['description'] as String,
   dueDate: DateTime.parse(json['dueDate'] as String),
-  checklistQuestions:
-      (json['checklistQuestions'] as List<dynamic>?)
-          ?.map((e) => ChecklistQuestionV2.fromJson(e as Map<String, dynamic>))
-          .toList() ??
-      const [],
-  inspectionMethods:
-      (json['inspectionMethods'] as List<dynamic>?)
-          ?.map((e) => InspectionMethodV2.fromJson(e as Map<String, dynamic>))
-          .toList() ??
-      const [],
-  potentialEmergentWorks:
-      (json['potentialEmergentWorks'] as List<dynamic>?)
-          ?.map(
-            (e) => PotentialEmergentWorkV2.fromJson(e as Map<String, dynamic>),
-          )
-          .toList() ??
-      const [],
-  scopeImages:
-      (json['scopeImages'] as List<dynamic>?)
-          ?.map((e) => AttachmentV2.fromJson(e as Map<String, dynamic>))
-          .toList() ??
-      const [],
   inspectionDate: json['inspectionDate'] == null
       ? null
       : DateTime.parse(json['inspectionDate'] as String),
+  isRBISchedule: json['isRBISchedule'] as bool,
+  isRecurring: json['isRecurring'] as bool,
+  inspectionInterval: (json['inspectionInterval'] as num?)?.toInt(),
+  damageMechanism: json['damageMechanism'] as String?,
+  inspectionEffectiveness: json['inspectionEffectiveness'] as String?,
+  aiSummary: json['aiSummary'] as String?,
   comments: json['comments'] as String?,
-  attachments:
-      (json['attachments'] as List<dynamic>?)
-          ?.map((e) => AttachmentV2.fromJson(e as Map<String, dynamic>))
-          .toList() ??
-      const [],
-  isDeleted: json['isDeleted'] as bool?,
+  isDeleted: json['isDeleted'] as bool,
+  scheduleTypeId: json['scheduleTypeId'] as String,
+  operationId: json['operationId'] as String,
+  equipmentId: json['equipmentId'] as String,
+  createdById: json['createdById'] as String,
+  approvedById: json['approvedById'] as String?,
+  reviewedById: json['reviewedById'] as String?,
+  attachments: (json['attachments'] as List<dynamic>)
+      .map((e) => AttachmentV2.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  scopeImages: (json['scopeImages'] as List<dynamic>)
+      .map((e) => AttachmentV2.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  checklistQuestionTemplates:
+      (json['checklistQuestionTemplates'] as List<dynamic>)
+          .map(
+            (e) =>
+                ChecklistQuestionTemplate.fromJson(e as Map<String, dynamic>),
+          )
+          .toList(),
+  inspectionMethods: (json['inspectionMethods'] as List<dynamic>)
+      .map((e) => InspectionMethodV2.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  potentialEmergentWorks: (json['potentialEmergentWorks'] as List<dynamic>)
+      .map((e) => PotentialEmergentWorkV2.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  components: (json['components'] as List<dynamic>)
+      .map((e) => ScheduleComponent.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  approvedBy: json['approvedBy'] == null
+      ? null
+      : User.fromJson(json['approvedBy'] as Map<String, dynamic>),
+  createdBy: json['createdBy'] == null
+      ? null
+      : User.fromJson(json['createdBy'] as Map<String, dynamic>),
+  reviewedBy: json['reviewedBy'] == null
+      ? null
+      : User.fromJson(json['reviewedBy'] as Map<String, dynamic>),
+  equipment: json['equipment'] == null
+      ? null
+      : Equipment.fromJson(json['equipment'] as Map<String, dynamic>),
+  operation: json['operation'] == null
+      ? null
+      : ReferenceData.fromJson(json['operation'] as Map<String, dynamic>),
+  scheduleType: json['scheduleType'] == null
+      ? null
+      : ReferenceData.fromJson(json['scheduleType'] as Map<String, dynamic>),
+  record: json['record'] == null
+      ? null
+      : RecordV2Response.fromJson(json['record'] as Map<String, dynamic>),
 );
 
-Map<String, dynamic> _$ScheduleV2ToJson(_ScheduleV2 instance) =>
+Map<String, dynamic> _$ScheduleV2ResponseToJson(_ScheduleV2Response instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'scheduleName': instance.scheduleName,
+      'status': instance.status,
+      'description': instance.description,
+      'createdAt': instance.createdAt.toIso8601String(),
+      'updatedAt': instance.updatedAt.toIso8601String(),
+      'dueDate': instance.dueDate.toIso8601String(),
+      'inspectionDate': instance.inspectionDate?.toIso8601String(),
+      'isRBISchedule': instance.isRBISchedule,
+      'isRecurring': instance.isRecurring,
+      'inspectionInterval': instance.inspectionInterval,
+      'damageMechanism': instance.damageMechanism,
+      'inspectionEffectiveness': instance.inspectionEffectiveness,
+      'aiSummary': instance.aiSummary,
+      'comments': instance.comments,
+      'isDeleted': instance.isDeleted,
+      'scheduleTypeId': instance.scheduleTypeId,
+      'operationId': instance.operationId,
+      'equipmentId': instance.equipmentId,
+      'createdById': instance.createdById,
+      'approvedById': instance.approvedById,
+      'reviewedById': instance.reviewedById,
+      'attachments': instance.attachments,
+      'scopeImages': instance.scopeImages,
+      'checklistQuestionTemplates': instance.checklistQuestionTemplates,
+      'inspectionMethods': instance.inspectionMethods,
+      'potentialEmergentWorks': instance.potentialEmergentWorks,
+      'components': instance.components,
+      'approvedBy': instance.approvedBy,
+      'createdBy': instance.createdBy,
+      'reviewedBy': instance.reviewedBy,
+      'equipment': instance.equipment,
+      'operation': instance.operation,
+      'scheduleType': instance.scheduleType,
+      'record': instance.record,
+    };
+
+_User _$UserFromJson(Map<String, dynamic> json) => _User(
+  id: json['id'] as String,
+  createdAt: DateTime.parse(json['createdAt'] as String),
+  updatedAt: DateTime.parse(json['updatedAt'] as String),
+  role: json['role'] as String,
+  title: json['title'] as String,
+  name: json['name'] as String,
+  email: json['email'] as String,
+  password: json['password'] as String,
+  isDeleted: json['isDeleted'] as bool,
+);
+
+Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
+  'id': instance.id,
+  'createdAt': instance.createdAt.toIso8601String(),
+  'updatedAt': instance.updatedAt.toIso8601String(),
+  'role': instance.role,
+  'title': instance.title,
+  'name': instance.name,
+  'email': instance.email,
+  'password': instance.password,
+  'isDeleted': instance.isDeleted,
+};
+
+_Equipment _$EquipmentFromJson(Map<String, dynamic> json) => _Equipment(
+  id: json['id'] as String,
+  createdAt: DateTime.parse(json['createdAt'] as String),
+  updatedAt: DateTime.parse(json['updatedAt'] as String),
+  equipmentId: json['equipmentId'] as String,
+  name: json['name'] as String,
+  cmmsSystem: json['cmmsSystem'] as String,
+  isCorrosionLoopAvailable: json['isCorrosionLoopAvailable'] as bool,
+  corrosionLoopId: json['corrosionLoopId'] as String?,
+  isDeleted: json['isDeleted'] as bool,
+);
+
+Map<String, dynamic> _$EquipmentToJson(_Equipment instance) =>
     <String, dynamic>{
       'id': instance.id,
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt.toIso8601String(),
-      'scheduleID': instance.scheduleID,
-      'status': instance.status,
-      'scheduleTypeId': instance.scheduleTypeId,
-      'scheduleType': instance.scheduleType,
-      'operationId': instance.operationId,
-      'operation': instance.operation,
-      'createdById': instance.createdById,
-      'createdBy': instance.createdBy,
-      'submittedById': instance.submittedById,
-      'submittedBy': instance.submittedBy,
-      'reviewedById': instance.reviewedById,
-      'reviewedBy': instance.reviewedBy,
-      'approvedById': instance.approvedById,
-      'approvedBy': instance.approvedBy,
       'equipmentId': instance.equipmentId,
-      'equipment': instance.equipment,
-      'components': instance.components,
-      'description': instance.description,
-      'dueDate': instance.dueDate.toIso8601String(),
-      'checklistQuestions': instance.checklistQuestions,
-      'inspectionMethods': instance.inspectionMethods,
-      'potentialEmergentWorks': instance.potentialEmergentWorks,
-      'scopeImages': instance.scopeImages,
-      'inspectionDate': instance.inspectionDate?.toIso8601String(),
-      'comments': instance.comments,
-      'attachments': instance.attachments,
+      'name': instance.name,
+      'cmmsSystem': instance.cmmsSystem,
+      'isCorrosionLoopAvailable': instance.isCorrosionLoopAvailable,
+      'corrosionLoopId': instance.corrosionLoopId,
       'isDeleted': instance.isDeleted,
     };
 
-_ScheduleComponentV2 _$ScheduleComponentV2FromJson(Map<String, dynamic> json) =>
-    _ScheduleComponentV2(
-      id: json['id'] as String?,
-      createdAt: json['createdAt'] == null
-          ? null
-          : DateTime.parse(json['createdAt'] as String),
-      updatedAt: json['updatedAt'] == null
-          ? null
-          : DateTime.parse(json['updatedAt'] as String),
-      scheduleV2Id: json['scheduleV2Id'] as String?,
-      componentId: json['componentId'] as String?,
-      component: json['component'] == null
-          ? null
-          : Component.fromJson(json['component'] as Map<String, dynamic>),
+_ReferenceData _$ReferenceDataFromJson(Map<String, dynamic> json) =>
+    _ReferenceData(
+      id: json['id'] as String,
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
+      category: json['category'] as String,
+      value: json['value'] as String,
+      displayValue: json['displayValue'] as String?,
     );
 
-Map<String, dynamic> _$ScheduleComponentV2ToJson(
-  _ScheduleComponentV2 instance,
+Map<String, dynamic> _$ReferenceDataToJson(_ReferenceData instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'createdAt': instance.createdAt.toIso8601String(),
+      'updatedAt': instance.updatedAt.toIso8601String(),
+      'category': instance.category,
+      'value': instance.value,
+      'displayValue': instance.displayValue,
+    };
+
+_ChecklistQuestionTemplate _$ChecklistQuestionTemplateFromJson(
+  Map<String, dynamic> json,
+) => _ChecklistQuestionTemplate(
+  id: json['id'] as String,
+  inspectionType: json['inspectionType'] as String?,
+  question: json['question'] as String,
+  helpText: json['helpText'] as String?,
+  responseType: $enumDecode(_$ResponseTypeEnumMap, json['responseType']),
+  isDeleted: json['isDeleted'] as bool,
+  scheduleId: json['scheduleId'] as String,
+  checklistAnswer: json['checklistAnswer'] == null
+      ? null
+      : ChecklistAnswer.fromJson(
+          json['checklistAnswer'] as Map<String, dynamic>,
+        ),
+);
+
+Map<String, dynamic> _$ChecklistQuestionTemplateToJson(
+  _ChecklistQuestionTemplate instance,
 ) => <String, dynamic>{
   'id': instance.id,
-  'createdAt': instance.createdAt?.toIso8601String(),
-  'updatedAt': instance.updatedAt?.toIso8601String(),
-  'scheduleV2Id': instance.scheduleV2Id,
-  'componentId': instance.componentId,
-  'component': instance.component,
-};
-
-_ChecklistQuestionV2 _$ChecklistQuestionV2FromJson(Map<String, dynamic> json) =>
-    _ChecklistQuestionV2(
-      id: json['id'] as String?,
-      createdAt: json['createdAt'] == null
-          ? null
-          : DateTime.parse(json['createdAt'] as String),
-      updatedAt: json['updatedAt'] == null
-          ? null
-          : DateTime.parse(json['updatedAt'] as String),
-      scheduleV2Id: json['scheduleV2Id'] as String?,
-      inspectionType: json['inspectionType'] as String?,
-      question: json['question'] as String?,
-      helpText: json['helpText'] as String?,
-      responseType: $enumDecodeNullable(
-        _$ResponseTypeEnumMap,
-        json['responseType'],
-      ),
-      value: json['value'] as String?,
-      note: json['note'] as String?,
-      completedAt: json['completedAt'] == null
-          ? null
-          : DateTime.parse(json['completedAt'] as String),
-      completedById: json['completedById'] as String?,
-      completedBy: json['completedBy'] == null
-          ? null
-          : User.fromJson(json['completedBy'] as Map<String, dynamic>),
-      attachments:
-          (json['attachments'] as List<dynamic>?)
-              ?.map((e) => AttachmentV2.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const [],
-      isDeleted: json['isDeleted'] as bool?,
-      section: json['section'] as String?,
-      order: (json['order'] as num?)?.toInt(),
-    );
-
-Map<String, dynamic> _$ChecklistQuestionV2ToJson(
-  _ChecklistQuestionV2 instance,
-) => <String, dynamic>{
-  'id': instance.id,
-  'createdAt': instance.createdAt?.toIso8601String(),
-  'updatedAt': instance.updatedAt?.toIso8601String(),
-  'scheduleV2Id': instance.scheduleV2Id,
   'inspectionType': instance.inspectionType,
   'question': instance.question,
   'helpText': instance.helpText,
-  'responseType': _$ResponseTypeEnumMap[instance.responseType],
-  'value': instance.value,
-  'note': instance.note,
-  'completedAt': instance.completedAt?.toIso8601String(),
-  'completedById': instance.completedById,
-  'completedBy': instance.completedBy,
-  'attachments': instance.attachments,
+  'responseType': _$ResponseTypeEnumMap[instance.responseType]!,
   'isDeleted': instance.isDeleted,
-  'section': instance.section,
-  'order': instance.order,
+  'scheduleId': instance.scheduleId,
+  'checklistAnswer': instance.checklistAnswer,
 };
 
 const _$ResponseTypeEnumMap = {
   ResponseType.goodFairPoorNA: 'GoodFairPoorNA',
   ResponseType.yesNo: 'YesNo',
 };
+
+_ChecklistAnswer _$ChecklistAnswerFromJson(Map<String, dynamic> json) =>
+    _ChecklistAnswer(
+      id: json['id'] as String,
+      value: json['value'] as String?,
+      note: json['note'] as String?,
+      completedAt: json['completedAt'] == null
+          ? null
+          : DateTime.parse(json['completedAt'] as String),
+      recordId: json['recordId'] as String,
+      questionId: json['questionId'] as String,
+      attachments: (json['attachments'] as List<dynamic>?)
+          ?.map((e) => AttachmentV2.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$ChecklistAnswerToJson(_ChecklistAnswer instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'value': instance.value,
+      'note': instance.note,
+      'completedAt': instance.completedAt?.toIso8601String(),
+      'recordId': instance.recordId,
+      'questionId': instance.questionId,
+      'attachments': instance.attachments,
+    };
+
+_AttachmentV2 _$AttachmentV2FromJson(Map<String, dynamic> json) =>
+    _AttachmentV2(
+      id: json['id'] as String,
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
+      documentID: json['documentID'] as String,
+      name: json['name'] as String,
+      url: json['url'] as String,
+      description: json['description'] as String?,
+      comments: json['comments'] as String?,
+      isDeleted: json['isDeleted'] as bool?,
+      equipmentId: json['equipmentId'] as String?,
+      scheduleId: json['scheduleId'] as String?,
+      scopeImageScheduleId: json['scopeImageScheduleId'] as String?,
+      checklistAnswerId: json['checklistAnswerId'] as String?,
+      recordId: json['recordId'] as String?,
+    );
+
+Map<String, dynamic> _$AttachmentV2ToJson(_AttachmentV2 instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'createdAt': instance.createdAt.toIso8601String(),
+      'updatedAt': instance.updatedAt.toIso8601String(),
+      'documentID': instance.documentID,
+      'name': instance.name,
+      'url': instance.url,
+      'description': instance.description,
+      'comments': instance.comments,
+      'isDeleted': instance.isDeleted,
+      'equipmentId': instance.equipmentId,
+      'scheduleId': instance.scheduleId,
+      'scopeImageScheduleId': instance.scopeImageScheduleId,
+      'checklistAnswerId': instance.checklistAnswerId,
+      'recordId': instance.recordId,
+    };
+
+_RecordV2Response _$RecordV2ResponseFromJson(Map<String, dynamic> json) =>
+    _RecordV2Response(
+      id: json['id'] as String,
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
+      description: json['description'] as String,
+      recordCreatedDate: DateTime.parse(json['recordCreatedDate'] as String),
+      status: json['status'] as String,
+      inspectionDate: DateTime.parse(json['inspectionDate'] as String),
+      actionCreated: json['actionCreated'] as String,
+      comments: json['comments'] as String?,
+      isDeleted: json['isDeleted'] as bool?,
+      scheduleId: json['scheduleId'] as String,
+      referenceDataId: json['referenceDataId'] as String?,
+      equipmentId: json['equipmentId'] as String,
+      scheduleTypeId: json['scheduleTypeId'] as String,
+      submittedById: json['submittedById'] as String?,
+      approvedById: json['approvedById'] as String?,
+    );
+
+Map<String, dynamic> _$RecordV2ResponseToJson(_RecordV2Response instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'createdAt': instance.createdAt.toIso8601String(),
+      'updatedAt': instance.updatedAt.toIso8601String(),
+      'description': instance.description,
+      'recordCreatedDate': instance.recordCreatedDate.toIso8601String(),
+      'status': instance.status,
+      'inspectionDate': instance.inspectionDate.toIso8601String(),
+      'actionCreated': instance.actionCreated,
+      'comments': instance.comments,
+      'isDeleted': instance.isDeleted,
+      'scheduleId': instance.scheduleId,
+      'referenceDataId': instance.referenceDataId,
+      'equipmentId': instance.equipmentId,
+      'scheduleTypeId': instance.scheduleTypeId,
+      'submittedById': instance.submittedById,
+      'approvedById': instance.approvedById,
+    };
 
 _InspectionMethodV2 _$InspectionMethodV2FromJson(Map<String, dynamic> json) =>
     _InspectionMethodV2(
@@ -336,94 +456,34 @@ Map<String, dynamic> _$PotentialEmergentWorkV2ToJson(
   'isDeleted': instance.isDeleted,
 };
 
-_AttachmentV2 _$AttachmentV2FromJson(Map<String, dynamic> json) =>
-    _AttachmentV2(
-      id: json['id'] as String?,
-      createdAt: json['createdAt'] == null
-          ? null
-          : DateTime.parse(json['createdAt'] as String),
-      updatedAt: json['updatedAt'] == null
-          ? null
-          : DateTime.parse(json['updatedAt'] as String),
-      documentID: json['documentID'] as String?,
-      name: json['name'] as String?,
-      url: json['url'] as String?,
-      description: json['description'] as String?,
-      comments: json['comments'] as String?,
-      equipmentId: json['equipmentId'] as String?,
-      scheduleV2Id: json['scheduleV2Id'] as String?,
-      scopeScheduleV2Id: json['scopeScheduleV2Id'] as String?,
-      checklistQuestionV2Id: json['checklistQuestionV2Id'] as String?,
-      isDeleted: json['isDeleted'] as bool?,
+_ScheduleComponent _$ScheduleComponentFromJson(Map<String, dynamic> json) =>
+    _ScheduleComponent(
+      id: json['id'] as String,
+      scheduleId: json['scheduleId'] as String,
+      componentId: json['componentId'] as String,
+      component: MinimalComponent.fromJson(
+        json['component'] as Map<String, dynamic>,
+      ),
     );
 
-Map<String, dynamic> _$AttachmentV2ToJson(_AttachmentV2 instance) =>
+Map<String, dynamic> _$ScheduleComponentToJson(_ScheduleComponent instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'createdAt': instance.createdAt?.toIso8601String(),
-      'updatedAt': instance.updatedAt?.toIso8601String(),
-      'documentID': instance.documentID,
-      'name': instance.name,
-      'url': instance.url,
-      'description': instance.description,
-      'comments': instance.comments,
-      'equipmentId': instance.equipmentId,
-      'scheduleV2Id': instance.scheduleV2Id,
-      'scopeScheduleV2Id': instance.scopeScheduleV2Id,
-      'checklistQuestionV2Id': instance.checklistQuestionV2Id,
-      'isDeleted': instance.isDeleted,
+      'scheduleId': instance.scheduleId,
+      'componentId': instance.componentId,
+      'component': instance.component,
     };
 
-_User _$UserFromJson(Map<String, dynamic> json) => _User(
-  id: json['id'] as String,
-  createdAt: DateTime.parse(json['createdAt'] as String),
-  updatedAt: DateTime.parse(json['updatedAt'] as String),
-  role: json['role'] as String,
-  title: json['title'] as String,
-  name: json['name'] as String,
-  email: json['email'] as String,
-  password: json['password'] as String,
-  createdSchedulesV2:
-      (json['createdSchedulesV2'] as List<dynamic>?)
-          ?.map((e) => ScheduleV2.fromJson(e as Map<String, dynamic>))
-          .toList() ??
-      const [],
-  submittedSchedulesV2:
-      (json['submittedSchedulesV2'] as List<dynamic>?)
-          ?.map((e) => ScheduleV2.fromJson(e as Map<String, dynamic>))
-          .toList() ??
-      const [],
-  reviewedSchedulesV2:
-      (json['reviewedSchedulesV2'] as List<dynamic>?)
-          ?.map((e) => ScheduleV2.fromJson(e as Map<String, dynamic>))
-          .toList() ??
-      const [],
-  approvedSchedulesV2:
-      (json['approvedSchedulesV2'] as List<dynamic>?)
-          ?.map((e) => ScheduleV2.fromJson(e as Map<String, dynamic>))
-          .toList() ??
-      const [],
-  completedChecklistQuestionsV2:
-      (json['completedChecklistQuestionsV2'] as List<dynamic>?)
-          ?.map((e) => ChecklistQuestionV2.fromJson(e as Map<String, dynamic>))
-          .toList() ??
-      const [],
-  isDeleted: json['isDeleted'] as bool?,
-);
+_MinimalComponent _$MinimalComponentFromJson(Map<String, dynamic> json) =>
+    _MinimalComponent(
+      id: json['id'] as String,
+      componentID: json['componentID'] as String,
+      name: json['name'] as String,
+    );
 
-Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
-  'id': instance.id,
-  'createdAt': instance.createdAt.toIso8601String(),
-  'updatedAt': instance.updatedAt.toIso8601String(),
-  'role': instance.role,
-  'title': instance.title,
-  'name': instance.name,
-  'email': instance.email,
-  'password': instance.password,
-  'createdSchedulesV2': instance.createdSchedulesV2,
-  'submittedSchedulesV2': instance.submittedSchedulesV2,
-  'reviewedSchedulesV2': instance.reviewedSchedulesV2,
-  'approvedSchedulesV2': instance.approvedSchedulesV2,
-  'completedChecklistQuestionsV2': instance.completedChecklistQuestionsV2,
-  'isDeleted': instance.isDeleted,
-};
+Map<String, dynamic> _$MinimalComponentToJson(_MinimalComponent instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'componentID': instance.componentID,
+      'name': instance.name,
+    };

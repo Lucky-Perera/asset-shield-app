@@ -50,7 +50,7 @@ final class RecordNotifierProvider
   }
 }
 
-String _$recordNotifierHash() => r'a51a9357a7140d425d9d627ad438b2a456ea75ab';
+String _$recordNotifierHash() => r'0044cf8d9694fc5b2f4ee11dbe145c8ffb7aa604';
 
 final class RecordNotifierFamily extends $Family
     with

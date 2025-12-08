@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
 
 class ChecklistSections extends StatelessWidget {
-  final List<ChecklistQuestionV2> questions;
+  final List<ChecklistQuestionTemplate> questions;
   final Function(String questionId, String value, String note)? onAnswerChanged;
   final bool readOnly;
   final Map<String, Map<String, String>>? initialValues;
@@ -19,7 +19,7 @@ class ChecklistSections extends StatelessWidget {
          'onAnswerChanged should be null when readOnly is true',
        );
 
-  List<ChecklistQuestionV2> _filter(String type) => questions
+  List<ChecklistQuestionTemplate> _filter(String type) => questions
       .where(
         (q) => (q.inspectionType ?? '').toLowerCase() == type.toLowerCase(),
       )

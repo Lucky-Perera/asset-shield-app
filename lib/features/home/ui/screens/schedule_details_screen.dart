@@ -15,7 +15,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ScheduleDetailsScreen extends ConsumerStatefulWidget {
-  final ScheduleV2 schedule;
+  final ScheduleV2Response schedule;
   const ScheduleDetailsScreen({super.key, required this.schedule});
 
   @override

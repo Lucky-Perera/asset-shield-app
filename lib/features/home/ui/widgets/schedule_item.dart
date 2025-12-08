@@ -3,7 +3,7 @@ import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart
 import 'package:flutter/material.dart';
 
 class ScheduleItem extends StatelessWidget {
-  final ScheduleV2 schedule;
+  final ScheduleV2Response schedule;
   final VoidCallback? onTap;
 
   const ScheduleItem({super.key, required this.schedule, this.onTap});
@@ -48,7 +48,7 @@ class ScheduleItem extends StatelessWidget {
                           style: TextStyle(fontWeight: FontWeight.w600),
                         ),
                         TextSpan(
-                          text: schedule.scheduleID,
+                          text: schedule.scheduleName,
                           style: const TextStyle(fontWeight: FontWeight.w500),
                         ),
                       ],

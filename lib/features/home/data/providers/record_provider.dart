@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:asset_shield/features/home/data/models/record_create_request.dart';
-import 'package:asset_shield/features/home/data/models/record_response.dart';
+import 'package:asset_shield/features/home/data/models/record_with_checklist_response.dart';
 import 'package:asset_shield/features/home/data/models/record_state.dart';
 import 'package:asset_shield/features/home/data/services/schedule_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -32,8 +32,11 @@ class RecordNotifier extends _$RecordNotifier {
     state = await AsyncValue.guard(() => _fetchRecord());
   }
 
-  Future<RecordResponse> createRecord(RecordCreateRequest payload) async {
-    final response = await ScheduleService().createRecord(
+  /// Create a record with checklist answers using the combined API
+  Future<RecordWithChecklistResponse> createRecordWithChecklist(
+    RecordCreateRequest payload,
+  ) async {
+    final response = await ScheduleService().createRecordWithChecklist(
       scheduleId: _scheduleId,
       payload: payload,
     );
@@ -41,7 +44,7 @@ class RecordNotifier extends _$RecordNotifier {
     // Update state after submission
     final current = state.value;
     if (current != null) {
-      state = AsyncValue.data(current.copyWith(record: response));
+      state = AsyncValue.data(current.copyWith(record: response.data.record));
     }
 
     return response;

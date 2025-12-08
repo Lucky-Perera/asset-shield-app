@@ -18,11 +18,11 @@ class Routes {
   void splash() => router.go(RoutePaths.splash);
   void login() => router.go(RoutePaths.login);
   void home() => router.go(RoutePaths.home);
-  void scheduleDetails(ScheduleV2 schedule) => router.go(
+  void scheduleDetails(ScheduleV2Response schedule) => router.go(
     "${RoutePaths.home}${RoutePaths.scheduleDetails}",
     extra: schedule,
   );
-  void addRecord(ScheduleV2 schedule) => router.go(
+  void addRecord(ScheduleV2Response schedule) => router.go(
     "${RoutePaths.home}${RoutePaths.scheduleDetails}${RoutePaths.addRecord}",
     extra: schedule,
   );
@@ -54,14 +54,14 @@ final router = GoRouter(
         GoRoute(
           path: RoutePaths.scheduleDetails,
           builder: (context, state) {
-            final schedule = state.extra as ScheduleV2;
+            final schedule = state.extra as ScheduleV2Response;
             return ScheduleDetailsScreen(schedule: schedule);
           },
           routes: [
             GoRoute(
               path: RoutePaths.addRecord,
               builder: (context, state) {
-                final schedule = state.extra as ScheduleV2;
+                final schedule = state.extra as ScheduleV2Response;
                 return AddRecordScreen(schedule: schedule);
               },
             ),

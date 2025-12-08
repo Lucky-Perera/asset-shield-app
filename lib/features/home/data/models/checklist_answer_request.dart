@@ -6,7 +6,7 @@ part 'checklist_answer_request.g.dart';
 @freezed
 abstract class ChecklistAnswerRequest with _$ChecklistAnswerRequest {
   const factory ChecklistAnswerRequest({
-    required List<ChecklistAnswer> answers,
+    required List<ChecklistAnswerRequestItem> answers,
   }) = _ChecklistAnswerRequest;
 
   factory ChecklistAnswerRequest.fromJson(Map<String, dynamic> json) =>
@@ -14,13 +14,13 @@ abstract class ChecklistAnswerRequest with _$ChecklistAnswerRequest {
 }
 
 @freezed
-abstract class ChecklistAnswer with _$ChecklistAnswer {
-  const factory ChecklistAnswer({
+abstract class ChecklistAnswerRequestItem with _$ChecklistAnswerRequestItem {
+  const factory ChecklistAnswerRequestItem({
     required String questionId,
     required String value,
     required String note,
-  }) = _ChecklistAnswer;
+  }) = _ChecklistAnswerRequestItem;
 
-  factory ChecklistAnswer.fromJson(Map<String, dynamic> json) =>
-      _$ChecklistAnswerFromJson(json);
+  factory ChecklistAnswerRequestItem.fromJson(Map<String, dynamic> json) =>
+      _$ChecklistAnswerRequestItemFromJson(json);
 }

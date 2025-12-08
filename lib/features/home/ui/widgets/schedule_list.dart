@@ -6,7 +6,7 @@ import 'package:asset_shield/features/home/ui/widgets/schedule_item.dart';
 import 'package:flutter/material.dart';
 
 class ScheduleList extends StatelessWidget {
-  final List<ScheduleV2> schedules;
+  final List<ScheduleV2Response> schedules;
   final Pagination pagination;
   final String searchQuery;
   final VoidCallback onRefresh;
@@ -21,11 +21,12 @@ class ScheduleList extends StatelessWidget {
     required this.onPageChanged,
   });
 
-  List<ScheduleV2> get _filteredSchedules {
+  List<ScheduleV2Response> get _filteredSchedules {
     if (searchQuery.isEmpty) return schedules;
     return schedules
         .where(
-          (schedule) => schedule.scheduleID.toLowerCase().contains(searchQuery),
+          (schedule) =>
+              schedule.scheduleName.toLowerCase().contains(searchQuery),
         )
         .toList();
   }

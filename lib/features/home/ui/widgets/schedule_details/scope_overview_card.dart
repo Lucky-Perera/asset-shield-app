@@ -3,7 +3,7 @@ import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart
 import 'package:flutter/material.dart';
 
 class ScopeOverviewCard extends StatelessWidget {
-  final ScheduleV2 schedule;
+  final ScheduleV2Response schedule;
 
   const ScopeOverviewCard({super.key, required this.schedule});
 

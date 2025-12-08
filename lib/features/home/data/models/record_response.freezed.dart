@@ -308,7 +308,7 @@ $RecordResponseCopyWith<$Res>? get data {
 /// @nodoc
 mixin _$RecordResponse {
 
- String get id; String get recordID; String get equipmentId; String? get description;@JsonKey(name: 'creditedItems') List<CreditedItem>? get creditedItems;@JsonKey(name: 'recordCreatedDate') DateTime? get recordCreatedDate;@JsonKey(name: 'inspectedComponents') List<RecordComponent>? get inspectedComponents;@JsonKey(name: 'scheduleType') Map<String, dynamic>? get scheduleType; String? get status;@JsonKey(name: 'inspectionDate') DateTime? get inspectionDate; String? get actionCreated;@JsonKey(name: 'attachments') List<Map<String, dynamic>>? get attachments; String? get comments;
+ String get id; String? get recordID; String get equipmentId; String? get description;@JsonKey(name: 'creditedItems') List<CreditedItem>? get creditedItems;@JsonKey(name: 'recordCreatedDate') DateTime? get recordCreatedDate;@JsonKey(name: 'inspectedComponents') List<RecordComponent>? get inspectedComponents;@JsonKey(name: 'scheduleType') Map<String, dynamic>? get scheduleType; String? get status;@JsonKey(name: 'inspectionDate') DateTime? get inspectionDate; String? get actionCreated;@JsonKey(name: 'attachments') List<Map<String, dynamic>>? get attachments; String? get comments;
 /// Create a copy of RecordResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -341,7 +341,7 @@ abstract mixin class $RecordResponseCopyWith<$Res>  {
   factory $RecordResponseCopyWith(RecordResponse value, $Res Function(RecordResponse) _then) = _$RecordResponseCopyWithImpl;
 @useResult
 $Res call({
- String id, String recordID, String equipmentId, String? description,@JsonKey(name: 'creditedItems') List<CreditedItem>? creditedItems,@JsonKey(name: 'recordCreatedDate') DateTime? recordCreatedDate,@JsonKey(name: 'inspectedComponents') List<RecordComponent>? inspectedComponents,@JsonKey(name: 'scheduleType') Map<String, dynamic>? scheduleType, String? status,@JsonKey(name: 'inspectionDate') DateTime? inspectionDate, String? actionCreated,@JsonKey(name: 'attachments') List<Map<String, dynamic>>? attachments, String? comments
+ String id, String? recordID, String equipmentId, String? description,@JsonKey(name: 'creditedItems') List<CreditedItem>? creditedItems,@JsonKey(name: 'recordCreatedDate') DateTime? recordCreatedDate,@JsonKey(name: 'inspectedComponents') List<RecordComponent>? inspectedComponents,@JsonKey(name: 'scheduleType') Map<String, dynamic>? scheduleType, String? status,@JsonKey(name: 'inspectionDate') DateTime? inspectionDate, String? actionCreated,@JsonKey(name: 'attachments') List<Map<String, dynamic>>? attachments, String? comments
 });
 
 
@@ -358,11 +358,11 @@ class _$RecordResponseCopyWithImpl<$Res>
 
 /// Create a copy of RecordResponse
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? recordID = null,Object? equipmentId = null,Object? description = freezed,Object? creditedItems = freezed,Object? recordCreatedDate = freezed,Object? inspectedComponents = freezed,Object? scheduleType = freezed,Object? status = freezed,Object? inspectionDate = freezed,Object? actionCreated = freezed,Object? attachments = freezed,Object? comments = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? recordID = freezed,Object? equipmentId = null,Object? description = freezed,Object? creditedItems = freezed,Object? recordCreatedDate = freezed,Object? inspectedComponents = freezed,Object? scheduleType = freezed,Object? status = freezed,Object? inspectionDate = freezed,Object? actionCreated = freezed,Object? attachments = freezed,Object? comments = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,recordID: null == recordID ? _self.recordID : recordID // ignore: cast_nullable_to_non_nullable
-as String,equipmentId: null == equipmentId ? _self.equipmentId : equipmentId // ignore: cast_nullable_to_non_nullable
+as String,recordID: freezed == recordID ? _self.recordID : recordID // ignore: cast_nullable_to_non_nullable
+as String?,equipmentId: null == equipmentId ? _self.equipmentId : equipmentId // ignore: cast_nullable_to_non_nullable
 as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String?,creditedItems: freezed == creditedItems ? _self.creditedItems : creditedItems // ignore: cast_nullable_to_non_nullable
 as List<CreditedItem>?,recordCreatedDate: freezed == recordCreatedDate ? _self.recordCreatedDate : recordCreatedDate // ignore: cast_nullable_to_non_nullable
@@ -458,7 +458,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String recordID,  String equipmentId,  String? description, @JsonKey(name: 'creditedItems')  List<CreditedItem>? creditedItems, @JsonKey(name: 'recordCreatedDate')  DateTime? recordCreatedDate, @JsonKey(name: 'inspectedComponents')  List<RecordComponent>? inspectedComponents, @JsonKey(name: 'scheduleType')  Map<String, dynamic>? scheduleType,  String? status, @JsonKey(name: 'inspectionDate')  DateTime? inspectionDate,  String? actionCreated, @JsonKey(name: 'attachments')  List<Map<String, dynamic>>? attachments,  String? comments)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String? recordID,  String equipmentId,  String? description, @JsonKey(name: 'creditedItems')  List<CreditedItem>? creditedItems, @JsonKey(name: 'recordCreatedDate')  DateTime? recordCreatedDate, @JsonKey(name: 'inspectedComponents')  List<RecordComponent>? inspectedComponents, @JsonKey(name: 'scheduleType')  Map<String, dynamic>? scheduleType,  String? status, @JsonKey(name: 'inspectionDate')  DateTime? inspectionDate,  String? actionCreated, @JsonKey(name: 'attachments')  List<Map<String, dynamic>>? attachments,  String? comments)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _RecordResponse() when $default != null:
 return $default(_that.id,_that.recordID,_that.equipmentId,_that.description,_that.creditedItems,_that.recordCreatedDate,_that.inspectedComponents,_that.scheduleType,_that.status,_that.inspectionDate,_that.actionCreated,_that.attachments,_that.comments);case _:
@@ -479,7 +479,7 @@ return $default(_that.id,_that.recordID,_that.equipmentId,_that.description,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String recordID,  String equipmentId,  String? description, @JsonKey(name: 'creditedItems')  List<CreditedItem>? creditedItems, @JsonKey(name: 'recordCreatedDate')  DateTime? recordCreatedDate, @JsonKey(name: 'inspectedComponents')  List<RecordComponent>? inspectedComponents, @JsonKey(name: 'scheduleType')  Map<String, dynamic>? scheduleType,  String? status, @JsonKey(name: 'inspectionDate')  DateTime? inspectionDate,  String? actionCreated, @JsonKey(name: 'attachments')  List<Map<String, dynamic>>? attachments,  String? comments)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String? recordID,  String equipmentId,  String? description, @JsonKey(name: 'creditedItems')  List<CreditedItem>? creditedItems, @JsonKey(name: 'recordCreatedDate')  DateTime? recordCreatedDate, @JsonKey(name: 'inspectedComponents')  List<RecordComponent>? inspectedComponents, @JsonKey(name: 'scheduleType')  Map<String, dynamic>? scheduleType,  String? status, @JsonKey(name: 'inspectionDate')  DateTime? inspectionDate,  String? actionCreated, @JsonKey(name: 'attachments')  List<Map<String, dynamic>>? attachments,  String? comments)  $default,) {final _that = this;
 switch (_that) {
 case _RecordResponse():
 return $default(_that.id,_that.recordID,_that.equipmentId,_that.description,_that.creditedItems,_that.recordCreatedDate,_that.inspectedComponents,_that.scheduleType,_that.status,_that.inspectionDate,_that.actionCreated,_that.attachments,_that.comments);case _:
@@ -499,7 +499,7 @@ return $default(_that.id,_that.recordID,_that.equipmentId,_that.description,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String recordID,  String equipmentId,  String? description, @JsonKey(name: 'creditedItems')  List<CreditedItem>? creditedItems, @JsonKey(name: 'recordCreatedDate')  DateTime? recordCreatedDate, @JsonKey(name: 'inspectedComponents')  List<RecordComponent>? inspectedComponents, @JsonKey(name: 'scheduleType')  Map<String, dynamic>? scheduleType,  String? status, @JsonKey(name: 'inspectionDate')  DateTime? inspectionDate,  String? actionCreated, @JsonKey(name: 'attachments')  List<Map<String, dynamic>>? attachments,  String? comments)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String? recordID,  String equipmentId,  String? description, @JsonKey(name: 'creditedItems')  List<CreditedItem>? creditedItems, @JsonKey(name: 'recordCreatedDate')  DateTime? recordCreatedDate, @JsonKey(name: 'inspectedComponents')  List<RecordComponent>? inspectedComponents, @JsonKey(name: 'scheduleType')  Map<String, dynamic>? scheduleType,  String? status, @JsonKey(name: 'inspectionDate')  DateTime? inspectionDate,  String? actionCreated, @JsonKey(name: 'attachments')  List<Map<String, dynamic>>? attachments,  String? comments)?  $default,) {final _that = this;
 switch (_that) {
 case _RecordResponse() when $default != null:
 return $default(_that.id,_that.recordID,_that.equipmentId,_that.description,_that.creditedItems,_that.recordCreatedDate,_that.inspectedComponents,_that.scheduleType,_that.status,_that.inspectionDate,_that.actionCreated,_that.attachments,_that.comments);case _:
@@ -514,11 +514,11 @@ return $default(_that.id,_that.recordID,_that.equipmentId,_that.description,_tha
 @JsonSerializable()
 
 class _RecordResponse implements RecordResponse {
-  const _RecordResponse({required this.id, required this.recordID, required this.equipmentId, this.description, @JsonKey(name: 'creditedItems') final  List<CreditedItem>? creditedItems, @JsonKey(name: 'recordCreatedDate') this.recordCreatedDate, @JsonKey(name: 'inspectedComponents') final  List<RecordComponent>? inspectedComponents, @JsonKey(name: 'scheduleType') final  Map<String, dynamic>? scheduleType, this.status, @JsonKey(name: 'inspectionDate') this.inspectionDate, this.actionCreated, @JsonKey(name: 'attachments') final  List<Map<String, dynamic>>? attachments, this.comments}): _creditedItems = creditedItems,_inspectedComponents = inspectedComponents,_scheduleType = scheduleType,_attachments = attachments;
+  const _RecordResponse({required this.id, this.recordID, required this.equipmentId, this.description, @JsonKey(name: 'creditedItems') final  List<CreditedItem>? creditedItems, @JsonKey(name: 'recordCreatedDate') this.recordCreatedDate, @JsonKey(name: 'inspectedComponents') final  List<RecordComponent>? inspectedComponents, @JsonKey(name: 'scheduleType') final  Map<String, dynamic>? scheduleType, this.status, @JsonKey(name: 'inspectionDate') this.inspectionDate, this.actionCreated, @JsonKey(name: 'attachments') final  List<Map<String, dynamic>>? attachments, this.comments}): _creditedItems = creditedItems,_inspectedComponents = inspectedComponents,_scheduleType = scheduleType,_attachments = attachments;
   factory _RecordResponse.fromJson(Map<String, dynamic> json) => _$RecordResponseFromJson(json);
 
 @override final  String id;
-@override final  String recordID;
+@override final  String? recordID;
 @override final  String equipmentId;
 @override final  String? description;
  final  List<CreditedItem>? _creditedItems;
@@ -596,7 +596,7 @@ abstract mixin class _$RecordResponseCopyWith<$Res> implements $RecordResponseCo
   factory _$RecordResponseCopyWith(_RecordResponse value, $Res Function(_RecordResponse) _then) = __$RecordResponseCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String recordID, String equipmentId, String? description,@JsonKey(name: 'creditedItems') List<CreditedItem>? creditedItems,@JsonKey(name: 'recordCreatedDate') DateTime? recordCreatedDate,@JsonKey(name: 'inspectedComponents') List<RecordComponent>? inspectedComponents,@JsonKey(name: 'scheduleType') Map<String, dynamic>? scheduleType, String? status,@JsonKey(name: 'inspectionDate') DateTime? inspectionDate, String? actionCreated,@JsonKey(name: 'attachments') List<Map<String, dynamic>>? attachments, String? comments
+ String id, String? recordID, String equipmentId, String? description,@JsonKey(name: 'creditedItems') List<CreditedItem>? creditedItems,@JsonKey(name: 'recordCreatedDate') DateTime? recordCreatedDate,@JsonKey(name: 'inspectedComponents') List<RecordComponent>? inspectedComponents,@JsonKey(name: 'scheduleType') Map<String, dynamic>? scheduleType, String? status,@JsonKey(name: 'inspectionDate') DateTime? inspectionDate, String? actionCreated,@JsonKey(name: 'attachments') List<Map<String, dynamic>>? attachments, String? comments
 });
 
 
@@ -613,11 +613,11 @@ class __$RecordResponseCopyWithImpl<$Res>
 
 /// Create a copy of RecordResponse
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? recordID = null,Object? equipmentId = null,Object? description = freezed,Object? creditedItems = freezed,Object? recordCreatedDate = freezed,Object? inspectedComponents = freezed,Object? scheduleType = freezed,Object? status = freezed,Object? inspectionDate = freezed,Object? actionCreated = freezed,Object? attachments = freezed,Object? comments = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? recordID = freezed,Object? equipmentId = null,Object? description = freezed,Object? creditedItems = freezed,Object? recordCreatedDate = freezed,Object? inspectedComponents = freezed,Object? scheduleType = freezed,Object? status = freezed,Object? inspectionDate = freezed,Object? actionCreated = freezed,Object? attachments = freezed,Object? comments = freezed,}) {
   return _then(_RecordResponse(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,recordID: null == recordID ? _self.recordID : recordID // ignore: cast_nullable_to_non_nullable
-as String,equipmentId: null == equipmentId ? _self.equipmentId : equipmentId // ignore: cast_nullable_to_non_nullable
+as String,recordID: freezed == recordID ? _self.recordID : recordID // ignore: cast_nullable_to_non_nullable
+as String?,equipmentId: null == equipmentId ? _self.equipmentId : equipmentId // ignore: cast_nullable_to_non_nullable
 as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String?,creditedItems: freezed == creditedItems ? _self._creditedItems : creditedItems // ignore: cast_nullable_to_non_nullable
 as List<CreditedItem>?,recordCreatedDate: freezed == recordCreatedDate ? _self.recordCreatedDate : recordCreatedDate // ignore: cast_nullable_to_non_nullable

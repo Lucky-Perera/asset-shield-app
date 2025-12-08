@@ -26,7 +26,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AddRecordScreen extends ConsumerStatefulWidget {
-  final ScheduleV2 schedule;
+  final ScheduleV2Response schedule;
   const AddRecordScreen({super.key, required this.schedule});
 
   @override
@@ -55,13 +55,11 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
   List<MultiSelectItem<String>> get _componentItems => widget
       .schedule
       .components
-      .where(
-        (sc) => sc.component?.name != null && sc.component!.name!.isNotEmpty,
-      )
+      .where((sc) => sc.component.name.isNotEmpty)
       .map(
         (sc) => MultiSelectItem<String>(
-          value: sc.componentId ?? '',
-          label: sc.component!.name!,
+          value: sc.componentId,
+          label: sc.component.name,
         ),
       )
       .toList();
@@ -71,6 +69,9 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     super.initState();
     _recordCreatedDate = DateTime.now();
     _inspectionDate = DateTime.now();
+    // Prefill schedule defaults (equipment, schedule item, schedule type)
+    // even when there is no existing record attached to the schedule.
+    _initialiseFields(null);
   }
 
   String _statusToServerString(RecordStatus? status) {
@@ -88,8 +89,8 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
   void _initialiseFields(RecordResponse? existingRecord) {
     // Always fill schedule defaults
     _equipmentController.text = widget.schedule.equipment?.name ?? '';
-    _scheduleItemController.text = widget.schedule.scheduleID;
-    _scheduleTypeController.text = widget.schedule.scheduleTypeId;
+    _scheduleItemController.text = widget.schedule.scheduleName;
+    _scheduleTypeController.text = widget.schedule.scheduleType?.value ?? '';
 
     if (existingRecord != null) {
       _descriptionController.text = existingRecord.description ?? "";
@@ -230,8 +231,9 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
 
     if (_formKey.currentState?.validate() ?? false) {
       // Validate that all checklist questions are answered
-      if (widget.schedule.checklistQuestions.isNotEmpty) {
-        final totalQuestions = widget.schedule.checklistQuestions.length;
+      if (widget.schedule.checklistQuestionTemplates.isNotEmpty) {
+        final totalQuestions =
+            widget.schedule.checklistQuestionTemplates.length;
 
         if (!checklistNotifier.areAllQuestionsAnswered(totalQuestions)) {
           final answeredQuestions = checklistState?.answers.length;
@@ -253,7 +255,16 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
       }
 
       try {
-        // Step 1: Create the record
+        // Prepare checklist answers for the combined API
+        final checklistAnswers = checklistState?.answers.entries
+            .map((entry) => ChecklistAnswerItem(
+                  questionId: entry.key,
+                  value: entry.value.value,
+                  note: entry.value.note,
+                ))
+            .toList();
+
+        // Create the record with checklist answers in one API call
         final RecordCreateRequest payload = RecordCreateRequest(
           description: _descriptionController.text.trim(),
           recordCreatedDate: _recordCreatedDate!,
@@ -267,22 +278,17 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
           inspectedComponentIDs: _selectedInspectedComponents,
           scheduleTypeID: widget.schedule.scheduleTypeId,
           attachmentIDs: [], // send empty array when no attachments yet
+          checklistAnswers: checklistAnswers,
         );
+
         final recordNotifier = ref.read(
           recordProvider(widget.schedule.id).notifier,
         );
-        final recordResponse = await recordNotifier.createRecord(payload);
-        log('Record created: ${recordResponse.toString()}');
-
-        // Step 2: Submit checklist answers if any exist
-        if (checklistState?.answers.isNotEmpty ?? false) {
-          final checklistResponse = await checklistNotifier
-              .submitChecklistAnswers();
-          log('Checklist answers submitted: ${checklistResponse.message}');
-        }
+        final response = await recordNotifier.createRecordWithChecklist(payload);
+        log('Record created with ${response.data.answeredQuestions.length} checklist answers');
 
         router.pop();
-        ToastService.show('Record submitted successfully');
+        ToastService.show(response.message ?? 'Record submitted successfully');
       } catch (e) {
         ToastService.show('Failed to create record: $e');
       } finally {
@@ -401,12 +407,9 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                         itemLabel: (componentId) {
                           // Find the component name by ID
                           final component = widget.schedule.components
-                              .firstWhere(
-                                (sc) => sc.componentId == componentId,
-                                orElse: () => const ScheduleComponentV2(),
-                              )
+                              .firstWhere((sc) => sc.componentId == componentId)
                               .component;
-                          return component?.name ?? '';
+                          return component.name;
                         },
                         onChanged: (values) {
                           if (!isReadOnly) {
@@ -527,7 +530,10 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                       SizedBox(height: 12.h),
 
                       // Checklist Sections (Internal / External)
-                      if (widget.schedule.checklistQuestions.isNotEmpty) ...[
+                      if (widget
+                          .schedule
+                          .checklistQuestionTemplates
+                          .isNotEmpty) ...[
                         Text(
                           'Checklist',
                           style: AppTextStyles.h2(
@@ -543,7 +549,8 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                                 ),
                               )
                             : ChecklistSections(
-                                questions: widget.schedule.checklistQuestions,
+                                questions:
+                                    widget.schedule.checklistQuestionTemplates,
                                 onAnswerChanged:
                                     checklistState?.answersAlreadySubmitted ??
                                         false

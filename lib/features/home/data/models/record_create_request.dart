@@ -22,8 +22,22 @@ abstract class RecordCreateRequest with _$RecordCreateRequest {
     @JsonKey(name: 'actionCreated') required String actionCreated,
     @JsonKey(name: 'attachmentIDs') List<String>? attachmentIDs,
     String? comments,
+    @JsonKey(name: 'checklistAnswers')
+    List<ChecklistAnswerItem>? checklistAnswers,
   }) = _RecordCreateRequest;
 
   factory RecordCreateRequest.fromJson(Map<String, dynamic> json) =>
       _$RecordCreateRequestFromJson(json);
+}
+
+@freezed
+abstract class ChecklistAnswerItem with _$ChecklistAnswerItem {
+  const factory ChecklistAnswerItem({
+    required String questionId,
+    required String value,
+    required String note,
+  }) = _ChecklistAnswerItem;
+
+  factory ChecklistAnswerItem.fromJson(Map<String, dynamic> json) =>
+      _$ChecklistAnswerItemFromJson(json);
 }
