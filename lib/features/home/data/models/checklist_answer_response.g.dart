@@ -36,6 +36,14 @@ _ChecklistQuestionItem _$ChecklistQuestionItemFromJson(
   isDeleted: json['isDeleted'] as bool,
   section: json['section'] as String?,
   order: (json['order'] as num?)?.toInt(),
+  value: json['value'] as String?,
+  note: json['note'] as String?,
+  completedAt: json['completedAt'] == null
+      ? null
+      : DateTime.parse(json['completedAt'] as String),
+  attachments: (json['attachments'] as List<dynamic>?)
+      ?.map((e) => AttachmentV2.fromJson(e as Map<String, dynamic>))
+      .toList(),
   checklistAnswer: json['checklistAnswer'] == null
       ? null
       : ChecklistAnswer.fromJson(
@@ -55,6 +63,10 @@ Map<String, dynamic> _$ChecklistQuestionItemToJson(
   'isDeleted': instance.isDeleted,
   'section': instance.section,
   'order': instance.order,
+  'value': instance.value,
+  'note': instance.note,
+  'completedAt': instance.completedAt?.toIso8601String(),
+  'attachments': instance.attachments,
   'checklistAnswer': instance.checklistAnswer,
 };
 

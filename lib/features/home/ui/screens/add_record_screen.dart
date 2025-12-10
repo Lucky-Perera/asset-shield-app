@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
-import 'package:asset_shield/core/enums/enums.dart';
+import 'package:asset_shield/core/utility/storage_service.dart';
 import 'package:asset_shield/core/utility/toast_service.dart';
 import 'package:asset_shield/features/home/data/models/record_create_request.dart';
 import 'package:asset_shield/features/home/data/models/record_response.dart';
@@ -13,7 +13,6 @@ import 'package:asset_shield/core/theme/app_text_styles.dart';
 import 'package:asset_shield/core/theme/color_palette.dart';
 import 'package:asset_shield/features/common/widgets/app_scaffold.dart';
 import 'package:asset_shield/features/common/widgets/form_date_field.dart';
-import 'package:asset_shield/features/common/widgets/form_dropdown_field.dart';
 import 'package:asset_shield/features/common/widgets/form_file_picker_field.dart';
 import 'package:asset_shield/features/common/widgets/form_multi_select_field.dart';
 import 'package:asset_shield/features/common/widgets/form_text_field.dart';
@@ -48,7 +47,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
   // Form values
   DateTime? _recordCreatedDate;
   List<String> _selectedInspectedComponents = [];
-  RecordStatus? _selectedStatus;
+  // RecordStatus? _selectedStatus;
   DateTime? _inspectionDate;
   final List<File> _selectedFiles = [];
 
@@ -74,18 +73,6 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     _initialiseFields(null);
   }
 
-  String _statusToServerString(RecordStatus? status) {
-    switch (status) {
-      case RecordStatus.pendingApproval:
-        return 'PendingApproval';
-      case RecordStatus.approved:
-        return 'Approved';
-      case RecordStatus.draft:
-      default:
-        return 'Draft';
-    }
-  }
-
   void _initialiseFields(RecordResponse? existingRecord) {
     // Always fill schedule defaults
     _equipmentController.text = widget.schedule.equipment?.name ?? '';
@@ -107,12 +94,12 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
               .toList() ??
           [];
 
-      _selectedStatus = switch (existingRecord.status) {
-        'PendingApproval' => RecordStatus.pendingApproval,
-        'Approved' => RecordStatus.approved,
-        'Draft' => RecordStatus.draft,
-        _ => null,
-      };
+      // _selectedStatus = switch (existingRecord.status) {
+      //   'PendingApproval' => RecordStatus.pendingApproval,
+      //   'Approved' => RecordStatus.approved,
+      //   'Draft' => RecordStatus.draft,
+      //   _ => null,
+      // };
     }
   }
 
@@ -266,11 +253,12 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
             )
             .toList();
 
+        final user = await StorageService().getUserObject();
+
         // Create the record with checklist answers in one API call
         final RecordCreateRequest payload = RecordCreateRequest(
           description: _descriptionController.text.trim(),
           recordCreatedDate: _recordCreatedDate!,
-          status: _statusToServerString(_selectedStatus),
           inspectionDate: _inspectionDate!,
           actionCreated: _actionCreatedController.text.trim(),
           comments: _commentsController.text.trim().isEmpty
@@ -281,6 +269,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
           scheduleTypeID: widget.schedule.scheduleTypeId,
           attachmentIDs: [], // send empty array when no attachments yet
           checklistAnswers: checklistAnswers,
+          submittedBy: user?.id ?? '',
         );
 
         final recordNotifier = ref.read(
@@ -292,6 +281,10 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
         log(
           'Record created with ${response.data.answeredQuestions.length} checklist answers',
         );
+
+        // Refresh both providers to load the newly submitted data
+        await recordNotifier.refresh();
+        await checklistNotifier.refresh();
 
         router.pop();
         ToastService.show(response.message ?? 'Record submitted successfully');
@@ -337,7 +330,9 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
           onPressed: _handleClose,
         ),
         title: Text(
-          'Add Record',
+          checklistState?.answersAlreadySubmitted ?? false
+              ? 'View Record'
+              : 'Add Record',
           style: AppTextStyles.h2(
             context,
           ).copyWith(fontWeight: FontWeight.w600),
@@ -447,47 +442,47 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                       SizedBox(height: 20.h),
 
                       // Status Dropdown (uses Status enum)
-                      FormDropdownField<RecordStatus>(
-                        label: 'Status',
-                        hint: 'Select status',
-                        value: _selectedStatus,
-                        readOnly: isReadOnly,
-                        items: [
-                          DropdownMenuItem(
-                            value: RecordStatus.pendingApproval,
-                            child: Text(
-                              'Pending Approval',
-                              style: TextStyle(fontSize: 14.sp),
-                            ),
-                          ),
-                          DropdownMenuItem(
-                            value: RecordStatus.approved,
-                            child: Text(
-                              'Approved',
-                              style: TextStyle(fontSize: 14.sp),
-                            ),
-                          ),
-                          DropdownMenuItem(
-                            value: RecordStatus.draft,
-                            child: Text(
-                              'Draft',
-                              style: TextStyle(fontSize: 14.sp),
-                            ),
-                          ),
-                        ],
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedStatus = value;
-                          });
-                        },
-                        validator: (value) {
-                          if (value == null) {
-                            return 'Please select status';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 20.h),
+                      // FormDropdownField<RecordStatus>(
+                      //   label: 'Status',
+                      //   hint: 'Select status',
+                      //   value: _selectedStatus,
+                      //   readOnly: isReadOnly,
+                      //   items: [
+                      //     DropdownMenuItem(
+                      //       value: RecordStatus.pendingApproval,
+                      //       child: Text(
+                      //         'Pending Approval',
+                      //         style: TextStyle(fontSize: 14.sp),
+                      //       ),
+                      //     ),
+                      //     DropdownMenuItem(
+                      //       value: RecordStatus.approved,
+                      //       child: Text(
+                      //         'Approved',
+                      //         style: TextStyle(fontSize: 14.sp),
+                      //       ),
+                      //     ),
+                      //     DropdownMenuItem(
+                      //       value: RecordStatus.draft,
+                      //       child: Text(
+                      //         'Draft',
+                      //         style: TextStyle(fontSize: 14.sp),
+                      //       ),
+                      //     ),
+                      //   ],
+                      //   onChanged: (value) {
+                      //     setState(() {
+                      //       _selectedStatus = value;
+                      //     });
+                      //   },
+                      //   validator: (value) {
+                      //     if (value == null) {
+                      //       return 'Please select status';
+                      //     }
+                      //     return null;
+                      //   },
+                      // ),
+                      // SizedBox(height: 20.h),
 
                       // Inspection Date
                       FormDateField(

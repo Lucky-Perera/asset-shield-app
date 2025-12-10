@@ -33,6 +33,11 @@ abstract class ChecklistQuestionItem with _$ChecklistQuestionItem {
     required bool isDeleted,
     String? section,
     int? order,
+    String? value,
+    String? note,
+    DateTime? completedAt,
+    List<AttachmentV2>? attachments,
+    // Legacy nested answer (keeping for backward compatibility)
     ChecklistAnswer? checklistAnswer,
   }) = _ChecklistQuestionItem;
 
