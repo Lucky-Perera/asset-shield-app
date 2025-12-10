@@ -15,15 +15,13 @@ abstract class RecordCreateRequest with _$RecordCreateRequest {
     @JsonKey(name: 'inspectedComponentIDs')
     required List<String> inspectedComponentIDs,
     @JsonKey(name: 'scheduleTypeID') required String scheduleTypeID,
-
-    /// Use server enum names as Strings (e.g. "NEW", "COMPLETED").
-    required String status,
     @JsonKey(name: 'inspectionDate') required DateTime inspectionDate,
     @JsonKey(name: 'actionCreated') required String actionCreated,
     @JsonKey(name: 'attachmentIDs') List<String>? attachmentIDs,
     String? comments,
     @JsonKey(name: 'checklistAnswers')
     List<ChecklistAnswerItem>? checklistAnswers,
+    required String submittedBy,
   }) = _RecordCreateRequest;
 
   factory RecordCreateRequest.fromJson(Map<String, dynamic> json) =>

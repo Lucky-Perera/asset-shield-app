@@ -26,7 +26,15 @@ class ChecklistNotifier extends _$ChecklistNotifier {
       final answers = <String, ChecklistAnswerData>{};
 
       for (final answer in response.data) {
-        if (answer.checklistAnswer?.value != null) {
+        // Check for direct value field (new API format)
+        if (answer.value != null && answer.value!.isNotEmpty) {
+          answers[answer.id] = ChecklistAnswerData(
+            value: answer.value!,
+            note: answer.note ?? '',
+          );
+        }
+        // Fallback to nested checklistAnswer (legacy format)
+        else if (answer.checklistAnswer?.value != null) {
           answers[answer.id] = ChecklistAnswerData(
             value: answer.checklistAnswer?.value ?? '',
             note: answer.checklistAnswer!.note ?? '',

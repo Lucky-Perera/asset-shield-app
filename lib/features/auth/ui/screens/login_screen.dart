@@ -1,5 +1,6 @@
 import 'package:asset_shield/core/routes/router.dart';
 import 'package:asset_shield/core/theme/color_palette.dart';
+import 'package:asset_shield/core/utility/storage_service.dart';
 import 'package:asset_shield/features/auth/data/services/auth_service.dart';
 import 'package:asset_shield/features/common/widgets/app_scaffold.dart';
 import 'package:asset_shield/features/common/widgets/reusable_button.dart';
@@ -40,6 +41,8 @@ class _LoginScreenState extends State<LoginScreen> {
           email: _emailController.text.trim(),
           password: _passwordController.text,
         );
+
+        await StorageService().saveUserObject(response.data.user);
 
         if (!mounted) return;
 

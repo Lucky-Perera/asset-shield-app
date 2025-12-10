@@ -18,7 +18,6 @@ _RecordCreateRequest _$RecordCreateRequestFromJson(Map<String, dynamic> json) =>
           .map((e) => e as String)
           .toList(),
       scheduleTypeID: json['scheduleTypeID'] as String,
-      status: json['status'] as String,
       inspectionDate: DateTime.parse(json['inspectionDate'] as String),
       actionCreated: json['actionCreated'] as String,
       attachmentIDs: (json['attachmentIDs'] as List<dynamic>?)
@@ -28,6 +27,7 @@ _RecordCreateRequest _$RecordCreateRequestFromJson(Map<String, dynamic> json) =>
       checklistAnswers: (json['checklistAnswers'] as List<dynamic>?)
           ?.map((e) => ChecklistAnswerItem.fromJson(e as Map<String, dynamic>))
           .toList(),
+      submittedBy: json['submittedBy'] as String,
     );
 
 Map<String, dynamic> _$RecordCreateRequestToJson(
@@ -39,12 +39,12 @@ Map<String, dynamic> _$RecordCreateRequestToJson(
   'recordCreatedDate': instance.recordCreatedDate.toIso8601String(),
   'inspectedComponentIDs': instance.inspectedComponentIDs,
   'scheduleTypeID': instance.scheduleTypeID,
-  'status': instance.status,
   'inspectionDate': instance.inspectionDate.toIso8601String(),
   'actionCreated': instance.actionCreated,
   'attachmentIDs': instance.attachmentIDs,
   'comments': instance.comments,
   'checklistAnswers': instance.checklistAnswers,
+  'submittedBy': instance.submittedBy,
 };
 
 _ChecklistAnswerItem _$ChecklistAnswerItemFromJson(Map<String, dynamic> json) =>

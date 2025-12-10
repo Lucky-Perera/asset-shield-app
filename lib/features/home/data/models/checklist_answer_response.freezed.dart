@@ -290,7 +290,9 @@ as List<ChecklistQuestionItem>,
 /// @nodoc
 mixin _$ChecklistQuestionItem {
 
- String get id; String get scheduleId; String get inspectionType; String get question; String? get helpText; String get responseType; bool get isDeleted; String? get section; int? get order; ChecklistAnswer? get checklistAnswer;
+ String get id; String get scheduleId; String get inspectionType; String get question; String? get helpText; String get responseType; bool get isDeleted; String? get section; int? get order;// Answer fields - these come directly on the response when answered
+ String? get value; String? get note; DateTime? get completedAt; List<AttachmentV2>? get attachments;// Legacy nested answer (keeping for backward compatibility)
+ ChecklistAnswer? get checklistAnswer;
 /// Create a copy of ChecklistQuestionItem
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -303,16 +305,16 @@ $ChecklistQuestionItemCopyWith<ChecklistQuestionItem> get copyWith => _$Checklis
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChecklistQuestionItem&&(identical(other.id, id) || other.id == id)&&(identical(other.scheduleId, scheduleId) || other.scheduleId == scheduleId)&&(identical(other.inspectionType, inspectionType) || other.inspectionType == inspectionType)&&(identical(other.question, question) || other.question == question)&&(identical(other.helpText, helpText) || other.helpText == helpText)&&(identical(other.responseType, responseType) || other.responseType == responseType)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted)&&(identical(other.section, section) || other.section == section)&&(identical(other.order, order) || other.order == order)&&(identical(other.checklistAnswer, checklistAnswer) || other.checklistAnswer == checklistAnswer));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChecklistQuestionItem&&(identical(other.id, id) || other.id == id)&&(identical(other.scheduleId, scheduleId) || other.scheduleId == scheduleId)&&(identical(other.inspectionType, inspectionType) || other.inspectionType == inspectionType)&&(identical(other.question, question) || other.question == question)&&(identical(other.helpText, helpText) || other.helpText == helpText)&&(identical(other.responseType, responseType) || other.responseType == responseType)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted)&&(identical(other.section, section) || other.section == section)&&(identical(other.order, order) || other.order == order)&&(identical(other.value, value) || other.value == value)&&(identical(other.note, note) || other.note == note)&&(identical(other.completedAt, completedAt) || other.completedAt == completedAt)&&const DeepCollectionEquality().equals(other.attachments, attachments)&&(identical(other.checklistAnswer, checklistAnswer) || other.checklistAnswer == checklistAnswer));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,scheduleId,inspectionType,question,helpText,responseType,isDeleted,section,order,checklistAnswer);
+int get hashCode => Object.hash(runtimeType,id,scheduleId,inspectionType,question,helpText,responseType,isDeleted,section,order,value,note,completedAt,const DeepCollectionEquality().hash(attachments),checklistAnswer);
 
 @override
 String toString() {
-  return 'ChecklistQuestionItem(id: $id, scheduleId: $scheduleId, inspectionType: $inspectionType, question: $question, helpText: $helpText, responseType: $responseType, isDeleted: $isDeleted, section: $section, order: $order, checklistAnswer: $checklistAnswer)';
+  return 'ChecklistQuestionItem(id: $id, scheduleId: $scheduleId, inspectionType: $inspectionType, question: $question, helpText: $helpText, responseType: $responseType, isDeleted: $isDeleted, section: $section, order: $order, value: $value, note: $note, completedAt: $completedAt, attachments: $attachments, checklistAnswer: $checklistAnswer)';
 }
 
 
@@ -323,7 +325,7 @@ abstract mixin class $ChecklistQuestionItemCopyWith<$Res>  {
   factory $ChecklistQuestionItemCopyWith(ChecklistQuestionItem value, $Res Function(ChecklistQuestionItem) _then) = _$ChecklistQuestionItemCopyWithImpl;
 @useResult
 $Res call({
- String id, String scheduleId, String inspectionType, String question, String? helpText, String responseType, bool isDeleted, String? section, int? order, ChecklistAnswer? checklistAnswer
+ String id, String scheduleId, String inspectionType, String question, String? helpText, String responseType, bool isDeleted, String? section, int? order, String? value, String? note, DateTime? completedAt, List<AttachmentV2>? attachments, ChecklistAnswer? checklistAnswer
 });
 
 
@@ -340,7 +342,7 @@ class _$ChecklistQuestionItemCopyWithImpl<$Res>
 
 /// Create a copy of ChecklistQuestionItem
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? scheduleId = null,Object? inspectionType = null,Object? question = null,Object? helpText = freezed,Object? responseType = null,Object? isDeleted = null,Object? section = freezed,Object? order = freezed,Object? checklistAnswer = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? scheduleId = null,Object? inspectionType = null,Object? question = null,Object? helpText = freezed,Object? responseType = null,Object? isDeleted = null,Object? section = freezed,Object? order = freezed,Object? value = freezed,Object? note = freezed,Object? completedAt = freezed,Object? attachments = freezed,Object? checklistAnswer = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,scheduleId: null == scheduleId ? _self.scheduleId : scheduleId // ignore: cast_nullable_to_non_nullable
@@ -351,7 +353,11 @@ as String?,responseType: null == responseType ? _self.responseType : responseTyp
 as String,isDeleted: null == isDeleted ? _self.isDeleted : isDeleted // ignore: cast_nullable_to_non_nullable
 as bool,section: freezed == section ? _self.section : section // ignore: cast_nullable_to_non_nullable
 as String?,order: freezed == order ? _self.order : order // ignore: cast_nullable_to_non_nullable
-as int?,checklistAnswer: freezed == checklistAnswer ? _self.checklistAnswer : checklistAnswer // ignore: cast_nullable_to_non_nullable
+as int?,value: freezed == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
+as String?,note: freezed == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
+as String?,completedAt: freezed == completedAt ? _self.completedAt : completedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,attachments: freezed == attachments ? _self.attachments : attachments // ignore: cast_nullable_to_non_nullable
+as List<AttachmentV2>?,checklistAnswer: freezed == checklistAnswer ? _self.checklistAnswer : checklistAnswer // ignore: cast_nullable_to_non_nullable
 as ChecklistAnswer?,
   ));
 }
@@ -449,10 +455,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String scheduleId,  String inspectionType,  String question,  String? helpText,  String responseType,  bool isDeleted,  String? section,  int? order,  ChecklistAnswer? checklistAnswer)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String scheduleId,  String inspectionType,  String question,  String? helpText,  String responseType,  bool isDeleted,  String? section,  int? order,  String? value,  String? note,  DateTime? completedAt,  List<AttachmentV2>? attachments,  ChecklistAnswer? checklistAnswer)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ChecklistQuestionItem() when $default != null:
-return $default(_that.id,_that.scheduleId,_that.inspectionType,_that.question,_that.helpText,_that.responseType,_that.isDeleted,_that.section,_that.order,_that.checklistAnswer);case _:
+return $default(_that.id,_that.scheduleId,_that.inspectionType,_that.question,_that.helpText,_that.responseType,_that.isDeleted,_that.section,_that.order,_that.value,_that.note,_that.completedAt,_that.attachments,_that.checklistAnswer);case _:
   return orElse();
 
 }
@@ -470,10 +476,10 @@ return $default(_that.id,_that.scheduleId,_that.inspectionType,_that.question,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String scheduleId,  String inspectionType,  String question,  String? helpText,  String responseType,  bool isDeleted,  String? section,  int? order,  ChecklistAnswer? checklistAnswer)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String scheduleId,  String inspectionType,  String question,  String? helpText,  String responseType,  bool isDeleted,  String? section,  int? order,  String? value,  String? note,  DateTime? completedAt,  List<AttachmentV2>? attachments,  ChecklistAnswer? checklistAnswer)  $default,) {final _that = this;
 switch (_that) {
 case _ChecklistQuestionItem():
-return $default(_that.id,_that.scheduleId,_that.inspectionType,_that.question,_that.helpText,_that.responseType,_that.isDeleted,_that.section,_that.order,_that.checklistAnswer);case _:
+return $default(_that.id,_that.scheduleId,_that.inspectionType,_that.question,_that.helpText,_that.responseType,_that.isDeleted,_that.section,_that.order,_that.value,_that.note,_that.completedAt,_that.attachments,_that.checklistAnswer);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -490,10 +496,10 @@ return $default(_that.id,_that.scheduleId,_that.inspectionType,_that.question,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String scheduleId,  String inspectionType,  String question,  String? helpText,  String responseType,  bool isDeleted,  String? section,  int? order,  ChecklistAnswer? checklistAnswer)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String scheduleId,  String inspectionType,  String question,  String? helpText,  String responseType,  bool isDeleted,  String? section,  int? order,  String? value,  String? note,  DateTime? completedAt,  List<AttachmentV2>? attachments,  ChecklistAnswer? checklistAnswer)?  $default,) {final _that = this;
 switch (_that) {
 case _ChecklistQuestionItem() when $default != null:
-return $default(_that.id,_that.scheduleId,_that.inspectionType,_that.question,_that.helpText,_that.responseType,_that.isDeleted,_that.section,_that.order,_that.checklistAnswer);case _:
+return $default(_that.id,_that.scheduleId,_that.inspectionType,_that.question,_that.helpText,_that.responseType,_that.isDeleted,_that.section,_that.order,_that.value,_that.note,_that.completedAt,_that.attachments,_that.checklistAnswer);case _:
   return null;
 
 }
@@ -505,7 +511,7 @@ return $default(_that.id,_that.scheduleId,_that.inspectionType,_that.question,_t
 @JsonSerializable()
 
 class _ChecklistQuestionItem implements ChecklistQuestionItem {
-  const _ChecklistQuestionItem({required this.id, required this.scheduleId, required this.inspectionType, required this.question, this.helpText, required this.responseType, required this.isDeleted, this.section, this.order, this.checklistAnswer});
+  const _ChecklistQuestionItem({required this.id, required this.scheduleId, required this.inspectionType, required this.question, this.helpText, required this.responseType, required this.isDeleted, this.section, this.order, this.value, this.note, this.completedAt, final  List<AttachmentV2>? attachments, this.checklistAnswer}): _attachments = attachments;
   factory _ChecklistQuestionItem.fromJson(Map<String, dynamic> json) => _$ChecklistQuestionItemFromJson(json);
 
 @override final  String id;
@@ -517,6 +523,20 @@ class _ChecklistQuestionItem implements ChecklistQuestionItem {
 @override final  bool isDeleted;
 @override final  String? section;
 @override final  int? order;
+// Answer fields - these come directly on the response when answered
+@override final  String? value;
+@override final  String? note;
+@override final  DateTime? completedAt;
+ final  List<AttachmentV2>? _attachments;
+@override List<AttachmentV2>? get attachments {
+  final value = _attachments;
+  if (value == null) return null;
+  if (_attachments is EqualUnmodifiableListView) return _attachments;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
+// Legacy nested answer (keeping for backward compatibility)
 @override final  ChecklistAnswer? checklistAnswer;
 
 /// Create a copy of ChecklistQuestionItem
@@ -532,16 +552,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChecklistQuestionItem&&(identical(other.id, id) || other.id == id)&&(identical(other.scheduleId, scheduleId) || other.scheduleId == scheduleId)&&(identical(other.inspectionType, inspectionType) || other.inspectionType == inspectionType)&&(identical(other.question, question) || other.question == question)&&(identical(other.helpText, helpText) || other.helpText == helpText)&&(identical(other.responseType, responseType) || other.responseType == responseType)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted)&&(identical(other.section, section) || other.section == section)&&(identical(other.order, order) || other.order == order)&&(identical(other.checklistAnswer, checklistAnswer) || other.checklistAnswer == checklistAnswer));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChecklistQuestionItem&&(identical(other.id, id) || other.id == id)&&(identical(other.scheduleId, scheduleId) || other.scheduleId == scheduleId)&&(identical(other.inspectionType, inspectionType) || other.inspectionType == inspectionType)&&(identical(other.question, question) || other.question == question)&&(identical(other.helpText, helpText) || other.helpText == helpText)&&(identical(other.responseType, responseType) || other.responseType == responseType)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted)&&(identical(other.section, section) || other.section == section)&&(identical(other.order, order) || other.order == order)&&(identical(other.value, value) || other.value == value)&&(identical(other.note, note) || other.note == note)&&(identical(other.completedAt, completedAt) || other.completedAt == completedAt)&&const DeepCollectionEquality().equals(other._attachments, _attachments)&&(identical(other.checklistAnswer, checklistAnswer) || other.checklistAnswer == checklistAnswer));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,scheduleId,inspectionType,question,helpText,responseType,isDeleted,section,order,checklistAnswer);
+int get hashCode => Object.hash(runtimeType,id,scheduleId,inspectionType,question,helpText,responseType,isDeleted,section,order,value,note,completedAt,const DeepCollectionEquality().hash(_attachments),checklistAnswer);
 
 @override
 String toString() {
-  return 'ChecklistQuestionItem(id: $id, scheduleId: $scheduleId, inspectionType: $inspectionType, question: $question, helpText: $helpText, responseType: $responseType, isDeleted: $isDeleted, section: $section, order: $order, checklistAnswer: $checklistAnswer)';
+  return 'ChecklistQuestionItem(id: $id, scheduleId: $scheduleId, inspectionType: $inspectionType, question: $question, helpText: $helpText, responseType: $responseType, isDeleted: $isDeleted, section: $section, order: $order, value: $value, note: $note, completedAt: $completedAt, attachments: $attachments, checklistAnswer: $checklistAnswer)';
 }
 
 
@@ -552,7 +572,7 @@ abstract mixin class _$ChecklistQuestionItemCopyWith<$Res> implements $Checklist
   factory _$ChecklistQuestionItemCopyWith(_ChecklistQuestionItem value, $Res Function(_ChecklistQuestionItem) _then) = __$ChecklistQuestionItemCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String scheduleId, String inspectionType, String question, String? helpText, String responseType, bool isDeleted, String? section, int? order, ChecklistAnswer? checklistAnswer
+ String id, String scheduleId, String inspectionType, String question, String? helpText, String responseType, bool isDeleted, String? section, int? order, String? value, String? note, DateTime? completedAt, List<AttachmentV2>? attachments, ChecklistAnswer? checklistAnswer
 });
 
 
@@ -569,7 +589,7 @@ class __$ChecklistQuestionItemCopyWithImpl<$Res>
 
 /// Create a copy of ChecklistQuestionItem
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? scheduleId = null,Object? inspectionType = null,Object? question = null,Object? helpText = freezed,Object? responseType = null,Object? isDeleted = null,Object? section = freezed,Object? order = freezed,Object? checklistAnswer = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? scheduleId = null,Object? inspectionType = null,Object? question = null,Object? helpText = freezed,Object? responseType = null,Object? isDeleted = null,Object? section = freezed,Object? order = freezed,Object? value = freezed,Object? note = freezed,Object? completedAt = freezed,Object? attachments = freezed,Object? checklistAnswer = freezed,}) {
   return _then(_ChecklistQuestionItem(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,scheduleId: null == scheduleId ? _self.scheduleId : scheduleId // ignore: cast_nullable_to_non_nullable
@@ -580,7 +600,11 @@ as String?,responseType: null == responseType ? _self.responseType : responseTyp
 as String,isDeleted: null == isDeleted ? _self.isDeleted : isDeleted // ignore: cast_nullable_to_non_nullable
 as bool,section: freezed == section ? _self.section : section // ignore: cast_nullable_to_non_nullable
 as String?,order: freezed == order ? _self.order : order // ignore: cast_nullable_to_non_nullable
-as int?,checklistAnswer: freezed == checklistAnswer ? _self.checklistAnswer : checklistAnswer // ignore: cast_nullable_to_non_nullable
+as int?,value: freezed == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
+as String?,note: freezed == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
+as String?,completedAt: freezed == completedAt ? _self.completedAt : completedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,attachments: freezed == attachments ? _self._attachments : attachments // ignore: cast_nullable_to_non_nullable
+as List<AttachmentV2>?,checklistAnswer: freezed == checklistAnswer ? _self.checklistAnswer : checklistAnswer // ignore: cast_nullable_to_non_nullable
 as ChecklistAnswer?,
   ));
 }
