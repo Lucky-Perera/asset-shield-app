@@ -3,10 +3,8 @@ import 'package:asset_shield/core/theme/app_text_styles.dart';
 import 'package:asset_shield/core/theme/color_palette.dart';
 import 'package:asset_shield/features/common/widgets/app_scaffold.dart';
 import 'package:asset_shield/features/common/widgets/reusable_button.dart';
-import 'package:asset_shield/features/home/data/models/checklist_state.dart';
 import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
-import 'package:asset_shield/features/home/data/providers/checklist_provider.dart';
-import 'package:asset_shield/features/home/data/providers/record_provider.dart';
+import 'package:asset_shield/features/home/data/providers/record_with_checklist_provider.dart';
 import 'package:asset_shield/features/home/ui/widgets/schedule_details/inspection_methods_section.dart';
 import 'package:asset_shield/features/home/ui/widgets/schedule_details/potential_emergent_works_section.dart';
 import 'package:asset_shield/features/home/ui/widgets/schedule_details/schedule_info_card.dart';
@@ -27,11 +25,12 @@ class ScheduleDetailsScreen extends ConsumerStatefulWidget {
 class _ScheduleDetailsScreenState extends ConsumerState<ScheduleDetailsScreen> {
   @override
   Widget build(BuildContext context) {
-    ref.watch(recordProvider(widget.schedule.id));
-    // log('Building ScheduleDetailsScreen for schedule ID: ${widget.schedule.id}');
-    final checklistState = ref
-        .watch(checklistProvider(widget.schedule.id))
-        .value;
+    final recordWithChecklistAsync = ref.watch(
+      recordWithChecklistProvider(widget.schedule.id),
+    );
+    final state = recordWithChecklistAsync.value;
+    final hasSubmittedAnswers = state?.hasSubmittedAnswers ?? false;
+
     return SafeArea(
       child: AppScaffold(
         appBar: AppBar(
@@ -43,12 +42,12 @@ class _ScheduleDetailsScreenState extends ConsumerState<ScheduleDetailsScreen> {
             ).copyWith(fontWeight: FontWeight.w600),
           ),
         ),
-        body: _buildBody(checklistState),
+        body: _buildBody(hasSubmittedAnswers),
       ),
     );
   }
 
-  Widget _buildBody(ChecklistState? checklistState) {
+  Widget _buildBody(bool hasSubmittedAnswers) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -67,9 +66,7 @@ class _ScheduleDetailsScreenState extends ConsumerState<ScheduleDetailsScreen> {
           ),
           SizedBox(height: 16.h),
           ReusableButton(
-            text: (checklistState?.answersAlreadySubmitted ?? false)
-                ? 'View Record'
-                : 'Add Record',
+            text: hasSubmittedAnswers ? 'View Record' : 'Add Record',
             onPressed: () => Routes().addRecord(widget.schedule),
           ),
         ],

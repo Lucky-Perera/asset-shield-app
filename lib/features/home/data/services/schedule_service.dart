@@ -1,9 +1,7 @@
 import 'package:asset_shield/core/utility/client.dart';
 import 'package:asset_shield/core/utility/helpers.dart';
-import 'package:asset_shield/features/home/data/models/checklist_answer_response.dart';
 import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
 import 'package:asset_shield/features/home/data/models/record_create_request.dart';
-import 'package:asset_shield/features/home/data/models/record_response.dart';
 import 'package:asset_shield/features/home/data/models/record_with_checklist_response.dart';
 import 'package:dio/dio.dart';
 
@@ -45,33 +43,49 @@ class ScheduleService {
     }
   }
 
-  /// Fetch record by schedule ID (mobile API)
-  Future<RecordResponse> fetchRecordByScheduleId(String scheduleId) async {
+  Future<RecordWithChecklistResponse> getRecordWithChecklistAnswers(
+    String scheduleId,
+  ) async {
     try {
-      final response = await _dio.get('/schedules/$scheduleId/record');
-      final api = RecordApiResponse.fromJson(
+      final response = await _dio.get(
+        '/schedules/$scheduleId/record-with-checklist',
+      );
+
+      return RecordWithChecklistResponse.fromJson(
         response.data as Map<String, dynamic>,
       );
-      if (api.success && api.data != null) {
-        return api.data!;
-      }
-      throw Exception(api.error ?? 'Empty record data');
     } on DioException catch (e) {
       throw Helpers.handleError(e);
     }
   }
 
-  /// Fetch checklist answers for a schedule (mobile API)
-  Future<ChecklistAnswerResponse> fetchChecklistAnswers({
-    required String scheduleId,
-  }) async {
-    try {
-      final response = await _dio.get(
-        '/schedules/$scheduleId/checklist/answers',
-      );
-      return ChecklistAnswerResponse.fromJson(response.data);
-    } on DioException catch (e) {
-      throw Helpers.handleError(e);
-    }
-  }
+  /// Fetch record by schedule ID (mobile API)
+  // Future<RecordResponse> fetchRecordByScheduleId(String scheduleId) async {
+  //   try {
+  //     final response = await _dio.get('/schedules/$scheduleId/record');
+  //     final api = RecordApiResponse.fromJson(
+  //       response.data as Map<String, dynamic>,
+  //     );
+  //     if (api.success && api.data != null) {
+  //       return api.data!;
+  //     }
+  //     throw Exception(api.error ?? 'Empty record data');
+  //   } on DioException catch (e) {
+  //     throw Helpers.handleError(e);
+  //   }
+  // }
+
+  // /// Fetch checklist answers for a schedule (mobile API)
+  // Future<ChecklistAnswerResponse> fetchChecklistAnswers({
+  //   required String scheduleId,
+  // }) async {
+  //   try {
+  //     final response = await _dio.get(
+  //       '/schedules/$scheduleId/checklist/answers',
+  //     );
+  //     return ChecklistAnswerResponse.fromJson(response.data);
+  //   } on DioException catch (e) {
+  //     throw Helpers.handleError(e);
+  //   }
+  // }
 }
