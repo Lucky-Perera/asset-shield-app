@@ -4,7 +4,7 @@ import 'package:asset_shield/core/utility/storage_service.dart';
 import 'package:asset_shield/core/utility/toast_service.dart';
 import 'package:asset_shield/features/home/data/models/record_create_request.dart';
 import 'package:asset_shield/features/home/data/models/record_response.dart';
-import 'package:asset_shield/features/home/data/providers/record_provider.dart';
+import 'package:asset_shield/features/home/data/providers/record_with_checklist_provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -19,7 +19,7 @@ import 'package:asset_shield/features/common/widgets/form_text_field.dart';
 import 'package:asset_shield/features/common/widgets/reusable_button.dart';
 import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
 import 'package:asset_shield/features/home/ui/widgets/checklist/checklist_section.dart';
-import 'package:asset_shield/features/home/data/providers/checklist_provider.dart';
+import 'package:asset_shield/features/home/data/models/checklist_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -50,6 +50,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
   // RecordStatus? _selectedStatus;
   DateTime? _inspectionDate;
   final List<File> _selectedFiles = [];
+  final Map<String, ChecklistAnswerData> _checklistAnswers = {};
 
   List<MultiSelectItem<String>> get _componentItems => widget
       .schedule
@@ -201,20 +202,16 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     String value,
     String note,
   ) {
-    ref
-        .read(checklistProvider(widget.schedule.id).notifier)
-        .updateAnswer(questionId: questionId, value: value, note: note);
+    setState(() {
+      _checklistAnswers[questionId] = ChecklistAnswerData(
+        value: value,
+        note: note,
+      );
+    });
   }
 
   void _handleCreate() async {
     EasyLoading.show();
-
-    final checklistNotifier = ref.read(
-      checklistProvider(widget.schedule.id).notifier,
-    );
-    final checklistState = ref
-        .read(checklistProvider(widget.schedule.id))
-        .value;
 
     if (_formKey.currentState?.validate() ?? false) {
       // Validate that all checklist questions are answered
@@ -222,8 +219,8 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
         final totalQuestions =
             widget.schedule.checklistQuestionTemplates.length;
 
-        if (!checklistNotifier.areAllQuestionsAnswered(totalQuestions)) {
-          final answeredQuestions = checklistState?.answers.length;
+        if (_checklistAnswers.length < totalQuestions) {
+          final answeredQuestions = _checklistAnswers.length;
           EasyLoading.dismiss();
           ToastService.show(
             'Please answer all $totalQuestions checklist questions. '
@@ -233,17 +230,18 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
         }
 
         // Validate all answers
-        final validationError = checklistNotifier.validateAnswers();
-        if (validationError != null) {
-          EasyLoading.dismiss();
-          ToastService.show(validationError);
-          return;
+        for (final entry in _checklistAnswers.entries) {
+          if (entry.value.value.isEmpty) {
+            EasyLoading.dismiss();
+            ToastService.show('Please select a response for all questions');
+            return;
+          }
         }
       }
 
       try {
         // Prepare checklist answers for the combined API
-        final checklistAnswers = checklistState?.answers.entries
+        final checklistAnswers = _checklistAnswers.entries
             .map(
               (entry) => ChecklistAnswerItem(
                 questionId: entry.key,
@@ -272,19 +270,13 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
           submittedBy: user?.id ?? '',
         );
 
-        final recordNotifier = ref.read(
-          recordProvider(widget.schedule.id).notifier,
+        final notifier = ref.read(
+          recordWithChecklistProvider(widget.schedule.id).notifier,
         );
-        final response = await recordNotifier.createRecordWithChecklist(
-          payload,
-        );
+        final response = await notifier.createRecordWithChecklist(payload);
         log(
           'Record created with ${response.data.answeredQuestions.length} checklist answers',
         );
-
-        // Refresh both providers to load the newly submitted data
-        await recordNotifier.refresh();
-        await checklistNotifier.refresh();
 
         router.pop();
         ToastService.show(response.message ?? 'Record submitted successfully');
@@ -301,22 +293,34 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final checklistState = ref
-        .watch(checklistProvider(widget.schedule.id))
-        .value;
-    final recordAsync = ref.watch(recordProvider(widget.schedule.id));
-    final recordState = recordAsync.value;
-    final existingRecord = recordState?.record;
-    final isReadOnly = existingRecord != null;
+    final recordWithChecklistAsync = ref.watch(
+      recordWithChecklistProvider(widget.schedule.id),
+    );
+    final state = recordWithChecklistAsync.value;
+    final existingRecord = state?.record;
+    final hasSubmittedAnswers = state?.hasSubmittedAnswers ?? false;
+    final isReadOnly = hasSubmittedAnswers;
 
     if (!_prefilled && existingRecord != null) {
       _initialiseFields(existingRecord);
       _prefilled = true;
     }
 
-    // Convert provider state to initialValues format
+    // Initialize checklist answers from fetched data if not already done
+    if (hasSubmittedAnswers && _checklistAnswers.isEmpty) {
+      for (final question in state?.answeredQuestions ?? []) {
+        if (question.value != null && question.value!.isNotEmpty) {
+          _checklistAnswers[question.id] = ChecklistAnswerData(
+            value: question.value!,
+            note: question.note ?? '',
+          );
+        }
+      }
+    }
+
+    // Convert local state to initialValues format
     final initialValues = <String, Map<String, String>>{};
-    checklistState?.answers.forEach((key, value) {
+    _checklistAnswers.forEach((key, value) {
       initialValues[key] = {'value': value.value, 'note': value.note};
     });
 
@@ -330,9 +334,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
           onPressed: _handleClose,
         ),
         title: Text(
-          checklistState?.answersAlreadySubmitted ?? false
-              ? 'View Record'
-              : 'Add Record',
+          hasSubmittedAnswers ? 'View Record' : 'Add Record',
           style: AppTextStyles.h2(
             context,
           ).copyWith(fontWeight: FontWeight.w600),
@@ -545,7 +547,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                           ).copyWith(fontWeight: FontWeight.w600),
                         ),
                         SizedBox(height: 8.h),
-                        checklistState?.isLoading ?? true
+                        recordWithChecklistAsync.isLoading
                             ? Center(
                                 child: Padding(
                                   padding: EdgeInsets.all(24.h),
@@ -555,14 +557,10 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                             : ChecklistSections(
                                 questions:
                                     widget.schedule.checklistQuestionTemplates,
-                                onAnswerChanged:
-                                    checklistState?.answersAlreadySubmitted ??
-                                        false
+                                onAnswerChanged: hasSubmittedAnswers
                                     ? null
                                     : _handleChecklistAnswerChanged,
-                                readOnly:
-                                    checklistState?.answersAlreadySubmitted ??
-                                    false,
+                                readOnly: hasSubmittedAnswers,
                                 initialValues: initialValues,
                               ),
                         SizedBox(height: 24.h),
@@ -604,12 +602,8 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                     Expanded(
                       child: ReusableButton(
                         text: 'Submit',
-                        onPressed:
-                            checklistState?.answersAlreadySubmitted ?? false
-                            ? null
-                            : _handleCreate,
-                        backgroundColor:
-                            checklistState?.answersAlreadySubmitted ?? false
+                        onPressed: hasSubmittedAnswers ? null : _handleCreate,
+                        backgroundColor: hasSubmittedAnswers
                             ? ColorPalette.black.withValues(alpha: 0.3)
                             : ColorPalette.black,
                         height: 48.h,
