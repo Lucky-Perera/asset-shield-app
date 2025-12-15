@@ -3181,7 +3181,7 @@ as String?,
 /// @nodoc
 mixin _$RecordV2Response {
 
- String get id; DateTime get createdAt; DateTime get updatedAt; String get description; DateTime get recordCreatedDate; String get status; DateTime get inspectionDate; String get actionCreated; String? get comments; bool? get isDeleted; String get scheduleId; String? get referenceDataId; String get equipmentId; String get scheduleTypeId; String? get submittedById; String? get approvedById;
+ String get id; DateTime get createdAt; DateTime get updatedAt; String get description; DateTime get recordCreatedDate; RecordStatus get status; DateTime get inspectionDate; String get actionCreated; String? get comments; bool? get isDeleted; String get scheduleId; String? get referenceDataId; String get equipmentId; String get scheduleTypeId; String? get submittedById; String? get approvedById;
 /// Create a copy of RecordV2Response
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -3214,7 +3214,7 @@ abstract mixin class $RecordV2ResponseCopyWith<$Res>  {
   factory $RecordV2ResponseCopyWith(RecordV2Response value, $Res Function(RecordV2Response) _then) = _$RecordV2ResponseCopyWithImpl;
 @useResult
 $Res call({
- String id, DateTime createdAt, DateTime updatedAt, String description, DateTime recordCreatedDate, String status, DateTime inspectionDate, String actionCreated, String? comments, bool? isDeleted, String scheduleId, String? referenceDataId, String equipmentId, String scheduleTypeId, String? submittedById, String? approvedById
+ String id, DateTime createdAt, DateTime updatedAt, String description, DateTime recordCreatedDate, RecordStatus status, DateTime inspectionDate, String actionCreated, String? comments, bool? isDeleted, String scheduleId, String? referenceDataId, String equipmentId, String scheduleTypeId, String? submittedById, String? approvedById
 });
 
 
@@ -3239,7 +3239,7 @@ as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore
 as DateTime,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,recordCreatedDate: null == recordCreatedDate ? _self.recordCreatedDate : recordCreatedDate // ignore: cast_nullable_to_non_nullable
 as DateTime,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as String,inspectionDate: null == inspectionDate ? _self.inspectionDate : inspectionDate // ignore: cast_nullable_to_non_nullable
+as RecordStatus,inspectionDate: null == inspectionDate ? _self.inspectionDate : inspectionDate // ignore: cast_nullable_to_non_nullable
 as DateTime,actionCreated: null == actionCreated ? _self.actionCreated : actionCreated // ignore: cast_nullable_to_non_nullable
 as String,comments: freezed == comments ? _self.comments : comments // ignore: cast_nullable_to_non_nullable
 as String?,isDeleted: freezed == isDeleted ? _self.isDeleted : isDeleted // ignore: cast_nullable_to_non_nullable
@@ -3334,7 +3334,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  String description,  DateTime recordCreatedDate,  String status,  DateTime inspectionDate,  String actionCreated,  String? comments,  bool? isDeleted,  String scheduleId,  String? referenceDataId,  String equipmentId,  String scheduleTypeId,  String? submittedById,  String? approvedById)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  String description,  DateTime recordCreatedDate,  RecordStatus status,  DateTime inspectionDate,  String actionCreated,  String? comments,  bool? isDeleted,  String scheduleId,  String? referenceDataId,  String equipmentId,  String scheduleTypeId,  String? submittedById,  String? approvedById)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _RecordV2Response() when $default != null:
 return $default(_that.id,_that.createdAt,_that.updatedAt,_that.description,_that.recordCreatedDate,_that.status,_that.inspectionDate,_that.actionCreated,_that.comments,_that.isDeleted,_that.scheduleId,_that.referenceDataId,_that.equipmentId,_that.scheduleTypeId,_that.submittedById,_that.approvedById);case _:
@@ -3355,7 +3355,7 @@ return $default(_that.id,_that.createdAt,_that.updatedAt,_that.description,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  String description,  DateTime recordCreatedDate,  String status,  DateTime inspectionDate,  String actionCreated,  String? comments,  bool? isDeleted,  String scheduleId,  String? referenceDataId,  String equipmentId,  String scheduleTypeId,  String? submittedById,  String? approvedById)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  String description,  DateTime recordCreatedDate,  RecordStatus status,  DateTime inspectionDate,  String actionCreated,  String? comments,  bool? isDeleted,  String scheduleId,  String? referenceDataId,  String equipmentId,  String scheduleTypeId,  String? submittedById,  String? approvedById)  $default,) {final _that = this;
 switch (_that) {
 case _RecordV2Response():
 return $default(_that.id,_that.createdAt,_that.updatedAt,_that.description,_that.recordCreatedDate,_that.status,_that.inspectionDate,_that.actionCreated,_that.comments,_that.isDeleted,_that.scheduleId,_that.referenceDataId,_that.equipmentId,_that.scheduleTypeId,_that.submittedById,_that.approvedById);case _:
@@ -3375,7 +3375,7 @@ return $default(_that.id,_that.createdAt,_that.updatedAt,_that.description,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  DateTime createdAt,  DateTime updatedAt,  String description,  DateTime recordCreatedDate,  String status,  DateTime inspectionDate,  String actionCreated,  String? comments,  bool? isDeleted,  String scheduleId,  String? referenceDataId,  String equipmentId,  String scheduleTypeId,  String? submittedById,  String? approvedById)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  DateTime createdAt,  DateTime updatedAt,  String description,  DateTime recordCreatedDate,  RecordStatus status,  DateTime inspectionDate,  String actionCreated,  String? comments,  bool? isDeleted,  String scheduleId,  String? referenceDataId,  String equipmentId,  String scheduleTypeId,  String? submittedById,  String? approvedById)?  $default,) {final _that = this;
 switch (_that) {
 case _RecordV2Response() when $default != null:
 return $default(_that.id,_that.createdAt,_that.updatedAt,_that.description,_that.recordCreatedDate,_that.status,_that.inspectionDate,_that.actionCreated,_that.comments,_that.isDeleted,_that.scheduleId,_that.referenceDataId,_that.equipmentId,_that.scheduleTypeId,_that.submittedById,_that.approvedById);case _:
@@ -3398,7 +3398,7 @@ class _RecordV2Response implements RecordV2Response {
 @override final  DateTime updatedAt;
 @override final  String description;
 @override final  DateTime recordCreatedDate;
-@override final  String status;
+@override final  RecordStatus status;
 @override final  DateTime inspectionDate;
 @override final  String actionCreated;
 @override final  String? comments;
@@ -3443,7 +3443,7 @@ abstract mixin class _$RecordV2ResponseCopyWith<$Res> implements $RecordV2Respon
   factory _$RecordV2ResponseCopyWith(_RecordV2Response value, $Res Function(_RecordV2Response) _then) = __$RecordV2ResponseCopyWithImpl;
 @override @useResult
 $Res call({
- String id, DateTime createdAt, DateTime updatedAt, String description, DateTime recordCreatedDate, String status, DateTime inspectionDate, String actionCreated, String? comments, bool? isDeleted, String scheduleId, String? referenceDataId, String equipmentId, String scheduleTypeId, String? submittedById, String? approvedById
+ String id, DateTime createdAt, DateTime updatedAt, String description, DateTime recordCreatedDate, RecordStatus status, DateTime inspectionDate, String actionCreated, String? comments, bool? isDeleted, String scheduleId, String? referenceDataId, String equipmentId, String scheduleTypeId, String? submittedById, String? approvedById
 });
 
 
@@ -3468,7 +3468,7 @@ as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore
 as DateTime,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,recordCreatedDate: null == recordCreatedDate ? _self.recordCreatedDate : recordCreatedDate // ignore: cast_nullable_to_non_nullable
 as DateTime,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as String,inspectionDate: null == inspectionDate ? _self.inspectionDate : inspectionDate // ignore: cast_nullable_to_non_nullable
+as RecordStatus,inspectionDate: null == inspectionDate ? _self.inspectionDate : inspectionDate // ignore: cast_nullable_to_non_nullable
 as DateTime,actionCreated: null == actionCreated ? _self.actionCreated : actionCreated // ignore: cast_nullable_to_non_nullable
 as String,comments: freezed == comments ? _self.comments : comments // ignore: cast_nullable_to_non_nullable
 as String?,isDeleted: freezed == isDeleted ? _self.isDeleted : isDeleted // ignore: cast_nullable_to_non_nullable

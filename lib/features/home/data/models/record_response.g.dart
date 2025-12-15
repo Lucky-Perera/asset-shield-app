@@ -6,22 +6,6 @@ part of 'record_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_RecordApiResponse _$RecordApiResponseFromJson(Map<String, dynamic> json) =>
-    _RecordApiResponse(
-      success: json['success'] as bool,
-      data: json['data'] == null
-          ? null
-          : RecordResponse.fromJson(json['data'] as Map<String, dynamic>),
-      error: json['error'] as String?,
-    );
-
-Map<String, dynamic> _$RecordApiResponseToJson(_RecordApiResponse instance) =>
-    <String, dynamic>{
-      'success': instance.success,
-      'data': instance.data,
-      'error': instance.error,
-    };
-
 _RecordResponse _$RecordResponseFromJson(Map<String, dynamic> json) =>
     _RecordResponse(
       id: json['id'] as String,
@@ -38,7 +22,11 @@ _RecordResponse _$RecordResponseFromJson(Map<String, dynamic> json) =>
           ?.map((e) => RecordComponent.fromJson(e as Map<String, dynamic>))
           .toList(),
       scheduleType: json['scheduleType'] as Map<String, dynamic>?,
-      status: json['status'] as String?,
+      status: $enumDecodeNullable(
+        _$RecordStatusEnumMap,
+        json['status'],
+        unknownValue: JsonKey.nullForUndefinedEnumValue,
+      ),
       inspectionDate: json['inspectionDate'] == null
           ? null
           : DateTime.parse(json['inspectionDate'] as String),
@@ -59,12 +47,18 @@ Map<String, dynamic> _$RecordResponseToJson(_RecordResponse instance) =>
       'recordCreatedDate': instance.recordCreatedDate?.toIso8601String(),
       'inspectedComponents': instance.inspectedComponents,
       'scheduleType': instance.scheduleType,
-      'status': instance.status,
+      'status': _$RecordStatusEnumMap[instance.status],
       'inspectionDate': instance.inspectionDate?.toIso8601String(),
       'actionCreated': instance.actionCreated,
       'attachments': instance.attachments,
       'comments': instance.comments,
     };
+
+const _$RecordStatusEnumMap = {
+  RecordStatus.rejected: 'Rejected',
+  RecordStatus.pendingApproval: 'PendingApproval',
+  RecordStatus.approved: 'Approved',
+};
 
 _RecordComponent _$RecordComponentFromJson(Map<String, dynamic> json) =>
     _RecordComponent(

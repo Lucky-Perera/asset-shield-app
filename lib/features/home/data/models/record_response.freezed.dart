@@ -13,302 +13,9 @@ part of 'record_response.dart';
 T _$identity<T>(T value) => value;
 
 /// @nodoc
-mixin _$RecordApiResponse {
-
- bool get success; RecordResponse? get data; String? get error;
-/// Create a copy of RecordApiResponse
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$RecordApiResponseCopyWith<RecordApiResponse> get copyWith => _$RecordApiResponseCopyWithImpl<RecordApiResponse>(this as RecordApiResponse, _$identity);
-
-  /// Serializes this RecordApiResponse to a JSON map.
-  Map<String, dynamic> toJson();
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is RecordApiResponse&&(identical(other.success, success) || other.success == success)&&(identical(other.data, data) || other.data == data)&&(identical(other.error, error) || other.error == error));
-}
-
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,success,data,error);
-
-@override
-String toString() {
-  return 'RecordApiResponse(success: $success, data: $data, error: $error)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class $RecordApiResponseCopyWith<$Res>  {
-  factory $RecordApiResponseCopyWith(RecordApiResponse value, $Res Function(RecordApiResponse) _then) = _$RecordApiResponseCopyWithImpl;
-@useResult
-$Res call({
- bool success, RecordResponse? data, String? error
-});
-
-
-$RecordResponseCopyWith<$Res>? get data;
-
-}
-/// @nodoc
-class _$RecordApiResponseCopyWithImpl<$Res>
-    implements $RecordApiResponseCopyWith<$Res> {
-  _$RecordApiResponseCopyWithImpl(this._self, this._then);
-
-  final RecordApiResponse _self;
-  final $Res Function(RecordApiResponse) _then;
-
-/// Create a copy of RecordApiResponse
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? success = null,Object? data = freezed,Object? error = freezed,}) {
-  return _then(_self.copyWith(
-success: null == success ? _self.success : success // ignore: cast_nullable_to_non_nullable
-as bool,data: freezed == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
-as RecordResponse?,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
-as String?,
-  ));
-}
-/// Create a copy of RecordApiResponse
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$RecordResponseCopyWith<$Res>? get data {
-    if (_self.data == null) {
-    return null;
-  }
-
-  return $RecordResponseCopyWith<$Res>(_self.data!, (value) {
-    return _then(_self.copyWith(data: value));
-  });
-}
-}
-
-
-/// Adds pattern-matching-related methods to [RecordApiResponse].
-extension RecordApiResponsePatterns on RecordApiResponse {
-/// A variant of `map` that fallback to returning `orElse`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
-
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _RecordApiResponse value)?  $default,{required TResult orElse(),}){
-final _that = this;
-switch (_that) {
-case _RecordApiResponse() when $default != null:
-return $default(_that);case _:
-  return orElse();
-
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// Callbacks receives the raw object, upcasted.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case final Subclass2 value:
-///     return ...;
-/// }
-/// ```
-
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _RecordApiResponse value)  $default,){
-final _that = this;
-switch (_that) {
-case _RecordApiResponse():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
-}
-/// A variant of `map` that fallback to returning `null`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
-
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _RecordApiResponse value)?  $default,){
-final _that = this;
-switch (_that) {
-case _RecordApiResponse() when $default != null:
-return $default(_that);case _:
-  return null;
-
-}
-}
-/// A variant of `when` that fallback to an `orElse` callback.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
-
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool success,  RecordResponse? data,  String? error)?  $default,{required TResult orElse(),}) {final _that = this;
-switch (_that) {
-case _RecordApiResponse() when $default != null:
-return $default(_that.success,_that.data,_that.error);case _:
-  return orElse();
-
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// As opposed to `map`, this offers destructuring.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case Subclass2(:final field2):
-///     return ...;
-/// }
-/// ```
-
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool success,  RecordResponse? data,  String? error)  $default,) {final _that = this;
-switch (_that) {
-case _RecordApiResponse():
-return $default(_that.success,_that.data,_that.error);case _:
-  throw StateError('Unexpected subclass');
-
-}
-}
-/// A variant of `when` that fallback to returning `null`
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
-
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool success,  RecordResponse? data,  String? error)?  $default,) {final _that = this;
-switch (_that) {
-case _RecordApiResponse() when $default != null:
-return $default(_that.success,_that.data,_that.error);case _:
-  return null;
-
-}
-}
-
-}
-
-/// @nodoc
-@JsonSerializable()
-
-class _RecordApiResponse implements RecordApiResponse {
-  const _RecordApiResponse({required this.success, this.data, this.error});
-  factory _RecordApiResponse.fromJson(Map<String, dynamic> json) => _$RecordApiResponseFromJson(json);
-
-@override final  bool success;
-@override final  RecordResponse? data;
-@override final  String? error;
-
-/// Create a copy of RecordApiResponse
-/// with the given fields replaced by the non-null parameter values.
-@override @JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-_$RecordApiResponseCopyWith<_RecordApiResponse> get copyWith => __$RecordApiResponseCopyWithImpl<_RecordApiResponse>(this, _$identity);
-
-@override
-Map<String, dynamic> toJson() {
-  return _$RecordApiResponseToJson(this, );
-}
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RecordApiResponse&&(identical(other.success, success) || other.success == success)&&(identical(other.data, data) || other.data == data)&&(identical(other.error, error) || other.error == error));
-}
-
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,success,data,error);
-
-@override
-String toString() {
-  return 'RecordApiResponse(success: $success, data: $data, error: $error)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class _$RecordApiResponseCopyWith<$Res> implements $RecordApiResponseCopyWith<$Res> {
-  factory _$RecordApiResponseCopyWith(_RecordApiResponse value, $Res Function(_RecordApiResponse) _then) = __$RecordApiResponseCopyWithImpl;
-@override @useResult
-$Res call({
- bool success, RecordResponse? data, String? error
-});
-
-
-@override $RecordResponseCopyWith<$Res>? get data;
-
-}
-/// @nodoc
-class __$RecordApiResponseCopyWithImpl<$Res>
-    implements _$RecordApiResponseCopyWith<$Res> {
-  __$RecordApiResponseCopyWithImpl(this._self, this._then);
-
-  final _RecordApiResponse _self;
-  final $Res Function(_RecordApiResponse) _then;
-
-/// Create a copy of RecordApiResponse
-/// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? success = null,Object? data = freezed,Object? error = freezed,}) {
-  return _then(_RecordApiResponse(
-success: null == success ? _self.success : success // ignore: cast_nullable_to_non_nullable
-as bool,data: freezed == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
-as RecordResponse?,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
-as String?,
-  ));
-}
-
-/// Create a copy of RecordApiResponse
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$RecordResponseCopyWith<$Res>? get data {
-    if (_self.data == null) {
-    return null;
-  }
-
-  return $RecordResponseCopyWith<$Res>(_self.data!, (value) {
-    return _then(_self.copyWith(data: value));
-  });
-}
-}
-
-
-/// @nodoc
 mixin _$RecordResponse {
 
- String get id; String? get recordID; String get equipmentId; String? get description;@JsonKey(name: 'creditedItems') List<CreditedItem>? get creditedItems;@JsonKey(name: 'recordCreatedDate') DateTime? get recordCreatedDate;@JsonKey(name: 'inspectedComponents') List<RecordComponent>? get inspectedComponents;@JsonKey(name: 'scheduleType') Map<String, dynamic>? get scheduleType; String? get status;@JsonKey(name: 'inspectionDate') DateTime? get inspectionDate; String? get actionCreated;@JsonKey(name: 'attachments') List<Map<String, dynamic>>? get attachments; String? get comments;
+ String get id; String? get recordID; String get equipmentId; String? get description;@JsonKey(name: 'creditedItems') List<CreditedItem>? get creditedItems;@JsonKey(name: 'recordCreatedDate') DateTime? get recordCreatedDate;@JsonKey(name: 'inspectedComponents') List<RecordComponent>? get inspectedComponents;@JsonKey(name: 'scheduleType') Map<String, dynamic>? get scheduleType;@JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue) RecordStatus? get status;@JsonKey(name: 'inspectionDate') DateTime? get inspectionDate; String? get actionCreated;@JsonKey(name: 'attachments') List<Map<String, dynamic>>? get attachments; String? get comments;
 /// Create a copy of RecordResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -341,7 +48,7 @@ abstract mixin class $RecordResponseCopyWith<$Res>  {
   factory $RecordResponseCopyWith(RecordResponse value, $Res Function(RecordResponse) _then) = _$RecordResponseCopyWithImpl;
 @useResult
 $Res call({
- String id, String? recordID, String equipmentId, String? description,@JsonKey(name: 'creditedItems') List<CreditedItem>? creditedItems,@JsonKey(name: 'recordCreatedDate') DateTime? recordCreatedDate,@JsonKey(name: 'inspectedComponents') List<RecordComponent>? inspectedComponents,@JsonKey(name: 'scheduleType') Map<String, dynamic>? scheduleType, String? status,@JsonKey(name: 'inspectionDate') DateTime? inspectionDate, String? actionCreated,@JsonKey(name: 'attachments') List<Map<String, dynamic>>? attachments, String? comments
+ String id, String? recordID, String equipmentId, String? description,@JsonKey(name: 'creditedItems') List<CreditedItem>? creditedItems,@JsonKey(name: 'recordCreatedDate') DateTime? recordCreatedDate,@JsonKey(name: 'inspectedComponents') List<RecordComponent>? inspectedComponents,@JsonKey(name: 'scheduleType') Map<String, dynamic>? scheduleType,@JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue) RecordStatus? status,@JsonKey(name: 'inspectionDate') DateTime? inspectionDate, String? actionCreated,@JsonKey(name: 'attachments') List<Map<String, dynamic>>? attachments, String? comments
 });
 
 
@@ -369,7 +76,7 @@ as List<CreditedItem>?,recordCreatedDate: freezed == recordCreatedDate ? _self.r
 as DateTime?,inspectedComponents: freezed == inspectedComponents ? _self.inspectedComponents : inspectedComponents // ignore: cast_nullable_to_non_nullable
 as List<RecordComponent>?,scheduleType: freezed == scheduleType ? _self.scheduleType : scheduleType // ignore: cast_nullable_to_non_nullable
 as Map<String, dynamic>?,status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as String?,inspectionDate: freezed == inspectionDate ? _self.inspectionDate : inspectionDate // ignore: cast_nullable_to_non_nullable
+as RecordStatus?,inspectionDate: freezed == inspectionDate ? _self.inspectionDate : inspectionDate // ignore: cast_nullable_to_non_nullable
 as DateTime?,actionCreated: freezed == actionCreated ? _self.actionCreated : actionCreated // ignore: cast_nullable_to_non_nullable
 as String?,attachments: freezed == attachments ? _self.attachments : attachments // ignore: cast_nullable_to_non_nullable
 as List<Map<String, dynamic>>?,comments: freezed == comments ? _self.comments : comments // ignore: cast_nullable_to_non_nullable
@@ -458,7 +165,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String? recordID,  String equipmentId,  String? description, @JsonKey(name: 'creditedItems')  List<CreditedItem>? creditedItems, @JsonKey(name: 'recordCreatedDate')  DateTime? recordCreatedDate, @JsonKey(name: 'inspectedComponents')  List<RecordComponent>? inspectedComponents, @JsonKey(name: 'scheduleType')  Map<String, dynamic>? scheduleType,  String? status, @JsonKey(name: 'inspectionDate')  DateTime? inspectionDate,  String? actionCreated, @JsonKey(name: 'attachments')  List<Map<String, dynamic>>? attachments,  String? comments)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String? recordID,  String equipmentId,  String? description, @JsonKey(name: 'creditedItems')  List<CreditedItem>? creditedItems, @JsonKey(name: 'recordCreatedDate')  DateTime? recordCreatedDate, @JsonKey(name: 'inspectedComponents')  List<RecordComponent>? inspectedComponents, @JsonKey(name: 'scheduleType')  Map<String, dynamic>? scheduleType, @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)  RecordStatus? status, @JsonKey(name: 'inspectionDate')  DateTime? inspectionDate,  String? actionCreated, @JsonKey(name: 'attachments')  List<Map<String, dynamic>>? attachments,  String? comments)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _RecordResponse() when $default != null:
 return $default(_that.id,_that.recordID,_that.equipmentId,_that.description,_that.creditedItems,_that.recordCreatedDate,_that.inspectedComponents,_that.scheduleType,_that.status,_that.inspectionDate,_that.actionCreated,_that.attachments,_that.comments);case _:
@@ -479,7 +186,7 @@ return $default(_that.id,_that.recordID,_that.equipmentId,_that.description,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String? recordID,  String equipmentId,  String? description, @JsonKey(name: 'creditedItems')  List<CreditedItem>? creditedItems, @JsonKey(name: 'recordCreatedDate')  DateTime? recordCreatedDate, @JsonKey(name: 'inspectedComponents')  List<RecordComponent>? inspectedComponents, @JsonKey(name: 'scheduleType')  Map<String, dynamic>? scheduleType,  String? status, @JsonKey(name: 'inspectionDate')  DateTime? inspectionDate,  String? actionCreated, @JsonKey(name: 'attachments')  List<Map<String, dynamic>>? attachments,  String? comments)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String? recordID,  String equipmentId,  String? description, @JsonKey(name: 'creditedItems')  List<CreditedItem>? creditedItems, @JsonKey(name: 'recordCreatedDate')  DateTime? recordCreatedDate, @JsonKey(name: 'inspectedComponents')  List<RecordComponent>? inspectedComponents, @JsonKey(name: 'scheduleType')  Map<String, dynamic>? scheduleType, @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)  RecordStatus? status, @JsonKey(name: 'inspectionDate')  DateTime? inspectionDate,  String? actionCreated, @JsonKey(name: 'attachments')  List<Map<String, dynamic>>? attachments,  String? comments)  $default,) {final _that = this;
 switch (_that) {
 case _RecordResponse():
 return $default(_that.id,_that.recordID,_that.equipmentId,_that.description,_that.creditedItems,_that.recordCreatedDate,_that.inspectedComponents,_that.scheduleType,_that.status,_that.inspectionDate,_that.actionCreated,_that.attachments,_that.comments);case _:
@@ -499,7 +206,7 @@ return $default(_that.id,_that.recordID,_that.equipmentId,_that.description,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String? recordID,  String equipmentId,  String? description, @JsonKey(name: 'creditedItems')  List<CreditedItem>? creditedItems, @JsonKey(name: 'recordCreatedDate')  DateTime? recordCreatedDate, @JsonKey(name: 'inspectedComponents')  List<RecordComponent>? inspectedComponents, @JsonKey(name: 'scheduleType')  Map<String, dynamic>? scheduleType,  String? status, @JsonKey(name: 'inspectionDate')  DateTime? inspectionDate,  String? actionCreated, @JsonKey(name: 'attachments')  List<Map<String, dynamic>>? attachments,  String? comments)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String? recordID,  String equipmentId,  String? description, @JsonKey(name: 'creditedItems')  List<CreditedItem>? creditedItems, @JsonKey(name: 'recordCreatedDate')  DateTime? recordCreatedDate, @JsonKey(name: 'inspectedComponents')  List<RecordComponent>? inspectedComponents, @JsonKey(name: 'scheduleType')  Map<String, dynamic>? scheduleType, @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)  RecordStatus? status, @JsonKey(name: 'inspectionDate')  DateTime? inspectionDate,  String? actionCreated, @JsonKey(name: 'attachments')  List<Map<String, dynamic>>? attachments,  String? comments)?  $default,) {final _that = this;
 switch (_that) {
 case _RecordResponse() when $default != null:
 return $default(_that.id,_that.recordID,_that.equipmentId,_that.description,_that.creditedItems,_that.recordCreatedDate,_that.inspectedComponents,_that.scheduleType,_that.status,_that.inspectionDate,_that.actionCreated,_that.attachments,_that.comments);case _:
@@ -514,7 +221,7 @@ return $default(_that.id,_that.recordID,_that.equipmentId,_that.description,_tha
 @JsonSerializable()
 
 class _RecordResponse implements RecordResponse {
-  const _RecordResponse({required this.id, this.recordID, required this.equipmentId, this.description, @JsonKey(name: 'creditedItems') final  List<CreditedItem>? creditedItems, @JsonKey(name: 'recordCreatedDate') this.recordCreatedDate, @JsonKey(name: 'inspectedComponents') final  List<RecordComponent>? inspectedComponents, @JsonKey(name: 'scheduleType') final  Map<String, dynamic>? scheduleType, this.status, @JsonKey(name: 'inspectionDate') this.inspectionDate, this.actionCreated, @JsonKey(name: 'attachments') final  List<Map<String, dynamic>>? attachments, this.comments}): _creditedItems = creditedItems,_inspectedComponents = inspectedComponents,_scheduleType = scheduleType,_attachments = attachments;
+  const _RecordResponse({required this.id, this.recordID, required this.equipmentId, this.description, @JsonKey(name: 'creditedItems') final  List<CreditedItem>? creditedItems, @JsonKey(name: 'recordCreatedDate') this.recordCreatedDate, @JsonKey(name: 'inspectedComponents') final  List<RecordComponent>? inspectedComponents, @JsonKey(name: 'scheduleType') final  Map<String, dynamic>? scheduleType, @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue) this.status, @JsonKey(name: 'inspectionDate') this.inspectionDate, this.actionCreated, @JsonKey(name: 'attachments') final  List<Map<String, dynamic>>? attachments, this.comments}): _creditedItems = creditedItems,_inspectedComponents = inspectedComponents,_scheduleType = scheduleType,_attachments = attachments;
   factory _RecordResponse.fromJson(Map<String, dynamic> json) => _$RecordResponseFromJson(json);
 
 @override final  String id;
@@ -549,7 +256,7 @@ class _RecordResponse implements RecordResponse {
   return EqualUnmodifiableMapView(value);
 }
 
-@override final  String? status;
+@override@JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue) final  RecordStatus? status;
 @override@JsonKey(name: 'inspectionDate') final  DateTime? inspectionDate;
 @override final  String? actionCreated;
  final  List<Map<String, dynamic>>? _attachments;
@@ -596,7 +303,7 @@ abstract mixin class _$RecordResponseCopyWith<$Res> implements $RecordResponseCo
   factory _$RecordResponseCopyWith(_RecordResponse value, $Res Function(_RecordResponse) _then) = __$RecordResponseCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String? recordID, String equipmentId, String? description,@JsonKey(name: 'creditedItems') List<CreditedItem>? creditedItems,@JsonKey(name: 'recordCreatedDate') DateTime? recordCreatedDate,@JsonKey(name: 'inspectedComponents') List<RecordComponent>? inspectedComponents,@JsonKey(name: 'scheduleType') Map<String, dynamic>? scheduleType, String? status,@JsonKey(name: 'inspectionDate') DateTime? inspectionDate, String? actionCreated,@JsonKey(name: 'attachments') List<Map<String, dynamic>>? attachments, String? comments
+ String id, String? recordID, String equipmentId, String? description,@JsonKey(name: 'creditedItems') List<CreditedItem>? creditedItems,@JsonKey(name: 'recordCreatedDate') DateTime? recordCreatedDate,@JsonKey(name: 'inspectedComponents') List<RecordComponent>? inspectedComponents,@JsonKey(name: 'scheduleType') Map<String, dynamic>? scheduleType,@JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue) RecordStatus? status,@JsonKey(name: 'inspectionDate') DateTime? inspectionDate, String? actionCreated,@JsonKey(name: 'attachments') List<Map<String, dynamic>>? attachments, String? comments
 });
 
 
@@ -624,7 +331,7 @@ as List<CreditedItem>?,recordCreatedDate: freezed == recordCreatedDate ? _self.r
 as DateTime?,inspectedComponents: freezed == inspectedComponents ? _self._inspectedComponents : inspectedComponents // ignore: cast_nullable_to_non_nullable
 as List<RecordComponent>?,scheduleType: freezed == scheduleType ? _self._scheduleType : scheduleType // ignore: cast_nullable_to_non_nullable
 as Map<String, dynamic>?,status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as String?,inspectionDate: freezed == inspectionDate ? _self.inspectionDate : inspectionDate // ignore: cast_nullable_to_non_nullable
+as RecordStatus?,inspectionDate: freezed == inspectionDate ? _self.inspectionDate : inspectionDate // ignore: cast_nullable_to_non_nullable
 as DateTime?,actionCreated: freezed == actionCreated ? _self.actionCreated : actionCreated // ignore: cast_nullable_to_non_nullable
 as String?,attachments: freezed == attachments ? _self._attachments : attachments // ignore: cast_nullable_to_non_nullable
 as List<Map<String, dynamic>>?,comments: freezed == comments ? _self.comments : comments // ignore: cast_nullable_to_non_nullable

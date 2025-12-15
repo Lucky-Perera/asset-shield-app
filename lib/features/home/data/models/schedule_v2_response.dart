@@ -224,7 +224,7 @@ abstract class RecordV2Response with _$RecordV2Response {
     required DateTime updatedAt,
     required String description,
     required DateTime recordCreatedDate,
-    required String status,
+    required RecordStatus status,
     required DateTime inspectionDate,
     required String actionCreated,
     String? comments,
