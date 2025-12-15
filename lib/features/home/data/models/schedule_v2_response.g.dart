@@ -329,7 +329,7 @@ _RecordV2Response _$RecordV2ResponseFromJson(Map<String, dynamic> json) =>
       updatedAt: DateTime.parse(json['updatedAt'] as String),
       description: json['description'] as String,
       recordCreatedDate: DateTime.parse(json['recordCreatedDate'] as String),
-      status: json['status'] as String,
+      status: $enumDecode(_$RecordStatusEnumMap, json['status']),
       inspectionDate: DateTime.parse(json['inspectionDate'] as String),
       actionCreated: json['actionCreated'] as String,
       comments: json['comments'] as String?,
@@ -349,7 +349,7 @@ Map<String, dynamic> _$RecordV2ResponseToJson(_RecordV2Response instance) =>
       'updatedAt': instance.updatedAt.toIso8601String(),
       'description': instance.description,
       'recordCreatedDate': instance.recordCreatedDate.toIso8601String(),
-      'status': instance.status,
+      'status': _$RecordStatusEnumMap[instance.status]!,
       'inspectionDate': instance.inspectionDate.toIso8601String(),
       'actionCreated': instance.actionCreated,
       'comments': instance.comments,
@@ -361,6 +361,12 @@ Map<String, dynamic> _$RecordV2ResponseToJson(_RecordV2Response instance) =>
       'submittedById': instance.submittedById,
       'approvedById': instance.approvedById,
     };
+
+const _$RecordStatusEnumMap = {
+  RecordStatus.rejected: 'Rejected',
+  RecordStatus.pendingApproval: 'PendingApproval',
+  RecordStatus.approved: 'Approved',
+};
 
 _InspectionMethodV2 _$InspectionMethodV2FromJson(Map<String, dynamic> json) =>
     _InspectionMethodV2(

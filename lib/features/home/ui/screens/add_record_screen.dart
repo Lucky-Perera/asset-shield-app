@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:asset_shield/core/enums/enums.dart';
 import 'package:asset_shield/core/utility/storage_service.dart';
 import 'package:asset_shield/core/utility/toast_service.dart';
 import 'package:asset_shield/features/home/data/models/record_create_request.dart';
@@ -277,7 +278,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
         log(
           'Record created with ${response.data.answeredQuestions.length} checklist answers',
         );
-
+        // ref.invalidate(schedulesProvider);
         router.pop();
         ToastService.show(response.message ?? 'Record submitted successfully');
       } catch (e) {
@@ -299,7 +300,8 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     final state = recordWithChecklistAsync.value;
     final existingRecord = state?.record;
     final hasSubmittedAnswers = state?.hasSubmittedAnswers ?? false;
-    final isReadOnly = hasSubmittedAnswers;
+    final isRejected = state?.record?.status == RecordStatus.rejected;
+    final isReadOnly = hasSubmittedAnswers && !isRejected;
 
     if (!_prefilled && existingRecord != null) {
       _initialiseFields(existingRecord);
@@ -334,7 +336,9 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
           onPressed: _handleClose,
         ),
         title: Text(
-          hasSubmittedAnswers ? 'View Record' : 'Add Record',
+          isRejected
+              ? 'Edit Record'
+              : (hasSubmittedAnswers ? 'View Record' : 'Add Record'),
           style: AppTextStyles.h2(
             context,
           ).copyWith(fontWeight: FontWeight.w600),
@@ -557,10 +561,10 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                             : ChecklistSections(
                                 questions:
                                     widget.schedule.checklistQuestionTemplates,
-                                onAnswerChanged: hasSubmittedAnswers
+                                onAnswerChanged: isReadOnly
                                     ? null
                                     : _handleChecklistAnswerChanged,
-                                readOnly: hasSubmittedAnswers,
+                                readOnly: isReadOnly,
                                 initialValues: initialValues,
                               ),
                         SizedBox(height: 24.h),
@@ -601,9 +605,11 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                     SizedBox(width: 12.w),
                     Expanded(
                       child: ReusableButton(
-                        text: 'Submit',
-                        onPressed: hasSubmittedAnswers ? null : _handleCreate,
-                        backgroundColor: hasSubmittedAnswers
+                        text: isRejected ? 'Resubmit' : 'Submit',
+                        onPressed: (hasSubmittedAnswers && !isRejected)
+                            ? null
+                            : _handleCreate,
+                        backgroundColor: (hasSubmittedAnswers && !isRejected)
                             ? ColorPalette.black.withValues(alpha: 0.3)
                             : ColorPalette.black,
                         height: 48.h,
