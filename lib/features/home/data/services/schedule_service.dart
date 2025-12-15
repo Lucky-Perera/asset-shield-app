@@ -58,34 +58,4 @@ class ScheduleService {
       throw Helpers.handleError(e);
     }
   }
-
-  /// Fetch record by schedule ID (mobile API)
-  // Future<RecordResponse> fetchRecordByScheduleId(String scheduleId) async {
-  //   try {
-  //     final response = await _dio.get('/schedules/$scheduleId/record');
-  //     final api = RecordApiResponse.fromJson(
-  //       response.data as Map<String, dynamic>,
-  //     );
-  //     if (api.success && api.data != null) {
-  //       return api.data!;
-  //     }
-  //     throw Exception(api.error ?? 'Empty record data');
-  //   } on DioException catch (e) {
-  //     throw Helpers.handleError(e);
-  //   }
-  // }
-
-  // /// Fetch checklist answers for a schedule (mobile API)
-  // Future<ChecklistAnswerResponse> fetchChecklistAnswers({
-  //   required String scheduleId,
-  // }) async {
-  //   try {
-  //     final response = await _dio.get(
-  //       '/schedules/$scheduleId/checklist/answers',
-  //     );
-  //     return ChecklistAnswerResponse.fromJson(response.data);
-  //   } on DioException catch (e) {
-  //     throw Helpers.handleError(e);
-  //   }
-  // }
 }

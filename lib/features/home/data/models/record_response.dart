@@ -1,21 +1,10 @@
 // ignore_for_file: invalid_annotation_target
 
+import 'package:asset_shield/core/enums/enums.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'record_response.freezed.dart';
 part 'record_response.g.dart';
-
-@freezed
-abstract class RecordApiResponse with _$RecordApiResponse {
-  const factory RecordApiResponse({
-    required bool success,
-    RecordResponse? data,
-    String? error,
-  }) = _RecordApiResponse;
-
-  factory RecordApiResponse.fromJson(Map<String, dynamic> json) =>
-      _$RecordApiResponseFromJson(json);
-}
 
 @freezed
 abstract class RecordResponse with _$RecordResponse {
@@ -29,7 +18,7 @@ abstract class RecordResponse with _$RecordResponse {
     @JsonKey(name: 'inspectedComponents')
     List<RecordComponent>? inspectedComponents,
     @JsonKey(name: 'scheduleType') Map<String, dynamic>? scheduleType,
-    String? status,
+    RecordStatus? status,
     @JsonKey(name: 'inspectionDate') DateTime? inspectionDate,
     String? actionCreated,
     @JsonKey(name: 'attachments') List<Map<String, dynamic>>? attachments,

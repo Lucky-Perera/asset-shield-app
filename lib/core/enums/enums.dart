@@ -13,7 +13,14 @@ enum ScheduleStatus {
   cancelled,
 }
 
-enum RecordStatus { draft, pendingApproval, approved }
+enum RecordStatus {
+  @JsonValue('Rejected')
+  rejected,
+  @JsonValue('PendingApproval')
+  pendingApproval,
+  @JsonValue('Approved')
+  approved,
+}
 
 // ignore: constant_identifier_names
 enum ResponseType {
