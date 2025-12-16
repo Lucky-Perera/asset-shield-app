@@ -18,7 +18,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   bool _isSearching = false;
   final TextEditingController _searchController = TextEditingController();
-  String _searchQuery = '';
 
   @override
   void dispose() {
@@ -31,7 +30,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       _isSearching = !_isSearching;
       if (!_isSearching) {
         _searchController.clear();
-        _searchQuery = '';
+        ref.read(schedulesProvider.notifier).search('');
       }
     });
   }
@@ -92,9 +91,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               onToggleSearch: _toggleSearch,
               onRefresh: () => ref.read(schedulesProvider.notifier).refresh(),
               onSearchChanged: (value) {
-                setState(() {
-                  _searchQuery = value.toLowerCase();
-                });
+                ref.read(schedulesProvider.notifier).search(value);
               },
             ),
             // List
@@ -103,7 +100,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 data: (scheduleState) => ScheduleList(
                   schedules: scheduleState.schedules,
                   pagination: scheduleState.pagination,
-                  searchQuery: _searchQuery,
+                  searchQuery: '',
                   onRefresh: () =>
                       ref.read(schedulesProvider.notifier).refresh(),
                   onPageChanged: (page) =>
