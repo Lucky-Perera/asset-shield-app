@@ -43,14 +43,14 @@ class Helpers {
         Permission.storage,
         Permission.manageExternalStorage,
         Permission.camera,
-        Permission.microphone,
+        // Permission.microphone,
       ].request();
     } else if (Platform.isIOS) {
       // Request photo library, camera and microphone on iOS.
       await [
         Permission.photos,
         Permission.camera,
-        Permission.microphone,
+        // Permission.microphone,
       ].request();
     }
   }
@@ -71,6 +71,7 @@ class Helpers {
 
       if (!storageGranted) {
         final shouldOpenSettings = await _showPermissionDialog(
+          // ignore: use_build_context_synchronously
           context,
           title: 'Storage Permission Required',
           message:
