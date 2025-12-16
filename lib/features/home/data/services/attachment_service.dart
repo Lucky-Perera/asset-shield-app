@@ -31,4 +31,16 @@ class AttachmentService {
       throw Helpers.handleError(e);
     }
   }
+
+  /// Delete an attachment by ID
+  Future<void> deleteAttachment(String attachmentId) async {
+    try {
+      await _dio.delete(
+        '/attachments/upload',
+        queryParameters: {'id': attachmentId},
+      );
+    } on DioException catch (e) {
+      throw Helpers.handleError(e);
+    }
+  }
 }

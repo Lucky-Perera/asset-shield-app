@@ -295,6 +295,26 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     _saveDraftData();
   }
 
+  /// Handle attachment deletion
+  void _handleAttachmentDeleted(String questionId, String attachmentId) {
+    setState(() {
+      // Remove from attachment IDs
+      _questionAttachmentIds[questionId]?.remove(attachmentId);
+      if (_questionAttachmentIds[questionId]?.isEmpty ?? false) {
+        _questionAttachmentIds.remove(questionId);
+      }
+
+      // Remove from attachment metadata
+      _questionAttachmentMetadata[questionId]?.removeWhere(
+        (m) => m['id'] == attachmentId,
+      );
+      if (_questionAttachmentMetadata[questionId]?.isEmpty ?? false) {
+        _questionAttachmentMetadata.remove(questionId);
+      }
+    });
+    _saveDraftData();
+  }
+
   bool _validateChecklist() {
     if (widget.schedule.checklistQuestionTemplates.isEmpty) {
       return true;
@@ -636,6 +656,9 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                                 onAttachmentUploaded: isReadOnly
                                     ? null
                                     : _handleAttachmentUploaded,
+                                onAttachmentDeleted: isReadOnly
+                                    ? null
+                                    : _handleAttachmentDeleted,
                                 readOnly: isReadOnly,
                                 initialValues: initialValues,
                                 questionAttachments: questionAttachments,

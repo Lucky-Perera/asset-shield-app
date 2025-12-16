@@ -9,7 +9,9 @@ class SectionTile extends StatelessWidget {
   final String title;
   final List<ChecklistQuestionTemplate> items;
   final Function(String questionId, String value, String note)? onAnswerChanged;
-  final Function(String questionId, String attachmentId, String attachmentName)? onAttachmentUploaded;
+  final Function(String questionId, String attachmentId, String attachmentName)?
+  onAttachmentUploaded;
+  final Function(String questionId, String attachmentId)? onAttachmentDeleted;
   final bool readOnly;
   final Map<String, Map<String, String>>? initialValues;
   final Map<String, List<AttachmentV2>>? questionAttachments;
@@ -23,6 +25,7 @@ class SectionTile extends StatelessWidget {
     required this.items,
     this.onAnswerChanged,
     this.onAttachmentUploaded,
+    this.onAttachmentDeleted,
     this.readOnly = false,
     this.initialValues,
     this.questionAttachments,
@@ -54,6 +57,7 @@ class SectionTile extends StatelessWidget {
                 question: q,
                 onAnswerChanged: readOnly ? null : onAnswerChanged,
                 onAttachmentUploaded: readOnly ? null : onAttachmentUploaded,
+                onAttachmentDeleted: readOnly ? null : onAttachmentDeleted,
                 readOnly: readOnly,
                 initialValue: initial?['value'],
                 initialNote: initial?['note'],

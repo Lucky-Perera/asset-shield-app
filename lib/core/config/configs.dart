@@ -4,8 +4,8 @@ import '../theme/color_palette.dart';
 class Configs {
   // API Configuration
   // static const String host = "http://localhost:3000/api/mobile";
-  // static const String host = "http://10.0.2.2:8000/api/mobile";
-  static const String host = "http://10.165.147.26:3000/api/mobile";
+  static const String host = "http://10.0.2.2:3000/api/mobile";
+  // static const String host = "http://10.165.147.26:3000/api/mobile";
   static const Duration apiTimeout = Duration(seconds: 30);
 
   void configLoading() {

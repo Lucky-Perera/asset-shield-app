@@ -11,12 +11,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'attachment_row.dart';
 
 class QuestionTile extends StatefulWidget {
   final ChecklistQuestionTemplate question;
   final Function(String questionId, String value, String note)? onAnswerChanged;
   final Function(String questionId, String attachmentId, String attachmentName)?
   onAttachmentUploaded;
+  final Function(String questionId, String attachmentId)? onAttachmentDeleted;
   final bool readOnly;
   final String? initialValue;
   final String? initialNote;
@@ -30,6 +32,7 @@ class QuestionTile extends StatefulWidget {
     required this.question,
     this.onAnswerChanged,
     this.onAttachmentUploaded,
+    this.onAttachmentDeleted,
     this.readOnly = false,
     this.initialValue,
     this.initialNote,
@@ -49,8 +52,13 @@ class _QuestionTileState extends State<QuestionTile> {
   bool _isExpanded = false;
   final List<File> _mediaFiles = [];
   final Set<String> _uploadedPaths = {};
+  final Map<String, Map<String, String>> _uploadedFileMetadata =
+      {}; // filePath -> {id, name}
   final List<Map<String, String>> _restoredAttachments = [];
+  final Set<String> _deletedAttachmentIds =
+      {}; // Track deleted existing attachments
   bool _isUploading = false;
+  String? _deletingAttachmentId;
 
   void _showMediaMenu() {
     final RenderBox box = context.findRenderObject() as RenderBox;
@@ -170,6 +178,11 @@ class _QuestionTileState extends State<QuestionTile> {
         );
 
         _uploadedPaths.add(file.path);
+        _uploadedFileMetadata[file.path] = {
+          'id': attachment.id,
+          'name': attachment.name,
+        };
+
         widget.onAttachmentUploaded!(
           widget.question.id,
           attachment.id,
@@ -180,6 +193,79 @@ class _QuestionTileState extends State<QuestionTile> {
       ToastService.show('Upload failed: $e');
     } finally {
       setState(() => _isUploading = false);
+    }
+  }
+
+  /// Delete an attachment with confirmation
+  Future<void> _handleDeleteAttachment(
+    String attachmentId,
+    String attachmentName,
+  ) async {
+    if (widget.onAttachmentDeleted == null) return;
+
+    // Show confirmation dialog
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete Attachment'),
+        content: Text('Are you sure you want to delete "$attachmentName"?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true) return;
+
+    setState(() => _deletingAttachmentId = attachmentId);
+
+    try {
+      final attachmentService = AttachmentService();
+      await attachmentService.deleteAttachment(attachmentId);
+
+      setState(() {
+        // Remove from restored attachments
+        _restoredAttachments.removeWhere((a) => a['id'] == attachmentId);
+
+        // Track deletion of existing attachments
+        _deletedAttachmentIds.add(attachmentId);
+
+        // Find file path BEFORE removing from metadata
+        final pathToRemove = _uploadedFileMetadata.entries
+            .where((e) => e.value['id'] == attachmentId)
+            .map((e) => e.key)
+            .firstOrNull;
+
+        // Remove from newly uploaded files metadata
+        _uploadedFileMetadata.removeWhere(
+          (path, data) => data['id'] == attachmentId,
+        );
+
+        // Remove file path if it was newly uploaded in this session
+        if (pathToRemove != null) {
+          _uploadedPaths.remove(pathToRemove);
+          _mediaFiles.removeWhere((f) => f.path == pathToRemove);
+        }
+      });
+
+      // Notify parent to update state
+      widget.onAttachmentDeleted!(widget.question.id, attachmentId);
+
+      if (mounted) {
+        ToastService.show('Attachment deleted successfully');
+      }
+    } catch (e) {
+      ToastService.show('Failed to delete attachment: $e');
+    } finally {
+      setState(() => _deletingAttachmentId = null);
     }
   }
 
@@ -445,30 +531,20 @@ class _QuestionTileState extends State<QuestionTile> {
                     // Show restored attachments from draft
                     ..._restoredAttachments.map((attachment) {
                       final fileName = attachment['name'] ?? 'Unknown';
-                      return Padding(
-                        padding: EdgeInsets.only(bottom: 4.h),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.check_circle,
-                              size: 16.sp,
-                              color: Colors.green,
-                            ),
-                            SizedBox(width: 6.w),
-                            Expanded(
-                              child: Text(
-                                fileName,
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: ColorPalette.black.withValues(
-                                    alpha: 0.8,
-                                  ),
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ],
-                        ),
+                      final attachmentId = attachment['id'] ?? '';
+                      final isDeleting = _deletingAttachmentId == attachmentId;
+
+                      return AttachmentRow(
+                        icon: Icons.check_circle,
+                        fileName: fileName,
+                        id: attachmentId,
+                        isImage: false,
+                        isDeleting: isDeleting,
+                        showDelete:
+                            !widget.readOnly &&
+                            widget.onAttachmentDeleted != null,
+                        onDelete: (id, name) =>
+                            _handleDeleteAttachment(id, name),
                       );
                     }),
                     // Show newly uploaded files in this session
@@ -476,30 +552,23 @@ class _QuestionTileState extends State<QuestionTile> {
                         .where((f) => _uploadedPaths.contains(f.path))
                         .map((file) {
                           final fileName = file.path.split('/').last;
-                          return Padding(
-                            padding: EdgeInsets.only(bottom: 4.h),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.check_circle,
-                                  size: 16.sp,
-                                  color: Colors.green,
-                                ),
-                                SizedBox(width: 6.w),
-                                Expanded(
-                                  child: Text(
-                                    fileName,
-                                    style: TextStyle(
-                                      fontSize: 12.sp,
-                                      color: ColorPalette.black.withValues(
-                                        alpha: 0.8,
-                                      ),
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ],
-                            ),
+                          final metadata = _uploadedFileMetadata[file.path];
+                          final attachmentId = metadata?['id'] ?? '';
+                          final isDeleting =
+                              _deletingAttachmentId == attachmentId;
+
+                          return AttachmentRow(
+                            icon: Icons.check_circle,
+                            fileName: fileName,
+                            id: attachmentId,
+                            isImage: false,
+                            isDeleting: isDeleting,
+                            showDelete:
+                                !widget.readOnly &&
+                                widget.onAttachmentDeleted != null &&
+                                attachmentId.isNotEmpty,
+                            onDelete: (id, name) =>
+                                _handleDeleteAttachment(id, name),
                           );
                         }),
                   ],
@@ -514,51 +583,51 @@ class _QuestionTileState extends State<QuestionTile> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Attachments (${widget.existingAttachments!.length})',
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w600,
-                        color: ColorPalette.black.withValues(alpha: 0.7),
-                      ),
-                    ),
-                    SizedBox(height: 4.h),
-                    ...widget.existingAttachments!.map((attachment) {
-                      final isImage = _isImageUrl(attachment.url);
-                      return Padding(
-                        padding: EdgeInsets.only(bottom: 4.h),
-                        child: InkWell(
-                          onTap: () {
-                            if (isImage) {
-                              _showImageViewer(attachment.url);
-                            } else {
-                              _openUrl(attachment.url);
-                            }
-                          },
-                          child: Row(
-                            children: [
-                              Icon(
-                                isImage ? Icons.image : Icons.attach_file,
-                                size: 16.sp,
-                                color: ColorPalette.primary,
-                              ),
-                              SizedBox(width: 6.w),
-                              Expanded(
-                                child: Text(
-                                  attachment.name,
-                                  style: TextStyle(
-                                    fontSize: 12.sp,
-                                    color: ColorPalette.primary,
-                                    decoration: TextDecoration.underline,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ],
+                    // Filter out deleted attachments
+                    ...() {
+                      final visibleAttachments = widget.existingAttachments!
+                          .where((a) => !_deletedAttachmentIds.contains(a.id))
+                          .toList();
+
+                      if (visibleAttachments.isEmpty) return <Widget>[];
+
+                      return [
+                        Text(
+                          'Attachments (${visibleAttachments.length})',
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w600,
+                            color: ColorPalette.black.withValues(alpha: 0.7),
                           ),
                         ),
-                      );
-                    }),
+                        SizedBox(height: 4.h),
+                        ...visibleAttachments.map((attachment) {
+                          final isImage = _isImageUrl(attachment.url);
+                          final isDeleting =
+                              _deletingAttachmentId == attachment.id;
+
+                          return AttachmentRow(
+                            icon: isImage ? Icons.image : Icons.attach_file,
+                            fileName: attachment.name,
+                            id: attachment.id,
+                            isImage: isImage,
+                            isDeleting: isDeleting,
+                            showDelete:
+                                !widget.readOnly &&
+                                widget.onAttachmentDeleted != null,
+                            onTap: () {
+                              if (isImage) {
+                                _showImageViewer(attachment.url);
+                              } else {
+                                _openUrl(attachment.url);
+                              }
+                            },
+                            onDelete: (id, name) =>
+                                _handleDeleteAttachment(id, name),
+                          );
+                        }),
+                      ];
+                    }(),
                   ],
                 ),
               ),
