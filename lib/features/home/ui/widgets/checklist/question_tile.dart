@@ -402,8 +402,7 @@ class _QuestionTileState extends State<QuestionTile> {
             SizedBox(height: 8.h),
 
             // Show media button only if: not readonly OR (readonly but rejected and can edit)
-            if (!widget.readOnly ||
-                (widget.existingAttachments?.isEmpty ?? true))
+            if (!widget.readOnly)
               MediaLabel(onTap: _isUploading ? null : _showMediaMenu),
 
             if (_isUploading)
