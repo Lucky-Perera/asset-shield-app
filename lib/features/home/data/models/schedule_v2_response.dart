@@ -4,9 +4,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'schedule_v2_response.freezed.dart';
 part 'schedule_v2_response.g.dart';
 
-/// ─────────────────────────────────────────────────────────
-/// ROOT RESPONSE
-/// ─────────────────────────────────────────────────────────
 @freezed
 abstract class ScheduleListResponse with _$ScheduleListResponse {
   const factory ScheduleListResponse({
@@ -42,9 +39,6 @@ abstract class Pagination with _$Pagination {
       _$PaginationFromJson(json);
 }
 
-/// ─────────────────────────────────────────────────────────
-/// SCHEDULE V2 RESPONSE
-/// ─────────────────────────────────────────────────────────
 @freezed
 abstract class ScheduleV2Response with _$ScheduleV2Response {
   const factory ScheduleV2Response({
@@ -89,9 +83,6 @@ abstract class ScheduleV2Response with _$ScheduleV2Response {
       _$ScheduleV2ResponseFromJson(json);
 }
 
-/// ─────────────────────────────────────────────────────────
-/// USERS
-/// ─────────────────────────────────────────────────────────
 @freezed
 abstract class User with _$User {
   const factory User({
@@ -109,9 +100,6 @@ abstract class User with _$User {
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }
 
-/// ─────────────────────────────────────────────────────────
-/// EQUIPMENT
-/// ─────────────────────────────────────────────────────────
 @freezed
 abstract class Equipment with _$Equipment {
   const factory Equipment({
@@ -130,9 +118,6 @@ abstract class Equipment with _$Equipment {
       _$EquipmentFromJson(json);
 }
 
-/// ─────────────────────────────────────────────────────────
-/// REFERENCE DATA (scheduleType, operation)
-/// ─────────────────────────────────────────────────────────
 @freezed
 abstract class ReferenceData with _$ReferenceData {
   const factory ReferenceData({
@@ -148,9 +133,6 @@ abstract class ReferenceData with _$ReferenceData {
       _$ReferenceDataFromJson(json);
 }
 
-/// ─────────────────────────────────────────────────────────
-/// CHECKLIST QUESTION TEMPLATE
-/// ─────────────────────────────────────────────────────────
 @freezed
 abstract class ChecklistQuestionTemplate with _$ChecklistQuestionTemplate {
   const factory ChecklistQuestionTemplate({
@@ -168,9 +150,6 @@ abstract class ChecklistQuestionTemplate with _$ChecklistQuestionTemplate {
       _$ChecklistQuestionTemplateFromJson(json);
 }
 
-/// ─────────────────────────────────────────────────────────
-/// CHECKLIST ANSWER
-/// ─────────────────────────────────────────────────────────
 @freezed
 abstract class ChecklistAnswer with _$ChecklistAnswer {
   const factory ChecklistAnswer({
@@ -187,9 +166,6 @@ abstract class ChecklistAnswer with _$ChecklistAnswer {
       _$ChecklistAnswerFromJson(json);
 }
 
-/// ─────────────────────────────────────────────────────────
-/// ATTACHMENTS V2
-/// ─────────────────────────────────────────────────────────
 @freezed
 abstract class AttachmentV2 with _$AttachmentV2 {
   const factory AttachmentV2({
@@ -213,9 +189,6 @@ abstract class AttachmentV2 with _$AttachmentV2 {
       _$AttachmentV2FromJson(json);
 }
 
-/// ─────────────────────────────────────────────────────────
-/// RECORD V2
-/// ─────────────────────────────────────────────────────────
 @freezed
 abstract class RecordV2Response with _$RecordV2Response {
   const factory RecordV2Response({

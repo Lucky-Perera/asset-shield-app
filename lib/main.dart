@@ -37,15 +37,8 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (context, child) {
         return MaterialApp.router(
-          // localizationsDelegates: [
-          //   AppLocalizations.delegate,
-          //   GlobalMaterialLocalizations.delegate,
-          //   GlobalWidgetsLocalizations.delegate,
-          //   GlobalCupertinoLocalizations.delegate,
-          // ],
           supportedLocales: [
             Locale('en'), // English
-            Locale('es'), // Spanish
           ],
           debugShowCheckedModeBanner: false,
           routerConfig: router,

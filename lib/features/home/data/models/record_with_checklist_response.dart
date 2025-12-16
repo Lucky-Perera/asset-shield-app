@@ -52,19 +52,3 @@ abstract class ChecklistQuestionItem with _$ChecklistQuestionItem {
   factory ChecklistQuestionItem.fromJson(Map<String, dynamic> json) =>
       _$ChecklistQuestionItemFromJson(json);
 }
-
-@freezed
-abstract class ChecklistAnswer with _$ChecklistAnswer {
-  const factory ChecklistAnswer({
-    required String id,
-    String? value,
-    String? note,
-    DateTime? completedAt,
-    required String recordId,
-    required String questionId,
-    List<AttachmentV2>? attachments,
-  }) = _ChecklistAnswer;
-
-  factory ChecklistAnswer.fromJson(Map<String, dynamic> json) =>
-      _$ChecklistAnswerFromJson(json);
-}

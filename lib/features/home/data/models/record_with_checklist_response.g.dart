@@ -83,29 +83,3 @@ Map<String, dynamic> _$ChecklistQuestionItemToJson(
   'attachments': instance.attachments,
   'checklistAnswer': instance.checklistAnswer,
 };
-
-_ChecklistAnswer _$ChecklistAnswerFromJson(Map<String, dynamic> json) =>
-    _ChecklistAnswer(
-      id: json['id'] as String,
-      value: json['value'] as String?,
-      note: json['note'] as String?,
-      completedAt: json['completedAt'] == null
-          ? null
-          : DateTime.parse(json['completedAt'] as String),
-      recordId: json['recordId'] as String,
-      questionId: json['questionId'] as String,
-      attachments: (json['attachments'] as List<dynamic>?)
-          ?.map((e) => AttachmentV2.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
-
-Map<String, dynamic> _$ChecklistAnswerToJson(_ChecklistAnswer instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'value': instance.value,
-      'note': instance.note,
-      'completedAt': instance.completedAt?.toIso8601String(),
-      'recordId': instance.recordId,
-      'questionId': instance.questionId,
-      'attachments': instance.attachments,
-    };

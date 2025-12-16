@@ -60,7 +60,7 @@ class _QuestionTileState extends State<QuestionTile> {
       context: context,
       position: RelativeRect.fromLTRB(
         position.dx, // adjust X position
-        position.dy + 50, // adjust Y position
+        position.dy + 90, // adjust Y position
         0,
         0,
       ),
@@ -88,17 +88,17 @@ class _QuestionTileState extends State<QuestionTile> {
           onTap: () =>
               Future.delayed(const Duration(milliseconds: 100), _takePhoto),
         ),
-        PopupMenuItem(
-          child: const Row(
-            children: [
-              Icon(Icons.videocam, size: 20),
-              SizedBox(width: 8),
-              Text('Take video'),
-            ],
-          ),
-          onTap: () =>
-              Future.delayed(const Duration(milliseconds: 100), _takeVideo),
-        ),
+        // PopupMenuItem(
+        //   child: const Row(
+        //     children: [
+        //       Icon(Icons.videocam, size: 20),
+        //       SizedBox(width: 8),
+        //       Text('Take video'),
+        //     ],
+        //   ),
+        //   onTap: () =>
+        //       Future.delayed(const Duration(milliseconds: 100), _takeVideo),
+        // ),
       ],
     );
   }
@@ -134,16 +134,16 @@ class _QuestionTileState extends State<QuestionTile> {
     }
   }
 
-  Future<void> _takeVideo() async {
-    final picker = ImagePicker();
-    final video = await picker.pickVideo(source: ImageSource.camera);
+  // Future<void> _takeVideo() async {
+  //   final picker = ImagePicker();
+  //   final video = await picker.pickVideo(source: ImageSource.camera);
 
-    if (video != null) {
-      final file = File(video.path);
-      setState(() => _mediaFiles.add(file));
-      await _uploadFiles([file]);
-    }
-  }
+  //   if (video != null) {
+  //     final file = File(video.path);
+  //     setState(() => _mediaFiles.add(file));
+  //     await _uploadFiles([file]);
+  //   }
+  // }
 
   Future<void> _uploadFiles(List<File> files) async {
     if (widget.onAttachmentUploaded == null ||

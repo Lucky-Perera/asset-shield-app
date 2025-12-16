@@ -70,15 +70,6 @@ class StorageService {
     await _storage.delete(key: _userIdKey);
   }
 
-  // Draft record methods (for saving in-progress records)
-  Future<void> saveDraftRecord(String key, String draftJson) async {
-    await _storage.write(key: key, value: draftJson);
-  }
-
-  Future<String?> getDraftRecord(String key) async {
-    return await _storage.read(key: key);
-  }
-
   Future<void> deleteDraftRecord(String key) async {
     await _storage.delete(key: key);
   }

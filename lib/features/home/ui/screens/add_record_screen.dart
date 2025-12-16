@@ -1,7 +1,5 @@
 import 'dart:developer';
-import 'dart:io';
 import 'package:asset_shield/core/enums/enums.dart';
-import 'package:asset_shield/core/utility/helpers.dart';
 import 'package:asset_shield/core/utility/storage_service.dart';
 import 'package:asset_shield/core/utility/toast_service.dart';
 import 'package:asset_shield/features/home/data/models/record_draft_model.dart';
@@ -14,13 +12,12 @@ import 'package:asset_shield/core/theme/app_text_styles.dart';
 import 'package:asset_shield/core/theme/color_palette.dart';
 import 'package:asset_shield/features/common/widgets/app_scaffold.dart';
 import 'package:asset_shield/features/common/widgets/form_date_field.dart';
-import 'package:asset_shield/features/common/widgets/form_file_picker_field.dart';
 import 'package:asset_shield/features/common/widgets/form_multi_select_field.dart';
 import 'package:asset_shield/features/common/widgets/form_text_field.dart';
 import 'package:asset_shield/features/common/widgets/reusable_button.dart';
 import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
 import 'package:asset_shield/features/home/ui/widgets/checklist/checklist_section.dart';
-import 'package:asset_shield/features/home/data/models/checklist_state.dart';
+import 'package:asset_shield/features/home/data/models/checklist_answer_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -50,7 +47,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
   List<String> _selectedInspectedComponents = [];
   // RecordStatus? _selectedStatus;
   DateTime? _inspectionDate;
-  final List<File> _selectedFiles = [];
+  // final List<File> _selectedFiles = [];
   final Map<String, ChecklistAnswerData> _checklistAnswers = {};
   final Map<String, List<String>> _questionAttachmentIds = {};
   final Map<String, List<Map<String, String>>> _questionAttachmentMetadata = {};
@@ -233,26 +230,26 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     super.dispose();
   }
 
-  Future<void> _handleSelectFiles() async {
-    // Request storage permissions
-    final hasPermission = await Helpers.requestStoragePermissions(context);
-    if (!hasPermission) return;
+  // Future<void> _handleSelectFiles() async {
+  //   // Request storage permissions
+  //   final hasPermission = await Helpers.requestStoragePermissions(context);
+  //   if (!hasPermission) return;
 
-    // Pick files using helper
-    final files = await Helpers.pickFiles(allowMultiple: true);
+  //   // Pick files using helper
+  //   final files = await Helpers.pickFiles(allowMultiple: true);
 
-    if (files != null && files.isNotEmpty) {
-      setState(() {
-        // Append new files and avoid duplicates by path
-        for (final file in files) {
-          final exists = _selectedFiles.any(
-            (existing) => existing.path == file.path,
-          );
-          if (!exists) _selectedFiles.add(file);
-        }
-      });
-    }
-  }
+  //   if (files != null && files.isNotEmpty) {
+  //     setState(() {
+  //       // Append new files and avoid duplicates by path
+  //       for (final file in files) {
+  //         final exists = _selectedFiles.any(
+  //           (existing) => existing.path == file.path,
+  //         );
+  //         if (!exists) _selectedFiles.add(file);
+  //       }
+  //     });
+  //   }
+  // }
 
   void _handleClose() {
     router.pop();
@@ -593,12 +590,12 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                       SizedBox(height: 20.h),
 
                       // Attachment File Picker
-                      FormFilePickerField(
-                        label: 'Attachment',
-                        selectedFiles: _selectedFiles,
-                        onSelectFiles: _handleSelectFiles,
-                      ),
-                      SizedBox(height: 20.h),
+                      // FormFilePickerField(
+                      //   label: 'Attachment',
+                      //   selectedFiles: _selectedFiles,
+                      //   onSelectFiles: _handleSelectFiles,
+                      // ),
+                      // SizedBox(height: 20.h),
 
                       // Comments Field
                       FormTextField(
