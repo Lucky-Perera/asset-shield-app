@@ -52,6 +52,11 @@ _ChecklistAnswerItem _$ChecklistAnswerItemFromJson(Map<String, dynamic> json) =>
       questionId: json['questionId'] as String,
       value: json['value'] as String,
       note: json['note'] as String,
+      attachmentIds:
+          (json['attachmentIds'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$ChecklistAnswerItemToJson(
@@ -60,4 +65,5 @@ Map<String, dynamic> _$ChecklistAnswerItemToJson(
   'questionId': instance.questionId,
   'value': instance.value,
   'note': instance.note,
+  'attachmentIds': instance.attachmentIds,
 };

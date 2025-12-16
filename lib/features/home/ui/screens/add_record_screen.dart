@@ -52,6 +52,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
   DateTime? _inspectionDate;
   final List<File> _selectedFiles = [];
   final Map<String, ChecklistAnswerData> _checklistAnswers = {};
+  final Map<String, List<String>> _questionAttachmentIds = {};
 
   List<MultiSelectItem<String>> get _componentItems => widget
       .schedule
@@ -211,6 +212,15 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     });
   }
 
+  void _handleAttachmentUploaded(String questionId, String attachmentId) {
+    setState(() {
+      _questionAttachmentIds.putIfAbsent(questionId, () => []);
+      if (!_questionAttachmentIds[questionId]!.contains(attachmentId)) {
+        _questionAttachmentIds[questionId]!.add(attachmentId);
+      }
+    });
+  }
+
   void _handleCreate() async {
     EasyLoading.show();
 
@@ -248,6 +258,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                 questionId: entry.key,
                 value: entry.value.value,
                 note: entry.value.note,
+                attachmentIds: _questionAttachmentIds[entry.key] ?? [],
               ),
             )
             .toList();
@@ -564,8 +575,13 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                                 onAnswerChanged: isReadOnly
                                     ? null
                                     : _handleChecklistAnswerChanged,
+                                onAttachmentUploaded: isReadOnly
+                                    ? null
+                                    : _handleAttachmentUploaded,
                                 readOnly: isReadOnly,
                                 initialValues: initialValues,
+                                scheduleV2Id: widget.schedule.id,
+                                equipmentId: widget.schedule.equipmentId,
                               ),
                         SizedBox(height: 24.h),
                       ],

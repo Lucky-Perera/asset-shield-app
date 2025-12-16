@@ -22,11 +22,7 @@ _RecordResponse _$RecordResponseFromJson(Map<String, dynamic> json) =>
           ?.map((e) => RecordComponent.fromJson(e as Map<String, dynamic>))
           .toList(),
       scheduleType: json['scheduleType'] as Map<String, dynamic>?,
-      status: $enumDecodeNullable(
-        _$RecordStatusEnumMap,
-        json['status'],
-        unknownValue: JsonKey.nullForUndefinedEnumValue,
-      ),
+      status: $enumDecodeNullable(_$RecordStatusEnumMap, json['status']),
       inspectionDate: json['inspectionDate'] == null
           ? null
           : DateTime.parse(json['inspectionDate'] as String),

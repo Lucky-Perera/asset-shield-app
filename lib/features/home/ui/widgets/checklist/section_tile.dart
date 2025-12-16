@@ -9,16 +9,22 @@ class SectionTile extends StatelessWidget {
   final String title;
   final List<ChecklistQuestionTemplate> items;
   final Function(String questionId, String value, String note)? onAnswerChanged;
+  final Function(String questionId, String attachmentId)? onAttachmentUploaded;
   final bool readOnly;
   final Map<String, Map<String, String>>? initialValues;
+  final String? scheduleV2Id;
+  final String? equipmentId;
 
   const SectionTile({
     super.key,
     required this.title,
     required this.items,
     this.onAnswerChanged,
+    this.onAttachmentUploaded,
     this.readOnly = false,
     this.initialValues,
+    this.scheduleV2Id,
+    this.equipmentId,
   });
 
   @override
@@ -41,9 +47,12 @@ class SectionTile extends StatelessWidget {
                 key: ValueKey(questionId),
                 question: q,
                 onAnswerChanged: readOnly ? null : onAnswerChanged,
+                onAttachmentUploaded: readOnly ? null : onAttachmentUploaded,
                 readOnly: readOnly,
                 initialValue: initial?['value'],
                 initialNote: initial?['note'],
+                scheduleV2Id: scheduleV2Id,
+                equipmentId: equipmentId,
               ),
             );
           }).toList(),

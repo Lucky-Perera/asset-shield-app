@@ -34,6 +34,7 @@ abstract class ChecklistAnswerItem with _$ChecklistAnswerItem {
     required String questionId,
     required String value,
     required String note,
+    @Default([]) List<String> attachmentIds,
   }) = _ChecklistAnswerItem;
 
   factory ChecklistAnswerItem.fromJson(Map<String, dynamic> json) =>

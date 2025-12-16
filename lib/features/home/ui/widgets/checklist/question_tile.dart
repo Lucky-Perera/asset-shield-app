@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:asset_shield/core/theme/color_palette.dart';
 import 'package:asset_shield/core/enums/enums.dart';
+import 'package:asset_shield/core/utility/toast_service.dart';
 import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
+import 'package:asset_shield/features/home/data/services/attachment_service.dart';
 import 'package:asset_shield/features/home/ui/widgets/checklist/media_label.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -12,17 +14,23 @@ import 'package:image_picker/image_picker.dart';
 class QuestionTile extends StatefulWidget {
   final ChecklistQuestionTemplate question;
   final Function(String questionId, String value, String note)? onAnswerChanged;
+  final Function(String questionId, String attachmentId)? onAttachmentUploaded;
   final bool readOnly;
   final String? initialValue;
   final String? initialNote;
+  final String? scheduleV2Id;
+  final String? equipmentId;
 
   const QuestionTile({
     super.key,
     required this.question,
     this.onAnswerChanged,
+    this.onAttachmentUploaded,
     this.readOnly = false,
     this.initialValue,
     this.initialNote,
+    this.scheduleV2Id,
+    this.equipmentId,
   });
 
   @override
@@ -34,6 +42,8 @@ class _QuestionTileState extends State<QuestionTile> {
   String? _selectedValue;
   bool _isExpanded = false;
   final List<File> _mediaFiles = [];
+  final Set<String> _uploadedPaths = {};
+  bool _isUploading = false;
 
   void _showMediaMenu() {
     final RenderBox box = context.findRenderObject() as RenderBox;
@@ -99,6 +109,7 @@ class _QuestionTileState extends State<QuestionTile> {
             .map((p) => File(p))
             .toList();
         setState(() => _mediaFiles.addAll(files));
+        await _uploadFiles(files);
       }
     } catch (e) {
       debugPrint("File pick error: $e");
@@ -110,7 +121,9 @@ class _QuestionTileState extends State<QuestionTile> {
     final image = await picker.pickImage(source: ImageSource.camera);
 
     if (image != null) {
-      setState(() => _mediaFiles.add(File(image.path)));
+      final file = File(image.path);
+      setState(() => _mediaFiles.add(file));
+      await _uploadFiles([file]);
     }
   }
 
@@ -119,7 +132,43 @@ class _QuestionTileState extends State<QuestionTile> {
     final video = await picker.pickVideo(source: ImageSource.camera);
 
     if (video != null) {
-      setState(() => _mediaFiles.add(File(video.path)));
+      final file = File(video.path);
+      setState(() => _mediaFiles.add(file));
+      await _uploadFiles([file]);
+    }
+  }
+
+  Future<void> _uploadFiles(List<File> files) async {
+    if (widget.onAttachmentUploaded == null ||
+        widget.scheduleV2Id == null ||
+        widget.equipmentId == null) {
+      return;
+    }
+
+    setState(() => _isUploading = true);
+
+    try {
+      for (final file in files) {
+        // Skip if already uploaded
+        if (_uploadedPaths.contains(file.path)) continue;
+
+        final fileName = file.path.split('/').last;
+        final attachmentService = AttachmentService();
+
+        final attachment = await attachmentService.uploadAttachment(
+          file: file,
+          name: fileName,
+          scheduleV2Id: widget.scheduleV2Id!,
+          equipmentId: widget.equipmentId!,
+        );
+
+        _uploadedPaths.add(file.path);
+        widget.onAttachmentUploaded!(widget.question.id, attachment.id);
+      }
+    } catch (e) {
+      ToastService.show('Upload failed: $e');
+    } finally {
+      setState(() => _isUploading = false);
     }
   }
 
@@ -277,7 +326,79 @@ class _QuestionTileState extends State<QuestionTile> {
 
             SizedBox(height: 8.h),
 
-            MediaLabel(onTap: _showMediaMenu),
+            MediaLabel(onTap: _isUploading ? null : _showMediaMenu),
+
+            if (_isUploading)
+              Padding(
+                padding: EdgeInsets.only(top: 8.h),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 16.w,
+                      height: 16.h,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                    SizedBox(width: 8.w),
+                    Text(
+                      'Uploading...',
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: ColorPalette.black.withValues(alpha: 0.6),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+            if (_uploadedPaths.isNotEmpty)
+              Padding(
+                padding: EdgeInsets.only(top: 8.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Uploaded (${_uploadedPaths.length})',
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w600,
+                        color: ColorPalette.black.withValues(alpha: 0.7),
+                      ),
+                    ),
+                    SizedBox(height: 4.h),
+                    ..._mediaFiles
+                        .where((f) => _uploadedPaths.contains(f.path))
+                        .map((file) {
+                          final fileName = file.path.split('/').last;
+                          return Padding(
+                            padding: EdgeInsets.only(bottom: 4.h),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.check_circle,
+                                  size: 16.sp,
+                                  color: Colors.green,
+                                ),
+                                SizedBox(width: 6.w),
+                                Expanded(
+                                  child: Text(
+                                    fileName,
+                                    style: TextStyle(
+                                      fontSize: 12.sp,
+                                      color: ColorPalette.black.withValues(
+                                        alpha: 0.8,
+                                      ),
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        })
+                        .toList(),
+                  ],
+                ),
+              ),
           ],
         ),
       ),

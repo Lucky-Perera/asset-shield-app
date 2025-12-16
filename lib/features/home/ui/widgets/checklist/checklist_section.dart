@@ -5,15 +5,21 @@ import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart
 class ChecklistSections extends StatelessWidget {
   final List<ChecklistQuestionTemplate> questions;
   final Function(String questionId, String value, String note)? onAnswerChanged;
+  final Function(String questionId, String attachmentId)? onAttachmentUploaded;
   final bool readOnly;
   final Map<String, Map<String, String>>? initialValues;
+  final String? scheduleV2Id;
+  final String? equipmentId;
 
   const ChecklistSections({
     super.key,
     required this.questions,
     this.onAnswerChanged,
+    this.onAttachmentUploaded,
     this.readOnly = false,
     this.initialValues,
+    this.scheduleV2Id,
+    this.equipmentId,
   }) : assert(
          !readOnly || onAnswerChanged == null,
          'onAnswerChanged should be null when readOnly is true',
@@ -38,16 +44,22 @@ class ChecklistSections extends StatelessWidget {
             title: 'Internal',
             items: internal,
             onAnswerChanged: onAnswerChanged,
+            onAttachmentUploaded: onAttachmentUploaded,
             readOnly: readOnly,
             initialValues: initialValues,
+            scheduleV2Id: scheduleV2Id,
+            equipmentId: equipmentId,
           ),
         if (external.isNotEmpty)
           SectionTile(
             title: 'External',
             items: external,
             onAnswerChanged: onAnswerChanged,
+            onAttachmentUploaded: onAttachmentUploaded,
             readOnly: readOnly,
             initialValues: initialValues,
+            scheduleV2Id: scheduleV2Id,
+            equipmentId: equipmentId,
           ),
       ],
     );

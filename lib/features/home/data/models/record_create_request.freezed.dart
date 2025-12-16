@@ -341,7 +341,7 @@ as String,
 /// @nodoc
 mixin _$ChecklistAnswerItem {
 
- String get questionId; String get value; String get note;
+ String get questionId; String get value; String get note; List<String> get attachmentIds;
 /// Create a copy of ChecklistAnswerItem
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -354,16 +354,16 @@ $ChecklistAnswerItemCopyWith<ChecklistAnswerItem> get copyWith => _$ChecklistAns
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChecklistAnswerItem&&(identical(other.questionId, questionId) || other.questionId == questionId)&&(identical(other.value, value) || other.value == value)&&(identical(other.note, note) || other.note == note));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChecklistAnswerItem&&(identical(other.questionId, questionId) || other.questionId == questionId)&&(identical(other.value, value) || other.value == value)&&(identical(other.note, note) || other.note == note)&&const DeepCollectionEquality().equals(other.attachmentIds, attachmentIds));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,questionId,value,note);
+int get hashCode => Object.hash(runtimeType,questionId,value,note,const DeepCollectionEquality().hash(attachmentIds));
 
 @override
 String toString() {
-  return 'ChecklistAnswerItem(questionId: $questionId, value: $value, note: $note)';
+  return 'ChecklistAnswerItem(questionId: $questionId, value: $value, note: $note, attachmentIds: $attachmentIds)';
 }
 
 
@@ -374,7 +374,7 @@ abstract mixin class $ChecklistAnswerItemCopyWith<$Res>  {
   factory $ChecklistAnswerItemCopyWith(ChecklistAnswerItem value, $Res Function(ChecklistAnswerItem) _then) = _$ChecklistAnswerItemCopyWithImpl;
 @useResult
 $Res call({
- String questionId, String value, String note
+ String questionId, String value, String note, List<String> attachmentIds
 });
 
 
@@ -391,12 +391,13 @@ class _$ChecklistAnswerItemCopyWithImpl<$Res>
 
 /// Create a copy of ChecklistAnswerItem
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? questionId = null,Object? value = null,Object? note = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? questionId = null,Object? value = null,Object? note = null,Object? attachmentIds = null,}) {
   return _then(_self.copyWith(
 questionId: null == questionId ? _self.questionId : questionId // ignore: cast_nullable_to_non_nullable
 as String,value: null == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
 as String,note: null == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
-as String,
+as String,attachmentIds: null == attachmentIds ? _self.attachmentIds : attachmentIds // ignore: cast_nullable_to_non_nullable
+as List<String>,
   ));
 }
 
@@ -481,10 +482,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String questionId,  String value,  String note)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String questionId,  String value,  String note,  List<String> attachmentIds)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ChecklistAnswerItem() when $default != null:
-return $default(_that.questionId,_that.value,_that.note);case _:
+return $default(_that.questionId,_that.value,_that.note,_that.attachmentIds);case _:
   return orElse();
 
 }
@@ -502,10 +503,10 @@ return $default(_that.questionId,_that.value,_that.note);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String questionId,  String value,  String note)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String questionId,  String value,  String note,  List<String> attachmentIds)  $default,) {final _that = this;
 switch (_that) {
 case _ChecklistAnswerItem():
-return $default(_that.questionId,_that.value,_that.note);case _:
+return $default(_that.questionId,_that.value,_that.note,_that.attachmentIds);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -522,10 +523,10 @@ return $default(_that.questionId,_that.value,_that.note);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String questionId,  String value,  String note)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String questionId,  String value,  String note,  List<String> attachmentIds)?  $default,) {final _that = this;
 switch (_that) {
 case _ChecklistAnswerItem() when $default != null:
-return $default(_that.questionId,_that.value,_that.note);case _:
+return $default(_that.questionId,_that.value,_that.note,_that.attachmentIds);case _:
   return null;
 
 }
@@ -537,12 +538,19 @@ return $default(_that.questionId,_that.value,_that.note);case _:
 @JsonSerializable()
 
 class _ChecklistAnswerItem implements ChecklistAnswerItem {
-  const _ChecklistAnswerItem({required this.questionId, required this.value, required this.note});
+  const _ChecklistAnswerItem({required this.questionId, required this.value, required this.note, final  List<String> attachmentIds = const []}): _attachmentIds = attachmentIds;
   factory _ChecklistAnswerItem.fromJson(Map<String, dynamic> json) => _$ChecklistAnswerItemFromJson(json);
 
 @override final  String questionId;
 @override final  String value;
 @override final  String note;
+ final  List<String> _attachmentIds;
+@override@JsonKey() List<String> get attachmentIds {
+  if (_attachmentIds is EqualUnmodifiableListView) return _attachmentIds;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_attachmentIds);
+}
+
 
 /// Create a copy of ChecklistAnswerItem
 /// with the given fields replaced by the non-null parameter values.
@@ -557,16 +565,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChecklistAnswerItem&&(identical(other.questionId, questionId) || other.questionId == questionId)&&(identical(other.value, value) || other.value == value)&&(identical(other.note, note) || other.note == note));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChecklistAnswerItem&&(identical(other.questionId, questionId) || other.questionId == questionId)&&(identical(other.value, value) || other.value == value)&&(identical(other.note, note) || other.note == note)&&const DeepCollectionEquality().equals(other._attachmentIds, _attachmentIds));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,questionId,value,note);
+int get hashCode => Object.hash(runtimeType,questionId,value,note,const DeepCollectionEquality().hash(_attachmentIds));
 
 @override
 String toString() {
-  return 'ChecklistAnswerItem(questionId: $questionId, value: $value, note: $note)';
+  return 'ChecklistAnswerItem(questionId: $questionId, value: $value, note: $note, attachmentIds: $attachmentIds)';
 }
 
 
@@ -577,7 +585,7 @@ abstract mixin class _$ChecklistAnswerItemCopyWith<$Res> implements $ChecklistAn
   factory _$ChecklistAnswerItemCopyWith(_ChecklistAnswerItem value, $Res Function(_ChecklistAnswerItem) _then) = __$ChecklistAnswerItemCopyWithImpl;
 @override @useResult
 $Res call({
- String questionId, String value, String note
+ String questionId, String value, String note, List<String> attachmentIds
 });
 
 
@@ -594,12 +602,13 @@ class __$ChecklistAnswerItemCopyWithImpl<$Res>
 
 /// Create a copy of ChecklistAnswerItem
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? questionId = null,Object? value = null,Object? note = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? questionId = null,Object? value = null,Object? note = null,Object? attachmentIds = null,}) {
   return _then(_ChecklistAnswerItem(
 questionId: null == questionId ? _self.questionId : questionId // ignore: cast_nullable_to_non_nullable
 as String,value: null == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
 as String,note: null == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
-as String,
+as String,attachmentIds: null == attachmentIds ? _self._attachmentIds : attachmentIds // ignore: cast_nullable_to_non_nullable
+as List<String>,
   ));
 }
 
