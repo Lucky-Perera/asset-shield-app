@@ -12,6 +12,7 @@ class SectionTile extends StatelessWidget {
   final Function(String questionId, String attachmentId)? onAttachmentUploaded;
   final bool readOnly;
   final Map<String, Map<String, String>>? initialValues;
+  final Map<String, List<AttachmentV2>>? questionAttachments;
   final String? scheduleV2Id;
   final String? equipmentId;
 
@@ -23,6 +24,7 @@ class SectionTile extends StatelessWidget {
     this.onAttachmentUploaded,
     this.readOnly = false,
     this.initialValues,
+    this.questionAttachments,
     this.scheduleV2Id,
     this.equipmentId,
   });
@@ -41,6 +43,7 @@ class SectionTile extends StatelessWidget {
           children: items.map((q) {
             final questionId = q.id;
             final initial = initialValues?[questionId];
+            final attachments = questionAttachments?[questionId];
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.w),
               child: QuestionTile(
@@ -53,6 +56,7 @@ class SectionTile extends StatelessWidget {
                 initialNote: initial?['note'],
                 scheduleV2Id: scheduleV2Id,
                 equipmentId: equipmentId,
+                existingAttachments: attachments,
               ),
             );
           }).toList(),

@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:asset_shield/core/utility/client.dart';
 import 'package:asset_shield/core/utility/helpers.dart';
-import 'package:asset_shield/features/home/data/models/record_with_checklist_response.dart';
+import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
 import 'package:dio/dio.dart';
 
 class AttachmentService {

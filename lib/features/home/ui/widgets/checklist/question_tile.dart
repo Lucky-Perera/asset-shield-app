@@ -10,6 +10,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class QuestionTile extends StatefulWidget {
   final ChecklistQuestionTemplate question;
@@ -20,6 +21,7 @@ class QuestionTile extends StatefulWidget {
   final String? initialNote;
   final String? scheduleV2Id;
   final String? equipmentId;
+  final List<AttachmentV2>? existingAttachments;
 
   const QuestionTile({
     super.key,
@@ -31,6 +33,7 @@ class QuestionTile extends StatefulWidget {
     this.initialNote,
     this.scheduleV2Id,
     this.equipmentId,
+    this.existingAttachments,
   });
 
   @override
@@ -236,6 +239,65 @@ class _QuestionTileState extends State<QuestionTile> {
     }
   }
 
+  void _showImageViewer(String imageUrl) {
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        backgroundColor: Colors.black,
+        child: Stack(
+          children: [
+            InteractiveViewer(
+              child: Center(
+                child: Image.network(
+                  imageUrl,
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.error, color: Colors.white, size: 48),
+                          SizedBox(height: 16),
+                          Text(
+                            'Failed to load image',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+            Positioned(
+              top: 10,
+              right: 10,
+              child: IconButton(
+                icon: Icon(Icons.close, color: Colors.white, size: 30),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  bool _isImageUrl(String url) {
+    final imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+    final lowerUrl = url.toLowerCase();
+    return imageExtensions.any((ext) => lowerUrl.contains(ext));
+  }
+
+  Future<void> _openUrl(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      ToastService.show('Could not open link');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -326,7 +388,10 @@ class _QuestionTileState extends State<QuestionTile> {
 
             SizedBox(height: 8.h),
 
-            MediaLabel(onTap: _isUploading ? null : _showMediaMenu),
+            // Show media button only if: not readonly OR (readonly but rejected and can edit)
+            if (!widget.readOnly ||
+                (widget.existingAttachments?.isEmpty ?? true))
+              MediaLabel(onTap: _isUploading ? null : _showMediaMenu),
 
             if (_isUploading)
               Padding(
@@ -396,6 +461,63 @@ class _QuestionTileState extends State<QuestionTile> {
                           );
                         })
                         .toList(),
+                  ],
+                ),
+              ),
+
+            // Show existing attachments from backend
+            if (widget.existingAttachments != null &&
+                widget.existingAttachments!.isNotEmpty)
+              Padding(
+                padding: EdgeInsets.only(top: 8.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Attachments (${widget.existingAttachments!.length})',
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w600,
+                        color: ColorPalette.black.withValues(alpha: 0.7),
+                      ),
+                    ),
+                    SizedBox(height: 4.h),
+                    ...widget.existingAttachments!.map((attachment) {
+                      final isImage = _isImageUrl(attachment.url);
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: 4.h),
+                        child: InkWell(
+                          onTap: () {
+                            if (isImage) {
+                              _showImageViewer(attachment.url);
+                            } else {
+                              _openUrl(attachment.url);
+                            }
+                          },
+                          child: Row(
+                            children: [
+                              Icon(
+                                isImage ? Icons.image : Icons.attach_file,
+                                size: 16.sp,
+                                color: ColorPalette.primary,
+                              ),
+                              SizedBox(width: 6.w),
+                              Expanded(
+                                child: Text(
+                                  attachment.name,
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    color: ColorPalette.primary,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }).toList(),
                   ],
                 ),
               ),

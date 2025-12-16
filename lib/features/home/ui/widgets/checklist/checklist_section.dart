@@ -8,6 +8,7 @@ class ChecklistSections extends StatelessWidget {
   final Function(String questionId, String attachmentId)? onAttachmentUploaded;
   final bool readOnly;
   final Map<String, Map<String, String>>? initialValues;
+  final Map<String, List<AttachmentV2>>? questionAttachments;
   final String? scheduleV2Id;
   final String? equipmentId;
 
@@ -18,6 +19,7 @@ class ChecklistSections extends StatelessWidget {
     this.onAttachmentUploaded,
     this.readOnly = false,
     this.initialValues,
+    this.questionAttachments,
     this.scheduleV2Id,
     this.equipmentId,
   }) : assert(
@@ -47,6 +49,7 @@ class ChecklistSections extends StatelessWidget {
             onAttachmentUploaded: onAttachmentUploaded,
             readOnly: readOnly,
             initialValues: initialValues,
+            questionAttachments: questionAttachments,
             scheduleV2Id: scheduleV2Id,
             equipmentId: equipmentId,
           ),
@@ -58,6 +61,7 @@ class ChecklistSections extends StatelessWidget {
             onAttachmentUploaded: onAttachmentUploaded,
             readOnly: readOnly,
             initialValues: initialValues,
+            questionAttachments: questionAttachments,
             scheduleV2Id: scheduleV2Id,
             equipmentId: equipmentId,
           ),

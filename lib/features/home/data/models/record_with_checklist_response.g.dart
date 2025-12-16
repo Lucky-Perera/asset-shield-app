@@ -109,39 +109,3 @@ Map<String, dynamic> _$ChecklistAnswerToJson(_ChecklistAnswer instance) =>
       'questionId': instance.questionId,
       'attachments': instance.attachments,
     };
-
-_AttachmentV2 _$AttachmentV2FromJson(Map<String, dynamic> json) =>
-    _AttachmentV2(
-      id: json['id'] as String,
-      documentID: json['documentID'] as String,
-      name: json['name'] as String,
-      url: json['url'] as String,
-      description: json['description'] as String?,
-      comments: json['comments'] as String?,
-      equipmentId: json['equipmentId'] as String?,
-      scheduleId: json['scheduleId'] as String?,
-      scopeImageScheduleId: json['scopeImageScheduleId'] as String?,
-      checklistAnswerId: json['checklistAnswerId'] as String?,
-      recordId: json['recordId'] as String?,
-      isDeleted: json['isDeleted'] as bool?,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
-    );
-
-Map<String, dynamic> _$AttachmentV2ToJson(_AttachmentV2 instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'documentID': instance.documentID,
-      'name': instance.name,
-      'url': instance.url,
-      'description': instance.description,
-      'comments': instance.comments,
-      'equipmentId': instance.equipmentId,
-      'scheduleId': instance.scheduleId,
-      'scopeImageScheduleId': instance.scopeImageScheduleId,
-      'checklistAnswerId': instance.checklistAnswerId,
-      'recordId': instance.recordId,
-      'isDeleted': instance.isDeleted,
-      'createdAt': instance.createdAt.toIso8601String(),
-      'updatedAt': instance.updatedAt.toIso8601String(),
-    };

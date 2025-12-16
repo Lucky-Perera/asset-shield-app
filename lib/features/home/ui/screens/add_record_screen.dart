@@ -337,6 +337,16 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
       initialValues[key] = {'value': value.value, 'note': value.note};
     });
 
+    // Build attachment map for viewing
+    final questionAttachments = <String, List<AttachmentV2>>{};
+    if (hasSubmittedAnswers) {
+      for (final question in state?.answeredQuestions ?? []) {
+        if (question.attachments != null && question.attachments!.isNotEmpty) {
+          questionAttachments[question.id] = question.attachments!;
+        }
+      }
+    }
+
     return AppScaffold(
       backgroundColor: ColorPalette.white,
       appBar: AppBar(
@@ -580,6 +590,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                                     : _handleAttachmentUploaded,
                                 readOnly: isReadOnly,
                                 initialValues: initialValues,
+                                questionAttachments: questionAttachments,
                                 scheduleV2Id: widget.schedule.id,
                                 equipmentId: widget.schedule.equipmentId,
                               ),
