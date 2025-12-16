@@ -5,10 +5,11 @@ import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart
 class ChecklistSections extends StatelessWidget {
   final List<ChecklistQuestionTemplate> questions;
   final Function(String questionId, String value, String note)? onAnswerChanged;
-  final Function(String questionId, String attachmentId)? onAttachmentUploaded;
+  final Function(String questionId, String attachmentId, String attachmentName)? onAttachmentUploaded;
   final bool readOnly;
   final Map<String, Map<String, String>>? initialValues;
   final Map<String, List<AttachmentV2>>? questionAttachments;
+  final Map<String, List<Map<String, String>>>? uploadedAttachmentMetadata;
   final String? scheduleV2Id;
   final String? equipmentId;
 
@@ -20,6 +21,7 @@ class ChecklistSections extends StatelessWidget {
     this.readOnly = false,
     this.initialValues,
     this.questionAttachments,
+    this.uploadedAttachmentMetadata,
     this.scheduleV2Id,
     this.equipmentId,
   }) : assert(
@@ -50,6 +52,7 @@ class ChecklistSections extends StatelessWidget {
             readOnly: readOnly,
             initialValues: initialValues,
             questionAttachments: questionAttachments,
+            uploadedAttachmentMetadata: uploadedAttachmentMetadata,
             scheduleV2Id: scheduleV2Id,
             equipmentId: equipmentId,
           ),
@@ -62,6 +65,7 @@ class ChecklistSections extends StatelessWidget {
             readOnly: readOnly,
             initialValues: initialValues,
             questionAttachments: questionAttachments,
+            uploadedAttachmentMetadata: uploadedAttachmentMetadata,
             scheduleV2Id: scheduleV2Id,
             equipmentId: equipmentId,
           ),

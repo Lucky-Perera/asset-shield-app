@@ -15,13 +15,14 @@ import 'package:url_launcher/url_launcher.dart';
 class QuestionTile extends StatefulWidget {
   final ChecklistQuestionTemplate question;
   final Function(String questionId, String value, String note)? onAnswerChanged;
-  final Function(String questionId, String attachmentId)? onAttachmentUploaded;
+  final Function(String questionId, String attachmentId, String attachmentName)? onAttachmentUploaded;
   final bool readOnly;
   final String? initialValue;
   final String? initialNote;
   final String? scheduleV2Id;
   final String? equipmentId;
   final List<AttachmentV2>? existingAttachments;
+  final List<Map<String, String>>? uploadedAttachmentMetadata;
 
   const QuestionTile({
     super.key,
@@ -34,6 +35,7 @@ class QuestionTile extends StatefulWidget {
     this.scheduleV2Id,
     this.equipmentId,
     this.existingAttachments,
+    this.uploadedAttachmentMetadata,
   });
 
   @override
@@ -46,6 +48,7 @@ class _QuestionTileState extends State<QuestionTile> {
   bool _isExpanded = false;
   final List<File> _mediaFiles = [];
   final Set<String> _uploadedPaths = {};
+  final List<Map<String, String>> _restoredAttachments = [];
   bool _isUploading = false;
 
   void _showMediaMenu() {
@@ -166,7 +169,11 @@ class _QuestionTileState extends State<QuestionTile> {
         );
 
         _uploadedPaths.add(file.path);
-        widget.onAttachmentUploaded!(widget.question.id, attachment.id);
+        widget.onAttachmentUploaded!(
+          widget.question.id,
+          attachment.id,
+          attachment.name,
+        );
       }
     } catch (e) {
       ToastService.show('Upload failed: $e');
@@ -182,6 +189,11 @@ class _QuestionTileState extends State<QuestionTile> {
       text: widget.initialNote ?? widget.question.helpText ?? '',
     );
     _selectedValue = widget.initialValue ?? widget.question.question;
+    
+    // Restore previously uploaded attachments from metadata
+    if (widget.uploadedAttachmentMetadata != null) {
+      _restoredAttachments.addAll(widget.uploadedAttachmentMetadata!);
+    }
   }
 
   @override
@@ -415,14 +427,14 @@ class _QuestionTileState extends State<QuestionTile> {
                 ),
               ),
 
-            if (_uploadedPaths.isNotEmpty)
+            if (_uploadedPaths.isNotEmpty || _restoredAttachments.isNotEmpty)
               Padding(
                 padding: EdgeInsets.only(top: 8.h),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Uploaded (${_uploadedPaths.length})',
+                      'Uploaded (${_uploadedPaths.length + _restoredAttachments.length})',
                       style: TextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w600,
@@ -430,6 +442,36 @@ class _QuestionTileState extends State<QuestionTile> {
                       ),
                     ),
                     SizedBox(height: 4.h),
+                    // Show restored attachments from draft
+                    ..._restoredAttachments.map((attachment) {
+                      final fileName = attachment['name'] ?? 'Unknown';
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: 4.h),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.check_circle,
+                              size: 16.sp,
+                              color: Colors.green,
+                            ),
+                            SizedBox(width: 6.w),
+                            Expanded(
+                              child: Text(
+                                fileName,
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  color: ColorPalette.black.withValues(
+                                    alpha: 0.8,
+                                  ),
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                    // Show newly uploaded files in this session
                     ..._mediaFiles
                         .where((f) => _uploadedPaths.contains(f.path))
                         .map((file) {

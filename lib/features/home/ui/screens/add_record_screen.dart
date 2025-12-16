@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:asset_shield/core/enums/enums.dart';
@@ -53,6 +54,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
   final List<File> _selectedFiles = [];
   final Map<String, ChecklistAnswerData> _checklistAnswers = {};
   final Map<String, List<String>> _questionAttachmentIds = {};
+  final Map<String, List<Map<String, String>>> _questionAttachmentMetadata = {};
 
   List<MultiSelectItem<String>> get _componentItems => widget
       .schedule
@@ -74,6 +76,142 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     // Prefill schedule defaults (equipment, schedule item, schedule type)
     // even when there is no existing record attached to the schedule.
     _initialiseFields(null);
+    // Load draft data if exists
+    _loadDraftData();
+
+    // Add listeners to text fields to auto-save
+    _descriptionController.addListener(_saveDraftData);
+    _actionCreatedController.addListener(_saveDraftData);
+    _commentsController.addListener(_saveDraftData);
+  }
+
+  String get _draftStorageKey => 'draft_record_${widget.schedule.id}';
+
+  Future<void> _loadDraftData() async {
+    try {
+      // Wait a bit for the provider to load
+      await Future.delayed(const Duration(milliseconds: 100));
+
+      // Don't load draft if there's already data from the backend
+      final recordWithChecklistAsync = ref.read(
+        recordWithChecklistProvider(widget.schedule.id),
+      );
+
+      // Skip loading draft if record already exists
+      if (recordWithChecklistAsync.hasValue &&
+          recordWithChecklistAsync.value?.hasSubmittedAnswers == true) {
+        await _clearDraftData();
+        return;
+      }
+
+      final storage = StorageService();
+      final draftJson = await storage.getDraftRecord(_draftStorageKey);
+
+      if (draftJson != null) {
+        final draft = jsonDecode(draftJson) as Map<String, dynamic>;
+
+        setState(() {
+          // Load form fields
+          if (draft['description'] != null) {
+            _descriptionController.text = draft['description'];
+          }
+          if (draft['actionCreated'] != null) {
+            _actionCreatedController.text = draft['actionCreated'];
+          }
+          if (draft['comments'] != null) {
+            _commentsController.text = draft['comments'];
+          }
+
+          // Load dates
+          if (draft['recordCreatedDate'] != null) {
+            _recordCreatedDate = DateTime.parse(draft['recordCreatedDate']);
+          }
+          if (draft['inspectionDate'] != null) {
+            _inspectionDate = DateTime.parse(draft['inspectionDate']);
+          }
+
+          // Load selected components
+          if (draft['selectedInspectedComponents'] != null) {
+            _selectedInspectedComponents = List<String>.from(
+              draft['selectedInspectedComponents'],
+            );
+          }
+
+          // Load checklist answers
+          if (draft['checklistAnswers'] != null) {
+            final answersMap =
+                draft['checklistAnswers'] as Map<String, dynamic>;
+            _checklistAnswers.clear();
+            answersMap.forEach((key, value) {
+              _checklistAnswers[key] = ChecklistAnswerData(
+                value: value['value'],
+                note: value['note'],
+              );
+            });
+          }
+
+          // Load attachment IDs
+          if (draft['questionAttachmentIds'] != null) {
+            final attachmentsMap =
+                draft['questionAttachmentIds'] as Map<String, dynamic>;
+            _questionAttachmentIds.clear();
+            attachmentsMap.forEach((key, value) {
+              _questionAttachmentIds[key] = List<String>.from(value);
+            });
+          }
+          
+          // Load attachment metadata
+          if (draft['questionAttachmentMetadata'] != null) {
+            final metadataMap =
+                draft['questionAttachmentMetadata'] as Map<String, dynamic>;
+            _questionAttachmentMetadata.clear();
+            metadataMap.forEach((key, value) {
+              _questionAttachmentMetadata[key] = (value as List)
+                  .map((e) => Map<String, String>.from(e))
+                  .toList();
+            });
+          }
+        });
+
+        log('Draft data loaded for schedule ${widget.schedule.id}');
+      }
+    } catch (e) {
+      log('Failed to load draft data: $e');
+    }
+  }
+
+  Future<void> _saveDraftData() async {
+    try {
+      final draft = {
+        'description': _descriptionController.text.trim(),
+        'actionCreated': _actionCreatedController.text.trim(),
+        'comments': _commentsController.text.trim(),
+        'recordCreatedDate': _recordCreatedDate?.toIso8601String(),
+        'inspectionDate': _inspectionDate?.toIso8601String(),
+        'selectedInspectedComponents': _selectedInspectedComponents,
+        'checklistAnswers': _checklistAnswers.map(
+          (key, value) =>
+              MapEntry(key, {'value': value.value, 'note': value.note}),
+        ),
+        'questionAttachmentIds': _questionAttachmentIds,
+        'questionAttachmentMetadata': _questionAttachmentMetadata,
+      };
+
+      final storage = StorageService();
+      await storage.saveDraftRecord(_draftStorageKey, jsonEncode(draft));
+    } catch (e) {
+      log('Failed to save draft data: $e');
+    }
+  }
+
+  Future<void> _clearDraftData() async {
+    try {
+      final storage = StorageService();
+      await storage.deleteDraftRecord(_draftStorageKey);
+      log('Draft data cleared for schedule ${widget.schedule.id}');
+    } catch (e) {
+      log('Failed to clear draft data: $e');
+    }
   }
 
   void _initialiseFields(RecordResponse? existingRecord) {
@@ -210,15 +348,25 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
         note: note,
       );
     });
+    _saveDraftData();
   }
 
-  void _handleAttachmentUploaded(String questionId, String attachmentId) {
+  void _handleAttachmentUploaded(String questionId, String attachmentId, String attachmentName) {
     setState(() {
       _questionAttachmentIds.putIfAbsent(questionId, () => []);
       if (!_questionAttachmentIds[questionId]!.contains(attachmentId)) {
         _questionAttachmentIds[questionId]!.add(attachmentId);
       }
+      
+      _questionAttachmentMetadata.putIfAbsent(questionId, () => []);
+      if (!_questionAttachmentMetadata[questionId]!.any((m) => m['id'] == attachmentId)) {
+        _questionAttachmentMetadata[questionId]!.add({
+          'id': attachmentId,
+          'name': attachmentName,
+        });
+      }
     });
+    _saveDraftData();
   }
 
   void _handleCreate() async {
@@ -289,6 +437,10 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
         log(
           'Record created with ${response.data.answeredQuestions.length} checklist answers',
         );
+
+        // Clear draft data after successful submission
+        await _clearDraftData();
+
         // ref.invalidate(schedulesProvider);
         router.pop();
         ToastService.show(response.message ?? 'Record submitted successfully');
@@ -317,6 +469,8 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     if (!_prefilled && existingRecord != null) {
       _initialiseFields(existingRecord);
       _prefilled = true;
+      // Clear draft data if viewing/editing existing record
+      _clearDraftData();
     }
 
     // Initialize checklist answers from fetched data if not already done
@@ -422,6 +576,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                           setState(() {
                             _recordCreatedDate = date;
                           });
+                          _saveDraftData();
                         },
                       ),
                       SizedBox(height: 20.h),
@@ -445,6 +600,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                             setState(() {
                               _selectedInspectedComponents = values;
                             });
+                            _saveDraftData();
                           }
                         },
                         validator: isReadOnly
@@ -468,49 +624,6 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                       ),
                       SizedBox(height: 20.h),
 
-                      // Status Dropdown (uses Status enum)
-                      // FormDropdownField<RecordStatus>(
-                      //   label: 'Status',
-                      //   hint: 'Select status',
-                      //   value: _selectedStatus,
-                      //   readOnly: isReadOnly,
-                      //   items: [
-                      //     DropdownMenuItem(
-                      //       value: RecordStatus.pendingApproval,
-                      //       child: Text(
-                      //         'Pending Approval',
-                      //         style: TextStyle(fontSize: 14.sp),
-                      //       ),
-                      //     ),
-                      //     DropdownMenuItem(
-                      //       value: RecordStatus.approved,
-                      //       child: Text(
-                      //         'Approved',
-                      //         style: TextStyle(fontSize: 14.sp),
-                      //       ),
-                      //     ),
-                      //     DropdownMenuItem(
-                      //       value: RecordStatus.draft,
-                      //       child: Text(
-                      //         'Draft',
-                      //         style: TextStyle(fontSize: 14.sp),
-                      //       ),
-                      //     ),
-                      //   ],
-                      //   onChanged: (value) {
-                      //     setState(() {
-                      //       _selectedStatus = value;
-                      //     });
-                      //   },
-                      //   validator: (value) {
-                      //     if (value == null) {
-                      //       return 'Please select status';
-                      //     }
-                      //     return null;
-                      //   },
-                      // ),
-                      // SizedBox(height: 20.h),
-
                       // Inspection Date
                       FormDateField(
                         label: 'Inspection Date',
@@ -521,6 +634,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                           setState(() {
                             _inspectionDate = date;
                           });
+                          _saveDraftData();
                         },
                       ),
                       SizedBox(height: 20.h),
@@ -591,6 +705,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                                 readOnly: isReadOnly,
                                 initialValues: initialValues,
                                 questionAttachments: questionAttachments,
+                                uploadedAttachmentMetadata: _questionAttachmentMetadata,
                                 scheduleV2Id: widget.schedule.id,
                                 equipmentId: widget.schedule.equipmentId,
                               ),
