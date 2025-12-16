@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'package:asset_shield/core/enums/enums.dart';
 import 'package:asset_shield/core/utility/storage_service.dart';
@@ -33,6 +34,10 @@ class AddRecordScreen extends ConsumerStatefulWidget {
 class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _prefilled = false;
+
+  // Debounce timer to reduce frequency of draft saves
+  Timer? _debounceTimer;
+  final Duration _debounceDuration = const Duration(milliseconds: 800);
 
   // Controllers
   final _equipmentController = TextEditingController();
@@ -75,10 +80,10 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     // Load draft data if exists
     _loadDraftData();
 
-    // Add listeners to text fields to auto-save
-    _descriptionController.addListener(_saveDraftData);
-    _actionCreatedController.addListener(_saveDraftData);
-    _commentsController.addListener(_saveDraftData);
+    // Add listeners to text fields to auto-save (debounced)
+    _descriptionController.addListener(_scheduleSaveDraft);
+    _actionCreatedController.addListener(_scheduleSaveDraft);
+    _commentsController.addListener(_scheduleSaveDraft);
   }
 
   final _storage = StorageService();
@@ -183,6 +188,14 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     }
   }
 
+  /// Schedule a debounced save to reduce excessive writes.
+  void _scheduleSaveDraft() {
+    _debounceTimer?.cancel();
+    _debounceTimer = Timer(_debounceDuration, () {
+      _saveDraftData();
+    });
+  }
+
   Future<void> _clearDraftData() async {
     try {
       await _storage.deleteDraftRecordModel(widget.schedule.id);
@@ -224,6 +237,9 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
 
   @override
   void dispose() {
+    // Cancel any pending debounced save and perform a final save.
+    _debounceTimer?.cancel();
+    _saveDraftData();
     _descriptionController.dispose();
     _actionCreatedController.dispose();
     _commentsController.dispose();
@@ -266,7 +282,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
         note: note,
       );
     });
-    _saveDraftData();
+    _scheduleSaveDraft();
   }
 
   void _handleAttachmentUploaded(
@@ -292,7 +308,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
         });
       }
     });
-    _saveDraftData();
+    _scheduleSaveDraft();
   }
 
   /// Handle attachment deletion
@@ -312,7 +328,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
         _questionAttachmentMetadata.remove(questionId);
       }
     });
-    _saveDraftData();
+    _scheduleSaveDraft();
   }
 
   bool _validateChecklist() {
@@ -530,7 +546,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                           setState(() {
                             _recordCreatedDate = date;
                           });
-                          _saveDraftData();
+                          _scheduleSaveDraft();
                         },
                       ),
                       SizedBox(height: 20.h),
@@ -554,7 +570,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                             setState(() {
                               _selectedInspectedComponents = values;
                             });
-                            _saveDraftData();
+                            _scheduleSaveDraft();
                           }
                         },
                         validator: isReadOnly
@@ -588,7 +604,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                           setState(() {
                             _inspectionDate = date;
                           });
-                          _saveDraftData();
+                          _scheduleSaveDraft();
                         },
                       ),
                       SizedBox(height: 20.h),

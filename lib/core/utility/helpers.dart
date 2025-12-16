@@ -70,8 +70,11 @@ class Helpers {
           (statuses[Permission.manageExternalStorage]?.isGranted ?? false);
 
       if (!storageGranted) {
+        // Avoid using the provided BuildContext across the async gap above.
+        // Confirm the context is still mounted before showing any dialogs.
+        if (!context.mounted) return false;
+
         final shouldOpenSettings = await _showPermissionDialog(
-          // ignore: use_build_context_synchronously
           context,
           title: 'Storage Permission Required',
           message:
@@ -81,6 +84,7 @@ class Helpers {
         if (shouldOpenSettings) {
           await openAppSettings();
         }
+
         return false;
       }
       return true;
