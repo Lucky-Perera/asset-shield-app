@@ -1,4 +1,5 @@
 import 'package:asset_shield/features/home/data/models/record_response.dart';
+import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'record_with_checklist_response.freezed.dart';
@@ -50,49 +51,4 @@ abstract class ChecklistQuestionItem with _$ChecklistQuestionItem {
 
   factory ChecklistQuestionItem.fromJson(Map<String, dynamic> json) =>
       _$ChecklistQuestionItemFromJson(json);
-}
-
-/// ─────────────────────────────────────────────────────────
-/// CHECKLIST ANSWER
-/// ─────────────────────────────────────────────────────────
-@freezed
-abstract class ChecklistAnswer with _$ChecklistAnswer {
-  const factory ChecklistAnswer({
-    required String id,
-    String? value,
-    String? note,
-    DateTime? completedAt,
-    required String recordId,
-    required String questionId,
-    List<AttachmentV2>? attachments,
-  }) = _ChecklistAnswer;
-
-  factory ChecklistAnswer.fromJson(Map<String, dynamic> json) =>
-      _$ChecklistAnswerFromJson(json);
-}
-
-/// ─────────────────────────────────────────────────────────
-/// ATTACHMENTS
-/// ─────────────────────────────────────────────────────────
-@freezed
-abstract class AttachmentV2 with _$AttachmentV2 {
-  const factory AttachmentV2({
-    required String id,
-    required String documentID,
-    required String name,
-    required String url,
-    String? description,
-    String? comments,
-    String? equipmentId,
-    String? scheduleId,
-    String? scopeImageScheduleId,
-    String? checklistAnswerId,
-    String? recordId,
-    bool? isDeleted,
-    required DateTime createdAt,
-    required DateTime updatedAt,
-  }) = _AttachmentV2;
-
-  factory AttachmentV2.fromJson(Map<String, dynamic> json) =>
-      _$AttachmentV2FromJson(json);
 }

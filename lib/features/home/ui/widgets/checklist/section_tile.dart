@@ -9,16 +9,29 @@ class SectionTile extends StatelessWidget {
   final String title;
   final List<ChecklistQuestionTemplate> items;
   final Function(String questionId, String value, String note)? onAnswerChanged;
+  final Function(String questionId, String attachmentId, String attachmentName)?
+  onAttachmentUploaded;
+  final Function(String questionId, String attachmentId)? onAttachmentDeleted;
   final bool readOnly;
   final Map<String, Map<String, String>>? initialValues;
+  final Map<String, List<AttachmentV2>>? questionAttachments;
+  final Map<String, List<Map<String, String>>>? uploadedAttachmentMetadata;
+  final String? scheduleV2Id;
+  final String? equipmentId;
 
   const SectionTile({
     super.key,
     required this.title,
     required this.items,
     this.onAnswerChanged,
+    this.onAttachmentUploaded,
+    this.onAttachmentDeleted,
     this.readOnly = false,
     this.initialValues,
+    this.questionAttachments,
+    this.uploadedAttachmentMetadata,
+    this.scheduleV2Id,
+    this.equipmentId,
   });
 
   @override
@@ -35,15 +48,23 @@ class SectionTile extends StatelessWidget {
           children: items.map((q) {
             final questionId = q.id;
             final initial = initialValues?[questionId];
+            final attachments = questionAttachments?[questionId];
+            final uploadedMetadata = uploadedAttachmentMetadata?[questionId];
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.w),
               child: QuestionTile(
                 key: ValueKey(questionId),
                 question: q,
                 onAnswerChanged: readOnly ? null : onAnswerChanged,
+                onAttachmentUploaded: readOnly ? null : onAttachmentUploaded,
+                onAttachmentDeleted: readOnly ? null : onAttachmentDeleted,
                 readOnly: readOnly,
                 initialValue: initial?['value'],
                 initialNote: initial?['note'],
+                scheduleV2Id: scheduleV2Id,
+                equipmentId: equipmentId,
+                existingAttachments: attachments,
+                uploadedAttachmentMetadata: uploadedMetadata,
               ),
             );
           }).toList(),
