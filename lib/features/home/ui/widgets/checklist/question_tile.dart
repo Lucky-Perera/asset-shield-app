@@ -15,7 +15,8 @@ import 'package:url_launcher/url_launcher.dart';
 class QuestionTile extends StatefulWidget {
   final ChecklistQuestionTemplate question;
   final Function(String questionId, String value, String note)? onAnswerChanged;
-  final Function(String questionId, String attachmentId, String attachmentName)? onAttachmentUploaded;
+  final Function(String questionId, String attachmentId, String attachmentName)?
+  onAttachmentUploaded;
   final bool readOnly;
   final String? initialValue;
   final String? initialNote;
@@ -189,7 +190,7 @@ class _QuestionTileState extends State<QuestionTile> {
       text: widget.initialNote ?? widget.question.helpText ?? '',
     );
     _selectedValue = widget.initialValue ?? widget.question.question;
-    
+
     // Restore previously uploaded attachments from metadata
     if (widget.uploadedAttachmentMetadata != null) {
       _restoredAttachments.addAll(widget.uploadedAttachmentMetadata!);
@@ -470,7 +471,7 @@ class _QuestionTileState extends State<QuestionTile> {
                           ],
                         ),
                       );
-                    }).toList(),
+                    }),
                     // Show newly uploaded files in this session
                     ..._mediaFiles
                         .where((f) => _uploadedPaths.contains(f.path))
@@ -501,8 +502,7 @@ class _QuestionTileState extends State<QuestionTile> {
                               ],
                             ),
                           );
-                        })
-                        .toList(),
+                        }),
                   ],
                 ),
               ),
@@ -559,7 +559,7 @@ class _QuestionTileState extends State<QuestionTile> {
                           ),
                         ),
                       );
-                    }).toList(),
+                    }),
                   ],
                 ),
               ),

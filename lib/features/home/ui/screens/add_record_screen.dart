@@ -1,15 +1,14 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:asset_shield/core/enums/enums.dart';
+import 'package:asset_shield/core/utility/helpers.dart';
 import 'package:asset_shield/core/utility/storage_service.dart';
 import 'package:asset_shield/core/utility/toast_service.dart';
+import 'package:asset_shield/features/home/data/models/record_draft_model.dart';
 import 'package:asset_shield/features/home/data/models/record_create_request.dart';
 import 'package:asset_shield/features/home/data/models/record_response.dart';
 import 'package:asset_shield/features/home/data/providers/record_with_checklist_provider.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:asset_shield/core/routes/router.dart';
 import 'package:asset_shield/core/theme/app_text_styles.dart';
 import 'package:asset_shield/core/theme/color_palette.dart';
@@ -85,7 +84,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     _commentsController.addListener(_saveDraftData);
   }
 
-  String get _draftStorageKey => 'draft_record_${widget.schedule.id}';
+  final _storage = StorageService();
 
   Future<void> _loadDraftData() async {
     try {
@@ -104,73 +103,43 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
         return;
       }
 
-      final storage = StorageService();
-      final draftJson = await storage.getDraftRecord(_draftStorageKey);
+      final draft = await _storage.getDraftRecordModel(widget.schedule.id);
 
-      if (draftJson != null) {
-        final draft = jsonDecode(draftJson) as Map<String, dynamic>;
-
+      if (draft != null) {
         setState(() {
           // Load form fields
-          if (draft['description'] != null) {
-            _descriptionController.text = draft['description'];
-          }
-          if (draft['actionCreated'] != null) {
-            _actionCreatedController.text = draft['actionCreated'];
-          }
-          if (draft['comments'] != null) {
-            _commentsController.text = draft['comments'];
-          }
+          _descriptionController.text = draft.description ?? '';
+          _actionCreatedController.text = draft.actionCreated ?? '';
+          _commentsController.text = draft.comments ?? '';
 
           // Load dates
-          if (draft['recordCreatedDate'] != null) {
-            _recordCreatedDate = DateTime.parse(draft['recordCreatedDate']);
-          }
-          if (draft['inspectionDate'] != null) {
-            _inspectionDate = DateTime.parse(draft['inspectionDate']);
-          }
+          _recordCreatedDate = draft.recordCreatedDate ?? _recordCreatedDate;
+          _inspectionDate = draft.inspectionDate ?? _inspectionDate;
 
           // Load selected components
-          if (draft['selectedInspectedComponents'] != null) {
-            _selectedInspectedComponents = List<String>.from(
-              draft['selectedInspectedComponents'],
-            );
-          }
+          _selectedInspectedComponents = draft.selectedInspectedComponents;
 
           // Load checklist answers
-          if (draft['checklistAnswers'] != null) {
-            final answersMap =
-                draft['checklistAnswers'] as Map<String, dynamic>;
-            _checklistAnswers.clear();
-            answersMap.forEach((key, value) {
-              _checklistAnswers[key] = ChecklistAnswerData(
-                value: value['value'],
-                note: value['note'],
-              );
-            });
-          }
+          _checklistAnswers.clear();
+          draft.checklistAnswers.forEach((key, value) {
+            _checklistAnswers[key] = ChecklistAnswerData(
+              value: value.value,
+              note: value.note,
+            );
+          });
 
-          // Load attachment IDs
-          if (draft['questionAttachmentIds'] != null) {
-            final attachmentsMap =
-                draft['questionAttachmentIds'] as Map<String, dynamic>;
-            _questionAttachmentIds.clear();
-            attachmentsMap.forEach((key, value) {
-              _questionAttachmentIds[key] = List<String>.from(value);
-            });
-          }
-          
           // Load attachment metadata
-          if (draft['questionAttachmentMetadata'] != null) {
-            final metadataMap =
-                draft['questionAttachmentMetadata'] as Map<String, dynamic>;
-            _questionAttachmentMetadata.clear();
-            metadataMap.forEach((key, value) {
-              _questionAttachmentMetadata[key] = (value as List)
-                  .map((e) => Map<String, String>.from(e))
-                  .toList();
-            });
-          }
+          _questionAttachmentIds.clear();
+          _questionAttachmentMetadata.clear();
+
+          draft.questionAttachments.forEach((questionId, attachments) {
+            _questionAttachmentIds[questionId] = attachments
+                .map((att) => att.id)
+                .toList();
+            _questionAttachmentMetadata[questionId] = attachments
+                .map((att) => {'id': att.id, 'name': att.name})
+                .toList();
+          });
         });
 
         log('Draft data loaded for schedule ${widget.schedule.id}');
@@ -182,23 +151,36 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
 
   Future<void> _saveDraftData() async {
     try {
-      final draft = {
-        'description': _descriptionController.text.trim(),
-        'actionCreated': _actionCreatedController.text.trim(),
-        'comments': _commentsController.text.trim(),
-        'recordCreatedDate': _recordCreatedDate?.toIso8601String(),
-        'inspectionDate': _inspectionDate?.toIso8601String(),
-        'selectedInspectedComponents': _selectedInspectedComponents,
-        'checklistAnswers': _checklistAnswers.map(
-          (key, value) =>
-              MapEntry(key, {'value': value.value, 'note': value.note}),
+      // Convert checklist answers to draft format
+      final checklistAnswers = _checklistAnswers.map(
+        (key, value) => MapEntry(
+          key,
+          ChecklistAnswerDraft(value: value.value, note: value.note),
         ),
-        'questionAttachmentIds': _questionAttachmentIds,
-        'questionAttachmentMetadata': _questionAttachmentMetadata,
-      };
+      );
 
-      final storage = StorageService();
-      await storage.saveDraftRecord(_draftStorageKey, jsonEncode(draft));
+      // Convert attachment metadata to draft format
+      final questionAttachments = <String, List<AttachmentDraft>>{};
+      _questionAttachmentMetadata.forEach((questionId, metadata) {
+        questionAttachments[questionId] = metadata
+            .map(
+              (m) => AttachmentDraft(id: m['id'] ?? '', name: m['name'] ?? ''),
+            )
+            .toList();
+      });
+
+      final draft = RecordDraftModel(
+        description: _descriptionController.text.trim(),
+        actionCreated: _actionCreatedController.text.trim(),
+        comments: _commentsController.text.trim(),
+        recordCreatedDate: _recordCreatedDate,
+        inspectionDate: _inspectionDate,
+        selectedInspectedComponents: _selectedInspectedComponents,
+        checklistAnswers: checklistAnswers,
+        questionAttachments: questionAttachments,
+      );
+
+      await _storage.saveDraftRecordModel(widget.schedule.id, draft);
     } catch (e) {
       log('Failed to save draft data: $e');
     }
@@ -206,8 +188,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
 
   Future<void> _clearDraftData() async {
     try {
-      final storage = StorageService();
-      await storage.deleteDraftRecord(_draftStorageKey);
+      await _storage.deleteDraftRecordModel(widget.schedule.id);
       log('Draft data cleared for schedule ${widget.schedule.id}');
     } catch (e) {
       log('Failed to clear draft data: $e');
@@ -253,83 +234,23 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
   }
 
   Future<void> _handleSelectFiles() async {
-    // Request appropriate permissions on Android before picking files.
-    if (Platform.isAndroid) {
-      // Request both storage and manage external storage where available.
-      final statuses = await [
-        Permission.storage,
-        Permission.manageExternalStorage,
-      ].request();
+    // Request storage permissions
+    final hasPermission = await Helpers.requestStoragePermissions(context);
+    if (!hasPermission) return;
 
-      final storageGranted =
-          (statuses[Permission.storage]?.isGranted ?? false) ||
-          (statuses[Permission.manageExternalStorage]?.isGranted ?? false);
+    // Pick files using helper
+    final files = await Helpers.pickFiles(allowMultiple: true);
 
-      if (!storageGranted) {
-        if (!mounted) return;
-        // If permanently denied, prompt to open app settings.
-        final permanentlyDenied =
-            (statuses[Permission.storage]?.isPermanentlyDenied ?? false) ||
-            (statuses[Permission.manageExternalStorage]?.isPermanentlyDenied ??
-                false);
-        if (permanentlyDenied) {
-          showDialog<void>(
-            context: context,
-            builder: (ctx) => AlertDialog(
-              title: const Text('Permission required'),
-              content: const Text(
-                'Storage permission is permanently denied. Please enable it in app settings to pick files.',
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(ctx).pop(),
-                  child: const Text('Cancel'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    openAppSettings();
-                    router.pop();
-                  },
-                  child: const Text('Open Settings'),
-                ),
-              ],
-            ),
+    if (files != null && files.isNotEmpty) {
+      setState(() {
+        // Append new files and avoid duplicates by path
+        for (final file in files) {
+          final exists = _selectedFiles.any(
+            (existing) => existing.path == file.path,
           );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Storage permission denied')),
-          );
+          if (!exists) _selectedFiles.add(file);
         }
-        return;
-      }
-    }
-
-    try {
-      // Explicitly allow any file type and multiple selection.
-      final result = await FilePicker.platform.pickFiles(
-        allowMultiple: true,
-        type: FileType.any,
-      );
-      if (result != null && result.files.isNotEmpty) {
-        final picked = result.files
-            .where((f) => f.path != null)
-            .map((f) => File(f.path!))
-            .toList();
-        setState(() {
-          // Append new files and avoid duplicates by path.
-          for (final file in picked) {
-            final exists = _selectedFiles.any(
-              (existing) => existing.path == file.path,
-            );
-            if (!exists) _selectedFiles.add(file);
-          }
-        });
-      }
-    } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Failed to pick files: $e')));
+      });
     }
   }
 
@@ -351,15 +272,23 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     _saveDraftData();
   }
 
-  void _handleAttachmentUploaded(String questionId, String attachmentId, String attachmentName) {
+  void _handleAttachmentUploaded(
+    String questionId,
+    String attachmentId,
+    String attachmentName,
+  ) {
     setState(() {
+      // Add attachment ID if not already present
       _questionAttachmentIds.putIfAbsent(questionId, () => []);
       if (!_questionAttachmentIds[questionId]!.contains(attachmentId)) {
         _questionAttachmentIds[questionId]!.add(attachmentId);
       }
-      
+
+      // Add attachment metadata if not already present
       _questionAttachmentMetadata.putIfAbsent(questionId, () => []);
-      if (!_questionAttachmentMetadata[questionId]!.any((m) => m['id'] == attachmentId)) {
+      if (!_questionAttachmentMetadata[questionId]!.any(
+        (m) => m['id'] == attachmentId,
+      )) {
         _questionAttachmentMetadata[questionId]!.add({
           'id': attachmentId,
           'name': attachmentName,
@@ -369,89 +298,97 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     _saveDraftData();
   }
 
-  void _handleCreate() async {
+  bool _validateChecklist() {
+    if (widget.schedule.checklistQuestionTemplates.isEmpty) {
+      return true;
+    }
+
+    final totalQuestions = widget.schedule.checklistQuestionTemplates.length;
+
+    if (_checklistAnswers.length < totalQuestions) {
+      final answeredQuestions = _checklistAnswers.length;
+      ToastService.show(
+        'Please answer all $totalQuestions checklist questions. '
+        'You have answered $answeredQuestions.',
+      );
+      return false;
+    }
+
+    // Validate all answers have values
+    for (final entry in _checklistAnswers.entries) {
+      if (entry.value.value.isEmpty) {
+        ToastService.show('Please select a response for all questions');
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  Future<void> _handleCreate() async {
+    if (!(_formKey.currentState?.validate() ?? false)) {
+      ToastService.show('Please fill all required fields');
+      return;
+    }
+
     EasyLoading.show();
 
-    if (_formKey.currentState?.validate() ?? false) {
-      // Validate that all checklist questions are answered
-      if (widget.schedule.checklistQuestionTemplates.isNotEmpty) {
-        final totalQuestions =
-            widget.schedule.checklistQuestionTemplates.length;
-
-        if (_checklistAnswers.length < totalQuestions) {
-          final answeredQuestions = _checklistAnswers.length;
-          EasyLoading.dismiss();
-          ToastService.show(
-            'Please answer all $totalQuestions checklist questions. '
-            'You have answered $answeredQuestions.',
-          );
-          return;
-        }
-
-        // Validate all answers
-        for (final entry in _checklistAnswers.entries) {
-          if (entry.value.value.isEmpty) {
-            EasyLoading.dismiss();
-            ToastService.show('Please select a response for all questions');
-            return;
-          }
-        }
-      }
-
-      try {
-        // Prepare checklist answers for the combined API
-        final checklistAnswers = _checklistAnswers.entries
-            .map(
-              (entry) => ChecklistAnswerItem(
-                questionId: entry.key,
-                value: entry.value.value,
-                note: entry.value.note,
-                attachmentIds: _questionAttachmentIds[entry.key] ?? [],
-              ),
-            )
-            .toList();
-
-        final user = await StorageService().getUserObject();
-
-        // Create the record with checklist answers in one API call
-        final RecordCreateRequest payload = RecordCreateRequest(
-          description: _descriptionController.text.trim(),
-          recordCreatedDate: _recordCreatedDate!,
-          inspectionDate: _inspectionDate!,
-          actionCreated: _actionCreatedController.text.trim(),
-          comments: _commentsController.text.trim().isEmpty
-              ? null
-              : _commentsController.text.trim(),
-          equipmentID: widget.schedule.equipmentId,
-          inspectedComponentIDs: _selectedInspectedComponents,
-          scheduleTypeID: widget.schedule.scheduleTypeId,
-          attachmentIDs: [], // send empty array when no attachments yet
-          checklistAnswers: checklistAnswers,
-          submittedBy: user?.id ?? '',
-        );
-
-        final notifier = ref.read(
-          recordWithChecklistProvider(widget.schedule.id).notifier,
-        );
-        final response = await notifier.createRecordWithChecklist(payload);
-        log(
-          'Record created with ${response.data.answeredQuestions.length} checklist answers',
-        );
-
-        // Clear draft data after successful submission
-        await _clearDraftData();
-
-        // ref.invalidate(schedulesProvider);
-        router.pop();
-        ToastService.show(response.message ?? 'Record submitted successfully');
-      } catch (e) {
-        ToastService.show('Failed to create record: $e');
-      } finally {
+    try {
+      // Validate checklist
+      if (!_validateChecklist()) {
         EasyLoading.dismiss();
+        return;
       }
-    } else {
+
+      // Prepare checklist answers for the combined API
+      final checklistAnswers = _checklistAnswers.entries
+          .map(
+            (entry) => ChecklistAnswerItem(
+              questionId: entry.key,
+              value: entry.value.value,
+              note: entry.value.note,
+              attachmentIds: _questionAttachmentIds[entry.key] ?? [],
+            ),
+          )
+          .toList();
+
+      final user = await _storage.getUserObject();
+
+      // Create the record with checklist answers in one API call
+      final payload = RecordCreateRequest(
+        description: _descriptionController.text.trim(),
+        recordCreatedDate: _recordCreatedDate!,
+        inspectionDate: _inspectionDate!,
+        actionCreated: _actionCreatedController.text.trim(),
+        comments: _commentsController.text.trim().isEmpty
+            ? null
+            : _commentsController.text.trim(),
+        equipmentID: widget.schedule.equipmentId,
+        inspectedComponentIDs: _selectedInspectedComponents,
+        scheduleTypeID: widget.schedule.scheduleTypeId,
+        attachmentIDs: [],
+        checklistAnswers: checklistAnswers,
+        submittedBy: user?.id ?? '',
+      );
+
+      final notifier = ref.read(
+        recordWithChecklistProvider(widget.schedule.id).notifier,
+      );
+      final response = await notifier.createRecordWithChecklist(payload);
+
+      log(
+        'Record created with ${response.data.answeredQuestions.length} checklist answers',
+      );
+
+      // Clear draft data after successful submission
+      await _clearDraftData();
+
+      router.pop();
+      ToastService.show(response.message ?? 'Record submitted successfully');
+    } catch (e) {
+      ToastService.show('Failed to create record: $e');
+    } finally {
       EasyLoading.dismiss();
-      ToastService.show('Please fill all required fields');
     }
   }
 
@@ -705,7 +642,8 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                                 readOnly: isReadOnly,
                                 initialValues: initialValues,
                                 questionAttachments: questionAttachments,
-                                uploadedAttachmentMetadata: _questionAttachmentMetadata,
+                                uploadedAttachmentMetadata:
+                                    _questionAttachmentMetadata,
                                 scheduleV2Id: widget.schedule.id,
                                 equipmentId: widget.schedule.equipmentId,
                               ),
