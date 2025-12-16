@@ -11,11 +11,19 @@ class ScheduleService {
   Future<ScheduleListResponse> fetchSchedules({
     int page = 1,
     int limit = 10,
+    String? scheduleId,
   }) async {
     try {
+      final queryParameters = {
+        'page': page,
+        'limit': limit,
+        if (scheduleId != null && scheduleId.isNotEmpty)
+          'scheduleId': scheduleId,
+      };
+
       final response = await _dio.get(
         '/schedules',
-        queryParameters: {'page': page, 'limit': limit},
+        queryParameters: queryParameters,
       );
       return ScheduleListResponse.fromJson(response.data);
     } on DioException catch (e) {
