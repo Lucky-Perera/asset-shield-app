@@ -28,6 +28,7 @@ _RecordCreateRequest _$RecordCreateRequestFromJson(Map<String, dynamic> json) =>
           ?.map((e) => ChecklistAnswerItem.fromJson(e as Map<String, dynamic>))
           .toList(),
       submittedBy: json['submittedBy'] as String,
+      isDraft: json['isDraft'] as bool?,
     );
 
 Map<String, dynamic> _$RecordCreateRequestToJson(
@@ -45,6 +46,7 @@ Map<String, dynamic> _$RecordCreateRequestToJson(
   'comments': instance.comments,
   'checklistAnswers': instance.checklistAnswers,
   'submittedBy': instance.submittedBy,
+  'isDraft': instance.isDraft,
 };
 
 _ChecklistAnswerItem _$ChecklistAnswerItemFromJson(Map<String, dynamic> json) =>
