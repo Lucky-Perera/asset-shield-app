@@ -56,7 +56,7 @@ final class RecordWithChecklistNotifierProvider
 }
 
 String _$recordWithChecklistNotifierHash() =>
-    r'09693a08339176864edcd99cb80a3f08115c5011';
+    r'2cbba1fed4d1bdd9ddb4e3653ef5799d66536dfc';
 
 final class RecordWithChecklistNotifierFamily extends $Family
     with

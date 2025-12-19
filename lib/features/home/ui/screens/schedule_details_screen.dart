@@ -59,6 +59,24 @@ class _ScheduleDetailsScreenState extends ConsumerState<ScheduleDetailsScreen> {
   }
 
   Widget _buildBody(bool hasSubmittedAnswers, bool isRejected) {
+    final recordWithChecklistAsync = ref.watch(
+      recordWithChecklistProvider(widget.schedule.id),
+    );
+    final recordStatus = recordWithChecklistAsync.value?.record?.status;
+
+    // Determine button text based on record status
+    String buttonText;
+    if (recordStatus == RecordStatus.draft) {
+      buttonText = 'Edit Draft';
+    } else if (recordStatus == RecordStatus.rejected) {
+      buttonText = 'Edit Record';
+    } else if (recordStatus == RecordStatus.pendingApproval ||
+        recordStatus == RecordStatus.approved) {
+      buttonText = 'View Record';
+    } else {
+      buttonText = 'Add Record';
+    }
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -77,9 +95,7 @@ class _ScheduleDetailsScreenState extends ConsumerState<ScheduleDetailsScreen> {
           ),
           SizedBox(height: 16.h),
           ReusableButton(
-            text: isRejected
-                ? 'Edit Record'
-                : (hasSubmittedAnswers ? 'View Record' : 'Add Record'),
+            text: buttonText,
             onPressed: () => Routes().addRecord(widget.schedule),
           ),
         ],

@@ -43,13 +43,30 @@ class RecordWithChecklistNotifier extends _$RecordWithChecklistNotifier {
     state = await AsyncValue.guard(() => _fetchRecordWithChecklist());
   }
 
+  /// Save a draft record with checklist answers
+  Future<RecordWithChecklistResponse> saveDraft(
+    RecordCreateRequest payload,
+  ) async {
+    final draftPayload = payload.copyWith(isDraft: true);
+    final response = await ScheduleService().createRecordWithChecklist(
+      scheduleId: _scheduleId,
+      payload: draftPayload,
+    );
+
+    // Refresh to load the draft data
+    await refresh();
+
+    return response;
+  }
+
   /// Create a record with checklist answers using the combined API
   Future<RecordWithChecklistResponse> createRecordWithChecklist(
     RecordCreateRequest payload,
   ) async {
+    final finalPayload = payload.copyWith(isDraft: false);
     final response = await ScheduleService().createRecordWithChecklist(
       scheduleId: _scheduleId,
-      payload: payload,
+      payload: finalPayload,
     );
 
     // Refresh to load the newly created data

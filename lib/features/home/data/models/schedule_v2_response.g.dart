@@ -366,6 +366,7 @@ const _$RecordStatusEnumMap = {
   RecordStatus.rejected: 'Rejected',
   RecordStatus.pendingApproval: 'PendingApproval',
   RecordStatus.approved: 'Approved',
+  RecordStatus.draft: 'Draft',
 };
 
 _InspectionMethodV2 _$InspectionMethodV2FromJson(Map<String, dynamic> json) =>

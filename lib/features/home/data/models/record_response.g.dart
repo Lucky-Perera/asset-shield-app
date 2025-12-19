@@ -54,6 +54,7 @@ const _$RecordStatusEnumMap = {
   RecordStatus.rejected: 'Rejected',
   RecordStatus.pendingApproval: 'PendingApproval',
   RecordStatus.approved: 'Approved',
+  RecordStatus.draft: 'Draft',
 };
 
 _RecordComponent _$RecordComponentFromJson(Map<String, dynamic> json) =>

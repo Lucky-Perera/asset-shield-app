@@ -6,6 +6,7 @@ import 'package:asset_shield/core/utility/toast_service.dart';
 import 'package:asset_shield/features/home/data/models/record_draft_model.dart';
 import 'package:asset_shield/features/home/data/models/record_create_request.dart';
 import 'package:asset_shield/features/home/data/models/record_response.dart';
+import 'package:asset_shield/features/home/data/models/record_with_checklist_state.dart';
 import 'package:asset_shield/features/home/data/providers/record_with_checklist_provider.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:asset_shield/core/routes/router.dart';
@@ -93,62 +94,113 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
       // Wait a bit for the provider to load
       await Future.delayed(const Duration(milliseconds: 100));
 
-      // Don't load draft if there's already data from the backend
       final recordWithChecklistAsync = ref.read(
         recordWithChecklistProvider(widget.schedule.id),
       );
 
-      // Skip loading draft if record already exists
-      if (recordWithChecklistAsync.hasValue &&
-          recordWithChecklistAsync.value?.hasSubmittedAnswers == true) {
-        await _clearDraftData();
-        return;
+      // Check if there's a backend draft
+      if (recordWithChecklistAsync.hasValue) {
+        final state = recordWithChecklistAsync.value;
+        final isDraft = state?.record?.status == RecordStatus.draft;
+
+        if (isDraft && state != null) {
+          // Load from backend draft
+          _loadFromBackendDraft(state);
+          await _clearDraftData(); // Clear local storage
+          return;
+        }
+
+        // Skip loading local draft if record already exists and is not a draft
+        if (state?.hasSubmittedAnswers == true) {
+          await _clearDraftData();
+          return;
+        }
       }
 
+      // Fallback to local draft if no backend draft exists
       final draft = await _storage.getDraftRecordModel(widget.schedule.id);
-
       if (draft != null) {
-        setState(() {
-          // Load form fields
-          _descriptionController.text = draft.description ?? '';
-          _actionCreatedController.text = draft.actionCreated ?? '';
-          _commentsController.text = draft.comments ?? '';
-
-          // Load dates
-          _recordCreatedDate = draft.recordCreatedDate ?? _recordCreatedDate;
-          _inspectionDate = draft.inspectionDate ?? _inspectionDate;
-
-          // Load selected components
-          _selectedInspectedComponents = draft.selectedInspectedComponents;
-
-          // Load checklist answers
-          _checklistAnswers.clear();
-          draft.checklistAnswers.forEach((key, value) {
-            _checklistAnswers[key] = ChecklistAnswerData(
-              value: value.value,
-              note: value.note,
-            );
-          });
-
-          // Load attachment metadata
-          _questionAttachmentIds.clear();
-          _questionAttachmentMetadata.clear();
-
-          draft.questionAttachments.forEach((questionId, attachments) {
-            _questionAttachmentIds[questionId] = attachments
-                .map((att) => att.id)
-                .toList();
-            _questionAttachmentMetadata[questionId] = attachments
-                .map((att) => {'id': att.id, 'name': att.name})
-                .toList();
-          });
-        });
-
-        log('Draft data loaded for schedule ${widget.schedule.id}');
+        _loadFromLocalDraft(draft);
+        log('Local draft data loaded for schedule ${widget.schedule.id}');
       }
     } catch (e) {
       log('Failed to load draft data: $e');
     }
+  }
+
+  void _loadFromBackendDraft(RecordWithChecklistState state) {
+    setState(() {
+      final record = state.record;
+      if (record != null) {
+        _descriptionController.text = record.description ?? '';
+        _actionCreatedController.text = record.actionCreated ?? '';
+        _commentsController.text = record.comments ?? '';
+        _recordCreatedDate = record.recordCreatedDate ?? _recordCreatedDate;
+        _inspectionDate = record.inspectionDate ?? _inspectionDate;
+        _selectedInspectedComponents =
+            record.inspectedComponents
+                ?.map((e) => e.componentId ?? '')
+                .where((id) => id.isNotEmpty)
+                .toList() ??
+            [];
+      }
+
+      // Load checklist answers from backend
+      _checklistAnswers.clear();
+      _questionAttachmentIds.clear();
+      _questionAttachmentMetadata.clear();
+
+      for (final question in state.answeredQuestions) {
+        if (question.value != null && question.value!.isNotEmpty) {
+          _checklistAnswers[question.id] = ChecklistAnswerData(
+            value: question.value!,
+            note: question.note ?? '',
+          );
+        }
+
+        // Load attachment IDs and metadata
+        if (question.attachments != null && question.attachments!.isNotEmpty) {
+          _questionAttachmentIds[question.id] = question.attachments!
+              .map((att) => att.id)
+              .toList();
+          _questionAttachmentMetadata[question.id] = question.attachments!
+              .map((att) => {'id': att.id, 'name': att.name})
+              .toList();
+        }
+      }
+    });
+
+    log('Backend draft loaded for schedule ${widget.schedule.id}');
+  }
+
+  void _loadFromLocalDraft(RecordDraftModel draft) {
+    setState(() {
+      _descriptionController.text = draft.description ?? '';
+      _actionCreatedController.text = draft.actionCreated ?? '';
+      _commentsController.text = draft.comments ?? '';
+      _recordCreatedDate = draft.recordCreatedDate ?? _recordCreatedDate;
+      _inspectionDate = draft.inspectionDate ?? _inspectionDate;
+      _selectedInspectedComponents = draft.selectedInspectedComponents;
+
+      _checklistAnswers.clear();
+      draft.checklistAnswers.forEach((key, value) {
+        _checklistAnswers[key] = ChecklistAnswerData(
+          value: value.value,
+          note: value.note,
+        );
+      });
+
+      _questionAttachmentIds.clear();
+      _questionAttachmentMetadata.clear();
+      draft.questionAttachments.forEach((questionId, attachments) {
+        _questionAttachmentIds[questionId] = attachments
+            .map((att) => att.id)
+            .toList();
+        _questionAttachmentMetadata[questionId] = attachments
+            .map((att) => {'id': att.id, 'name': att.name})
+            .toList();
+      });
+    });
   }
 
   Future<void> _saveDraftData() async {
@@ -358,6 +410,70 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     return true;
   }
 
+  Future<void> _handleSaveDraft() async {
+    // if (!(_formKey.currentState?.validate() ?? false)) {
+    //   ToastService.show('Please fill all required fields before saving draft');
+    //   return;
+    // }
+
+    EasyLoading.show(status: 'Saving draft...');
+
+    try {
+      // Prepare checklist answers (can be partial)
+      final checklistAnswers = _checklistAnswers.entries
+          .map(
+            (entry) => ChecklistAnswerItem(
+              questionId: entry.key,
+              value: entry.value.value,
+              note: entry.value.note,
+              attachmentIds: _questionAttachmentIds[entry.key] ?? [],
+            ),
+          )
+          .toList();
+
+      final user = await _storage.getUserObject();
+
+      final payload = RecordCreateRequest(
+        description: _descriptionController.text.trim(),
+        recordCreatedDate: _recordCreatedDate!,
+        inspectionDate: _inspectionDate!,
+        actionCreated: _actionCreatedController.text.trim(),
+        comments: _commentsController.text.trim().isEmpty
+            ? null
+            : _commentsController.text.trim(),
+        equipmentID: widget.schedule.equipmentId,
+        inspectedComponentIDs: _selectedInspectedComponents,
+        scheduleTypeID: widget.schedule.scheduleTypeId,
+        attachmentIDs: [],
+        checklistAnswers: checklistAnswers,
+        submittedBy: user?.id ?? '',
+        isDraft: true, // Explicitly set as draft
+      );
+
+      final notifier = ref.read(
+        recordWithChecklistProvider(widget.schedule.id).notifier,
+      );
+
+      try {
+        final response = await notifier.saveDraft(payload);
+
+        // Clear local draft after successful backend save
+        await _clearDraftData();
+
+        ToastService.show(response.message ?? 'Draft saved successfully');
+      } catch (e) {
+        // Fallback to local storage if backend fails
+        log('Backend draft save failed, falling back to local storage: $e');
+        await _saveDraftData();
+        ToastService.show('Draft saved locally (offline)');
+      }
+    } catch (e) {
+      ToastService.show('Failed to save draft: $e');
+    } finally {
+      EasyLoading.dismiss();
+    }
+  }
+
   Future<void> _handleCreate() async {
     if (!(_formKey.currentState?.validate() ?? false)) {
       ToastService.show('Please fill all required fields');
@@ -402,6 +518,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
         attachmentIDs: [],
         checklistAnswers: checklistAnswers,
         submittedBy: user?.id ?? '',
+        isDraft: false, // Explicitly set as final submission
       );
 
       final notifier = ref.read(
@@ -432,9 +549,26 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     );
     final state = recordWithChecklistAsync.value;
     final existingRecord = state?.record;
+    final recordStatus = state?.record?.status;
     final hasSubmittedAnswers = state?.hasSubmittedAnswers ?? false;
-    final isRejected = state?.record?.status == RecordStatus.rejected;
-    final isReadOnly = hasSubmittedAnswers && !isRejected;
+
+    // Allow editing for Draft and Rejected statuses
+    final isEditable =
+        recordStatus == RecordStatus.draft ||
+        recordStatus == RecordStatus.rejected;
+    final isReadOnly = hasSubmittedAnswers && !isEditable;
+
+    // Determine AppBar title based on status
+    String appBarTitle;
+    if (recordStatus == RecordStatus.draft) {
+      appBarTitle = 'Edit Draft';
+    } else if (recordStatus == RecordStatus.rejected) {
+      appBarTitle = 'Edit Record';
+    } else if (hasSubmittedAnswers) {
+      appBarTitle = 'View Record';
+    } else {
+      appBarTitle = 'Add Record';
+    }
 
     if (!_prefilled && existingRecord != null) {
       _initialiseFields(existingRecord);
@@ -481,9 +615,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
           onPressed: _handleClose,
         ),
         title: Text(
-          isRejected
-              ? 'Edit Record'
-              : (hasSubmittedAnswers ? 'View Record' : 'Add Record'),
+          appBarTitle,
           style: AppTextStyles.h2(
             context,
           ).copyWith(fontWeight: FontWeight.w600),
@@ -719,13 +851,31 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                       ),
                     ),
                     SizedBox(width: 12.w),
+                    if (!hasSubmittedAnswers || isEditable) ...[
+                      Expanded(
+                        child: ReusableButton(
+                          text: 'Save Draft',
+                          onPressed: _handleSaveDraft,
+                          backgroundColor: ColorPalette.grey300,
+                          textStyle: TextStyle(
+                            color: ColorPalette.black,
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          height: 48.h,
+                        ),
+                      ),
+                      SizedBox(width: 12.w),
+                    ],
                     Expanded(
                       child: ReusableButton(
-                        text: isRejected ? 'Resubmit' : 'Submit',
-                        onPressed: (hasSubmittedAnswers && !isRejected)
+                        text: recordStatus == RecordStatus.rejected
+                            ? 'Resubmit'
+                            : 'Submit',
+                        onPressed: (hasSubmittedAnswers && !isEditable)
                             ? null
                             : _handleCreate,
-                        backgroundColor: (hasSubmittedAnswers && !isRejected)
+                        backgroundColor: (hasSubmittedAnswers && !isEditable)
                             ? ColorPalette.black.withValues(alpha: 0.3)
                             : ColorPalette.black,
                         height: 48.h,
