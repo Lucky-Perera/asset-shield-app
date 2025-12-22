@@ -1,5 +1,6 @@
 import 'package:asset_shield/core/theme/color_palette.dart';
 import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
+import 'package:asset_shield/features/home/ui/widgets/record_status_pill.dart';
 import 'package:flutter/material.dart';
 
 class ScheduleItem extends StatelessWidget {
@@ -30,7 +31,7 @@ class ScheduleItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header Row with S.I. and E.I.
+            // Header Row with S.I. and Record Status
             Row(
               children: [
                 // S.I. Label
@@ -55,6 +56,9 @@ class ScheduleItem extends StatelessWidget {
                     ),
                   ),
                 ),
+                const SizedBox(width: 8),
+                // Record Status Pill
+                RecordStatusPill(status: schedule.record?.status),
               ],
             ),
             const SizedBox(height: 8),
