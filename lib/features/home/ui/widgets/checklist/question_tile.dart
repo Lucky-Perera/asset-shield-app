@@ -77,13 +77,15 @@ class _QuestionTileState extends State<QuestionTile> {
         PopupMenuItem(
           child: const Row(
             children: [
-              Icon(Icons.attach_file, size: 20),
+              Icon(Icons.photo_library, size: 20),
               SizedBox(width: 8),
-              Text('Attach files'),
+              Text('Photos'),
             ],
           ),
-          onTap: () =>
-              Future.delayed(const Duration(milliseconds: 100), _pickFiles),
+          onTap: () => Future.delayed(
+            const Duration(milliseconds: 100),
+            _pickFromGallery,
+          ),
         ),
         PopupMenuItem(
           child: const Row(
@@ -95,6 +97,17 @@ class _QuestionTileState extends State<QuestionTile> {
           ),
           onTap: () =>
               Future.delayed(const Duration(milliseconds: 100), _takePhoto),
+        ),
+        PopupMenuItem(
+          child: const Row(
+            children: [
+              Icon(Icons.attach_file, size: 20),
+              SizedBox(width: 8),
+              Text('Attach files'),
+            ],
+          ),
+          onTap: () =>
+              Future.delayed(const Duration(milliseconds: 100), _pickFiles),
         ),
         // PopupMenuItem(
         //   child: const Row(
@@ -128,6 +141,21 @@ class _QuestionTileState extends State<QuestionTile> {
       }
     } catch (e) {
       debugPrint("File pick error: $e");
+    }
+  }
+
+  Future<void> _pickFromGallery() async {
+    try {
+      final picker = ImagePicker();
+      final List<XFile> images = await picker.pickMultiImage();
+
+      if (images.isNotEmpty) {
+        final files = images.map((image) => File(image.path)).toList();
+        setState(() => _mediaFiles.addAll(files));
+        await _uploadFiles(files);
+      }
+    } catch (e) {
+      debugPrint("Gallery pick error: $e");
     }
   }
 
