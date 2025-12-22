@@ -51,9 +51,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
   // Form values
   DateTime? _recordCreatedDate;
   List<String> _selectedInspectedComponents = [];
-  // RecordStatus? _selectedStatus;
   DateTime? _inspectionDate;
-  // final List<File> _selectedFiles = [];
   final Map<String, ChecklistAnswerData> _checklistAnswers =
       <String, ChecklistAnswerData>{};
   final Map<String, List<String>> _questionAttachmentIds =
@@ -92,6 +90,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
 
   final StorageService _storage = StorageService();
 
+  // Load draft data if exists
   Future<void> _loadDraftData() async {
     try {
       // Wait a bit for the provider to load
@@ -131,6 +130,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     }
   }
 
+  // Load draft data from backend
   void _loadFromBackendDraft(RecordWithChecklistState state) {
     setState(() {
       final record = state.record;
@@ -176,6 +176,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     log('Backend draft loaded for schedule ${widget.schedule.id}');
   }
 
+  // Load draft data from local storage
   void _loadFromLocalDraft(RecordDraftModel draft) {
     setState(() {
       _descriptionController.text = draft.description ?? '';
@@ -206,6 +207,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     });
   }
 
+  // Save draft data to local storage
   Future<void> _saveDraftData() async {
     try {
       // Convert checklist answers to draft format
@@ -252,6 +254,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     });
   }
 
+  // Clear draft data from local storage
   Future<void> _clearDraftData() async {
     try {
       await _storage.deleteDraftRecordModel(widget.schedule.id);
@@ -261,6 +264,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     }
   }
 
+  // Initialise form fields with existing record data
   void _initialiseFields(RecordResponse? existingRecord) {
     // Always fill schedule defaults
     _equipmentController.text = widget.schedule.equipment?.name ?? '';
@@ -281,13 +285,6 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
               .where((id) => id.isNotEmpty)
               .toList() ??
           [];
-
-      // _selectedStatus = switch (existingRecord.status) {
-      //   'PendingApproval' => RecordStatus.pendingApproval,
-      //   'Approved' => RecordStatus.approved,
-      //   'Draft' => RecordStatus.draft,
-      //   _ => null,
-      // };
     }
   }
 
@@ -302,31 +299,11 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     super.dispose();
   }
 
-  // Future<void> _handleSelectFiles() async {
-  //   // Request storage permissions
-  //   final hasPermission = await Helpers.requestStoragePermissions(context);
-  //   if (!hasPermission) return;
-
-  //   // Pick files using helper
-  //   final files = await Helpers.pickFiles(allowMultiple: true);
-
-  //   if (files != null && files.isNotEmpty) {
-  //     setState(() {
-  //       // Append new files and avoid duplicates by path
-  //       for (final file in files) {
-  //         final exists = _selectedFiles.any(
-  //           (existing) => existing.path == file.path,
-  //         );
-  //         if (!exists) _selectedFiles.add(file);
-  //       }
-  //     });
-  //   }
-  // }
-
   void _handleClose() {
     router.pop();
   }
 
+  // Handle checklist answer changes
   void _handleChecklistAnswerChanged(
     String questionId,
     String value,
@@ -341,6 +318,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     _scheduleSaveDraft();
   }
 
+  // Handle attachment uploaded
   void _handleAttachmentUploaded(
     String questionId,
     String attachmentId,
@@ -387,6 +365,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     _scheduleSaveDraft();
   }
 
+  // Validate checklist answers
   bool _validateChecklist() {
     if (widget.schedule.checklistQuestionTemplates.isEmpty) {
       return true;
@@ -414,12 +393,8 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     return true;
   }
 
+  // Handle save draft
   Future<void> _handleSaveDraft() async {
-    // if (!(_formKey.currentState?.validate() ?? false)) {
-    //   ToastService.show('Please fill all required fields before saving draft');
-    //   return;
-    // }
-
     EasyLoading.show();
 
     try {
@@ -762,14 +737,6 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                         },
                       ),
                       SizedBox(height: 20.h),
-
-                      // Attachment File Picker
-                      // FormFilePickerField(
-                      //   label: 'Attachment',
-                      //   selectedFiles: _selectedFiles,
-                      //   onSelectFiles: _handleSelectFiles,
-                      // ),
-                      // SizedBox(height: 20.h),
 
                       // Comments Field
                       FormTextField(
