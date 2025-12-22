@@ -35,6 +35,9 @@ class AddRecordScreen extends ConsumerStatefulWidget {
 class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _prefilled = false;
+  bool _hasChange = false; // Track if any changes have been made
+  bool _isProgrammaticUpdate =
+      false; // Flag to ignore listener callbacks during data loading
 
   // Debounce timer to reduce frequency of draft saves
   Timer? _debounceTimer;
@@ -83,9 +86,20 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     _loadDraftData();
 
     // Add listeners to text fields to auto-save (debounced)
-    _descriptionController.addListener(_scheduleSaveDraft);
-    _actionCreatedController.addListener(_scheduleSaveDraft);
-    _commentsController.addListener(_scheduleSaveDraft);
+    _descriptionController.addListener(_onTextFieldChanged);
+    _actionCreatedController.addListener(_onTextFieldChanged);
+    _commentsController.addListener(_onTextFieldChanged);
+  }
+
+  // Handle text field changes
+  void _onTextFieldChanged() {
+    // Ignore changes during programmatic updates (loading draft, prefilling, etc.)
+    if (_isProgrammaticUpdate) return;
+
+    setState(() {
+      _hasChange = true;
+    });
+    _scheduleSaveDraft();
   }
 
   final StorageService _storage = StorageService();
@@ -132,6 +146,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
 
   // Load draft data from backend
   void _loadFromBackendDraft(RecordWithChecklistState state) {
+    _isProgrammaticUpdate = true; // Disable change tracking during load
     setState(() {
       final record = state.record;
       if (record != null) {
@@ -172,12 +187,14 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
         }
       }
     });
+    _isProgrammaticUpdate = false; // Re-enable change tracking
 
     log('Backend draft loaded for schedule ${widget.schedule.id}');
   }
 
   // Load draft data from local storage
   void _loadFromLocalDraft(RecordDraftModel draft) {
+    _isProgrammaticUpdate = true; // Disable change tracking during load
     setState(() {
       _descriptionController.text = draft.description ?? '';
       _actionCreatedController.text = draft.actionCreated ?? '';
@@ -205,6 +222,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
             .toList();
       });
     });
+    _isProgrammaticUpdate = false; // Re-enable change tracking
   }
 
   // Save draft data to local storage
@@ -266,6 +284,8 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
 
   // Initialise form fields with existing record data
   void _initialiseFields(RecordResponse? existingRecord) {
+    _isProgrammaticUpdate =
+        true; // Disable change tracking during initialization
     // Always fill schedule defaults
     _equipmentController.text = widget.schedule.equipment?.name ?? '';
     _scheduleItemController.text = widget.schedule.scheduleName;
@@ -286,6 +306,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
               .toList() ??
           [];
     }
+    _isProgrammaticUpdate = false; // Re-enable change tracking
   }
 
   @override
@@ -293,6 +314,9 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     // Cancel any pending debounced save and perform a final save.
     _debounceTimer?.cancel();
     _saveDraftData();
+    _descriptionController.removeListener(_onTextFieldChanged);
+    _actionCreatedController.removeListener(_onTextFieldChanged);
+    _commentsController.removeListener(_onTextFieldChanged);
     _descriptionController.dispose();
     _actionCreatedController.dispose();
     _commentsController.dispose();
@@ -302,6 +326,12 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
   Future<void> _handleClose() async {
     // Cancel any pending debounced save
     _debounceTimer?.cancel();
+
+    // Only save if there are changes
+    if (!_hasChange) {
+      router.pop();
+      return;
+    }
 
     // Show loading indicator
     EasyLoading.show();
@@ -363,6 +393,8 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
         await notifier.saveDraft(payload);
         // Clear local draft after successful backend save
         await _clearDraftData();
+        // Reset change flag after successful save
+        _hasChange = false;
       } catch (e) {
         // Fallback to local storage if backend fails
         log('Backend draft save failed, falling back to local storage: $e');
@@ -385,6 +417,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
         value: value,
         note: note,
       );
+      _hasChange = true; // Mark as changed
     });
     _scheduleSaveDraft();
   }
@@ -412,6 +445,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
           'name': attachmentName,
         });
       }
+      _hasChange = true; // Mark as changed
     });
     _scheduleSaveDraft();
   }
@@ -432,6 +466,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
       if (_questionAttachmentMetadata[questionId]?.isEmpty ?? false) {
         _questionAttachmentMetadata.remove(questionId);
       }
+      _hasChange = true; // Mark as changed
     });
     _scheduleSaveDraft();
   }
@@ -509,6 +544,11 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
 
         // Clear local draft after successful backend save
         await _clearDraftData();
+
+        // Reset change flag after successful save
+        setState(() {
+          _hasChange = false;
+        });
 
         ToastService.show(response.message ?? 'Draft saved successfully');
       } catch (e) {
@@ -601,7 +641,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     final existingRecord = state?.record;
     final recordStatus = state?.record?.status;
     final hasSubmittedAnswers = state?.hasSubmittedAnswers ?? false;
-
+    log("Has change: $_hasChange", name: 'AddRecordScreen');
     // Allow editing for Draft and Rejected statuses
     final isEditable =
         recordStatus == RecordStatus.draft ||
@@ -736,6 +776,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                           onDateSelected: (date) {
                             setState(() {
                               _recordCreatedDate = date;
+                              _hasChange = true;
                             });
                             _scheduleSaveDraft();
                           },
@@ -762,6 +803,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                             if (!isReadOnly) {
                               setState(() {
                                 _selectedInspectedComponents = values;
+                                _hasChange = true;
                               });
                               _scheduleSaveDraft();
                             }
@@ -796,6 +838,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                           onDateSelected: (date) {
                             setState(() {
                               _inspectionDate = date;
+                              _hasChange = true;
                             });
                             _scheduleSaveDraft();
                           },
