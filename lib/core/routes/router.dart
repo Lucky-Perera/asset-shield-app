@@ -16,12 +16,16 @@ class Routes {
   BuildContext get currentContext => rootNavigatorKey.currentContext!;
 
   void splash() => router.go(RoutePaths.splash);
+
   void login() => router.go(RoutePaths.login);
+
   void home() => router.go(RoutePaths.home);
+
   void scheduleDetails(ScheduleV2Response schedule) => router.go(
     "${RoutePaths.home}${RoutePaths.scheduleDetails}",
     extra: schedule,
   );
+
   void addRecord(ScheduleV2Response schedule) => router.go(
     "${RoutePaths.home}${RoutePaths.scheduleDetails}${RoutePaths.addRecord}",
     extra: schedule,
