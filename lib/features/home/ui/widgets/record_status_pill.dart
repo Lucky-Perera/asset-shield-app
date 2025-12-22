@@ -56,9 +56,11 @@ class RecordStatusPill extends StatelessWidget {
       ),
       child: Text(
         statusText,
-        style: AppTextStyles.label(
-          context,
-        ).copyWith(color: statusColor, fontWeight: FontWeight.w600),
+        style: AppTextStyles.label(context).copyWith(
+          color: statusColor,
+          fontWeight: FontWeight.w600,
+          fontSize: 12,
+        ),
       ),
     );
   }

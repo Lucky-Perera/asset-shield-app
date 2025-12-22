@@ -8,6 +8,7 @@ import 'package:asset_shield/features/home/data/models/record_create_request.dar
 import 'package:asset_shield/features/home/data/models/record_response.dart';
 import 'package:asset_shield/features/home/data/models/record_with_checklist_state.dart';
 import 'package:asset_shield/features/home/data/providers/record_with_checklist_provider.dart';
+import 'package:asset_shield/features/home/data/providers/schedule_provider.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:asset_shield/core/routes/router.dart';
 import 'package:asset_shield/core/theme/app_text_styles.dart';
@@ -117,6 +118,81 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
 
   final StorageService _storage = StorageService();
 
+  // Helper: Convert attachment metadata to draft format
+  Map<String, List<AttachmentDraft>> _convertAttachmentMetadataToDraft() {
+    final Map<String, List<AttachmentDraft>> questionAttachments =
+        <String, List<AttachmentDraft>>{};
+    _questionAttachmentMetadata.forEach((questionId, metadata) {
+      questionAttachments[questionId] = metadata
+          .map((m) => AttachmentDraft(id: m['id'] ?? '', name: m['name'] ?? ''))
+          .toList();
+    });
+    return questionAttachments;
+  }
+
+  // Helper: Build checklist answers list
+  List<ChecklistAnswerItem> _buildChecklistAnswers() {
+    return _checklistAnswers.entries
+        .map(
+          (entry) => ChecklistAnswerItem(
+            questionId: entry.key,
+            value: entry.value.value,
+            note: entry.value.note,
+            attachmentIds: _questionAttachmentIds[entry.key] ?? [],
+          ),
+        )
+        .toList();
+  }
+
+  // Helper: Build the record create request payload
+  Future<RecordCreateRequest> _buildRecordCreateRequest({
+    required bool isDraft,
+  }) async {
+    final user = await _storage.getUserObject();
+    final checklistAnswers = _buildChecklistAnswers();
+
+    return RecordCreateRequest(
+      description: _descriptionController.text.trim(),
+      recordCreatedDate: _recordCreatedDate!,
+      inspectionDate: _inspectionDate!,
+      actionCreated: _actionCreatedController.text.trim(),
+      comments: _commentsController.text.trim().isEmpty
+          ? null
+          : _commentsController.text.trim(),
+      equipmentID: widget.schedule.equipmentId,
+      inspectedComponentIDs: _selectedInspectedComponents,
+      scheduleTypeID: widget.schedule.scheduleTypeId,
+      attachmentIDs: [],
+      checklistAnswers: checklistAnswers,
+      submittedBy: user?.id ?? '',
+      isDraft: isDraft,
+    );
+  }
+
+  // Helper: Update initial values and reset change flag
+  void _updateInitialValuesAndResetChangeFlag() {
+    _hasChange = false;
+    _initialDescription = _descriptionController.text.trim();
+    _initialActionCreated = _actionCreatedController.text.trim();
+    _initialComments = _commentsController.text.trim();
+  }
+
+  // Helper: Load checklist answers and attachments from data
+  void _loadChecklistAnswersAndAttachments({
+    required Map<String, ChecklistAnswerData> answers,
+    required Map<String, List<String>> attachmentIds,
+    required Map<String, List<Map<String, String>>> attachmentMetadata,
+  }) {
+    _checklistAnswers.clear();
+    _checklistAnswers.addAll(answers);
+
+    _questionAttachmentIds.clear();
+    _questionAttachmentIds.addAll(attachmentIds);
+
+    _questionAttachmentMetadata.clear();
+    _questionAttachmentMetadata.addAll(attachmentMetadata);
+  }
+
   // Load draft data if exists
   Future<void> _loadDraftData() async {
     try {
@@ -176,14 +252,14 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
             [];
       }
 
-      // Load checklist answers from backend
-      _checklistAnswers.clear();
-      _questionAttachmentIds.clear();
-      _questionAttachmentMetadata.clear();
+      // Build answers and attachments from backend data
+      final answers = <String, ChecklistAnswerData>{};
+      final attachmentIds = <String, List<String>>{};
+      final attachmentMetadata = <String, List<Map<String, String>>>{};
 
       for (final question in state.answeredQuestions) {
         if (question.value != null && question.value!.isNotEmpty) {
-          _checklistAnswers[question.id] = ChecklistAnswerData(
+          answers[question.id] = ChecklistAnswerData(
             value: question.value!,
             note: question.note ?? '',
           );
@@ -191,14 +267,20 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
 
         // Load attachment IDs and metadata
         if (question.attachments != null && question.attachments!.isNotEmpty) {
-          _questionAttachmentIds[question.id] = question.attachments!
+          attachmentIds[question.id] = question.attachments!
               .map((att) => att.id)
               .toList();
-          _questionAttachmentMetadata[question.id] = question.attachments!
+          attachmentMetadata[question.id] = question.attachments!
               .map((att) => {'id': att.id, 'name': att.name})
               .toList();
         }
       }
+
+      _loadChecklistAnswersAndAttachments(
+        answers: answers,
+        attachmentIds: attachmentIds,
+        attachmentMetadata: attachmentMetadata,
+      );
     });
 
     // Update initial values after loading
@@ -222,24 +304,29 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
       _inspectionDate = draft.inspectionDate ?? _inspectionDate;
       _selectedInspectedComponents = draft.selectedInspectedComponents;
 
-      _checklistAnswers.clear();
+      // Build answers and attachments from local draft
+      final answers = <String, ChecklistAnswerData>{};
       draft.checklistAnswers.forEach((key, value) {
-        _checklistAnswers[key] = ChecklistAnswerData(
+        answers[key] = ChecklistAnswerData(
           value: value.value,
           note: value.note,
         );
       });
 
-      _questionAttachmentIds.clear();
-      _questionAttachmentMetadata.clear();
+      final attachmentIds = <String, List<String>>{};
+      final attachmentMetadata = <String, List<Map<String, String>>>{};
       draft.questionAttachments.forEach((questionId, attachments) {
-        _questionAttachmentIds[questionId] = attachments
-            .map((att) => att.id)
-            .toList();
-        _questionAttachmentMetadata[questionId] = attachments
+        attachmentIds[questionId] = attachments.map((att) => att.id).toList();
+        attachmentMetadata[questionId] = attachments
             .map((att) => {'id': att.id, 'name': att.name})
             .toList();
       });
+
+      _loadChecklistAnswersAndAttachments(
+        answers: answers,
+        attachmentIds: attachmentIds,
+        attachmentMetadata: attachmentMetadata,
+      );
     });
 
     // Update initial values after loading
@@ -261,17 +348,6 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
         ),
       );
 
-      // Convert attachment metadata to draft format
-      final Map<String, List<AttachmentDraft>> questionAttachments =
-          <String, List<AttachmentDraft>>{};
-      _questionAttachmentMetadata.forEach((questionId, metadata) {
-        questionAttachments[questionId] = metadata
-            .map(
-              (m) => AttachmentDraft(id: m['id'] ?? '', name: m['name'] ?? ''),
-            )
-            .toList();
-      });
-
       final draft = RecordDraftModel(
         description: _descriptionController.text.trim(),
         actionCreated: _actionCreatedController.text.trim(),
@@ -280,7 +356,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
         inspectionDate: _inspectionDate,
         selectedInspectedComponents: _selectedInspectedComponents,
         checklistAnswers: checklistAnswers,
-        questionAttachments: questionAttachments,
+        questionAttachments: _convertAttachmentMetadataToDraft(),
       );
 
       await _storage.saveDraftRecordModel(widget.schedule.id, draft);
@@ -385,36 +461,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
   // Helper method to save draft to backend
   Future<void> _saveDraftToBackend() async {
     try {
-      // Prepare checklist answers (can be partial)
-      final checklistAnswers = _checklistAnswers.entries
-          .map(
-            (entry) => ChecklistAnswerItem(
-              questionId: entry.key,
-              value: entry.value.value,
-              note: entry.value.note,
-              attachmentIds: _questionAttachmentIds[entry.key] ?? [],
-            ),
-          )
-          .toList();
-
-      final user = await _storage.getUserObject();
-
-      final payload = RecordCreateRequest(
-        description: _descriptionController.text.trim(),
-        recordCreatedDate: _recordCreatedDate!,
-        inspectionDate: _inspectionDate!,
-        actionCreated: _actionCreatedController.text.trim(),
-        comments: _commentsController.text.trim().isEmpty
-            ? null
-            : _commentsController.text.trim(),
-        equipmentID: widget.schedule.equipmentId,
-        inspectedComponentIDs: _selectedInspectedComponents,
-        scheduleTypeID: widget.schedule.scheduleTypeId,
-        attachmentIDs: [],
-        checklistAnswers: checklistAnswers,
-        submittedBy: user?.id ?? '',
-        isDraft: true, // Explicitly set as draft
-      );
+      final payload = await _buildRecordCreateRequest(isDraft: true);
 
       final notifier = ref.read(
         recordWithChecklistProvider(widget.schedule.id).notifier,
@@ -424,12 +471,10 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
         await notifier.saveDraft(payload);
         // Clear local draft after successful backend save
         await _clearDraftData();
-        // Reset change flag after successful save
-        _hasChange = false;
-        // Update initial values after successful save
-        _initialDescription = _descriptionController.text.trim();
-        _initialActionCreated = _actionCreatedController.text.trim();
-        _initialComments = _commentsController.text.trim();
+        // Reset change flag and update initial values
+        setState(() {
+          _updateInitialValuesAndResetChangeFlag();
+        });
       } catch (e) {
         // Fallback to local storage if backend fails
         log('Backend draft save failed, falling back to local storage: $e');
@@ -536,39 +581,14 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
 
   // Handle save draft
   Future<void> _handleSaveDraft() async {
+    if (!(_formKey.currentState?.validate() ?? false)) {
+      ToastService.show('Please fill all required fields');
+      return;
+    }
     EasyLoading.show();
 
     try {
-      // Prepare checklist answers (can be partial)
-      final checklistAnswers = _checklistAnswers.entries
-          .map(
-            (entry) => ChecklistAnswerItem(
-              questionId: entry.key,
-              value: entry.value.value,
-              note: entry.value.note,
-              attachmentIds: _questionAttachmentIds[entry.key] ?? [],
-            ),
-          )
-          .toList();
-
-      final user = await _storage.getUserObject();
-
-      final payload = RecordCreateRequest(
-        description: _descriptionController.text.trim(),
-        recordCreatedDate: _recordCreatedDate!,
-        inspectionDate: _inspectionDate!,
-        actionCreated: _actionCreatedController.text.trim(),
-        comments: _commentsController.text.trim().isEmpty
-            ? null
-            : _commentsController.text.trim(),
-        equipmentID: widget.schedule.equipmentId,
-        inspectedComponentIDs: _selectedInspectedComponents,
-        scheduleTypeID: widget.schedule.scheduleTypeId,
-        attachmentIDs: [],
-        checklistAnswers: checklistAnswers,
-        submittedBy: user?.id ?? '',
-        isDraft: true, // Explicitly set as draft
-      );
+      final payload = await _buildRecordCreateRequest(isDraft: true);
 
       final notifier = ref.read(
         recordWithChecklistProvider(widget.schedule.id).notifier,
@@ -580,17 +600,13 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
         // Clear local draft after successful backend save
         await _clearDraftData();
 
-        // Reset change flag after successful save
+        // Reset change flag and update initial values
         setState(() {
-          _hasChange = false;
+          _updateInitialValuesAndResetChangeFlag();
         });
 
-        // Update initial values after successful save
-        _initialDescription = _descriptionController.text.trim();
-        _initialActionCreated = _actionCreatedController.text.trim();
-        _initialComments = _commentsController.text.trim();
-
         ToastService.show(response.message ?? 'Draft saved successfully');
+        ref.read(schedulesProvider.notifier).refresh();
       } catch (e) {
         // Fallback to local storage if backend fails
         log('Backend draft save failed, falling back to local storage: $e');
@@ -619,37 +635,8 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
         return;
       }
 
-      // Prepare checklist answers for the combined API
-      final checklistAnswers = _checklistAnswers.entries
-          .map(
-            (entry) => ChecklistAnswerItem(
-              questionId: entry.key,
-              value: entry.value.value,
-              note: entry.value.note,
-              attachmentIds: _questionAttachmentIds[entry.key] ?? [],
-            ),
-          )
-          .toList();
-
-      final user = await _storage.getUserObject();
-
       // Create the record with checklist answers in one API call
-      final payload = RecordCreateRequest(
-        description: _descriptionController.text.trim(),
-        recordCreatedDate: _recordCreatedDate!,
-        inspectionDate: _inspectionDate!,
-        actionCreated: _actionCreatedController.text.trim(),
-        comments: _commentsController.text.trim().isEmpty
-            ? null
-            : _commentsController.text.trim(),
-        equipmentID: widget.schedule.equipmentId,
-        inspectedComponentIDs: _selectedInspectedComponents,
-        scheduleTypeID: widget.schedule.scheduleTypeId,
-        attachmentIDs: [],
-        checklistAnswers: checklistAnswers,
-        submittedBy: user?.id ?? '',
-        isDraft: false, // Explicitly set as final submission
-      );
+      final payload = await _buildRecordCreateRequest(isDraft: false);
 
       final notifier = ref.read(
         recordWithChecklistProvider(widget.schedule.id).notifier,
@@ -665,6 +652,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
 
       router.pop();
       ToastService.show(response.message ?? 'Record submitted successfully');
+      ref.read(schedulesProvider.notifier).refresh();
     } catch (e) {
       ToastService.show('Failed to create record: $e');
     } finally {
@@ -791,7 +779,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                             label: 'Description',
                             hint: 'Enter description',
                             controller: _descriptionController,
-                            isRequired: isReadOnly ? false : true,
+                            isRequired: !isReadOnly,
                             enabled: !isReadOnly,
                             maxLines: 4,
                             minLines: 3,
@@ -817,7 +805,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                           FormDateField(
                             label: 'Record created date',
                             selectedDate: _recordCreatedDate,
-                            isRequired: isReadOnly ? false : true,
+                            isRequired: !isReadOnly,
                             readOnly: isReadOnly,
                             onDateSelected: (date) {
                               setState(() {
@@ -834,7 +822,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                             label: 'Inspected components',
                             hint: 'Select components',
                             selectedValues: _selectedInspectedComponents,
-                            isRequired: isReadOnly ? false : true,
+                            isRequired: !isReadOnly,
                             items: _componentItems,
                             itemLabel: (componentId) {
                               // Find the component name by ID
@@ -879,7 +867,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                           FormDateField(
                             label: 'Inspection Date',
                             selectedDate: _inspectionDate,
-                            isRequired: isReadOnly ? false : true,
+                            isRequired: !isReadOnly,
                             readOnly: isReadOnly,
                             onDateSelected: (date) {
                               setState(() {
@@ -896,7 +884,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                             label: 'Action Created',
                             hint: 'Enter action created',
                             controller: _actionCreatedController,
-                            isRequired: isReadOnly ? false : true,
+                            isRequired: !isReadOnly,
                             enabled: !isReadOnly,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
