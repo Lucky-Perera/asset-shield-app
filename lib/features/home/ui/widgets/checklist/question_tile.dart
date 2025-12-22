@@ -388,6 +388,19 @@ class _QuestionTileState extends State<QuestionTile> {
     return imageExtensions.any((ext) => lowerUrl.contains(ext));
   }
 
+  bool _isPdfUrl(String url) {
+    return url.toLowerCase().contains('.pdf');
+  }
+
+  bool _isTxtUrl(String url) {
+    return url.toLowerCase().contains('.txt');
+  }
+
+  Future<void> _openPdf(String url) async {
+    final uri = Uri.parse(url);
+    await launchUrl(uri, mode: LaunchMode.inAppBrowserView);
+  }
+
   Future<void> _openUrl(String url) async {
     final uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
@@ -539,11 +552,22 @@ class _QuestionTileState extends State<QuestionTile> {
                           final isDeleting =
                               _deletingAttachmentId == attachmentId;
 
+                          final isImage = _isImageUrl(fileName);
+                          final isPdf = _isPdfUrl(fileName);
+                          final isTxt = _isTxtUrl(fileName);
+                          final isViewable = isImage || isPdf || isTxt;
+
                           return AttachmentRow(
-                            icon: Icons.check_circle,
+                            icon: isImage
+                                ? Icons.image
+                                : (isPdf
+                                      ? Icons.picture_as_pdf
+                                      : (isTxt
+                                            ? Icons.description
+                                            : Icons.attach_file)),
                             fileName: fileName,
                             id: attachmentId,
-                            isImage: false,
+                            isViewable: isViewable,
                             isDeleting: isDeleting,
                             showDelete:
                                 !widget.readOnly &&
@@ -613,11 +637,22 @@ class _QuestionTileState extends State<QuestionTile> {
                           final isDeleting =
                               _deletingAttachmentId == attachmentId;
 
+                          final isImage = _isImageUrl(fileName);
+                          final isPdf = _isPdfUrl(fileName);
+                          final isTxt = _isTxtUrl(fileName);
+                          final isViewable = isImage || isPdf || isTxt;
+
                           return AttachmentRow(
-                            icon: Icons.attach_file,
+                            icon: isImage
+                                ? Icons.image
+                                : (isPdf
+                                      ? Icons.picture_as_pdf
+                                      : (isTxt
+                                            ? Icons.description
+                                            : Icons.attach_file)),
                             fileName: fileName,
                             id: attachmentId,
-                            isImage: false,
+                            isViewable: isViewable,
                             isDeleting: isDeleting,
                             showDelete:
                                 !widget.readOnly &&
@@ -627,31 +662,48 @@ class _QuestionTileState extends State<QuestionTile> {
                           );
                         }),
                         // Show existing attachments from backend
-                        ...existingAttachments.map((attachment) {
-                          final isImage = _isImageUrl(attachment.url);
-                          final isDeleting =
-                              _deletingAttachmentId == attachment.id;
+                        ...widget.existingAttachments
+                                ?.where(
+                                  (a) => !_deletedAttachmentIds.contains(a.id),
+                                )
+                                .map((attachment) {
+                                  final isImage = _isImageUrl(attachment.url);
+                                  final isPdf = _isPdfUrl(attachment.url);
+                                  final isTxt = _isTxtUrl(attachment.url);
+                                  final isViewable = isImage || isPdf || isTxt;
 
-                          return AttachmentRow(
-                            icon: isImage ? Icons.image : Icons.attach_file,
-                            fileName: attachment.name,
-                            id: attachment.id,
-                            isImage: isImage,
-                            isDeleting: isDeleting,
-                            showDelete:
-                                !widget.readOnly &&
-                                widget.onAttachmentDeleted != null,
-                            onTap: () {
-                              if (isImage) {
-                                _showImageViewer(attachment.url);
-                              } else {
-                                _openUrl(attachment.url);
-                              }
-                            },
-                            onDelete: (id, name) =>
-                                _handleDeleteAttachment(id, name),
-                          );
-                        }),
+                                  final isDeleting =
+                                      _deletingAttachmentId == attachment.id;
+
+                                  return AttachmentRow(
+                                    icon: isImage
+                                        ? Icons.image
+                                        : (isPdf
+                                              ? Icons.picture_as_pdf
+                                              : (isTxt
+                                                    ? Icons.description
+                                                    : Icons.attach_file)),
+                                    fileName: attachment.name,
+                                    id: attachment.id,
+                                    isViewable: isViewable,
+                                    isDeleting: isDeleting,
+                                    showDelete:
+                                        !widget.readOnly &&
+                                        widget.onAttachmentDeleted != null,
+                                    onTap: () {
+                                      if (isImage) {
+                                        _showImageViewer(attachment.url);
+                                      } else if (isPdf) {
+                                        _openPdf(attachment.url);
+                                      } else {
+                                        _openUrl(attachment.url);
+                                      }
+                                    },
+                                    onDelete: (id, name) =>
+                                        _handleDeleteAttachment(id, name),
+                                  );
+                                }) ??
+                            [],
                       ];
                     }(),
                   ],
