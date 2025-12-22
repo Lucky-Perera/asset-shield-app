@@ -75,9 +75,6 @@ _ScheduleV2Response _$ScheduleV2ResponseFromJson(
   attachments: (json['attachments'] as List<dynamic>)
       .map((e) => AttachmentV2.fromJson(e as Map<String, dynamic>))
       .toList(),
-  scopeImages: (json['scopeImages'] as List<dynamic>)
-      .map((e) => AttachmentV2.fromJson(e as Map<String, dynamic>))
-      .toList(),
   checklistQuestionTemplates:
       (json['checklistQuestionTemplates'] as List<dynamic>)
           .map(
@@ -142,7 +139,6 @@ Map<String, dynamic> _$ScheduleV2ResponseToJson(_ScheduleV2Response instance) =>
       'approvedById': instance.approvedById,
       'reviewedById': instance.reviewedById,
       'attachments': instance.attachments,
-      'scopeImages': instance.scopeImages,
       'checklistQuestionTemplates': instance.checklistQuestionTemplates,
       'inspectionMethods': instance.inspectionMethods,
       'potentialEmergentWorks': instance.potentialEmergentWorks,
