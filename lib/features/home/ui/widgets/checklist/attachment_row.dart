@@ -7,7 +7,7 @@ typedef VoidStringCallback = void Function(String id, String name);
 class AttachmentRow extends StatelessWidget {
   final IconData icon;
   final String fileName;
-  final bool isImage;
+  final bool isViewable;
   final bool isDeleting;
   final bool showDelete;
   final VoidCallback? onTap;
@@ -19,7 +19,7 @@ class AttachmentRow extends StatelessWidget {
     required this.icon,
     required this.fileName,
     required this.id,
-    this.isImage = false,
+    this.isViewable = false,
     this.isDeleting = false,
     this.showDelete = true,
     this.onTap,
@@ -35,7 +35,7 @@ class AttachmentRow extends StatelessWidget {
           Icon(
             icon,
             size: 16.sp,
-            color: isImage ? ColorPalette.primary : ColorPalette.primary,
+            color: isViewable ? ColorPalette.primary : ColorPalette.primary,
           ),
           SizedBox(width: 6.w),
           Expanded(
@@ -45,8 +45,8 @@ class AttachmentRow extends StatelessWidget {
                 fileName,
                 style: TextStyle(
                   fontSize: 12.sp,
-                  color: isImage ? ColorPalette.primary : ColorPalette.black,
-                  decoration: isImage ? TextDecoration.underline : null,
+                  color: isViewable ? ColorPalette.primary : ColorPalette.black,
+                  decoration: isViewable ? TextDecoration.underline : null,
                 ),
                 overflow: TextOverflow.ellipsis,
               ),

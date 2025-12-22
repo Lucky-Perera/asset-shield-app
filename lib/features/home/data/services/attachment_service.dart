@@ -43,4 +43,13 @@ class AttachmentService {
       throw Helpers.handleError(e);
     }
   }
+
+  /// Fetch text file content
+  Future<Response> fetchTextFile(String url) async {
+    try {
+      return await _dio.get(url);
+    } on DioException catch (e) {
+      throw Helpers.handleError(e);
+    }
+  }
 }
