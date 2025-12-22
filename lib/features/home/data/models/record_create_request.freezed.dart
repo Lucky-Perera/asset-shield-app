@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$RecordCreateRequest {
 
-@JsonKey(name: 'equipmentID') String get equipmentID; String get description;@JsonKey(name: 'creditedItemIDs') List<String>? get creditedItemIDs;@JsonKey(name: 'recordCreatedDate') DateTime get recordCreatedDate;@JsonKey(name: 'inspectedComponentIDs') List<String> get inspectedComponentIDs;@JsonKey(name: 'scheduleTypeID') String get scheduleTypeID;@JsonKey(name: 'inspectionDate') DateTime get inspectionDate;@JsonKey(name: 'actionCreated') String get actionCreated;@JsonKey(name: 'attachmentIDs') List<String>? get attachmentIDs; String? get comments;@JsonKey(name: 'checklistAnswers') List<ChecklistAnswerItem>? get checklistAnswers; String get submittedBy;
+@JsonKey(name: 'equipmentID') String get equipmentID; String get description;@JsonKey(name: 'creditedItemIDs') List<String>? get creditedItemIDs;@JsonKey(name: 'recordCreatedDate') DateTime get recordCreatedDate;@JsonKey(name: 'inspectedComponentIDs') List<String> get inspectedComponentIDs;@JsonKey(name: 'scheduleTypeID') String get scheduleTypeID;@JsonKey(name: 'inspectionDate') DateTime get inspectionDate;@JsonKey(name: 'actionCreated') String get actionCreated;@JsonKey(name: 'attachmentIDs') List<String>? get attachmentIDs; String? get comments;@JsonKey(name: 'checklistAnswers') List<ChecklistAnswerItem>? get checklistAnswers; String get submittedBy; bool? get isDraft;
 /// Create a copy of RecordCreateRequest
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $RecordCreateRequestCopyWith<RecordCreateRequest> get copyWith => _$RecordCreate
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is RecordCreateRequest&&(identical(other.equipmentID, equipmentID) || other.equipmentID == equipmentID)&&(identical(other.description, description) || other.description == description)&&const DeepCollectionEquality().equals(other.creditedItemIDs, creditedItemIDs)&&(identical(other.recordCreatedDate, recordCreatedDate) || other.recordCreatedDate == recordCreatedDate)&&const DeepCollectionEquality().equals(other.inspectedComponentIDs, inspectedComponentIDs)&&(identical(other.scheduleTypeID, scheduleTypeID) || other.scheduleTypeID == scheduleTypeID)&&(identical(other.inspectionDate, inspectionDate) || other.inspectionDate == inspectionDate)&&(identical(other.actionCreated, actionCreated) || other.actionCreated == actionCreated)&&const DeepCollectionEquality().equals(other.attachmentIDs, attachmentIDs)&&(identical(other.comments, comments) || other.comments == comments)&&const DeepCollectionEquality().equals(other.checklistAnswers, checklistAnswers)&&(identical(other.submittedBy, submittedBy) || other.submittedBy == submittedBy));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RecordCreateRequest&&(identical(other.equipmentID, equipmentID) || other.equipmentID == equipmentID)&&(identical(other.description, description) || other.description == description)&&const DeepCollectionEquality().equals(other.creditedItemIDs, creditedItemIDs)&&(identical(other.recordCreatedDate, recordCreatedDate) || other.recordCreatedDate == recordCreatedDate)&&const DeepCollectionEquality().equals(other.inspectedComponentIDs, inspectedComponentIDs)&&(identical(other.scheduleTypeID, scheduleTypeID) || other.scheduleTypeID == scheduleTypeID)&&(identical(other.inspectionDate, inspectionDate) || other.inspectionDate == inspectionDate)&&(identical(other.actionCreated, actionCreated) || other.actionCreated == actionCreated)&&const DeepCollectionEquality().equals(other.attachmentIDs, attachmentIDs)&&(identical(other.comments, comments) || other.comments == comments)&&const DeepCollectionEquality().equals(other.checklistAnswers, checklistAnswers)&&(identical(other.submittedBy, submittedBy) || other.submittedBy == submittedBy)&&(identical(other.isDraft, isDraft) || other.isDraft == isDraft));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,equipmentID,description,const DeepCollectionEquality().hash(creditedItemIDs),recordCreatedDate,const DeepCollectionEquality().hash(inspectedComponentIDs),scheduleTypeID,inspectionDate,actionCreated,const DeepCollectionEquality().hash(attachmentIDs),comments,const DeepCollectionEquality().hash(checklistAnswers),submittedBy);
+int get hashCode => Object.hash(runtimeType,equipmentID,description,const DeepCollectionEquality().hash(creditedItemIDs),recordCreatedDate,const DeepCollectionEquality().hash(inspectedComponentIDs),scheduleTypeID,inspectionDate,actionCreated,const DeepCollectionEquality().hash(attachmentIDs),comments,const DeepCollectionEquality().hash(checklistAnswers),submittedBy,isDraft);
 
 @override
 String toString() {
-  return 'RecordCreateRequest(equipmentID: $equipmentID, description: $description, creditedItemIDs: $creditedItemIDs, recordCreatedDate: $recordCreatedDate, inspectedComponentIDs: $inspectedComponentIDs, scheduleTypeID: $scheduleTypeID, inspectionDate: $inspectionDate, actionCreated: $actionCreated, attachmentIDs: $attachmentIDs, comments: $comments, checklistAnswers: $checklistAnswers, submittedBy: $submittedBy)';
+  return 'RecordCreateRequest(equipmentID: $equipmentID, description: $description, creditedItemIDs: $creditedItemIDs, recordCreatedDate: $recordCreatedDate, inspectedComponentIDs: $inspectedComponentIDs, scheduleTypeID: $scheduleTypeID, inspectionDate: $inspectionDate, actionCreated: $actionCreated, attachmentIDs: $attachmentIDs, comments: $comments, checklistAnswers: $checklistAnswers, submittedBy: $submittedBy, isDraft: $isDraft)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $RecordCreateRequestCopyWith<$Res>  {
   factory $RecordCreateRequestCopyWith(RecordCreateRequest value, $Res Function(RecordCreateRequest) _then) = _$RecordCreateRequestCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'equipmentID') String equipmentID, String description,@JsonKey(name: 'creditedItemIDs') List<String>? creditedItemIDs,@JsonKey(name: 'recordCreatedDate') DateTime recordCreatedDate,@JsonKey(name: 'inspectedComponentIDs') List<String> inspectedComponentIDs,@JsonKey(name: 'scheduleTypeID') String scheduleTypeID,@JsonKey(name: 'inspectionDate') DateTime inspectionDate,@JsonKey(name: 'actionCreated') String actionCreated,@JsonKey(name: 'attachmentIDs') List<String>? attachmentIDs, String? comments,@JsonKey(name: 'checklistAnswers') List<ChecklistAnswerItem>? checklistAnswers, String submittedBy
+@JsonKey(name: 'equipmentID') String equipmentID, String description,@JsonKey(name: 'creditedItemIDs') List<String>? creditedItemIDs,@JsonKey(name: 'recordCreatedDate') DateTime recordCreatedDate,@JsonKey(name: 'inspectedComponentIDs') List<String> inspectedComponentIDs,@JsonKey(name: 'scheduleTypeID') String scheduleTypeID,@JsonKey(name: 'inspectionDate') DateTime inspectionDate,@JsonKey(name: 'actionCreated') String actionCreated,@JsonKey(name: 'attachmentIDs') List<String>? attachmentIDs, String? comments,@JsonKey(name: 'checklistAnswers') List<ChecklistAnswerItem>? checklistAnswers, String submittedBy, bool? isDraft
 });
 
 
@@ -65,7 +65,7 @@ class _$RecordCreateRequestCopyWithImpl<$Res>
 
 /// Create a copy of RecordCreateRequest
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? equipmentID = null,Object? description = null,Object? creditedItemIDs = freezed,Object? recordCreatedDate = null,Object? inspectedComponentIDs = null,Object? scheduleTypeID = null,Object? inspectionDate = null,Object? actionCreated = null,Object? attachmentIDs = freezed,Object? comments = freezed,Object? checklistAnswers = freezed,Object? submittedBy = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? equipmentID = null,Object? description = null,Object? creditedItemIDs = freezed,Object? recordCreatedDate = null,Object? inspectedComponentIDs = null,Object? scheduleTypeID = null,Object? inspectionDate = null,Object? actionCreated = null,Object? attachmentIDs = freezed,Object? comments = freezed,Object? checklistAnswers = freezed,Object? submittedBy = null,Object? isDraft = freezed,}) {
   return _then(_self.copyWith(
 equipmentID: null == equipmentID ? _self.equipmentID : equipmentID // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
@@ -79,7 +79,8 @@ as String,attachmentIDs: freezed == attachmentIDs ? _self.attachmentIDs : attach
 as List<String>?,comments: freezed == comments ? _self.comments : comments // ignore: cast_nullable_to_non_nullable
 as String?,checklistAnswers: freezed == checklistAnswers ? _self.checklistAnswers : checklistAnswers // ignore: cast_nullable_to_non_nullable
 as List<ChecklistAnswerItem>?,submittedBy: null == submittedBy ? _self.submittedBy : submittedBy // ignore: cast_nullable_to_non_nullable
-as String,
+as String,isDraft: freezed == isDraft ? _self.isDraft : isDraft // ignore: cast_nullable_to_non_nullable
+as bool?,
   ));
 }
 
@@ -164,10 +165,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'equipmentID')  String equipmentID,  String description, @JsonKey(name: 'creditedItemIDs')  List<String>? creditedItemIDs, @JsonKey(name: 'recordCreatedDate')  DateTime recordCreatedDate, @JsonKey(name: 'inspectedComponentIDs')  List<String> inspectedComponentIDs, @JsonKey(name: 'scheduleTypeID')  String scheduleTypeID, @JsonKey(name: 'inspectionDate')  DateTime inspectionDate, @JsonKey(name: 'actionCreated')  String actionCreated, @JsonKey(name: 'attachmentIDs')  List<String>? attachmentIDs,  String? comments, @JsonKey(name: 'checklistAnswers')  List<ChecklistAnswerItem>? checklistAnswers,  String submittedBy)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'equipmentID')  String equipmentID,  String description, @JsonKey(name: 'creditedItemIDs')  List<String>? creditedItemIDs, @JsonKey(name: 'recordCreatedDate')  DateTime recordCreatedDate, @JsonKey(name: 'inspectedComponentIDs')  List<String> inspectedComponentIDs, @JsonKey(name: 'scheduleTypeID')  String scheduleTypeID, @JsonKey(name: 'inspectionDate')  DateTime inspectionDate, @JsonKey(name: 'actionCreated')  String actionCreated, @JsonKey(name: 'attachmentIDs')  List<String>? attachmentIDs,  String? comments, @JsonKey(name: 'checklistAnswers')  List<ChecklistAnswerItem>? checklistAnswers,  String submittedBy,  bool? isDraft)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _RecordCreateRequest() when $default != null:
-return $default(_that.equipmentID,_that.description,_that.creditedItemIDs,_that.recordCreatedDate,_that.inspectedComponentIDs,_that.scheduleTypeID,_that.inspectionDate,_that.actionCreated,_that.attachmentIDs,_that.comments,_that.checklistAnswers,_that.submittedBy);case _:
+return $default(_that.equipmentID,_that.description,_that.creditedItemIDs,_that.recordCreatedDate,_that.inspectedComponentIDs,_that.scheduleTypeID,_that.inspectionDate,_that.actionCreated,_that.attachmentIDs,_that.comments,_that.checklistAnswers,_that.submittedBy,_that.isDraft);case _:
   return orElse();
 
 }
@@ -185,10 +186,10 @@ return $default(_that.equipmentID,_that.description,_that.creditedItemIDs,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'equipmentID')  String equipmentID,  String description, @JsonKey(name: 'creditedItemIDs')  List<String>? creditedItemIDs, @JsonKey(name: 'recordCreatedDate')  DateTime recordCreatedDate, @JsonKey(name: 'inspectedComponentIDs')  List<String> inspectedComponentIDs, @JsonKey(name: 'scheduleTypeID')  String scheduleTypeID, @JsonKey(name: 'inspectionDate')  DateTime inspectionDate, @JsonKey(name: 'actionCreated')  String actionCreated, @JsonKey(name: 'attachmentIDs')  List<String>? attachmentIDs,  String? comments, @JsonKey(name: 'checklistAnswers')  List<ChecklistAnswerItem>? checklistAnswers,  String submittedBy)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'equipmentID')  String equipmentID,  String description, @JsonKey(name: 'creditedItemIDs')  List<String>? creditedItemIDs, @JsonKey(name: 'recordCreatedDate')  DateTime recordCreatedDate, @JsonKey(name: 'inspectedComponentIDs')  List<String> inspectedComponentIDs, @JsonKey(name: 'scheduleTypeID')  String scheduleTypeID, @JsonKey(name: 'inspectionDate')  DateTime inspectionDate, @JsonKey(name: 'actionCreated')  String actionCreated, @JsonKey(name: 'attachmentIDs')  List<String>? attachmentIDs,  String? comments, @JsonKey(name: 'checklistAnswers')  List<ChecklistAnswerItem>? checklistAnswers,  String submittedBy,  bool? isDraft)  $default,) {final _that = this;
 switch (_that) {
 case _RecordCreateRequest():
-return $default(_that.equipmentID,_that.description,_that.creditedItemIDs,_that.recordCreatedDate,_that.inspectedComponentIDs,_that.scheduleTypeID,_that.inspectionDate,_that.actionCreated,_that.attachmentIDs,_that.comments,_that.checklistAnswers,_that.submittedBy);case _:
+return $default(_that.equipmentID,_that.description,_that.creditedItemIDs,_that.recordCreatedDate,_that.inspectedComponentIDs,_that.scheduleTypeID,_that.inspectionDate,_that.actionCreated,_that.attachmentIDs,_that.comments,_that.checklistAnswers,_that.submittedBy,_that.isDraft);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -205,10 +206,10 @@ return $default(_that.equipmentID,_that.description,_that.creditedItemIDs,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'equipmentID')  String equipmentID,  String description, @JsonKey(name: 'creditedItemIDs')  List<String>? creditedItemIDs, @JsonKey(name: 'recordCreatedDate')  DateTime recordCreatedDate, @JsonKey(name: 'inspectedComponentIDs')  List<String> inspectedComponentIDs, @JsonKey(name: 'scheduleTypeID')  String scheduleTypeID, @JsonKey(name: 'inspectionDate')  DateTime inspectionDate, @JsonKey(name: 'actionCreated')  String actionCreated, @JsonKey(name: 'attachmentIDs')  List<String>? attachmentIDs,  String? comments, @JsonKey(name: 'checklistAnswers')  List<ChecklistAnswerItem>? checklistAnswers,  String submittedBy)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'equipmentID')  String equipmentID,  String description, @JsonKey(name: 'creditedItemIDs')  List<String>? creditedItemIDs, @JsonKey(name: 'recordCreatedDate')  DateTime recordCreatedDate, @JsonKey(name: 'inspectedComponentIDs')  List<String> inspectedComponentIDs, @JsonKey(name: 'scheduleTypeID')  String scheduleTypeID, @JsonKey(name: 'inspectionDate')  DateTime inspectionDate, @JsonKey(name: 'actionCreated')  String actionCreated, @JsonKey(name: 'attachmentIDs')  List<String>? attachmentIDs,  String? comments, @JsonKey(name: 'checklistAnswers')  List<ChecklistAnswerItem>? checklistAnswers,  String submittedBy,  bool? isDraft)?  $default,) {final _that = this;
 switch (_that) {
 case _RecordCreateRequest() when $default != null:
-return $default(_that.equipmentID,_that.description,_that.creditedItemIDs,_that.recordCreatedDate,_that.inspectedComponentIDs,_that.scheduleTypeID,_that.inspectionDate,_that.actionCreated,_that.attachmentIDs,_that.comments,_that.checklistAnswers,_that.submittedBy);case _:
+return $default(_that.equipmentID,_that.description,_that.creditedItemIDs,_that.recordCreatedDate,_that.inspectedComponentIDs,_that.scheduleTypeID,_that.inspectionDate,_that.actionCreated,_that.attachmentIDs,_that.comments,_that.checklistAnswers,_that.submittedBy,_that.isDraft);case _:
   return null;
 
 }
@@ -220,7 +221,7 @@ return $default(_that.equipmentID,_that.description,_that.creditedItemIDs,_that.
 @JsonSerializable()
 
 class _RecordCreateRequest implements RecordCreateRequest {
-  const _RecordCreateRequest({@JsonKey(name: 'equipmentID') required this.equipmentID, required this.description, @JsonKey(name: 'creditedItemIDs') final  List<String>? creditedItemIDs, @JsonKey(name: 'recordCreatedDate') required this.recordCreatedDate, @JsonKey(name: 'inspectedComponentIDs') required final  List<String> inspectedComponentIDs, @JsonKey(name: 'scheduleTypeID') required this.scheduleTypeID, @JsonKey(name: 'inspectionDate') required this.inspectionDate, @JsonKey(name: 'actionCreated') required this.actionCreated, @JsonKey(name: 'attachmentIDs') final  List<String>? attachmentIDs, this.comments, @JsonKey(name: 'checklistAnswers') final  List<ChecklistAnswerItem>? checklistAnswers, required this.submittedBy}): _creditedItemIDs = creditedItemIDs,_inspectedComponentIDs = inspectedComponentIDs,_attachmentIDs = attachmentIDs,_checklistAnswers = checklistAnswers;
+  const _RecordCreateRequest({@JsonKey(name: 'equipmentID') required this.equipmentID, required this.description, @JsonKey(name: 'creditedItemIDs') final  List<String>? creditedItemIDs, @JsonKey(name: 'recordCreatedDate') required this.recordCreatedDate, @JsonKey(name: 'inspectedComponentIDs') required final  List<String> inspectedComponentIDs, @JsonKey(name: 'scheduleTypeID') required this.scheduleTypeID, @JsonKey(name: 'inspectionDate') required this.inspectionDate, @JsonKey(name: 'actionCreated') required this.actionCreated, @JsonKey(name: 'attachmentIDs') final  List<String>? attachmentIDs, this.comments, @JsonKey(name: 'checklistAnswers') final  List<ChecklistAnswerItem>? checklistAnswers, required this.submittedBy, this.isDraft}): _creditedItemIDs = creditedItemIDs,_inspectedComponentIDs = inspectedComponentIDs,_attachmentIDs = attachmentIDs,_checklistAnswers = checklistAnswers;
   factory _RecordCreateRequest.fromJson(Map<String, dynamic> json) => _$RecordCreateRequestFromJson(json);
 
 @override@JsonKey(name: 'equipmentID') final  String equipmentID;
@@ -265,6 +266,7 @@ class _RecordCreateRequest implements RecordCreateRequest {
 }
 
 @override final  String submittedBy;
+@override final  bool? isDraft;
 
 /// Create a copy of RecordCreateRequest
 /// with the given fields replaced by the non-null parameter values.
@@ -279,16 +281,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RecordCreateRequest&&(identical(other.equipmentID, equipmentID) || other.equipmentID == equipmentID)&&(identical(other.description, description) || other.description == description)&&const DeepCollectionEquality().equals(other._creditedItemIDs, _creditedItemIDs)&&(identical(other.recordCreatedDate, recordCreatedDate) || other.recordCreatedDate == recordCreatedDate)&&const DeepCollectionEquality().equals(other._inspectedComponentIDs, _inspectedComponentIDs)&&(identical(other.scheduleTypeID, scheduleTypeID) || other.scheduleTypeID == scheduleTypeID)&&(identical(other.inspectionDate, inspectionDate) || other.inspectionDate == inspectionDate)&&(identical(other.actionCreated, actionCreated) || other.actionCreated == actionCreated)&&const DeepCollectionEquality().equals(other._attachmentIDs, _attachmentIDs)&&(identical(other.comments, comments) || other.comments == comments)&&const DeepCollectionEquality().equals(other._checklistAnswers, _checklistAnswers)&&(identical(other.submittedBy, submittedBy) || other.submittedBy == submittedBy));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RecordCreateRequest&&(identical(other.equipmentID, equipmentID) || other.equipmentID == equipmentID)&&(identical(other.description, description) || other.description == description)&&const DeepCollectionEquality().equals(other._creditedItemIDs, _creditedItemIDs)&&(identical(other.recordCreatedDate, recordCreatedDate) || other.recordCreatedDate == recordCreatedDate)&&const DeepCollectionEquality().equals(other._inspectedComponentIDs, _inspectedComponentIDs)&&(identical(other.scheduleTypeID, scheduleTypeID) || other.scheduleTypeID == scheduleTypeID)&&(identical(other.inspectionDate, inspectionDate) || other.inspectionDate == inspectionDate)&&(identical(other.actionCreated, actionCreated) || other.actionCreated == actionCreated)&&const DeepCollectionEquality().equals(other._attachmentIDs, _attachmentIDs)&&(identical(other.comments, comments) || other.comments == comments)&&const DeepCollectionEquality().equals(other._checklistAnswers, _checklistAnswers)&&(identical(other.submittedBy, submittedBy) || other.submittedBy == submittedBy)&&(identical(other.isDraft, isDraft) || other.isDraft == isDraft));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,equipmentID,description,const DeepCollectionEquality().hash(_creditedItemIDs),recordCreatedDate,const DeepCollectionEquality().hash(_inspectedComponentIDs),scheduleTypeID,inspectionDate,actionCreated,const DeepCollectionEquality().hash(_attachmentIDs),comments,const DeepCollectionEquality().hash(_checklistAnswers),submittedBy);
+int get hashCode => Object.hash(runtimeType,equipmentID,description,const DeepCollectionEquality().hash(_creditedItemIDs),recordCreatedDate,const DeepCollectionEquality().hash(_inspectedComponentIDs),scheduleTypeID,inspectionDate,actionCreated,const DeepCollectionEquality().hash(_attachmentIDs),comments,const DeepCollectionEquality().hash(_checklistAnswers),submittedBy,isDraft);
 
 @override
 String toString() {
-  return 'RecordCreateRequest(equipmentID: $equipmentID, description: $description, creditedItemIDs: $creditedItemIDs, recordCreatedDate: $recordCreatedDate, inspectedComponentIDs: $inspectedComponentIDs, scheduleTypeID: $scheduleTypeID, inspectionDate: $inspectionDate, actionCreated: $actionCreated, attachmentIDs: $attachmentIDs, comments: $comments, checklistAnswers: $checklistAnswers, submittedBy: $submittedBy)';
+  return 'RecordCreateRequest(equipmentID: $equipmentID, description: $description, creditedItemIDs: $creditedItemIDs, recordCreatedDate: $recordCreatedDate, inspectedComponentIDs: $inspectedComponentIDs, scheduleTypeID: $scheduleTypeID, inspectionDate: $inspectionDate, actionCreated: $actionCreated, attachmentIDs: $attachmentIDs, comments: $comments, checklistAnswers: $checklistAnswers, submittedBy: $submittedBy, isDraft: $isDraft)';
 }
 
 
@@ -299,7 +301,7 @@ abstract mixin class _$RecordCreateRequestCopyWith<$Res> implements $RecordCreat
   factory _$RecordCreateRequestCopyWith(_RecordCreateRequest value, $Res Function(_RecordCreateRequest) _then) = __$RecordCreateRequestCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'equipmentID') String equipmentID, String description,@JsonKey(name: 'creditedItemIDs') List<String>? creditedItemIDs,@JsonKey(name: 'recordCreatedDate') DateTime recordCreatedDate,@JsonKey(name: 'inspectedComponentIDs') List<String> inspectedComponentIDs,@JsonKey(name: 'scheduleTypeID') String scheduleTypeID,@JsonKey(name: 'inspectionDate') DateTime inspectionDate,@JsonKey(name: 'actionCreated') String actionCreated,@JsonKey(name: 'attachmentIDs') List<String>? attachmentIDs, String? comments,@JsonKey(name: 'checklistAnswers') List<ChecklistAnswerItem>? checklistAnswers, String submittedBy
+@JsonKey(name: 'equipmentID') String equipmentID, String description,@JsonKey(name: 'creditedItemIDs') List<String>? creditedItemIDs,@JsonKey(name: 'recordCreatedDate') DateTime recordCreatedDate,@JsonKey(name: 'inspectedComponentIDs') List<String> inspectedComponentIDs,@JsonKey(name: 'scheduleTypeID') String scheduleTypeID,@JsonKey(name: 'inspectionDate') DateTime inspectionDate,@JsonKey(name: 'actionCreated') String actionCreated,@JsonKey(name: 'attachmentIDs') List<String>? attachmentIDs, String? comments,@JsonKey(name: 'checklistAnswers') List<ChecklistAnswerItem>? checklistAnswers, String submittedBy, bool? isDraft
 });
 
 
@@ -316,7 +318,7 @@ class __$RecordCreateRequestCopyWithImpl<$Res>
 
 /// Create a copy of RecordCreateRequest
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? equipmentID = null,Object? description = null,Object? creditedItemIDs = freezed,Object? recordCreatedDate = null,Object? inspectedComponentIDs = null,Object? scheduleTypeID = null,Object? inspectionDate = null,Object? actionCreated = null,Object? attachmentIDs = freezed,Object? comments = freezed,Object? checklistAnswers = freezed,Object? submittedBy = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? equipmentID = null,Object? description = null,Object? creditedItemIDs = freezed,Object? recordCreatedDate = null,Object? inspectedComponentIDs = null,Object? scheduleTypeID = null,Object? inspectionDate = null,Object? actionCreated = null,Object? attachmentIDs = freezed,Object? comments = freezed,Object? checklistAnswers = freezed,Object? submittedBy = null,Object? isDraft = freezed,}) {
   return _then(_RecordCreateRequest(
 equipmentID: null == equipmentID ? _self.equipmentID : equipmentID // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
@@ -330,7 +332,8 @@ as String,attachmentIDs: freezed == attachmentIDs ? _self._attachmentIDs : attac
 as List<String>?,comments: freezed == comments ? _self.comments : comments // ignore: cast_nullable_to_non_nullable
 as String?,checklistAnswers: freezed == checklistAnswers ? _self._checklistAnswers : checklistAnswers // ignore: cast_nullable_to_non_nullable
 as List<ChecklistAnswerItem>?,submittedBy: null == submittedBy ? _self.submittedBy : submittedBy // ignore: cast_nullable_to_non_nullable
-as String,
+as String,isDraft: freezed == isDraft ? _self.isDraft : isDraft // ignore: cast_nullable_to_non_nullable
+as bool?,
   ));
 }
 

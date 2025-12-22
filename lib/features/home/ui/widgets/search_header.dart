@@ -21,7 +21,7 @@ class SearchHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: isSearching ? _buildSearchField() : _buildHeader(),
+      child: isSearching ? _buildSearchField() : _buildHeader(context),
     );
   }
 
@@ -57,7 +57,7 @@ class SearchHeader extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -76,6 +76,12 @@ class SearchHeader extends StatelessWidget {
               onPressed: onToggleSearch,
             ),
             IconButton(icon: const Icon(Icons.refresh), onPressed: onRefresh),
+            IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () {
+                Scaffold.of(context).openEndDrawer();
+              },
+            ),
           ],
         ),
       ],

@@ -26,6 +26,7 @@ _RecordWithChecklistData _$RecordWithChecklistDataFromJson(
   Map<String, dynamic> json,
 ) => _RecordWithChecklistData(
   record: RecordResponse.fromJson(json['record'] as Map<String, dynamic>),
+  status: json['status'] as String?,
   answeredQuestions: (json['answeredQuestions'] as List<dynamic>)
       .map((e) => ChecklistQuestionItem.fromJson(e as Map<String, dynamic>))
       .toList(),
@@ -35,6 +36,7 @@ Map<String, dynamic> _$RecordWithChecklistDataToJson(
   _RecordWithChecklistData instance,
 ) => <String, dynamic>{
   'record': instance.record,
+  'status': instance.status,
   'answeredQuestions': instance.answeredQuestions,
 };
 

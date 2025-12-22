@@ -65,7 +65,6 @@ abstract class ScheduleV2Response with _$ScheduleV2Response {
     String? approvedById,
     String? reviewedById,
     required List<AttachmentV2> attachments,
-    required List<AttachmentV2> scopeImages,
     required List<ChecklistQuestionTemplate> checklistQuestionTemplates,
     required List<InspectionMethodV2> inspectionMethods,
     required List<PotentialEmergentWorkV2> potentialEmergentWorks,

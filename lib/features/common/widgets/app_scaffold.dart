@@ -11,6 +11,7 @@ class AppScaffold extends StatelessWidget {
   final bool resizeToAvoidBottomInset;
   final bool safeBottom;
   final Widget? drawer;
+  final Widget? endDrawer;
 
   const AppScaffold({
     super.key,
@@ -23,6 +24,7 @@ class AppScaffold extends StatelessWidget {
     this.resizeToAvoidBottomInset = true,
     this.safeBottom = true,
     this.drawer,
+    this.endDrawer,
   });
 
   @override
@@ -30,6 +32,7 @@ class AppScaffold extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: false,
       drawer: drawer,
+      endDrawer: endDrawer,
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
       appBar: appBar,
       backgroundColor: backgroundColor,

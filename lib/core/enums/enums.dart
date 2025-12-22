@@ -20,6 +20,8 @@ enum RecordStatus {
   pendingApproval,
   @JsonValue('Approved')
   approved,
+  @JsonValue('Draft')
+  draft,
 }
 
 // ignore: constant_identifier_names

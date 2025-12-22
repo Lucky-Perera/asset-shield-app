@@ -22,6 +22,7 @@ abstract class RecordCreateRequest with _$RecordCreateRequest {
     @JsonKey(name: 'checklistAnswers')
     List<ChecklistAnswerItem>? checklistAnswers,
     required String submittedBy,
+    bool? isDraft,
   }) = _RecordCreateRequest;
 
   factory RecordCreateRequest.fromJson(Map<String, dynamic> json) =>

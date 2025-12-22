@@ -513,14 +513,15 @@ class _QuestionTileState extends State<QuestionTile> {
                 ),
               ),
 
-            if (_uploadedPaths.isNotEmpty || _restoredAttachments.isNotEmpty)
+            // Show newly uploaded files in THIS SESSION only (not restored from backend)
+            if (_uploadedPaths.isNotEmpty)
               Padding(
                 padding: EdgeInsets.only(top: 8.h),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Uploaded (${_uploadedPaths.length + _restoredAttachments.length})',
+                      'Uploaded (${_uploadedPaths.length})',
                       style: TextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w600,
@@ -528,25 +529,6 @@ class _QuestionTileState extends State<QuestionTile> {
                       ),
                     ),
                     SizedBox(height: 4.h),
-                    // Show restored attachments from draft
-                    ..._restoredAttachments.map((attachment) {
-                      final fileName = attachment['name'] ?? 'Unknown';
-                      final attachmentId = attachment['id'] ?? '';
-                      final isDeleting = _deletingAttachmentId == attachmentId;
-
-                      return AttachmentRow(
-                        icon: Icons.check_circle,
-                        fileName: fileName,
-                        id: attachmentId,
-                        isImage: false,
-                        isDeleting: isDeleting,
-                        showDelete:
-                            !widget.readOnly &&
-                            widget.onAttachmentDeleted != null,
-                        onDelete: (id, name) =>
-                            _handleDeleteAttachment(id, name),
-                      );
-                    }),
                     // Show newly uploaded files in this session
                     ..._mediaFiles
                         .where((f) => _uploadedPaths.contains(f.path))
@@ -575,25 +557,48 @@ class _QuestionTileState extends State<QuestionTile> {
                 ),
               ),
 
-            // Show existing attachments from backend
-            if (widget.existingAttachments != null &&
-                widget.existingAttachments!.isNotEmpty)
+            // Show existing attachments from backend (including restored from draft)
+            if ((widget.existingAttachments != null &&
+                    widget.existingAttachments!.isNotEmpty) ||
+                _restoredAttachments.isNotEmpty)
               Padding(
                 padding: EdgeInsets.only(top: 8.h),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Filter out deleted attachments
+                    // Combine existing attachments and restored attachments
                     ...() {
-                      final visibleAttachments = widget.existingAttachments!
-                          .where((a) => !_deletedAttachmentIds.contains(a.id))
-                          .toList();
+                      // Get existing attachments from backend
+                      final existingAttachments =
+                          widget.existingAttachments
+                              ?.where(
+                                (a) => !_deletedAttachmentIds.contains(a.id),
+                              )
+                              .toList() ??
+                          [];
 
-                      if (visibleAttachments.isEmpty) return <Widget>[];
+                      // Get restored attachments (from draft) that aren't deleted
+                      // AND are not already present in the existing attachments
+                      final existingIds = existingAttachments
+                          .map((e) => e.id)
+                          .toSet();
+                      final restoredNotDeleted = _restoredAttachments.where((
+                        a,
+                      ) {
+                        final id = a['id'] ?? '';
+                        return !_deletedAttachmentIds.contains(id) &&
+                            !existingIds.contains(id);
+                      }).toList();
+
+                      final totalCount =
+                          existingAttachments.length +
+                          restoredNotDeleted.length;
+
+                      if (totalCount == 0) return <Widget>[];
 
                       return [
                         Text(
-                          'Attachments (${visibleAttachments.length})',
+                          'Attachments ($totalCount)',
                           style: TextStyle(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w600,
@@ -601,7 +606,28 @@ class _QuestionTileState extends State<QuestionTile> {
                           ),
                         ),
                         SizedBox(height: 4.h),
-                        ...visibleAttachments.map((attachment) {
+                        // Show restored attachments first (from draft/rejected)
+                        ...restoredNotDeleted.map((attachment) {
+                          final fileName = attachment['name'] ?? 'Unknown';
+                          final attachmentId = attachment['id'] ?? '';
+                          final isDeleting =
+                              _deletingAttachmentId == attachmentId;
+
+                          return AttachmentRow(
+                            icon: Icons.attach_file,
+                            fileName: fileName,
+                            id: attachmentId,
+                            isImage: false,
+                            isDeleting: isDeleting,
+                            showDelete:
+                                !widget.readOnly &&
+                                widget.onAttachmentDeleted != null,
+                            onDelete: (id, name) =>
+                                _handleDeleteAttachment(id, name),
+                          );
+                        }),
+                        // Show existing attachments from backend
+                        ...existingAttachments.map((attachment) {
                           final isImage = _isImageUrl(attachment.url);
                           final isDeleting =
                               _deletingAttachmentId == attachment.id;

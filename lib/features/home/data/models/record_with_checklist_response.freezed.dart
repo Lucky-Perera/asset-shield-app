@@ -302,7 +302,7 @@ $RecordWithChecklistDataCopyWith<$Res> get data {
 /// @nodoc
 mixin _$RecordWithChecklistData {
 
- RecordResponse get record; List<ChecklistQuestionItem> get answeredQuestions;
+ RecordResponse get record; String? get status; List<ChecklistQuestionItem> get answeredQuestions;
 /// Create a copy of RecordWithChecklistData
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -315,16 +315,16 @@ $RecordWithChecklistDataCopyWith<RecordWithChecklistData> get copyWith => _$Reco
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is RecordWithChecklistData&&(identical(other.record, record) || other.record == record)&&const DeepCollectionEquality().equals(other.answeredQuestions, answeredQuestions));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RecordWithChecklistData&&(identical(other.record, record) || other.record == record)&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.answeredQuestions, answeredQuestions));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,record,const DeepCollectionEquality().hash(answeredQuestions));
+int get hashCode => Object.hash(runtimeType,record,status,const DeepCollectionEquality().hash(answeredQuestions));
 
 @override
 String toString() {
-  return 'RecordWithChecklistData(record: $record, answeredQuestions: $answeredQuestions)';
+  return 'RecordWithChecklistData(record: $record, status: $status, answeredQuestions: $answeredQuestions)';
 }
 
 
@@ -335,7 +335,7 @@ abstract mixin class $RecordWithChecklistDataCopyWith<$Res>  {
   factory $RecordWithChecklistDataCopyWith(RecordWithChecklistData value, $Res Function(RecordWithChecklistData) _then) = _$RecordWithChecklistDataCopyWithImpl;
 @useResult
 $Res call({
- RecordResponse record, List<ChecklistQuestionItem> answeredQuestions
+ RecordResponse record, String? status, List<ChecklistQuestionItem> answeredQuestions
 });
 
 
@@ -352,10 +352,11 @@ class _$RecordWithChecklistDataCopyWithImpl<$Res>
 
 /// Create a copy of RecordWithChecklistData
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? record = null,Object? answeredQuestions = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? record = null,Object? status = freezed,Object? answeredQuestions = null,}) {
   return _then(_self.copyWith(
 record: null == record ? _self.record : record // ignore: cast_nullable_to_non_nullable
-as RecordResponse,answeredQuestions: null == answeredQuestions ? _self.answeredQuestions : answeredQuestions // ignore: cast_nullable_to_non_nullable
+as RecordResponse,status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as String?,answeredQuestions: null == answeredQuestions ? _self.answeredQuestions : answeredQuestions // ignore: cast_nullable_to_non_nullable
 as List<ChecklistQuestionItem>,
   ));
 }
@@ -450,10 +451,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( RecordResponse record,  List<ChecklistQuestionItem> answeredQuestions)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( RecordResponse record,  String? status,  List<ChecklistQuestionItem> answeredQuestions)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _RecordWithChecklistData() when $default != null:
-return $default(_that.record,_that.answeredQuestions);case _:
+return $default(_that.record,_that.status,_that.answeredQuestions);case _:
   return orElse();
 
 }
@@ -471,10 +472,10 @@ return $default(_that.record,_that.answeredQuestions);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( RecordResponse record,  List<ChecklistQuestionItem> answeredQuestions)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( RecordResponse record,  String? status,  List<ChecklistQuestionItem> answeredQuestions)  $default,) {final _that = this;
 switch (_that) {
 case _RecordWithChecklistData():
-return $default(_that.record,_that.answeredQuestions);case _:
+return $default(_that.record,_that.status,_that.answeredQuestions);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -491,10 +492,10 @@ return $default(_that.record,_that.answeredQuestions);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( RecordResponse record,  List<ChecklistQuestionItem> answeredQuestions)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( RecordResponse record,  String? status,  List<ChecklistQuestionItem> answeredQuestions)?  $default,) {final _that = this;
 switch (_that) {
 case _RecordWithChecklistData() when $default != null:
-return $default(_that.record,_that.answeredQuestions);case _:
+return $default(_that.record,_that.status,_that.answeredQuestions);case _:
   return null;
 
 }
@@ -506,10 +507,11 @@ return $default(_that.record,_that.answeredQuestions);case _:
 @JsonSerializable()
 
 class _RecordWithChecklistData implements RecordWithChecklistData {
-  const _RecordWithChecklistData({required this.record, required final  List<ChecklistQuestionItem> answeredQuestions}): _answeredQuestions = answeredQuestions;
+  const _RecordWithChecklistData({required this.record, this.status, required final  List<ChecklistQuestionItem> answeredQuestions}): _answeredQuestions = answeredQuestions;
   factory _RecordWithChecklistData.fromJson(Map<String, dynamic> json) => _$RecordWithChecklistDataFromJson(json);
 
 @override final  RecordResponse record;
+@override final  String? status;
  final  List<ChecklistQuestionItem> _answeredQuestions;
 @override List<ChecklistQuestionItem> get answeredQuestions {
   if (_answeredQuestions is EqualUnmodifiableListView) return _answeredQuestions;
@@ -531,16 +533,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RecordWithChecklistData&&(identical(other.record, record) || other.record == record)&&const DeepCollectionEquality().equals(other._answeredQuestions, _answeredQuestions));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RecordWithChecklistData&&(identical(other.record, record) || other.record == record)&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other._answeredQuestions, _answeredQuestions));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,record,const DeepCollectionEquality().hash(_answeredQuestions));
+int get hashCode => Object.hash(runtimeType,record,status,const DeepCollectionEquality().hash(_answeredQuestions));
 
 @override
 String toString() {
-  return 'RecordWithChecklistData(record: $record, answeredQuestions: $answeredQuestions)';
+  return 'RecordWithChecklistData(record: $record, status: $status, answeredQuestions: $answeredQuestions)';
 }
 
 
@@ -551,7 +553,7 @@ abstract mixin class _$RecordWithChecklistDataCopyWith<$Res> implements $RecordW
   factory _$RecordWithChecklistDataCopyWith(_RecordWithChecklistData value, $Res Function(_RecordWithChecklistData) _then) = __$RecordWithChecklistDataCopyWithImpl;
 @override @useResult
 $Res call({
- RecordResponse record, List<ChecklistQuestionItem> answeredQuestions
+ RecordResponse record, String? status, List<ChecklistQuestionItem> answeredQuestions
 });
 
 
@@ -568,10 +570,11 @@ class __$RecordWithChecklistDataCopyWithImpl<$Res>
 
 /// Create a copy of RecordWithChecklistData
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? record = null,Object? answeredQuestions = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? record = null,Object? status = freezed,Object? answeredQuestions = null,}) {
   return _then(_RecordWithChecklistData(
 record: null == record ? _self.record : record // ignore: cast_nullable_to_non_nullable
-as RecordResponse,answeredQuestions: null == answeredQuestions ? _self._answeredQuestions : answeredQuestions // ignore: cast_nullable_to_non_nullable
+as RecordResponse,status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as String?,answeredQuestions: null == answeredQuestions ? _self._answeredQuestions : answeredQuestions // ignore: cast_nullable_to_non_nullable
 as List<ChecklistQuestionItem>,
   ));
 }
