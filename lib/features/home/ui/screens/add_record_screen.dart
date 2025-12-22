@@ -54,9 +54,12 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
   // RecordStatus? _selectedStatus;
   DateTime? _inspectionDate;
   // final List<File> _selectedFiles = [];
-  final Map<String, ChecklistAnswerData> _checklistAnswers = {};
-  final Map<String, List<String>> _questionAttachmentIds = {};
-  final Map<String, List<Map<String, String>>> _questionAttachmentMetadata = {};
+  final Map<String, ChecklistAnswerData> _checklistAnswers =
+      <String, ChecklistAnswerData>{};
+  final Map<String, List<String>> _questionAttachmentIds =
+      <String, List<String>>{};
+  final Map<String, List<Map<String, String>>> _questionAttachmentMetadata =
+      <String, List<Map<String, String>>>{};
 
   List<MultiSelectItem<String>> get _componentItems => widget
       .schedule
@@ -87,7 +90,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     _commentsController.addListener(_scheduleSaveDraft);
   }
 
-  final _storage = StorageService();
+  final StorageService _storage = StorageService();
 
   Future<void> _loadDraftData() async {
     try {
@@ -214,7 +217,8 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
       );
 
       // Convert attachment metadata to draft format
-      final questionAttachments = <String, List<AttachmentDraft>>{};
+      final Map<String, List<AttachmentDraft>> questionAttachments =
+          <String, List<AttachmentDraft>>{};
       _questionAttachmentMetadata.forEach((questionId, metadata) {
         questionAttachments[questionId] = metadata
             .map(
@@ -416,7 +420,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     //   return;
     // }
 
-    EasyLoading.show(status: 'Saving draft...');
+    EasyLoading.show();
 
     try {
       // Prepare checklist answers (can be partial)
@@ -465,7 +469,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
         // Fallback to local storage if backend fails
         log('Backend draft save failed, falling back to local storage: $e');
         await _saveDraftData();
-        ToastService.show('Draft saved locally (offline)');
+        ToastService.show('Draft saved successfully');
       }
     } catch (e) {
       ToastService.show('Failed to save draft: $e');
@@ -590,13 +594,15 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     }
 
     // Convert local state to initialValues format
-    final initialValues = <String, Map<String, String>>{};
+    final Map<String, Map<String, String>> initialValues =
+        <String, Map<String, String>>{};
     _checklistAnswers.forEach((key, value) {
       initialValues[key] = {'value': value.value, 'note': value.note};
     });
 
     // Build attachment map for viewing
-    final questionAttachments = <String, List<AttachmentV2>>{};
+    final Map<String, List<AttachmentV2>> questionAttachments =
+        <String, List<AttachmentV2>>{};
     if (hasSubmittedAnswers) {
       for (final question in state?.answeredQuestions ?? []) {
         if (question.attachments != null && question.attachments!.isNotEmpty) {
@@ -844,25 +850,23 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                         backgroundColor: ColorPalette.white,
                         textStyle: TextStyle(
                           color: ColorPalette.black,
-                          fontSize: 16.sp,
+                          fontSize: 14.sp,
                           fontWeight: FontWeight.w600,
                         ),
-                        height: 48.h,
                       ),
                     ),
                     SizedBox(width: 12.w),
                     if (!hasSubmittedAnswers || isEditable) ...[
                       Expanded(
                         child: ReusableButton(
-                          text: 'Save Draft',
+                          text: 'Draft',
                           onPressed: _handleSaveDraft,
                           backgroundColor: ColorPalette.grey300,
                           textStyle: TextStyle(
                             color: ColorPalette.black,
-                            fontSize: 16.sp,
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.w600,
                           ),
-                          height: 48.h,
                         ),
                       ),
                       SizedBox(width: 12.w),
@@ -872,6 +876,11 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                         text: recordStatus == RecordStatus.rejected
                             ? 'Resubmit'
                             : 'Submit',
+                        textStyle: TextStyle(
+                          color: ColorPalette.white,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
                         onPressed: (hasSubmittedAnswers && !isEditable)
                             ? null
                             : _handleCreate,

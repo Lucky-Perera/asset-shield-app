@@ -22,6 +22,7 @@ abstract class RecordWithChecklistResponse with _$RecordWithChecklistResponse {
 abstract class RecordWithChecklistData with _$RecordWithChecklistData {
   const factory RecordWithChecklistData({
     required RecordResponse record,
+    String? status,
     required List<ChecklistQuestionItem> answeredQuestions,
   }) = _RecordWithChecklistData;
 
