@@ -12,6 +12,7 @@ class StorageService {
   static const String _userKey = 'User';
   static const String _userIdKey = 'UserId';
   static const String _userObjectKey = 'UserObject';
+  static const String _hostUrlKey = 'HostUrl';
 
   // Token methods
   Future<void> saveToken(String token) async {
@@ -68,6 +69,19 @@ class StorageService {
 
   Future<void> deleteUserId() async {
     await _storage.delete(key: _userIdKey);
+  }
+
+  // Host URL methods
+  Future<void> saveHostUrl(String url) async {
+    await _storage.write(key: _hostUrlKey, value: url);
+  }
+
+  Future<String?> getHostUrl() async {
+    return await _storage.read(key: _hostUrlKey);
+  }
+
+  Future<void> deleteHostUrl() async {
+    await _storage.delete(key: _hostUrlKey);
   }
 
   Future<void> deleteDraftRecord(String key) async {
