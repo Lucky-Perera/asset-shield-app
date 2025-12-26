@@ -1,7 +1,11 @@
+import 'dart:developer' as developer;
+
 import 'package:asset_shield/core/routes/router.dart';
 import 'package:asset_shield/core/theme/color_palette.dart';
+import 'package:asset_shield/core/utility/client.dart';
 import 'package:asset_shield/core/utility/storage_service.dart';
 import 'package:asset_shield/features/auth/data/services/auth_service.dart';
+import 'package:asset_shield/features/auth/ui/widgets/host_url_config_widget.dart';
 import 'package:asset_shield/features/common/widgets/app_scaffold.dart';
 import 'package:asset_shield/features/common/widgets/reusable_button.dart';
 import 'package:asset_shield/features/common/widgets/reusable_text_field.dart';
@@ -21,13 +25,36 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _hostUrlController = TextEditingController();
   final _authService = AuthService();
   bool _isLoading = false;
+  bool _hostUrlLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedHostUrl();
+  }
+
+  Future<void> _loadSavedHostUrl() async {
+    final savedUrl = await StorageService().getHostUrl();
+    if (savedUrl != null && savedUrl.isNotEmpty) {
+      setState(() {
+        _hostUrlController.text = savedUrl;
+        _hostUrlLoaded = true;
+      });
+    } else {
+      setState(() {
+        _hostUrlLoaded = true;
+      });
+    }
+  }
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _hostUrlController.dispose();
     super.dispose();
   }
 
@@ -37,6 +64,42 @@ class _LoginScreenState extends State<LoginScreen> {
       EasyLoading.show();
 
       try {
+        // Save host URL if provided
+        final hostUrl = _hostUrlController.text.trim();
+        if (hostUrl.isNotEmpty) {
+          developer.log(
+            'Saving custom host URL: $hostUrl',
+            name: 'LoginScreen',
+          );
+          await StorageService().saveHostUrl(hostUrl);
+
+          // Verify it was saved
+          final savedUrl = await StorageService().getHostUrl();
+          developer.log(
+            'Verified saved URL from storage: $savedUrl',
+            name: 'LoginScreen',
+          );
+
+          // Reinitialize the client with the new host URL
+          await Client.init();
+        } else {
+          developer.log(
+            'Clearing custom host URL, using default localhost',
+            name: 'LoginScreen',
+          );
+          // If empty, delete any saved host URL (fall back to default)
+          await StorageService().deleteHostUrl();
+
+          // Verify it was deleted
+          final savedUrl = await StorageService().getHostUrl();
+          developer.log(
+            'Verified URL after deletion: ${savedUrl ?? "null (using default)"}',
+            name: 'LoginScreen',
+          );
+
+          await Client.init();
+        }
+
         final response = await _authService.login(
           email: _emailController.text.trim(),
           password: _passwordController.text,
@@ -106,6 +169,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 140.h,
                       fit: BoxFit.contain,
                     ),
+                  ),
+                  SizedBox(height: 8.h),
+                  // Host URL Configuration
+                  HostUrlConfigWidget(
+                    controller: _hostUrlController,
+                    isLoading: _isLoading,
+                    initiallyExpanded:
+                        _hostUrlLoaded && _hostUrlController.text.isNotEmpty,
                   ),
                   SizedBox(height: 8.h),
                   ReusableTextField(

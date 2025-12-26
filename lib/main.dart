@@ -16,7 +16,7 @@ final container = ProviderContainer();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Configs().configLoading();
-  Client.init();
+  await Client.init();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   try {
