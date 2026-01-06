@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:asset_shield/core/config/configs.dart';
 import 'package:asset_shield/core/routes/router.dart';
 import 'package:asset_shield/core/utility/storage_service.dart';
@@ -8,8 +10,13 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 class Client {
   static late Dio dio;
 
-  static void init() {
-    dio = createDio(Configs.host, interceptors: [TokenInterceptor()]);
+  static Future<void> init() async {
+    final host = await Configs.getHost();
+    developer.log(
+      'Initializing API client with host: $host',
+      name: 'Client.init',
+    );
+    dio = createDio(host, interceptors: [TokenInterceptor()]);
   }
 
   static Dio createDio(
