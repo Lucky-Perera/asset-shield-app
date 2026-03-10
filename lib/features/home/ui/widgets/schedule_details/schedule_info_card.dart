@@ -1,3 +1,4 @@
+import 'package:asset_shield/core/enums/enums.dart';
 import 'package:asset_shield/core/theme/app_text_styles.dart';
 import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class ScheduleInfoCard extends StatelessWidget {
             const SizedBox(height: 12),
             _InfoRow(label: 'Schedule ID:', value: schedule.scheduleName),
             _InfoRow(label: 'Description:', value: schedule.description),
-            _InfoRow(label: 'Status:', value: schedule.status),
+            _InfoRow(label: 'Status:', value: schedule.status.displayName),
             _InfoRow(
               label: 'Due Date:',
               value:

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$RecordResponse {
 
- String get id; String? get recordID; String get equipmentId; String? get description; DateTime? get createdAt; DateTime? get updatedAt;@JsonKey(name: 'creditedItems') List<CreditedItem>? get creditedItems;@JsonKey(name: 'recordCreatedDate') DateTime? get recordCreatedDate;@JsonKey(name: 'inspectedComponents') List<InspectedComponent>? get inspectedComponents;@JsonKey(name: 'scheduleType') Map<String, dynamic>? get scheduleType; RecordStatus? get status;@JsonKey(name: 'inspectionDate') DateTime? get inspectionDate; String? get actionCreated;@JsonKey(name: 'attachments') List<Map<String, dynamic>>? get attachments; String? get comments; String? get rejectionReason; DateTime? get approvedAt; DateTime? get reviewedAt; bool? get isDeleted; String? get scheduleId; String? get referenceDataId; String? get scheduleTypeId; String? get submittedById; String? get reviewedById; String? get approvedById;
+ String get id; String? get recordID; String get equipmentId; String? get description; DateTime? get createdAt; DateTime? get updatedAt;@JsonKey(name: 'creditedItems') List<CreditedItem>? get creditedItems;@JsonKey(name: 'recordCreatedDate') DateTime? get recordCreatedDate;@JsonKey(name: 'inspectedComponents') List<InspectedComponent>? get inspectedComponents;@JsonKey(name: 'scheduleType') Map<String, dynamic>? get scheduleType; RecordStatus? get status;@JsonKey(name: 'inspectionDate') DateTime? get inspectionDate; String? get actionCreated;@JsonKey(name: 'attachments') List<AttachmentV2>? get attachments; String? get comments; String? get rejectionReason; DateTime? get approvedAt; DateTime? get reviewedAt; bool? get isDeleted; String? get scheduleId; String? get referenceDataId; String? get scheduleTypeId; String? get submittedById; String? get reviewedById; String? get approvedById; User? get submittedBy; User? get reviewedBy; User? get approvedBy;
 /// Create a copy of RecordResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $RecordResponseCopyWith<RecordResponse> get copyWith => _$RecordResponseCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is RecordResponse&&(identical(other.id, id) || other.id == id)&&(identical(other.recordID, recordID) || other.recordID == recordID)&&(identical(other.equipmentId, equipmentId) || other.equipmentId == equipmentId)&&(identical(other.description, description) || other.description == description)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&const DeepCollectionEquality().equals(other.creditedItems, creditedItems)&&(identical(other.recordCreatedDate, recordCreatedDate) || other.recordCreatedDate == recordCreatedDate)&&const DeepCollectionEquality().equals(other.inspectedComponents, inspectedComponents)&&const DeepCollectionEquality().equals(other.scheduleType, scheduleType)&&(identical(other.status, status) || other.status == status)&&(identical(other.inspectionDate, inspectionDate) || other.inspectionDate == inspectionDate)&&(identical(other.actionCreated, actionCreated) || other.actionCreated == actionCreated)&&const DeepCollectionEquality().equals(other.attachments, attachments)&&(identical(other.comments, comments) || other.comments == comments)&&(identical(other.rejectionReason, rejectionReason) || other.rejectionReason == rejectionReason)&&(identical(other.approvedAt, approvedAt) || other.approvedAt == approvedAt)&&(identical(other.reviewedAt, reviewedAt) || other.reviewedAt == reviewedAt)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted)&&(identical(other.scheduleId, scheduleId) || other.scheduleId == scheduleId)&&(identical(other.referenceDataId, referenceDataId) || other.referenceDataId == referenceDataId)&&(identical(other.scheduleTypeId, scheduleTypeId) || other.scheduleTypeId == scheduleTypeId)&&(identical(other.submittedById, submittedById) || other.submittedById == submittedById)&&(identical(other.reviewedById, reviewedById) || other.reviewedById == reviewedById)&&(identical(other.approvedById, approvedById) || other.approvedById == approvedById));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RecordResponse&&(identical(other.id, id) || other.id == id)&&(identical(other.recordID, recordID) || other.recordID == recordID)&&(identical(other.equipmentId, equipmentId) || other.equipmentId == equipmentId)&&(identical(other.description, description) || other.description == description)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&const DeepCollectionEquality().equals(other.creditedItems, creditedItems)&&(identical(other.recordCreatedDate, recordCreatedDate) || other.recordCreatedDate == recordCreatedDate)&&const DeepCollectionEquality().equals(other.inspectedComponents, inspectedComponents)&&const DeepCollectionEquality().equals(other.scheduleType, scheduleType)&&(identical(other.status, status) || other.status == status)&&(identical(other.inspectionDate, inspectionDate) || other.inspectionDate == inspectionDate)&&(identical(other.actionCreated, actionCreated) || other.actionCreated == actionCreated)&&const DeepCollectionEquality().equals(other.attachments, attachments)&&(identical(other.comments, comments) || other.comments == comments)&&(identical(other.rejectionReason, rejectionReason) || other.rejectionReason == rejectionReason)&&(identical(other.approvedAt, approvedAt) || other.approvedAt == approvedAt)&&(identical(other.reviewedAt, reviewedAt) || other.reviewedAt == reviewedAt)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted)&&(identical(other.scheduleId, scheduleId) || other.scheduleId == scheduleId)&&(identical(other.referenceDataId, referenceDataId) || other.referenceDataId == referenceDataId)&&(identical(other.scheduleTypeId, scheduleTypeId) || other.scheduleTypeId == scheduleTypeId)&&(identical(other.submittedById, submittedById) || other.submittedById == submittedById)&&(identical(other.reviewedById, reviewedById) || other.reviewedById == reviewedById)&&(identical(other.approvedById, approvedById) || other.approvedById == approvedById)&&(identical(other.submittedBy, submittedBy) || other.submittedBy == submittedBy)&&(identical(other.reviewedBy, reviewedBy) || other.reviewedBy == reviewedBy)&&(identical(other.approvedBy, approvedBy) || other.approvedBy == approvedBy));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,recordID,equipmentId,description,createdAt,updatedAt,const DeepCollectionEquality().hash(creditedItems),recordCreatedDate,const DeepCollectionEquality().hash(inspectedComponents),const DeepCollectionEquality().hash(scheduleType),status,inspectionDate,actionCreated,const DeepCollectionEquality().hash(attachments),comments,rejectionReason,approvedAt,reviewedAt,isDeleted,scheduleId,referenceDataId,scheduleTypeId,submittedById,reviewedById,approvedById]);
+int get hashCode => Object.hashAll([runtimeType,id,recordID,equipmentId,description,createdAt,updatedAt,const DeepCollectionEquality().hash(creditedItems),recordCreatedDate,const DeepCollectionEquality().hash(inspectedComponents),const DeepCollectionEquality().hash(scheduleType),status,inspectionDate,actionCreated,const DeepCollectionEquality().hash(attachments),comments,rejectionReason,approvedAt,reviewedAt,isDeleted,scheduleId,referenceDataId,scheduleTypeId,submittedById,reviewedById,approvedById,submittedBy,reviewedBy,approvedBy]);
 
 @override
 String toString() {
-  return 'RecordResponse(id: $id, recordID: $recordID, equipmentId: $equipmentId, description: $description, createdAt: $createdAt, updatedAt: $updatedAt, creditedItems: $creditedItems, recordCreatedDate: $recordCreatedDate, inspectedComponents: $inspectedComponents, scheduleType: $scheduleType, status: $status, inspectionDate: $inspectionDate, actionCreated: $actionCreated, attachments: $attachments, comments: $comments, rejectionReason: $rejectionReason, approvedAt: $approvedAt, reviewedAt: $reviewedAt, isDeleted: $isDeleted, scheduleId: $scheduleId, referenceDataId: $referenceDataId, scheduleTypeId: $scheduleTypeId, submittedById: $submittedById, reviewedById: $reviewedById, approvedById: $approvedById)';
+  return 'RecordResponse(id: $id, recordID: $recordID, equipmentId: $equipmentId, description: $description, createdAt: $createdAt, updatedAt: $updatedAt, creditedItems: $creditedItems, recordCreatedDate: $recordCreatedDate, inspectedComponents: $inspectedComponents, scheduleType: $scheduleType, status: $status, inspectionDate: $inspectionDate, actionCreated: $actionCreated, attachments: $attachments, comments: $comments, rejectionReason: $rejectionReason, approvedAt: $approvedAt, reviewedAt: $reviewedAt, isDeleted: $isDeleted, scheduleId: $scheduleId, referenceDataId: $referenceDataId, scheduleTypeId: $scheduleTypeId, submittedById: $submittedById, reviewedById: $reviewedById, approvedById: $approvedById, submittedBy: $submittedBy, reviewedBy: $reviewedBy, approvedBy: $approvedBy)';
 }
 
 
@@ -48,11 +48,11 @@ abstract mixin class $RecordResponseCopyWith<$Res>  {
   factory $RecordResponseCopyWith(RecordResponse value, $Res Function(RecordResponse) _then) = _$RecordResponseCopyWithImpl;
 @useResult
 $Res call({
- String id, String? recordID, String equipmentId, String? description, DateTime? createdAt, DateTime? updatedAt,@JsonKey(name: 'creditedItems') List<CreditedItem>? creditedItems,@JsonKey(name: 'recordCreatedDate') DateTime? recordCreatedDate,@JsonKey(name: 'inspectedComponents') List<InspectedComponent>? inspectedComponents,@JsonKey(name: 'scheduleType') Map<String, dynamic>? scheduleType, RecordStatus? status,@JsonKey(name: 'inspectionDate') DateTime? inspectionDate, String? actionCreated,@JsonKey(name: 'attachments') List<Map<String, dynamic>>? attachments, String? comments, String? rejectionReason, DateTime? approvedAt, DateTime? reviewedAt, bool? isDeleted, String? scheduleId, String? referenceDataId, String? scheduleTypeId, String? submittedById, String? reviewedById, String? approvedById
+ String id, String? recordID, String equipmentId, String? description, DateTime? createdAt, DateTime? updatedAt,@JsonKey(name: 'creditedItems') List<CreditedItem>? creditedItems,@JsonKey(name: 'recordCreatedDate') DateTime? recordCreatedDate,@JsonKey(name: 'inspectedComponents') List<InspectedComponent>? inspectedComponents,@JsonKey(name: 'scheduleType') Map<String, dynamic>? scheduleType, RecordStatus? status,@JsonKey(name: 'inspectionDate') DateTime? inspectionDate, String? actionCreated,@JsonKey(name: 'attachments') List<AttachmentV2>? attachments, String? comments, String? rejectionReason, DateTime? approvedAt, DateTime? reviewedAt, bool? isDeleted, String? scheduleId, String? referenceDataId, String? scheduleTypeId, String? submittedById, String? reviewedById, String? approvedById, User? submittedBy, User? reviewedBy, User? approvedBy
 });
 
 
-
+$UserCopyWith<$Res>? get submittedBy;$UserCopyWith<$Res>? get reviewedBy;$UserCopyWith<$Res>? get approvedBy;
 
 }
 /// @nodoc
@@ -65,7 +65,7 @@ class _$RecordResponseCopyWithImpl<$Res>
 
 /// Create a copy of RecordResponse
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? recordID = freezed,Object? equipmentId = null,Object? description = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? creditedItems = freezed,Object? recordCreatedDate = freezed,Object? inspectedComponents = freezed,Object? scheduleType = freezed,Object? status = freezed,Object? inspectionDate = freezed,Object? actionCreated = freezed,Object? attachments = freezed,Object? comments = freezed,Object? rejectionReason = freezed,Object? approvedAt = freezed,Object? reviewedAt = freezed,Object? isDeleted = freezed,Object? scheduleId = freezed,Object? referenceDataId = freezed,Object? scheduleTypeId = freezed,Object? submittedById = freezed,Object? reviewedById = freezed,Object? approvedById = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? recordID = freezed,Object? equipmentId = null,Object? description = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? creditedItems = freezed,Object? recordCreatedDate = freezed,Object? inspectedComponents = freezed,Object? scheduleType = freezed,Object? status = freezed,Object? inspectionDate = freezed,Object? actionCreated = freezed,Object? attachments = freezed,Object? comments = freezed,Object? rejectionReason = freezed,Object? approvedAt = freezed,Object? reviewedAt = freezed,Object? isDeleted = freezed,Object? scheduleId = freezed,Object? referenceDataId = freezed,Object? scheduleTypeId = freezed,Object? submittedById = freezed,Object? reviewedById = freezed,Object? approvedById = freezed,Object? submittedBy = freezed,Object? reviewedBy = freezed,Object? approvedBy = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,recordID: freezed == recordID ? _self.recordID : recordID // ignore: cast_nullable_to_non_nullable
@@ -81,7 +81,7 @@ as Map<String, dynamic>?,status: freezed == status ? _self.status : status // ig
 as RecordStatus?,inspectionDate: freezed == inspectionDate ? _self.inspectionDate : inspectionDate // ignore: cast_nullable_to_non_nullable
 as DateTime?,actionCreated: freezed == actionCreated ? _self.actionCreated : actionCreated // ignore: cast_nullable_to_non_nullable
 as String?,attachments: freezed == attachments ? _self.attachments : attachments // ignore: cast_nullable_to_non_nullable
-as List<Map<String, dynamic>>?,comments: freezed == comments ? _self.comments : comments // ignore: cast_nullable_to_non_nullable
+as List<AttachmentV2>?,comments: freezed == comments ? _self.comments : comments // ignore: cast_nullable_to_non_nullable
 as String?,rejectionReason: freezed == rejectionReason ? _self.rejectionReason : rejectionReason // ignore: cast_nullable_to_non_nullable
 as String?,approvedAt: freezed == approvedAt ? _self.approvedAt : approvedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,reviewedAt: freezed == reviewedAt ? _self.reviewedAt : reviewedAt // ignore: cast_nullable_to_non_nullable
@@ -92,10 +92,49 @@ as String?,scheduleTypeId: freezed == scheduleTypeId ? _self.scheduleTypeId : sc
 as String?,submittedById: freezed == submittedById ? _self.submittedById : submittedById // ignore: cast_nullable_to_non_nullable
 as String?,reviewedById: freezed == reviewedById ? _self.reviewedById : reviewedById // ignore: cast_nullable_to_non_nullable
 as String?,approvedById: freezed == approvedById ? _self.approvedById : approvedById // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,submittedBy: freezed == submittedBy ? _self.submittedBy : submittedBy // ignore: cast_nullable_to_non_nullable
+as User?,reviewedBy: freezed == reviewedBy ? _self.reviewedBy : reviewedBy // ignore: cast_nullable_to_non_nullable
+as User?,approvedBy: freezed == approvedBy ? _self.approvedBy : approvedBy // ignore: cast_nullable_to_non_nullable
+as User?,
   ));
 }
+/// Create a copy of RecordResponse
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserCopyWith<$Res>? get submittedBy {
+    if (_self.submittedBy == null) {
+    return null;
+  }
 
+  return $UserCopyWith<$Res>(_self.submittedBy!, (value) {
+    return _then(_self.copyWith(submittedBy: value));
+  });
+}/// Create a copy of RecordResponse
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserCopyWith<$Res>? get reviewedBy {
+    if (_self.reviewedBy == null) {
+    return null;
+  }
+
+  return $UserCopyWith<$Res>(_self.reviewedBy!, (value) {
+    return _then(_self.copyWith(reviewedBy: value));
+  });
+}/// Create a copy of RecordResponse
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserCopyWith<$Res>? get approvedBy {
+    if (_self.approvedBy == null) {
+    return null;
+  }
+
+  return $UserCopyWith<$Res>(_self.approvedBy!, (value) {
+    return _then(_self.copyWith(approvedBy: value));
+  });
+}
 }
 
 
@@ -177,10 +216,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String? recordID,  String equipmentId,  String? description,  DateTime? createdAt,  DateTime? updatedAt, @JsonKey(name: 'creditedItems')  List<CreditedItem>? creditedItems, @JsonKey(name: 'recordCreatedDate')  DateTime? recordCreatedDate, @JsonKey(name: 'inspectedComponents')  List<InspectedComponent>? inspectedComponents, @JsonKey(name: 'scheduleType')  Map<String, dynamic>? scheduleType,  RecordStatus? status, @JsonKey(name: 'inspectionDate')  DateTime? inspectionDate,  String? actionCreated, @JsonKey(name: 'attachments')  List<Map<String, dynamic>>? attachments,  String? comments,  String? rejectionReason,  DateTime? approvedAt,  DateTime? reviewedAt,  bool? isDeleted,  String? scheduleId,  String? referenceDataId,  String? scheduleTypeId,  String? submittedById,  String? reviewedById,  String? approvedById)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String? recordID,  String equipmentId,  String? description,  DateTime? createdAt,  DateTime? updatedAt, @JsonKey(name: 'creditedItems')  List<CreditedItem>? creditedItems, @JsonKey(name: 'recordCreatedDate')  DateTime? recordCreatedDate, @JsonKey(name: 'inspectedComponents')  List<InspectedComponent>? inspectedComponents, @JsonKey(name: 'scheduleType')  Map<String, dynamic>? scheduleType,  RecordStatus? status, @JsonKey(name: 'inspectionDate')  DateTime? inspectionDate,  String? actionCreated, @JsonKey(name: 'attachments')  List<AttachmentV2>? attachments,  String? comments,  String? rejectionReason,  DateTime? approvedAt,  DateTime? reviewedAt,  bool? isDeleted,  String? scheduleId,  String? referenceDataId,  String? scheduleTypeId,  String? submittedById,  String? reviewedById,  String? approvedById,  User? submittedBy,  User? reviewedBy,  User? approvedBy)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _RecordResponse() when $default != null:
-return $default(_that.id,_that.recordID,_that.equipmentId,_that.description,_that.createdAt,_that.updatedAt,_that.creditedItems,_that.recordCreatedDate,_that.inspectedComponents,_that.scheduleType,_that.status,_that.inspectionDate,_that.actionCreated,_that.attachments,_that.comments,_that.rejectionReason,_that.approvedAt,_that.reviewedAt,_that.isDeleted,_that.scheduleId,_that.referenceDataId,_that.scheduleTypeId,_that.submittedById,_that.reviewedById,_that.approvedById);case _:
+return $default(_that.id,_that.recordID,_that.equipmentId,_that.description,_that.createdAt,_that.updatedAt,_that.creditedItems,_that.recordCreatedDate,_that.inspectedComponents,_that.scheduleType,_that.status,_that.inspectionDate,_that.actionCreated,_that.attachments,_that.comments,_that.rejectionReason,_that.approvedAt,_that.reviewedAt,_that.isDeleted,_that.scheduleId,_that.referenceDataId,_that.scheduleTypeId,_that.submittedById,_that.reviewedById,_that.approvedById,_that.submittedBy,_that.reviewedBy,_that.approvedBy);case _:
   return orElse();
 
 }
@@ -198,10 +237,10 @@ return $default(_that.id,_that.recordID,_that.equipmentId,_that.description,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String? recordID,  String equipmentId,  String? description,  DateTime? createdAt,  DateTime? updatedAt, @JsonKey(name: 'creditedItems')  List<CreditedItem>? creditedItems, @JsonKey(name: 'recordCreatedDate')  DateTime? recordCreatedDate, @JsonKey(name: 'inspectedComponents')  List<InspectedComponent>? inspectedComponents, @JsonKey(name: 'scheduleType')  Map<String, dynamic>? scheduleType,  RecordStatus? status, @JsonKey(name: 'inspectionDate')  DateTime? inspectionDate,  String? actionCreated, @JsonKey(name: 'attachments')  List<Map<String, dynamic>>? attachments,  String? comments,  String? rejectionReason,  DateTime? approvedAt,  DateTime? reviewedAt,  bool? isDeleted,  String? scheduleId,  String? referenceDataId,  String? scheduleTypeId,  String? submittedById,  String? reviewedById,  String? approvedById)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String? recordID,  String equipmentId,  String? description,  DateTime? createdAt,  DateTime? updatedAt, @JsonKey(name: 'creditedItems')  List<CreditedItem>? creditedItems, @JsonKey(name: 'recordCreatedDate')  DateTime? recordCreatedDate, @JsonKey(name: 'inspectedComponents')  List<InspectedComponent>? inspectedComponents, @JsonKey(name: 'scheduleType')  Map<String, dynamic>? scheduleType,  RecordStatus? status, @JsonKey(name: 'inspectionDate')  DateTime? inspectionDate,  String? actionCreated, @JsonKey(name: 'attachments')  List<AttachmentV2>? attachments,  String? comments,  String? rejectionReason,  DateTime? approvedAt,  DateTime? reviewedAt,  bool? isDeleted,  String? scheduleId,  String? referenceDataId,  String? scheduleTypeId,  String? submittedById,  String? reviewedById,  String? approvedById,  User? submittedBy,  User? reviewedBy,  User? approvedBy)  $default,) {final _that = this;
 switch (_that) {
 case _RecordResponse():
-return $default(_that.id,_that.recordID,_that.equipmentId,_that.description,_that.createdAt,_that.updatedAt,_that.creditedItems,_that.recordCreatedDate,_that.inspectedComponents,_that.scheduleType,_that.status,_that.inspectionDate,_that.actionCreated,_that.attachments,_that.comments,_that.rejectionReason,_that.approvedAt,_that.reviewedAt,_that.isDeleted,_that.scheduleId,_that.referenceDataId,_that.scheduleTypeId,_that.submittedById,_that.reviewedById,_that.approvedById);case _:
+return $default(_that.id,_that.recordID,_that.equipmentId,_that.description,_that.createdAt,_that.updatedAt,_that.creditedItems,_that.recordCreatedDate,_that.inspectedComponents,_that.scheduleType,_that.status,_that.inspectionDate,_that.actionCreated,_that.attachments,_that.comments,_that.rejectionReason,_that.approvedAt,_that.reviewedAt,_that.isDeleted,_that.scheduleId,_that.referenceDataId,_that.scheduleTypeId,_that.submittedById,_that.reviewedById,_that.approvedById,_that.submittedBy,_that.reviewedBy,_that.approvedBy);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -218,10 +257,10 @@ return $default(_that.id,_that.recordID,_that.equipmentId,_that.description,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String? recordID,  String equipmentId,  String? description,  DateTime? createdAt,  DateTime? updatedAt, @JsonKey(name: 'creditedItems')  List<CreditedItem>? creditedItems, @JsonKey(name: 'recordCreatedDate')  DateTime? recordCreatedDate, @JsonKey(name: 'inspectedComponents')  List<InspectedComponent>? inspectedComponents, @JsonKey(name: 'scheduleType')  Map<String, dynamic>? scheduleType,  RecordStatus? status, @JsonKey(name: 'inspectionDate')  DateTime? inspectionDate,  String? actionCreated, @JsonKey(name: 'attachments')  List<Map<String, dynamic>>? attachments,  String? comments,  String? rejectionReason,  DateTime? approvedAt,  DateTime? reviewedAt,  bool? isDeleted,  String? scheduleId,  String? referenceDataId,  String? scheduleTypeId,  String? submittedById,  String? reviewedById,  String? approvedById)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String? recordID,  String equipmentId,  String? description,  DateTime? createdAt,  DateTime? updatedAt, @JsonKey(name: 'creditedItems')  List<CreditedItem>? creditedItems, @JsonKey(name: 'recordCreatedDate')  DateTime? recordCreatedDate, @JsonKey(name: 'inspectedComponents')  List<InspectedComponent>? inspectedComponents, @JsonKey(name: 'scheduleType')  Map<String, dynamic>? scheduleType,  RecordStatus? status, @JsonKey(name: 'inspectionDate')  DateTime? inspectionDate,  String? actionCreated, @JsonKey(name: 'attachments')  List<AttachmentV2>? attachments,  String? comments,  String? rejectionReason,  DateTime? approvedAt,  DateTime? reviewedAt,  bool? isDeleted,  String? scheduleId,  String? referenceDataId,  String? scheduleTypeId,  String? submittedById,  String? reviewedById,  String? approvedById,  User? submittedBy,  User? reviewedBy,  User? approvedBy)?  $default,) {final _that = this;
 switch (_that) {
 case _RecordResponse() when $default != null:
-return $default(_that.id,_that.recordID,_that.equipmentId,_that.description,_that.createdAt,_that.updatedAt,_that.creditedItems,_that.recordCreatedDate,_that.inspectedComponents,_that.scheduleType,_that.status,_that.inspectionDate,_that.actionCreated,_that.attachments,_that.comments,_that.rejectionReason,_that.approvedAt,_that.reviewedAt,_that.isDeleted,_that.scheduleId,_that.referenceDataId,_that.scheduleTypeId,_that.submittedById,_that.reviewedById,_that.approvedById);case _:
+return $default(_that.id,_that.recordID,_that.equipmentId,_that.description,_that.createdAt,_that.updatedAt,_that.creditedItems,_that.recordCreatedDate,_that.inspectedComponents,_that.scheduleType,_that.status,_that.inspectionDate,_that.actionCreated,_that.attachments,_that.comments,_that.rejectionReason,_that.approvedAt,_that.reviewedAt,_that.isDeleted,_that.scheduleId,_that.referenceDataId,_that.scheduleTypeId,_that.submittedById,_that.reviewedById,_that.approvedById,_that.submittedBy,_that.reviewedBy,_that.approvedBy);case _:
   return null;
 
 }
@@ -233,7 +272,7 @@ return $default(_that.id,_that.recordID,_that.equipmentId,_that.description,_tha
 @JsonSerializable()
 
 class _RecordResponse implements RecordResponse {
-  const _RecordResponse({required this.id, this.recordID, required this.equipmentId, this.description, this.createdAt, this.updatedAt, @JsonKey(name: 'creditedItems') final  List<CreditedItem>? creditedItems, @JsonKey(name: 'recordCreatedDate') this.recordCreatedDate, @JsonKey(name: 'inspectedComponents') final  List<InspectedComponent>? inspectedComponents, @JsonKey(name: 'scheduleType') final  Map<String, dynamic>? scheduleType, this.status, @JsonKey(name: 'inspectionDate') this.inspectionDate, this.actionCreated, @JsonKey(name: 'attachments') final  List<Map<String, dynamic>>? attachments, this.comments, this.rejectionReason, this.approvedAt, this.reviewedAt, this.isDeleted, this.scheduleId, this.referenceDataId, this.scheduleTypeId, this.submittedById, this.reviewedById, this.approvedById}): _creditedItems = creditedItems,_inspectedComponents = inspectedComponents,_scheduleType = scheduleType,_attachments = attachments;
+  const _RecordResponse({required this.id, this.recordID, required this.equipmentId, this.description, this.createdAt, this.updatedAt, @JsonKey(name: 'creditedItems') final  List<CreditedItem>? creditedItems, @JsonKey(name: 'recordCreatedDate') this.recordCreatedDate, @JsonKey(name: 'inspectedComponents') final  List<InspectedComponent>? inspectedComponents, @JsonKey(name: 'scheduleType') final  Map<String, dynamic>? scheduleType, this.status, @JsonKey(name: 'inspectionDate') this.inspectionDate, this.actionCreated, @JsonKey(name: 'attachments') final  List<AttachmentV2>? attachments, this.comments, this.rejectionReason, this.approvedAt, this.reviewedAt, this.isDeleted, this.scheduleId, this.referenceDataId, this.scheduleTypeId, this.submittedById, this.reviewedById, this.approvedById, this.submittedBy, this.reviewedBy, this.approvedBy}): _creditedItems = creditedItems,_inspectedComponents = inspectedComponents,_scheduleType = scheduleType,_attachments = attachments;
   factory _RecordResponse.fromJson(Map<String, dynamic> json) => _$RecordResponseFromJson(json);
 
 @override final  String id;
@@ -273,8 +312,8 @@ class _RecordResponse implements RecordResponse {
 @override final  RecordStatus? status;
 @override@JsonKey(name: 'inspectionDate') final  DateTime? inspectionDate;
 @override final  String? actionCreated;
- final  List<Map<String, dynamic>>? _attachments;
-@override@JsonKey(name: 'attachments') List<Map<String, dynamic>>? get attachments {
+ final  List<AttachmentV2>? _attachments;
+@override@JsonKey(name: 'attachments') List<AttachmentV2>? get attachments {
   final value = _attachments;
   if (value == null) return null;
   if (_attachments is EqualUnmodifiableListView) return _attachments;
@@ -293,6 +332,9 @@ class _RecordResponse implements RecordResponse {
 @override final  String? submittedById;
 @override final  String? reviewedById;
 @override final  String? approvedById;
+@override final  User? submittedBy;
+@override final  User? reviewedBy;
+@override final  User? approvedBy;
 
 /// Create a copy of RecordResponse
 /// with the given fields replaced by the non-null parameter values.
@@ -307,16 +349,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RecordResponse&&(identical(other.id, id) || other.id == id)&&(identical(other.recordID, recordID) || other.recordID == recordID)&&(identical(other.equipmentId, equipmentId) || other.equipmentId == equipmentId)&&(identical(other.description, description) || other.description == description)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&const DeepCollectionEquality().equals(other._creditedItems, _creditedItems)&&(identical(other.recordCreatedDate, recordCreatedDate) || other.recordCreatedDate == recordCreatedDate)&&const DeepCollectionEquality().equals(other._inspectedComponents, _inspectedComponents)&&const DeepCollectionEquality().equals(other._scheduleType, _scheduleType)&&(identical(other.status, status) || other.status == status)&&(identical(other.inspectionDate, inspectionDate) || other.inspectionDate == inspectionDate)&&(identical(other.actionCreated, actionCreated) || other.actionCreated == actionCreated)&&const DeepCollectionEquality().equals(other._attachments, _attachments)&&(identical(other.comments, comments) || other.comments == comments)&&(identical(other.rejectionReason, rejectionReason) || other.rejectionReason == rejectionReason)&&(identical(other.approvedAt, approvedAt) || other.approvedAt == approvedAt)&&(identical(other.reviewedAt, reviewedAt) || other.reviewedAt == reviewedAt)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted)&&(identical(other.scheduleId, scheduleId) || other.scheduleId == scheduleId)&&(identical(other.referenceDataId, referenceDataId) || other.referenceDataId == referenceDataId)&&(identical(other.scheduleTypeId, scheduleTypeId) || other.scheduleTypeId == scheduleTypeId)&&(identical(other.submittedById, submittedById) || other.submittedById == submittedById)&&(identical(other.reviewedById, reviewedById) || other.reviewedById == reviewedById)&&(identical(other.approvedById, approvedById) || other.approvedById == approvedById));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RecordResponse&&(identical(other.id, id) || other.id == id)&&(identical(other.recordID, recordID) || other.recordID == recordID)&&(identical(other.equipmentId, equipmentId) || other.equipmentId == equipmentId)&&(identical(other.description, description) || other.description == description)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&const DeepCollectionEquality().equals(other._creditedItems, _creditedItems)&&(identical(other.recordCreatedDate, recordCreatedDate) || other.recordCreatedDate == recordCreatedDate)&&const DeepCollectionEquality().equals(other._inspectedComponents, _inspectedComponents)&&const DeepCollectionEquality().equals(other._scheduleType, _scheduleType)&&(identical(other.status, status) || other.status == status)&&(identical(other.inspectionDate, inspectionDate) || other.inspectionDate == inspectionDate)&&(identical(other.actionCreated, actionCreated) || other.actionCreated == actionCreated)&&const DeepCollectionEquality().equals(other._attachments, _attachments)&&(identical(other.comments, comments) || other.comments == comments)&&(identical(other.rejectionReason, rejectionReason) || other.rejectionReason == rejectionReason)&&(identical(other.approvedAt, approvedAt) || other.approvedAt == approvedAt)&&(identical(other.reviewedAt, reviewedAt) || other.reviewedAt == reviewedAt)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted)&&(identical(other.scheduleId, scheduleId) || other.scheduleId == scheduleId)&&(identical(other.referenceDataId, referenceDataId) || other.referenceDataId == referenceDataId)&&(identical(other.scheduleTypeId, scheduleTypeId) || other.scheduleTypeId == scheduleTypeId)&&(identical(other.submittedById, submittedById) || other.submittedById == submittedById)&&(identical(other.reviewedById, reviewedById) || other.reviewedById == reviewedById)&&(identical(other.approvedById, approvedById) || other.approvedById == approvedById)&&(identical(other.submittedBy, submittedBy) || other.submittedBy == submittedBy)&&(identical(other.reviewedBy, reviewedBy) || other.reviewedBy == reviewedBy)&&(identical(other.approvedBy, approvedBy) || other.approvedBy == approvedBy));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,recordID,equipmentId,description,createdAt,updatedAt,const DeepCollectionEquality().hash(_creditedItems),recordCreatedDate,const DeepCollectionEquality().hash(_inspectedComponents),const DeepCollectionEquality().hash(_scheduleType),status,inspectionDate,actionCreated,const DeepCollectionEquality().hash(_attachments),comments,rejectionReason,approvedAt,reviewedAt,isDeleted,scheduleId,referenceDataId,scheduleTypeId,submittedById,reviewedById,approvedById]);
+int get hashCode => Object.hashAll([runtimeType,id,recordID,equipmentId,description,createdAt,updatedAt,const DeepCollectionEquality().hash(_creditedItems),recordCreatedDate,const DeepCollectionEquality().hash(_inspectedComponents),const DeepCollectionEquality().hash(_scheduleType),status,inspectionDate,actionCreated,const DeepCollectionEquality().hash(_attachments),comments,rejectionReason,approvedAt,reviewedAt,isDeleted,scheduleId,referenceDataId,scheduleTypeId,submittedById,reviewedById,approvedById,submittedBy,reviewedBy,approvedBy]);
 
 @override
 String toString() {
-  return 'RecordResponse(id: $id, recordID: $recordID, equipmentId: $equipmentId, description: $description, createdAt: $createdAt, updatedAt: $updatedAt, creditedItems: $creditedItems, recordCreatedDate: $recordCreatedDate, inspectedComponents: $inspectedComponents, scheduleType: $scheduleType, status: $status, inspectionDate: $inspectionDate, actionCreated: $actionCreated, attachments: $attachments, comments: $comments, rejectionReason: $rejectionReason, approvedAt: $approvedAt, reviewedAt: $reviewedAt, isDeleted: $isDeleted, scheduleId: $scheduleId, referenceDataId: $referenceDataId, scheduleTypeId: $scheduleTypeId, submittedById: $submittedById, reviewedById: $reviewedById, approvedById: $approvedById)';
+  return 'RecordResponse(id: $id, recordID: $recordID, equipmentId: $equipmentId, description: $description, createdAt: $createdAt, updatedAt: $updatedAt, creditedItems: $creditedItems, recordCreatedDate: $recordCreatedDate, inspectedComponents: $inspectedComponents, scheduleType: $scheduleType, status: $status, inspectionDate: $inspectionDate, actionCreated: $actionCreated, attachments: $attachments, comments: $comments, rejectionReason: $rejectionReason, approvedAt: $approvedAt, reviewedAt: $reviewedAt, isDeleted: $isDeleted, scheduleId: $scheduleId, referenceDataId: $referenceDataId, scheduleTypeId: $scheduleTypeId, submittedById: $submittedById, reviewedById: $reviewedById, approvedById: $approvedById, submittedBy: $submittedBy, reviewedBy: $reviewedBy, approvedBy: $approvedBy)';
 }
 
 
@@ -327,11 +369,11 @@ abstract mixin class _$RecordResponseCopyWith<$Res> implements $RecordResponseCo
   factory _$RecordResponseCopyWith(_RecordResponse value, $Res Function(_RecordResponse) _then) = __$RecordResponseCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String? recordID, String equipmentId, String? description, DateTime? createdAt, DateTime? updatedAt,@JsonKey(name: 'creditedItems') List<CreditedItem>? creditedItems,@JsonKey(name: 'recordCreatedDate') DateTime? recordCreatedDate,@JsonKey(name: 'inspectedComponents') List<InspectedComponent>? inspectedComponents,@JsonKey(name: 'scheduleType') Map<String, dynamic>? scheduleType, RecordStatus? status,@JsonKey(name: 'inspectionDate') DateTime? inspectionDate, String? actionCreated,@JsonKey(name: 'attachments') List<Map<String, dynamic>>? attachments, String? comments, String? rejectionReason, DateTime? approvedAt, DateTime? reviewedAt, bool? isDeleted, String? scheduleId, String? referenceDataId, String? scheduleTypeId, String? submittedById, String? reviewedById, String? approvedById
+ String id, String? recordID, String equipmentId, String? description, DateTime? createdAt, DateTime? updatedAt,@JsonKey(name: 'creditedItems') List<CreditedItem>? creditedItems,@JsonKey(name: 'recordCreatedDate') DateTime? recordCreatedDate,@JsonKey(name: 'inspectedComponents') List<InspectedComponent>? inspectedComponents,@JsonKey(name: 'scheduleType') Map<String, dynamic>? scheduleType, RecordStatus? status,@JsonKey(name: 'inspectionDate') DateTime? inspectionDate, String? actionCreated,@JsonKey(name: 'attachments') List<AttachmentV2>? attachments, String? comments, String? rejectionReason, DateTime? approvedAt, DateTime? reviewedAt, bool? isDeleted, String? scheduleId, String? referenceDataId, String? scheduleTypeId, String? submittedById, String? reviewedById, String? approvedById, User? submittedBy, User? reviewedBy, User? approvedBy
 });
 
 
-
+@override $UserCopyWith<$Res>? get submittedBy;@override $UserCopyWith<$Res>? get reviewedBy;@override $UserCopyWith<$Res>? get approvedBy;
 
 }
 /// @nodoc
@@ -344,7 +386,7 @@ class __$RecordResponseCopyWithImpl<$Res>
 
 /// Create a copy of RecordResponse
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? recordID = freezed,Object? equipmentId = null,Object? description = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? creditedItems = freezed,Object? recordCreatedDate = freezed,Object? inspectedComponents = freezed,Object? scheduleType = freezed,Object? status = freezed,Object? inspectionDate = freezed,Object? actionCreated = freezed,Object? attachments = freezed,Object? comments = freezed,Object? rejectionReason = freezed,Object? approvedAt = freezed,Object? reviewedAt = freezed,Object? isDeleted = freezed,Object? scheduleId = freezed,Object? referenceDataId = freezed,Object? scheduleTypeId = freezed,Object? submittedById = freezed,Object? reviewedById = freezed,Object? approvedById = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? recordID = freezed,Object? equipmentId = null,Object? description = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? creditedItems = freezed,Object? recordCreatedDate = freezed,Object? inspectedComponents = freezed,Object? scheduleType = freezed,Object? status = freezed,Object? inspectionDate = freezed,Object? actionCreated = freezed,Object? attachments = freezed,Object? comments = freezed,Object? rejectionReason = freezed,Object? approvedAt = freezed,Object? reviewedAt = freezed,Object? isDeleted = freezed,Object? scheduleId = freezed,Object? referenceDataId = freezed,Object? scheduleTypeId = freezed,Object? submittedById = freezed,Object? reviewedById = freezed,Object? approvedById = freezed,Object? submittedBy = freezed,Object? reviewedBy = freezed,Object? approvedBy = freezed,}) {
   return _then(_RecordResponse(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,recordID: freezed == recordID ? _self.recordID : recordID // ignore: cast_nullable_to_non_nullable
@@ -360,7 +402,7 @@ as Map<String, dynamic>?,status: freezed == status ? _self.status : status // ig
 as RecordStatus?,inspectionDate: freezed == inspectionDate ? _self.inspectionDate : inspectionDate // ignore: cast_nullable_to_non_nullable
 as DateTime?,actionCreated: freezed == actionCreated ? _self.actionCreated : actionCreated // ignore: cast_nullable_to_non_nullable
 as String?,attachments: freezed == attachments ? _self._attachments : attachments // ignore: cast_nullable_to_non_nullable
-as List<Map<String, dynamic>>?,comments: freezed == comments ? _self.comments : comments // ignore: cast_nullable_to_non_nullable
+as List<AttachmentV2>?,comments: freezed == comments ? _self.comments : comments // ignore: cast_nullable_to_non_nullable
 as String?,rejectionReason: freezed == rejectionReason ? _self.rejectionReason : rejectionReason // ignore: cast_nullable_to_non_nullable
 as String?,approvedAt: freezed == approvedAt ? _self.approvedAt : approvedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,reviewedAt: freezed == reviewedAt ? _self.reviewedAt : reviewedAt // ignore: cast_nullable_to_non_nullable
@@ -371,11 +413,50 @@ as String?,scheduleTypeId: freezed == scheduleTypeId ? _self.scheduleTypeId : sc
 as String?,submittedById: freezed == submittedById ? _self.submittedById : submittedById // ignore: cast_nullable_to_non_nullable
 as String?,reviewedById: freezed == reviewedById ? _self.reviewedById : reviewedById // ignore: cast_nullable_to_non_nullable
 as String?,approvedById: freezed == approvedById ? _self.approvedById : approvedById // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,submittedBy: freezed == submittedBy ? _self.submittedBy : submittedBy // ignore: cast_nullable_to_non_nullable
+as User?,reviewedBy: freezed == reviewedBy ? _self.reviewedBy : reviewedBy // ignore: cast_nullable_to_non_nullable
+as User?,approvedBy: freezed == approvedBy ? _self.approvedBy : approvedBy // ignore: cast_nullable_to_non_nullable
+as User?,
   ));
 }
 
+/// Create a copy of RecordResponse
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserCopyWith<$Res>? get submittedBy {
+    if (_self.submittedBy == null) {
+    return null;
+  }
 
+  return $UserCopyWith<$Res>(_self.submittedBy!, (value) {
+    return _then(_self.copyWith(submittedBy: value));
+  });
+}/// Create a copy of RecordResponse
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserCopyWith<$Res>? get reviewedBy {
+    if (_self.reviewedBy == null) {
+    return null;
+  }
+
+  return $UserCopyWith<$Res>(_self.reviewedBy!, (value) {
+    return _then(_self.copyWith(reviewedBy: value));
+  });
+}/// Create a copy of RecordResponse
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserCopyWith<$Res>? get approvedBy {
+    if (_self.approvedBy == null) {
+    return null;
+  }
+
+  return $UserCopyWith<$Res>(_self.approvedBy!, (value) {
+    return _then(_self.copyWith(approvedBy: value));
+  });
+}
 }
 
 
