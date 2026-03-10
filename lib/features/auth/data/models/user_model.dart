@@ -1,3 +1,4 @@
+import 'package:asset_shield/core/enums/enums.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'user_model.freezed.dart';
@@ -9,7 +10,7 @@ abstract class UserModel with _$UserModel {
     required String id,
     required String name,
     required String email,
-    required String role,
+    required Role role,
   }) = _UserModel;
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>

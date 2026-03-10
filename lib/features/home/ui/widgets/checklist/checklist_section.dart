@@ -1,3 +1,4 @@
+import 'package:asset_shield/core/enums/enums.dart';
 import 'package:asset_shield/features/home/ui/widgets/checklist/section_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
@@ -32,11 +33,8 @@ class ChecklistSections extends StatelessWidget {
          'onAnswerChanged should be null when readOnly is true',
        );
 
-  List<ChecklistQuestionTemplate> _filter(String type) => questions
-      .where(
-        (q) => (q.inspectionType ?? '').toLowerCase() == type.toLowerCase(),
-      )
-      .toList();
+  List<ChecklistQuestionTemplate> _filter(String type) =>
+      questions.where((q) => q.inspectionType?.apiValue == type).toList();
 
   @override
   Widget build(BuildContext context) {

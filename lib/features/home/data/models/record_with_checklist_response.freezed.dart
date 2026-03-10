@@ -595,7 +595,7 @@ $RecordResponseCopyWith<$Res> get record {
 /// @nodoc
 mixin _$ChecklistQuestionItem {
 
- String get id; String get scheduleId; String get inspectionType; String get question; String? get helpText; String get responseType; bool get isDeleted; String? get section; int? get order; String? get value; String? get note; DateTime? get completedAt; List<AttachmentV2>? get attachments;// Legacy nested answer (keeping for backward compatibility)
+ String get id; String get scheduleId; InspectionType get inspectionType; String get question; String? get helpText; ResponseType get responseType; bool get isDeleted; String? get section; int? get order; String? get value; String? get note; DateTime? get completedAt; List<AttachmentV2>? get attachments;// Legacy nested answer (keeping for backward compatibility)
  ChecklistAnswer? get checklistAnswer;
 /// Create a copy of ChecklistQuestionItem
 /// with the given fields replaced by the non-null parameter values.
@@ -629,7 +629,7 @@ abstract mixin class $ChecklistQuestionItemCopyWith<$Res>  {
   factory $ChecklistQuestionItemCopyWith(ChecklistQuestionItem value, $Res Function(ChecklistQuestionItem) _then) = _$ChecklistQuestionItemCopyWithImpl;
 @useResult
 $Res call({
- String id, String scheduleId, String inspectionType, String question, String? helpText, String responseType, bool isDeleted, String? section, int? order, String? value, String? note, DateTime? completedAt, List<AttachmentV2>? attachments, ChecklistAnswer? checklistAnswer
+ String id, String scheduleId, InspectionType inspectionType, String question, String? helpText, ResponseType responseType, bool isDeleted, String? section, int? order, String? value, String? note, DateTime? completedAt, List<AttachmentV2>? attachments, ChecklistAnswer? checklistAnswer
 });
 
 
@@ -651,10 +651,10 @@ class _$ChecklistQuestionItemCopyWithImpl<$Res>
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,scheduleId: null == scheduleId ? _self.scheduleId : scheduleId // ignore: cast_nullable_to_non_nullable
 as String,inspectionType: null == inspectionType ? _self.inspectionType : inspectionType // ignore: cast_nullable_to_non_nullable
-as String,question: null == question ? _self.question : question // ignore: cast_nullable_to_non_nullable
+as InspectionType,question: null == question ? _self.question : question // ignore: cast_nullable_to_non_nullable
 as String,helpText: freezed == helpText ? _self.helpText : helpText // ignore: cast_nullable_to_non_nullable
 as String?,responseType: null == responseType ? _self.responseType : responseType // ignore: cast_nullable_to_non_nullable
-as String,isDeleted: null == isDeleted ? _self.isDeleted : isDeleted // ignore: cast_nullable_to_non_nullable
+as ResponseType,isDeleted: null == isDeleted ? _self.isDeleted : isDeleted // ignore: cast_nullable_to_non_nullable
 as bool,section: freezed == section ? _self.section : section // ignore: cast_nullable_to_non_nullable
 as String?,order: freezed == order ? _self.order : order // ignore: cast_nullable_to_non_nullable
 as int?,value: freezed == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
@@ -759,7 +759,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String scheduleId,  String inspectionType,  String question,  String? helpText,  String responseType,  bool isDeleted,  String? section,  int? order,  String? value,  String? note,  DateTime? completedAt,  List<AttachmentV2>? attachments,  ChecklistAnswer? checklistAnswer)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String scheduleId,  InspectionType inspectionType,  String question,  String? helpText,  ResponseType responseType,  bool isDeleted,  String? section,  int? order,  String? value,  String? note,  DateTime? completedAt,  List<AttachmentV2>? attachments,  ChecklistAnswer? checklistAnswer)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ChecklistQuestionItem() when $default != null:
 return $default(_that.id,_that.scheduleId,_that.inspectionType,_that.question,_that.helpText,_that.responseType,_that.isDeleted,_that.section,_that.order,_that.value,_that.note,_that.completedAt,_that.attachments,_that.checklistAnswer);case _:
@@ -780,7 +780,7 @@ return $default(_that.id,_that.scheduleId,_that.inspectionType,_that.question,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String scheduleId,  String inspectionType,  String question,  String? helpText,  String responseType,  bool isDeleted,  String? section,  int? order,  String? value,  String? note,  DateTime? completedAt,  List<AttachmentV2>? attachments,  ChecklistAnswer? checklistAnswer)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String scheduleId,  InspectionType inspectionType,  String question,  String? helpText,  ResponseType responseType,  bool isDeleted,  String? section,  int? order,  String? value,  String? note,  DateTime? completedAt,  List<AttachmentV2>? attachments,  ChecklistAnswer? checklistAnswer)  $default,) {final _that = this;
 switch (_that) {
 case _ChecklistQuestionItem():
 return $default(_that.id,_that.scheduleId,_that.inspectionType,_that.question,_that.helpText,_that.responseType,_that.isDeleted,_that.section,_that.order,_that.value,_that.note,_that.completedAt,_that.attachments,_that.checklistAnswer);case _:
@@ -800,7 +800,7 @@ return $default(_that.id,_that.scheduleId,_that.inspectionType,_that.question,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String scheduleId,  String inspectionType,  String question,  String? helpText,  String responseType,  bool isDeleted,  String? section,  int? order,  String? value,  String? note,  DateTime? completedAt,  List<AttachmentV2>? attachments,  ChecklistAnswer? checklistAnswer)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String scheduleId,  InspectionType inspectionType,  String question,  String? helpText,  ResponseType responseType,  bool isDeleted,  String? section,  int? order,  String? value,  String? note,  DateTime? completedAt,  List<AttachmentV2>? attachments,  ChecklistAnswer? checklistAnswer)?  $default,) {final _that = this;
 switch (_that) {
 case _ChecklistQuestionItem() when $default != null:
 return $default(_that.id,_that.scheduleId,_that.inspectionType,_that.question,_that.helpText,_that.responseType,_that.isDeleted,_that.section,_that.order,_that.value,_that.note,_that.completedAt,_that.attachments,_that.checklistAnswer);case _:
@@ -820,10 +820,10 @@ class _ChecklistQuestionItem implements ChecklistQuestionItem {
 
 @override final  String id;
 @override final  String scheduleId;
-@override final  String inspectionType;
+@override final  InspectionType inspectionType;
 @override final  String question;
 @override final  String? helpText;
-@override final  String responseType;
+@override final  ResponseType responseType;
 @override final  bool isDeleted;
 @override final  String? section;
 @override final  int? order;
@@ -875,7 +875,7 @@ abstract mixin class _$ChecklistQuestionItemCopyWith<$Res> implements $Checklist
   factory _$ChecklistQuestionItemCopyWith(_ChecklistQuestionItem value, $Res Function(_ChecklistQuestionItem) _then) = __$ChecklistQuestionItemCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String scheduleId, String inspectionType, String question, String? helpText, String responseType, bool isDeleted, String? section, int? order, String? value, String? note, DateTime? completedAt, List<AttachmentV2>? attachments, ChecklistAnswer? checklistAnswer
+ String id, String scheduleId, InspectionType inspectionType, String question, String? helpText, ResponseType responseType, bool isDeleted, String? section, int? order, String? value, String? note, DateTime? completedAt, List<AttachmentV2>? attachments, ChecklistAnswer? checklistAnswer
 });
 
 
@@ -897,10 +897,10 @@ class __$ChecklistQuestionItemCopyWithImpl<$Res>
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,scheduleId: null == scheduleId ? _self.scheduleId : scheduleId // ignore: cast_nullable_to_non_nullable
 as String,inspectionType: null == inspectionType ? _self.inspectionType : inspectionType // ignore: cast_nullable_to_non_nullable
-as String,question: null == question ? _self.question : question // ignore: cast_nullable_to_non_nullable
+as InspectionType,question: null == question ? _self.question : question // ignore: cast_nullable_to_non_nullable
 as String,helpText: freezed == helpText ? _self.helpText : helpText // ignore: cast_nullable_to_non_nullable
 as String?,responseType: null == responseType ? _self.responseType : responseType // ignore: cast_nullable_to_non_nullable
-as String,isDeleted: null == isDeleted ? _self.isDeleted : isDeleted // ignore: cast_nullable_to_non_nullable
+as ResponseType,isDeleted: null == isDeleted ? _self.isDeleted : isDeleted // ignore: cast_nullable_to_non_nullable
 as bool,section: freezed == section ? _self.section : section // ignore: cast_nullable_to_non_nullable
 as String?,order: freezed == order ? _self.order : order // ignore: cast_nullable_to_non_nullable
 as int?,value: freezed == value ? _self.value : value // ignore: cast_nullable_to_non_nullable

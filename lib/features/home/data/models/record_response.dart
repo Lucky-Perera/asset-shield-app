@@ -1,5 +1,6 @@
 // ignore_for_file: invalid_annotation_target
 
+import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
 import 'package:asset_shield/core/enums/enums.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -23,7 +24,7 @@ abstract class RecordResponse with _$RecordResponse {
     RecordStatus? status,
     @JsonKey(name: 'inspectionDate') DateTime? inspectionDate,
     String? actionCreated,
-    @JsonKey(name: 'attachments') List<Map<String, dynamic>>? attachments,
+    @JsonKey(name: 'attachments') List<AttachmentV2>? attachments,
     String? comments,
     String? rejectionReason,
     DateTime? approvedAt,
@@ -35,6 +36,9 @@ abstract class RecordResponse with _$RecordResponse {
     String? submittedById,
     String? reviewedById,
     String? approvedById,
+    User? submittedBy,
+    User? reviewedBy,
+    User? approvedBy,
   }) = _RecordResponse;
 
   factory RecordResponse.fromJson(Map<String, dynamic> json) =>

@@ -44,7 +44,7 @@ abstract class ScheduleV2Response with _$ScheduleV2Response {
   const factory ScheduleV2Response({
     required String id,
     required String scheduleName,
-    required String status,
+    required ScheduleV2Status status,
     required String description,
     required DateTime createdAt,
     required DateTime updatedAt,
@@ -88,7 +88,7 @@ abstract class User with _$User {
     required String id,
     required DateTime createdAt,
     required DateTime updatedAt,
-    required String role,
+    required Role role,
     required String title,
     required String name,
     required String email,
@@ -123,7 +123,7 @@ abstract class ReferenceData with _$ReferenceData {
     required String id,
     required DateTime createdAt,
     required DateTime updatedAt,
-    required String category,
+    required RefDataCategory category,
     required String value,
     String? displayValue,
   }) = _ReferenceData;
@@ -136,7 +136,7 @@ abstract class ReferenceData with _$ReferenceData {
 abstract class ChecklistQuestionTemplate with _$ChecklistQuestionTemplate {
   const factory ChecklistQuestionTemplate({
     required String id,
-    String? inspectionType,
+    InspectionType? inspectionType,
     required String question,
     String? helpText,
     required ResponseType responseType,
@@ -200,13 +200,21 @@ abstract class RecordV2Response with _$RecordV2Response {
     required DateTime inspectionDate,
     required String actionCreated,
     String? comments,
+    String? rejectionReason,
+    DateTime? approvedAt,
+    DateTime? reviewedAt,
     bool? isDeleted,
     required String scheduleId,
     String? referenceDataId,
     required String equipmentId,
     required String scheduleTypeId,
     String? submittedById,
+    String? reviewedById,
     String? approvedById,
+    User? submittedBy,
+    User? reviewedBy,
+    User? approvedBy,
+    List<AttachmentV2>? attachments,
   }) = _RecordV2Response;
 
   factory RecordV2Response.fromJson(Map<String, dynamic> json) =>
