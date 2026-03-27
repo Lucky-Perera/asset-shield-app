@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../core/theme/app_text_styles.dart';
 import '../../../core/theme/color_palette.dart';
+import '../../../core/theme/theme_helpers.dart';
 
 /// A reusable text field widget for forms with consistent styling
 class FormTextField extends StatelessWidget {
@@ -36,18 +38,12 @@ class FormTextField extends StatelessWidget {
       children: [
         RichText(
           text: TextSpan(
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: ColorPalette.black,
-              fontWeight: FontWeight.w500,
-            ),
             children: [
-              if (isRequired)
-                const TextSpan(
-                  text: '* ',
-                  style: TextStyle(color: Colors.red),
-                ),
-              TextSpan(text: label),
+              buildFormFieldLabel(
+                label: label,
+                style: AppTextStyles.fieldLabel(context),
+                isRequired: isRequired,
+              ),
             ],
           ),
         ),
@@ -60,38 +56,12 @@ class FormTextField extends StatelessWidget {
           keyboardType: keyboardType,
           enabled: enabled,
           onChanged: onChanged,
+          style: AppTextStyles.fieldValue(context).copyWith(
+            color: enabled ? ColorPalette.textPrimary : ColorPalette.disabled,
+          ),
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: TextStyle(
-              color: enabled ? ColorPalette.grey400 : ColorPalette.grey200,
-              fontSize: 14.sp,
-            ),
-            contentPadding: EdgeInsets.symmetric(
-              horizontal: 16.w,
-              vertical: 14.h,
-            ),
-            filled: true,
-            fillColor: ColorPalette.white,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.r),
-              borderSide: const BorderSide(color: ColorPalette.grey300),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.r),
-              borderSide: const BorderSide(color: ColorPalette.grey300),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.r),
-              borderSide: const BorderSide(color: ColorPalette.black),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.r),
-              borderSide: const BorderSide(color: Colors.red),
-            ),
-            disabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.r),
-              borderSide: const BorderSide(color: ColorPalette.grey200),
-            ),
+            fillColor: enabled ? null : ColorPalette.surfaceMuted,
           ),
         ),
       ],

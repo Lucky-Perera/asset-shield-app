@@ -89,13 +89,13 @@ class _EmergentWorkCard extends StatelessWidget {
   Color _getLikelihoodColor(String likelihood) {
     switch (likelihood.toLowerCase()) {
       case 'likely':
-        return Colors.red;
+        return ColorPalette.danger;
       case 'possible':
-        return Colors.orange;
+        return ColorPalette.warning;
       case 'unlikely':
-        return Colors.green;
+        return ColorPalette.success;
       default:
-        return Colors.grey;
+        return ColorPalette.textMuted;
     }
   }
 
@@ -107,8 +107,8 @@ class _EmergentWorkCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: ColorPalette.white,
-        border: Border.all(color: Colors.grey.shade300),
+        color: ColorPalette.surface,
+        border: Border.all(color: ColorPalette.border),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
@@ -148,7 +148,7 @@ class _EmergentWorkCard extends StatelessWidget {
                 'Likelihood: ',
                 style: AppTextStyles.label(
                   context,
-                ).copyWith(color: Colors.grey.shade700),
+                ).copyWith(color: ColorPalette.textSecondary),
               ),
               Container(
                 padding: const EdgeInsets.symmetric(
@@ -198,7 +198,7 @@ class _MethodDetail extends StatelessWidget {
               label,
               style: AppTextStyles.label(
                 context,
-              ).copyWith(color: Colors.grey.shade700),
+              ).copyWith(color: ColorPalette.textSecondary),
             ),
           ),
           Expanded(
@@ -227,7 +227,9 @@ class _EmptyMessage extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Text(
           message,
-          style: AppTextStyles.base(context).copyWith(color: Colors.grey),
+          style: AppTextStyles.base(
+            context,
+          ).copyWith(color: ColorPalette.textMuted),
         ),
       ),
     );

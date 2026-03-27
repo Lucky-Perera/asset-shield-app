@@ -1,5 +1,6 @@
 import 'package:asset_shield/core/enums/enums.dart';
 import 'package:asset_shield/core/theme/app_text_styles.dart';
+import 'package:asset_shield/core/theme/color_palette.dart';
 import 'package:flutter/material.dart';
 
 class RecordStatusPill extends StatelessWidget {
@@ -13,14 +14,15 @@ class RecordStatusPill extends StatelessWidget {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
-          color: Colors.grey.withValues(alpha: 0.2),
+          color: ColorPalette.textMuted.withValues(alpha: 0.15),
           borderRadius: BorderRadius.circular(6),
         ),
         child: Text(
           'No record',
-          style: AppTextStyles.label(
-            context,
-          ).copyWith(color: Colors.grey, fontWeight: FontWeight.w600),
+          style: AppTextStyles.label(context).copyWith(
+            color: ColorPalette.textMuted,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       );
     }
@@ -31,19 +33,19 @@ class RecordStatusPill extends StatelessWidget {
 
     switch (status!) {
       case RecordStatus.approved:
-        statusColor = Colors.green;
+        statusColor = ColorPalette.success;
         statusText = 'Approved';
         break;
       case RecordStatus.pendingApproval:
-        statusColor = Colors.orange;
+        statusColor = ColorPalette.warning;
         statusText = 'Pending Approval';
         break;
       case RecordStatus.rejected:
-        statusColor = Colors.red;
+        statusColor = ColorPalette.danger;
         statusText = 'Rejected';
         break;
       case RecordStatus.draft:
-        statusColor = Colors.blue;
+        statusColor = ColorPalette.info;
         statusText = 'Draft';
         break;
     }

@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'package:asset_shield/core/theme/app_text_styles.dart';
 import 'package:asset_shield/core/theme/color_palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../core/theme/theme_helpers.dart';
 
 /// A reusable file picker field widget with consistent styling
 class FormFilePickerField extends StatelessWidget {
@@ -27,18 +29,12 @@ class FormFilePickerField extends StatelessWidget {
       children: [
         RichText(
           text: TextSpan(
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: ColorPalette.black,
-              fontWeight: FontWeight.w500,
-            ),
             children: [
-              if (isRequired)
-                const TextSpan(
-                  text: '* ',
-                  style: TextStyle(color: Colors.red),
-                ),
-              TextSpan(text: label),
+              buildFormFieldLabel(
+                label: label,
+                style: AppTextStyles.fieldLabel(context),
+                isRequired: isRequired,
+              ),
             ],
           ),
         ),
@@ -54,10 +50,7 @@ class FormFilePickerField extends StatelessWidget {
                 ),
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
               ),
-              child: Text(
-                'Select Files',
-                style: TextStyle(color: ColorPalette.black, fontSize: 14.sp),
-              ),
+              child: const Text('Select Files'),
             ),
             if (onUpload != null) ...[SizedBox(width: 12.w)],
           ],
@@ -67,7 +60,9 @@ class FormFilePickerField extends StatelessWidget {
           selectedFiles.isEmpty
               ? 'No files'
               : '${selectedFiles.length} file(s) selected',
-          style: TextStyle(fontSize: 13.sp, color: ColorPalette.grey500),
+          style: AppTextStyles.helper(
+            context,
+          ).copyWith(color: ColorPalette.textMuted),
         ),
         if (selectedFiles.isNotEmpty) ...[
           SizedBox(height: 8.h),
@@ -76,7 +71,9 @@ class FormFilePickerField extends StatelessWidget {
               padding: EdgeInsets.only(bottom: 4.h),
               child: Text(
                 '• ${file.path.split('/').last}',
-                style: TextStyle(fontSize: 12.sp, color: ColorPalette.grey600),
+                style: AppTextStyles.caption(
+                  context,
+                ).copyWith(color: ColorPalette.textSecondary),
               ),
             ),
           ),

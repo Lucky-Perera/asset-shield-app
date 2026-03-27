@@ -1,7 +1,9 @@
 import 'package:asset_shield/core/routes/router.dart';
+import 'package:asset_shield/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/theme/color_palette.dart';
+import '../../../core/theme/theme_helpers.dart';
 
 /// A reusable multi-select field widget with consistent styling
 class FormMultiSelectField<T> extends StatelessWidget {
@@ -55,7 +57,6 @@ class FormMultiSelectField<T> extends StatelessWidget {
                       value: isSelected,
                       title: Text(item.label),
                       controlAffinity: ListTileControlAffinity.leading,
-                      activeColor: Colors.blue,
                       onChanged: (bool? checked) {
                         setState(() {
                           if (checked == true) {
@@ -74,7 +75,9 @@ class FormMultiSelectField<T> extends StatelessWidget {
                   onPressed: () => router.pop(),
                   child: Text(
                     'Cancel',
-                    style: TextStyle(color: ColorPalette.grey600),
+                    style: AppTextStyles.label(
+                      context,
+                    ).copyWith(color: ColorPalette.textSecondary),
                   ),
                 ),
                 TextButton(
@@ -105,18 +108,12 @@ class FormMultiSelectField<T> extends StatelessWidget {
       children: [
         RichText(
           text: TextSpan(
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: ColorPalette.black,
-              fontWeight: FontWeight.w500,
-            ),
             children: [
-              if (isRequired)
-                const TextSpan(
-                  text: '* ',
-                  style: TextStyle(color: Colors.red),
-                ),
-              TextSpan(text: label),
+              buildFormFieldLabel(
+                label: label,
+                style: AppTextStyles.fieldLabel(context),
+                isRequired: isRequired,
+              ),
             ],
           ),
         ),
@@ -138,12 +135,14 @@ class FormMultiSelectField<T> extends StatelessWidget {
                       vertical: 14.h,
                     ),
                     decoration: BoxDecoration(
-                      color: ColorPalette.white,
+                      color: readOnly
+                          ? ColorPalette.surfaceMuted
+                          : ColorPalette.surface,
                       borderRadius: BorderRadius.circular(8.r),
                       border: Border.all(
                         color: state.hasError
-                            ? Colors.red
-                            : ColorPalette.grey300,
+                            ? ColorPalette.error
+                            : ColorPalette.border,
                       ),
                     ),
                     child: Row(
@@ -151,11 +150,10 @@ class FormMultiSelectField<T> extends StatelessWidget {
                         Expanded(
                           child: Text(
                             displayText,
-                            style: TextStyle(
+                            style: AppTextStyles.fieldValue(context).copyWith(
                               color: selectedValues.isEmpty
-                                  ? ColorPalette.grey400
-                                  : ColorPalette.black,
-                              fontSize: 14.sp,
+                                  ? ColorPalette.textMuted
+                                  : ColorPalette.textPrimary,
                             ),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
@@ -164,8 +162,8 @@ class FormMultiSelectField<T> extends StatelessWidget {
                         Icon(
                           Icons.keyboard_arrow_down,
                           color: readOnly
-                              ? ColorPalette.grey300
-                              : ColorPalette.grey400,
+                              ? ColorPalette.border
+                              : ColorPalette.textMuted,
                         ),
                       ],
                     ),
@@ -176,7 +174,9 @@ class FormMultiSelectField<T> extends StatelessWidget {
                     padding: EdgeInsets.only(left: 16.w, top: 8.h),
                     child: Text(
                       state.errorText ?? '',
-                      style: TextStyle(color: Colors.red, fontSize: 12.sp),
+                      style: AppTextStyles.caption(
+                        context,
+                      ).copyWith(color: ColorPalette.error),
                     ),
                   ),
               ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/theme/app_text_styles.dart';
 import '../../../core/theme/color_palette.dart';
 
 /// A reusable button widget with a black background and rounded corners.
@@ -46,23 +47,31 @@ class ReusableButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final resolvedBackgroundColor = backgroundColor ?? ColorPalette.primary;
+    final buttonStyle =
+        Theme.of(context).elevatedButtonTheme.style ?? const ButtonStyle();
+
     return SizedBox(
       width: width,
       height: height,
       child: ElevatedButton(
         onPressed: isLoading ? null : onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: backgroundColor ?? ColorPalette.black,
-          foregroundColor: ColorPalette.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(borderRadius),
+        style: buttonStyle.copyWith(
+          backgroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.disabled)) {
+              return resolvedBackgroundColor.withValues(alpha: 0.5);
+            }
+            return resolvedBackgroundColor;
+          }),
+          foregroundColor: const WidgetStatePropertyAll(ColorPalette.onPrimary),
+          shape: WidgetStatePropertyAll(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(borderRadius),
+            ),
           ),
-          padding:
-              padding ??
-              const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-          elevation: 0,
-          disabledBackgroundColor: (backgroundColor ?? ColorPalette.black)
-              .withValues(alpha: 0.5),
+          padding: WidgetStatePropertyAll(
+            padding ?? const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          ),
         ),
         child: isLoading
             ? const SizedBox(
@@ -77,11 +86,9 @@ class ReusableButton extends StatelessWidget {
                 text,
                 style:
                     textStyle ??
-                    const TextStyle(
-                      color: ColorPalette.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    AppTextStyles.button(
+                      context,
+                    ).copyWith(color: ColorPalette.onPrimary),
               ),
       ),
     );

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import '../../../core/theme/app_text_styles.dart';
 import '../../../core/theme/color_palette.dart';
+import '../../../core/theme/theme_helpers.dart';
 
 /// A reusable date picker field widget with consistent styling
 class FormDateField extends StatelessWidget {
@@ -35,18 +37,12 @@ class FormDateField extends StatelessWidget {
       children: [
         RichText(
           text: TextSpan(
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: ColorPalette.black,
-              fontWeight: FontWeight.w500,
-            ),
             children: [
-              if (isRequired)
-                const TextSpan(
-                  text: '* ',
-                  style: TextStyle(color: Colors.red),
-                ),
-              TextSpan(text: label),
+              buildFormFieldLabel(
+                label: label,
+                style: AppTextStyles.fieldLabel(context),
+                isRequired: isRequired,
+              ),
             ],
           ),
         ),
@@ -56,9 +52,11 @@ class FormDateField extends StatelessWidget {
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
             decoration: BoxDecoration(
-              color: ColorPalette.white,
+              color: readOnly
+                  ? ColorPalette.surfaceMuted
+                  : ColorPalette.surface,
               borderRadius: BorderRadius.circular(8.r),
-              border: Border.all(color: ColorPalette.grey300),
+              border: Border.all(color: ColorPalette.border),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -67,16 +65,15 @@ class FormDateField extends StatelessWidget {
                   selectedDate != null
                       ? dateFormat.format(selectedDate!)
                       : 'Select date',
-                  style: TextStyle(
-                    fontSize: 14.sp,
+                  style: AppTextStyles.fieldValue(context).copyWith(
                     color: selectedDate != null
-                        ? ColorPalette.black
-                        : ColorPalette.grey400,
+                        ? ColorPalette.textPrimary
+                        : ColorPalette.textMuted,
                   ),
                 ),
                 const Icon(
                   Icons.calendar_today,
-                  color: ColorPalette.grey500,
+                  color: ColorPalette.textMuted,
                   size: 20,
                 ),
               ],
@@ -93,19 +90,6 @@ class FormDateField extends StatelessWidget {
       initialDate: selectedDate ?? DateTime.now(),
       firstDate: firstDate ?? DateTime(2000),
       lastDate: lastDate ?? DateTime(2100),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: ColorPalette.black,
-              onPrimary: ColorPalette.white,
-              surface: ColorPalette.white,
-              onSurface: ColorPalette.black,
-            ),
-          ),
-          child: child!,
-        );
-      },
     );
 
     if (picked != null) {

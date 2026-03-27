@@ -5,8 +5,16 @@ class AppTextStyles {
       Theme.of(context).textTheme.labelSmall!;
   static TextStyle label(BuildContext context) =>
       Theme.of(context).textTheme.labelMedium!;
+  static TextStyle fieldLabel(BuildContext context) =>
+      Theme.of(context).textTheme.labelLarge!;
+  static TextStyle fieldValue(BuildContext context) =>
+      Theme.of(context).textTheme.labelMedium!;
+  static TextStyle helper(BuildContext context) =>
+      Theme.of(context).textTheme.bodySmall!;
   static TextStyle base(BuildContext context) =>
       Theme.of(context).textTheme.bodyMedium!;
+  static TextStyle button(BuildContext context) =>
+      Theme.of(context).textTheme.titleSmall!;
   static TextStyle h1(BuildContext context) =>
       Theme.of(context).textTheme.titleLarge!;
   static TextStyle h2(BuildContext context) =>
