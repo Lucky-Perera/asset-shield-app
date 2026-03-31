@@ -1,55 +1,44 @@
 import 'package:asset_shield/core/theme/color_palette.dart';
 import 'package:asset_shield/core/theme/app_typography.dart';
+import 'package:asset_shield/core/theme/app_tokens.dart';
+import 'package:asset_shield/core/theme/schedule_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppTheme {
-  static ThemeData get lightTheme => _buildTheme(isDark: false);
-
-  static ThemeData get darkTheme => _buildTheme(isDark: true);
-
-  static ThemeData _buildTheme({required bool isDark}) {
-    final colorScheme = isDark ? _darkColorScheme : _lightColorScheme;
+  static ThemeData get lightTheme {
+    final colorScheme = _lightColorScheme;
     final textTheme = AppTypography.textTheme(
-      primaryTextColor: isDark
-          ? ColorPalette.darkTextPrimary
-          : ColorPalette.textPrimary,
-      mutedTextColor: isDark
-          ? ColorPalette.darkTextMuted
-          : ColorPalette.textMuted,
+      primaryTextColor: ColorPalette.textPrimary,
+      mutedTextColor: ColorPalette.textMuted,
     );
 
     return ThemeData(
-      brightness: isDark ? Brightness.dark : Brightness.light,
+      brightness: Brightness.light,
       primaryColor: colorScheme.primary,
-      scaffoldBackgroundColor: isDark
-          ? ColorPalette.darkBackground
-          : ColorPalette.background,
+      scaffoldBackgroundColor: ColorPalette.background,
       fontFamily: AppFontFamilies.primary,
       textTheme: textTheme,
       colorScheme: colorScheme,
-      dividerColor: isDark ? ColorPalette.darkBorder : ColorPalette.divider,
-      disabledColor: isDark
-          ? ColorPalette.darkTextMuted
-          : ColorPalette.disabled,
-      iconTheme: IconThemeData(
-        color: isDark ? ColorPalette.darkTextPrimary : ColorPalette.textPrimary,
-      ),
+      extensions: <ThemeExtension<dynamic>>[
+        ScheduleThemeData.light(),
+      ],
+      dividerColor: ColorPalette.divider,
+      disabledColor: ColorPalette.disabled,
+      iconTheme: const IconThemeData(color: ColorPalette.textPrimary),
       appBarTheme: _buildAppBarTheme(
         textTheme: textTheme,
         colorScheme: colorScheme,
-        isDark: isDark,
       ),
-      inputDecorationTheme: _buildInputDecorationTheme(isDark: isDark),
+      inputDecorationTheme: _buildInputDecorationTheme(),
       elevatedButtonTheme: _buildElevatedButtonTheme(textTheme: textTheme),
       outlinedButtonTheme: _buildOutlinedButtonTheme(textTheme: textTheme),
       textButtonTheme: _buildTextButtonTheme(textTheme: textTheme),
       checkboxTheme: _buildCheckboxTheme(),
-      dialogTheme: _buildDialogTheme(textTheme: textTheme, isDark: isDark),
+      dialogTheme: _buildDialogTheme(textTheme: textTheme),
       datePickerTheme: _buildDatePickerTheme(
         textTheme: textTheme,
         colorScheme: colorScheme,
-        isDark: isDark,
       ),
     );
   }
@@ -61,25 +50,10 @@ class AppTheme {
       ).copyWith(
         primary: ColorPalette.primary,
         onPrimary: ColorPalette.onPrimary,
-        secondary: ColorPalette.accent,
-        onSecondary: ColorPalette.onAccent,
+        secondary: ColorPalette.info,
+        onSecondary: ColorPalette.onPrimary,
         surface: ColorPalette.surface,
         onSurface: ColorPalette.textPrimary,
-        error: ColorPalette.error,
-        onError: ColorPalette.textInverse,
-      );
-
-  static final ColorScheme _darkColorScheme =
-      ColorScheme.fromSeed(
-        seedColor: ColorPalette.accent,
-        brightness: Brightness.dark,
-      ).copyWith(
-        primary: ColorPalette.accent,
-        onPrimary: ColorPalette.onAccent,
-        secondary: ColorPalette.accent300,
-        onSecondary: ColorPalette.black,
-        surface: ColorPalette.darkSurface,
-        onSurface: ColorPalette.darkTextPrimary,
         error: ColorPalette.error,
         onError: ColorPalette.textInverse,
       );
@@ -87,12 +61,9 @@ class AppTheme {
   static AppBarTheme _buildAppBarTheme({
     required TextTheme textTheme,
     required ColorScheme colorScheme,
-    required bool isDark,
   }) {
     return AppBarTheme(
-      backgroundColor: isDark
-          ? ColorPalette.darkBackground
-          : ColorPalette.background,
+      backgroundColor: ColorPalette.background,
       foregroundColor: colorScheme.onSurface,
       elevation: 0,
       surfaceTintColor: Colors.transparent,
@@ -103,32 +74,21 @@ class AppTheme {
     );
   }
 
-  static InputDecorationTheme _buildInputDecorationTheme({
-    required bool isDark,
-  }) {
-    final fillColor = isDark
-        ? ColorPalette.darkSurfaceAlt
-        : ColorPalette.surface;
-    final enabledBorderColor = isDark
-        ? ColorPalette.darkBorder
-        : ColorPalette.border;
-
+  static InputDecorationTheme _buildInputDecorationTheme() {
     return InputDecorationTheme(
       filled: true,
-      fillColor: fillColor,
+      fillColor: ColorPalette.surface,
       hintStyle: AppTypography.style(
         size: AppFontSizes.label,
-        color: isDark ? ColorPalette.darkTextMuted : ColorPalette.textMuted,
+        color: ColorPalette.textMuted,
       ),
       contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
-      border: _inputBorder(enabledBorderColor),
-      enabledBorder: _inputBorder(enabledBorderColor),
+      border: _inputBorder(ColorPalette.border),
+      enabledBorder: _inputBorder(ColorPalette.border),
       focusedBorder: _inputBorder(ColorPalette.focus),
       errorBorder: _inputBorder(ColorPalette.error),
       focusedErrorBorder: _inputBorder(ColorPalette.error),
-      disabledBorder: _inputBorder(
-        isDark ? ColorPalette.darkBorder : ColorPalette.surfaceMuted,
-      ),
+      disabledBorder: _inputBorder(ColorPalette.surfaceMuted),
       errorStyle: AppTypography.style(
         size: AppFontSizes.caption,
         color: ColorPalette.error,
@@ -147,7 +107,9 @@ class AppTheme {
         disabledBackgroundColor: ColorPalette.primary.withValues(alpha: 0.5),
         disabledForegroundColor: ColorPalette.onPrimary.withValues(alpha: 0.7),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadii.sm.r),
+        ),
         elevation: 0,
         textStyle: textTheme.titleSmall,
       ),
@@ -162,7 +124,9 @@ class AppTheme {
         foregroundColor: ColorPalette.textPrimary,
         side: const BorderSide(color: ColorPalette.border),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadii.sm.r),
+        ),
         textStyle: textTheme.labelMedium?.copyWith(
           fontWeight: AppFontWeights.medium,
         ),
@@ -175,7 +139,7 @@ class AppTheme {
   }) {
     return TextButtonThemeData(
       style: TextButton.styleFrom(
-        foregroundColor: ColorPalette.accent,
+        foregroundColor: ColorPalette.primary,
         textStyle: textTheme.labelMedium?.copyWith(
           fontWeight: AppFontWeights.medium,
         ),
@@ -185,23 +149,26 @@ class AppTheme {
 
   static CheckboxThemeData _buildCheckboxTheme() {
     return CheckboxThemeData(
-      fillColor: const WidgetStatePropertyAll(ColorPalette.accent),
-      checkColor: const WidgetStatePropertyAll(ColorPalette.onAccent),
+      fillColor: const WidgetStatePropertyAll(ColorPalette.primary),
+      checkColor: const WidgetStatePropertyAll(ColorPalette.onPrimary),
       side: const BorderSide(color: ColorPalette.borderStrong),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.r)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppRadii.xs.r),
+      ),
     );
   }
 
   static DialogThemeData _buildDialogTheme({
     required TextTheme textTheme,
-    required bool isDark,
   }) {
     return DialogThemeData(
-      backgroundColor: isDark ? ColorPalette.darkSurface : ColorPalette.surface,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
+      backgroundColor: ColorPalette.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppRadii.lg.r),
+      ),
       titleTextStyle: textTheme.titleSmall,
       contentTextStyle: textTheme.labelMedium?.copyWith(
-        color: isDark ? ColorPalette.darkTextMuted : ColorPalette.textSecondary,
+        color: ColorPalette.textSecondary,
       ),
     );
   }
@@ -209,10 +176,9 @@ class AppTheme {
   static DatePickerThemeData _buildDatePickerTheme({
     required TextTheme textTheme,
     required ColorScheme colorScheme,
-    required bool isDark,
   }) {
     return DatePickerThemeData(
-      backgroundColor: isDark ? ColorPalette.darkSurface : ColorPalette.surface,
+      backgroundColor: ColorPalette.surface,
       surfaceTintColor: Colors.transparent,
       headerBackgroundColor: colorScheme.primary,
       headerForegroundColor: colorScheme.onPrimary,
@@ -230,7 +196,9 @@ class AppTheme {
       }),
       todayForegroundColor: WidgetStatePropertyAll(colorScheme.primary),
       todayBorder: BorderSide(color: colorScheme.primary),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppRadii.lg.r),
+      ),
       cancelButtonStyle: TextButton.styleFrom(
         foregroundColor: colorScheme.primary,
       ),
@@ -245,7 +213,7 @@ class AppTheme {
 
   static OutlineInputBorder _inputBorder(Color borderColor) {
     return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8.r),
+      borderRadius: BorderRadius.circular(AppRadii.sm.r),
       borderSide: BorderSide(color: borderColor),
     );
   }

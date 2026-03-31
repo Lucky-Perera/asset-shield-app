@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppFontFamilies {
-  static const String primary = 'Poppins';
+  static const String primary = 'Inter';
 }
 
 class AppFontSizes {
@@ -12,15 +12,16 @@ class AppFontSizes {
   static const double label = 14;
   static const double body = 16;
   static const double title = 20;
-  static const double headline = 24;
-  static const double display = 32;
 }
 
 class AppFontWeights {
   static const FontWeight regular = FontWeight.w400;
   static const FontWeight medium = FontWeight.w500;
   static const FontWeight semiBold = FontWeight.w600;
-  static const FontWeight bold = FontWeight.w700;
+
+  static const FontWeight value = medium;
+  static const FontWeight label = semiBold;
+  static const FontWeight title = FontWeight.w700;
 }
 
 class AppTypography {
@@ -74,24 +75,6 @@ class AppTypography {
         weight: AppFontWeights.medium,
         color: primaryTextColor,
         height: 1.3,
-      ),
-      titleLarge: style(
-        size: AppFontSizes.headline,
-        weight: AppFontWeights.semiBold,
-        color: primaryTextColor,
-        height: 1.3,
-      ),
-      headlineMedium: style(
-        size: AppFontSizes.headline,
-        weight: AppFontWeights.medium,
-        color: primaryTextColor,
-        height: 1.3,
-      ),
-      headlineLarge: style(
-        size: AppFontSizes.display,
-        weight: AppFontWeights.bold,
-        color: primaryTextColor,
-        height: 1.2,
       ),
     );
   }
