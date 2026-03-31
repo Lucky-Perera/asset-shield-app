@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../core/theme/app_text_styles.dart';
-import '../../../core/theme/color_palette.dart';
-import '../../../core/theme/theme_helpers.dart';
+import '../../../core/theme/app_typography.dart';
+import '../../../core/theme/schedule_styles.dart';
+import '../../../core/theme/schedule_theme.dart';
+import 'schedule_form_primitives.dart';
 
 /// A reusable text field widget for forms with consistent styling
 class FormTextField extends StatelessWidget {
@@ -33,38 +34,39 @@ class FormTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        RichText(
-          text: TextSpan(
-            children: [
-              buildFormFieldLabel(
-                label: label,
-                style: AppTextStyles.fieldLabel(context),
-                isRequired: isRequired,
-              ),
-            ],
-          ),
+    final scheduleTheme = context.scheduleTheme;
+
+    return ScheduleFieldSection(
+      label: label,
+      isRequired: isRequired,
+      child: TextFormField(
+        controller: controller,
+        validator: validator,
+        maxLines: maxLines,
+        minLines: minLines,
+        keyboardType: keyboardType,
+        enabled: enabled,
+        onChanged: onChanged,
+        textAlignVertical: maxLines == 1
+            ? TextAlignVertical.center
+            : TextAlignVertical.top,
+        style: ScheduleTextStyles.value(
+          context,
+          size: AppFontSizes.caption,
+          color: enabled
+              ? scheduleTheme.primaryText
+              : scheduleTheme.secondaryText,
         ),
-        SizedBox(height: 8.h),
-        TextFormField(
-          controller: controller,
-          validator: validator,
-          maxLines: maxLines,
-          minLines: minLines,
-          keyboardType: keyboardType,
+        decoration: ScheduleFormDecorations.input(
+          context,
+          hintText: hint,
           enabled: enabled,
-          onChanged: onChanged,
-          style: AppTextStyles.fieldValue(context).copyWith(
-            color: enabled ? ColorPalette.textPrimary : ColorPalette.disabled,
-          ),
-          decoration: InputDecoration(
-            hintText: hint,
-            fillColor: enabled ? null : ColorPalette.surfaceMuted,
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: 16.w,
+            vertical: maxLines == 1 ? 15.h : 18.h,
           ),
         ),
-      ],
+      ),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/theme/app_tokens.dart';
 import '../../../core/theme/app_text_styles.dart';
 import '../../../core/theme/color_palette.dart';
 
@@ -29,6 +30,12 @@ class ReusableButton extends StatelessWidget {
   /// Optional padding inside the button. Defaults to horizontal 24, vertical 12
   final EdgeInsetsGeometry? padding;
 
+  /// Optional foreground color for text and icons.
+  final Color? foregroundColor;
+
+  /// Optional border color.
+  final Color? borderColor;
+
   /// Optional loading state to show a circular progress indicator
   final bool isLoading;
 
@@ -37,17 +44,20 @@ class ReusableButton extends StatelessWidget {
     required this.text,
     this.onPressed,
     this.width = double.infinity,
-    this.height = 50,
-    this.borderRadius = 8,
+    this.height = AppSizes.buttonHeight,
+    this.borderRadius = AppRadii.sm,
     this.textStyle,
     this.backgroundColor,
     this.padding,
+    this.foregroundColor,
+    this.borderColor,
     this.isLoading = false,
   });
 
   @override
   Widget build(BuildContext context) {
     final resolvedBackgroundColor = backgroundColor ?? ColorPalette.primary;
+    final resolvedForegroundColor = foregroundColor ?? ColorPalette.onPrimary;
     final buttonStyle =
         Theme.of(context).elevatedButtonTheme.style ?? const ButtonStyle();
 
@@ -63,7 +73,10 @@ class ReusableButton extends StatelessWidget {
             }
             return resolvedBackgroundColor;
           }),
-          foregroundColor: const WidgetStatePropertyAll(ColorPalette.onPrimary),
+          foregroundColor: WidgetStatePropertyAll(resolvedForegroundColor),
+          side: borderColor == null
+              ? null
+              : WidgetStatePropertyAll(BorderSide(color: borderColor!)),
           shape: WidgetStatePropertyAll(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(borderRadius),
@@ -74,21 +87,23 @@ class ReusableButton extends StatelessWidget {
           ),
         ),
         child: isLoading
-            ? const SizedBox(
+            ? SizedBox(
                 width: 20,
                 height: 20,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(ColorPalette.white),
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    resolvedForegroundColor,
+                  ),
                 ),
               )
             : Text(
                 text,
                 style:
                     textStyle ??
-                    AppTextStyles.button(
-                      context,
-                    ).copyWith(color: ColorPalette.onPrimary),
+                    context.appTextTheme.titleSmall!.copyWith(
+                      color: resolvedForegroundColor,
+                    ),
               ),
       ),
     );

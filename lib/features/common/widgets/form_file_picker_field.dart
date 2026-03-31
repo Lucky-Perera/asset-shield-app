@@ -32,7 +32,7 @@ class FormFilePickerField extends StatelessWidget {
             children: [
               buildFormFieldLabel(
                 label: label,
-                style: AppTextStyles.fieldLabel(context),
+                style: context.appTextTheme.labelLarge!,
                 isRequired: isRequired,
               ),
             ],
@@ -44,7 +44,7 @@ class FormFilePickerField extends StatelessWidget {
             OutlinedButton(
               onPressed: onSelectFiles,
               style: OutlinedButton.styleFrom(
-                side: const BorderSide(color: ColorPalette.grey300),
+                side: const BorderSide(color: ColorPalette.border),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.r),
                 ),
@@ -60,9 +60,9 @@ class FormFilePickerField extends StatelessWidget {
           selectedFiles.isEmpty
               ? 'No files'
               : '${selectedFiles.length} file(s) selected',
-          style: AppTextStyles.helper(
-            context,
-          ).copyWith(color: ColorPalette.textMuted),
+          style: context.appTextTheme.bodySmall!.copyWith(
+            color: ColorPalette.textMuted,
+          ),
         ),
         if (selectedFiles.isNotEmpty) ...[
           SizedBox(height: 8.h),
@@ -71,9 +71,9 @@ class FormFilePickerField extends StatelessWidget {
               padding: EdgeInsets.only(bottom: 4.h),
               child: Text(
                 '• ${file.path.split('/').last}',
-                style: AppTextStyles.caption(
-                  context,
-                ).copyWith(color: ColorPalette.textSecondary),
+                style: context.appTextTheme.labelSmall!.copyWith(
+                  color: ColorPalette.textSecondary,
+                ),
               ),
             ),
           ),

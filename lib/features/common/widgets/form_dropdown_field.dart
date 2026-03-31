@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../core/theme/app_text_styles.dart';
-import '../../../core/theme/color_palette.dart';
-import '../../../core/theme/theme_helpers.dart';
+import '../../../core/theme/schedule_styles.dart';
+import '../../../core/theme/schedule_theme.dart';
+import 'schedule_form_primitives.dart';
 
 class FormDropdownField<T> extends StatelessWidget {
   final String label;
@@ -28,35 +28,35 @@ class FormDropdownField<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        RichText(
-          text: TextSpan(
-            children: [
-              buildFormFieldLabel(
-                label: label,
-                style: AppTextStyles.fieldLabel(context),
-                isRequired: isRequired,
-              ),
-            ],
-          ),
+    final scheduleTheme = context.scheduleTheme;
+
+    return ScheduleFieldSection(
+      label: label,
+      isRequired: isRequired,
+      child: DropdownButtonFormField<T>(
+        initialValue: value,
+        items: items,
+        onChanged: readOnly ? null : onChanged,
+        validator: validator,
+        style: ScheduleTextStyles.value(
+          context,
+          color: readOnly
+              ? scheduleTheme.secondaryText
+              : scheduleTheme.primaryText,
         ),
-        SizedBox(height: 8.h),
-        DropdownButtonFormField<T>(
-          initialValue: value,
-          items: items,
-          onChanged: readOnly ? null : onChanged,
-          validator: validator,
-          style: AppTextStyles.fieldValue(context),
-          decoration: InputDecoration(
-            hintText: hint,
-            fillColor: readOnly ? ColorPalette.surfaceMuted : null,
-          ),
-          icon: const Icon(Icons.keyboard_arrow_down),
-          isExpanded: true,
+        decoration: ScheduleFormDecorations.input(
+          context,
+          hintText: hint,
+          enabled: !readOnly,
         ),
-      ],
+        icon: Icon(
+          Icons.keyboard_arrow_down_rounded,
+          color: readOnly ? scheduleTheme.secondaryText : scheduleTheme.icon,
+          size: 22.sp,
+        ),
+        isExpanded: true,
+        dropdownColor: scheduleTheme.cardBackground,
+      ),
     );
   }
 }
