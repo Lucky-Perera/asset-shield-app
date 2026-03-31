@@ -1,6 +1,7 @@
+import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
 import 'package:asset_shield/features/home/ui/widgets/checklist/section_tile.dart';
 import 'package:flutter/material.dart';
-import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChecklistSections extends StatelessWidget {
   final List<ChecklistQuestionTemplate> questions;
@@ -59,7 +60,9 @@ class ChecklistSections extends StatelessWidget {
             uploadedAttachmentMetadata: uploadedAttachmentMetadata,
             scheduleV2Id: scheduleV2Id,
             equipmentId: equipmentId,
+            initiallyExpanded: true,
           ),
+        if (internal.isNotEmpty && external.isNotEmpty) SizedBox(height: 16.h),
         if (external.isNotEmpty)
           SectionTile(
             title: 'External',

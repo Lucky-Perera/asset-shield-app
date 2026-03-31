@@ -1,11 +1,16 @@
 import 'dart:io';
 
-import 'package:asset_shield/core/theme/color_palette.dart';
 import 'package:asset_shield/core/enums/enums.dart';
+import 'package:asset_shield/core/theme/app_typography.dart';
+import 'package:asset_shield/core/theme/color_palette.dart';
+import 'package:asset_shield/core/theme/schedule_styles.dart';
+import 'package:asset_shield/core/theme/schedule_theme.dart';
 import 'package:asset_shield/core/utility/toast_service.dart';
+import 'package:asset_shield/features/common/widgets/schedule_form_primitives.dart';
 import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
 import 'package:asset_shield/features/home/data/services/attachment_service.dart';
 import 'package:asset_shield/features/home/ui/widgets/checklist/media_label.dart';
+import 'package:asset_shield/features/home/ui/widgets/schedule_ui/schedule_surface.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,6 +31,7 @@ class QuestionTile extends StatefulWidget {
   final String? equipmentId;
   final List<AttachmentV2>? existingAttachments;
   final List<Map<String, String>>? uploadedAttachmentMetadata;
+  final bool initiallyExpanded;
 
   const QuestionTile({
     super.key,
@@ -40,6 +46,7 @@ class QuestionTile extends StatefulWidget {
     this.equipmentId,
     this.existingAttachments,
     this.uploadedAttachmentMetadata,
+    this.initiallyExpanded = false,
   });
 
   @override
@@ -72,7 +79,7 @@ class _QuestionTileState extends State<QuestionTile> {
         0,
         0,
       ),
-      color: Colors.white,
+      color: ColorPalette.surface,
       items: [
         PopupMenuItem(
           child: const Row(
@@ -244,7 +251,7 @@ class _QuestionTileState extends State<QuestionTile> {
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            style: TextButton.styleFrom(foregroundColor: ColorPalette.error),
             child: const Text('Delete'),
           ),
         ],
@@ -304,6 +311,7 @@ class _QuestionTileState extends State<QuestionTile> {
       text: widget.initialNote ?? widget.question.helpText ?? '',
     );
     _selectedValue = widget.initialValue ?? widget.question.question;
+    _isExpanded = widget.initiallyExpanded;
 
     // Restore previously uploaded attachments from metadata
     if (widget.uploadedAttachmentMetadata != null) {
@@ -370,7 +378,7 @@ class _QuestionTileState extends State<QuestionTile> {
     showDialog(
       context: context,
       builder: (context) => Dialog(
-        backgroundColor: Colors.black,
+        backgroundColor: ColorPalette.black,
         child: Stack(
           children: [
             InteractiveViewer(
@@ -383,11 +391,15 @@ class _QuestionTileState extends State<QuestionTile> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.error, color: Colors.white, size: 48),
+                          Icon(
+                            Icons.error,
+                            color: ColorPalette.textInverse,
+                            size: 48,
+                          ),
                           SizedBox(height: 16),
                           Text(
                             'Failed to load image',
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(color: ColorPalette.textInverse),
                           ),
                         ],
                       ),
@@ -400,7 +412,11 @@ class _QuestionTileState extends State<QuestionTile> {
               top: 10,
               right: 10,
               child: IconButton(
-                icon: Icon(Icons.close, color: Colors.white, size: 30),
+                icon: Icon(
+                  Icons.close,
+                  color: ColorPalette.textInverse,
+                  size: 30,
+                ),
                 onPressed: () => Navigator.of(context).pop(),
               ),
             ),
@@ -438,15 +454,193 @@ class _QuestionTileState extends State<QuestionTile> {
     }
   }
 
+  IconData _attachmentIcon({
+    required bool isImage,
+    required bool isPdf,
+    required bool isTxt,
+  }) {
+    if (isImage) return Icons.image_outlined;
+    if (isPdf) return Icons.picture_as_pdf_outlined;
+    if (isTxt) return Icons.description_outlined;
+    return Icons.attach_file_rounded;
+  }
+
+  Widget _buildResponseOption(ResponseValue option) {
+    final isSelected = _selectedValue == option.apiValue;
+    final scheduleTheme = context.scheduleTheme;
+    final width = widget.question.responseType == ResponseType.yesNo
+        ? 130.w
+        : 61.w;
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(10.r),
+        onTap: widget.readOnly ? null : () => _onValueSelected(option.apiValue),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 120),
+          width: width,
+          height: 40.h,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: isSelected
+                ? scheduleTheme.chipSelectedBackground
+                : scheduleTheme.chipBackground,
+            borderRadius: BorderRadius.circular(10.r),
+            border: Border.all(
+              color: isSelected
+                  ? scheduleTheme.chipSelectedBackground
+                  : scheduleTheme.chipBorder,
+            ),
+          ),
+          child: Text(
+            option.displayName,
+            style: ScheduleTextStyles.caption(
+              context,
+              color: isSelected
+                  ? scheduleTheme.chipSelectedText
+                  : scheduleTheme.primaryText,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAttachmentBlock({
+    required String title,
+    required List<Widget> children,
+  }) {
+    final scheduleTheme = context.scheduleTheme;
+
+    if (children.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return Padding(
+      padding: EdgeInsets.only(top: 12.h),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: ScheduleTextStyles.caption(
+              context,
+              color: scheduleTheme.secondaryText,
+            ),
+          ),
+          SizedBox(height: 6.h),
+          ...children,
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Card(
+    final scheduleTheme = context.scheduleTheme;
+    final uploadedAttachments = _mediaFiles
+        .where((file) => _uploadedPaths.contains(file.path))
+        .map((file) {
+          final fileName = file.path.split('/').last;
+          final metadata = _uploadedFileMetadata[file.path];
+          final attachmentId = metadata?['id'] ?? '';
+          final isDeleting = _deletingAttachmentId == attachmentId;
+          final isImage = _isImageUrl(fileName);
+          final isPdf = _isPdfUrl(fileName);
+          final isTxt = _isTxtUrl(fileName);
+
+          return AttachmentRow(
+            icon: _attachmentIcon(isImage: isImage, isPdf: isPdf, isTxt: isTxt),
+            fileName: fileName,
+            id: attachmentId,
+            isViewable: isImage || isPdf || isTxt,
+            isDeleting: isDeleting,
+            showDelete:
+                !widget.readOnly &&
+                widget.onAttachmentDeleted != null &&
+                attachmentId.isNotEmpty,
+            onDelete: (id, name) => _handleDeleteAttachment(id, name),
+          );
+        })
+        .toList();
+
+    final existingAttachments =
+        widget.existingAttachments
+            ?.where(
+              (attachment) => !_deletedAttachmentIds.contains(attachment.id),
+            )
+            .toList() ??
+        [];
+    final existingIds = existingAttachments
+        .map((attachment) => attachment.id)
+        .toSet();
+    final restoredAttachments = _restoredAttachments.where((attachment) {
+      final id = attachment['id'] ?? '';
+      return !_deletedAttachmentIds.contains(id) && !existingIds.contains(id);
+    }).toList();
+
+    final persistedAttachments = [
+      ...restoredAttachments.map((attachment) {
+        final fileName = attachment['name'] ?? 'Unknown';
+        final attachmentId = attachment['id'] ?? '';
+        final isDeleting = _deletingAttachmentId == attachmentId;
+        final isImage = _isImageUrl(fileName);
+        final isPdf = _isPdfUrl(fileName);
+        final isTxt = _isTxtUrl(fileName);
+
+        return AttachmentRow(
+          icon: _attachmentIcon(isImage: isImage, isPdf: isPdf, isTxt: isTxt),
+          fileName: fileName,
+          id: attachmentId,
+          isViewable: isImage || isPdf || isTxt,
+          isDeleting: isDeleting,
+          showDelete: !widget.readOnly && widget.onAttachmentDeleted != null,
+          onDelete: (id, name) => _handleDeleteAttachment(id, name),
+        );
+      }),
+      ...existingAttachments.map((attachment) {
+        final isImage = _isImageUrl(attachment.url);
+        final isPdf = _isPdfUrl(attachment.url);
+        final isTxt = _isTxtUrl(attachment.url);
+        final isDeleting = _deletingAttachmentId == attachment.id;
+
+        return AttachmentRow(
+          icon: _attachmentIcon(isImage: isImage, isPdf: isPdf, isTxt: isTxt),
+          fileName: attachment.name,
+          id: attachment.id,
+          isViewable: isImage || isPdf || isTxt,
+          isDeleting: isDeleting,
+          showDelete: !widget.readOnly && widget.onAttachmentDeleted != null,
+          onTap: () {
+            if (isImage) {
+              _showImageViewer(attachment.url);
+            } else if (isPdf) {
+              _openPdf(attachment.url);
+            } else {
+              _openUrl(attachment.url);
+            }
+          },
+          onDelete: (id, name) => _handleDeleteAttachment(id, name),
+        );
+      }),
+    ];
+
+    return ScheduleSurfaceCard(
       margin: EdgeInsets.symmetric(vertical: 6.h),
-      color: ColorPalette.whiteSwatch.shade700,
+      padding: EdgeInsets.zero,
+      boxShadow: const [],
+      radius: 14,
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
           initiallyExpanded: _isExpanded,
+          tilePadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
+          childrenPadding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.h),
+          iconColor: scheduleTheme.icon,
+          collapsedIconColor: scheduleTheme.icon,
+          shape: const Border(),
+          collapsedShape: const Border(),
           onExpansionChanged: (expanded) {
             setState(() {
               _isExpanded = expanded;
@@ -454,11 +648,10 @@ class _QuestionTileState extends State<QuestionTile> {
           },
           title: Text(
             widget.question.question,
-            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
-          ),
-          childrenPadding: EdgeInsets.symmetric(
-            horizontal: 16.w,
-            vertical: 8.h,
+            style: ScheduleTextStyles.label(
+              context,
+              size: AppFontSizes.caption,
+            ),
           ),
           children: [
             if ((widget.question.helpText ?? '').isNotEmpty)
@@ -466,75 +659,57 @@ class _QuestionTileState extends State<QuestionTile> {
                 padding: EdgeInsets.only(bottom: 12.h),
                 child: Text(
                   widget.question.helpText ?? '',
-                  style: TextStyle(
-                    fontSize: 13.sp,
-                    color: ColorPalette.black.withValues(alpha: 0.7),
+                  style: ScheduleTextStyles.caption(
+                    context,
+                    color: scheduleTheme.secondaryText,
                   ),
                 ),
               ),
 
-            // Response buttons
             Padding(
               padding: EdgeInsets.only(bottom: 12.h),
               child: Wrap(
                 spacing: 8.w,
                 runSpacing: 8.h,
-                children: _getResponseOptions().map((option) {
-                  final isSelected = _selectedValue == option.apiValue;
-                  return ChoiceChip(
-                    label: Text(option.displayName),
-                    selected: isSelected,
-                    onSelected: widget.readOnly
-                        ? null
-                        : (_) => _onValueSelected(option.apiValue),
-                    selectedColor: ColorPalette.primary,
-                    labelStyle: TextStyle(
-                      color: isSelected ? Colors.white : ColorPalette.black,
-                      fontSize: 13.sp,
-                      fontWeight: isSelected
-                          ? FontWeight.w600
-                          : FontWeight.normal,
-                    ),
-                    backgroundColor: ColorPalette.whiteSwatch.shade600,
-                    side: BorderSide(
-                      color: isSelected
-                          ? ColorPalette.primary
-                          : ColorPalette.black.withValues(alpha: 0.2),
-                    ),
-                  );
-                }).toList(),
+                children: _getResponseOptions()
+                    .map(_buildResponseOption)
+                    .toList(),
               ),
             ),
 
-            // Note text field
             TextField(
               controller: _noteController,
               onChanged: widget.readOnly ? null : (_) => _onNoteChanged(),
               enabled: !widget.readOnly,
-              decoration: InputDecoration(
-                labelText: 'Note',
-                hintText: widget.readOnly ? '' : 'Add a note...',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
+              decoration: ScheduleFormDecorations.input(
+                context,
+                hintText: widget.readOnly ? '' : 'Note',
+                enabled: !widget.readOnly,
                 contentPadding: EdgeInsets.symmetric(
-                  horizontal: 12.w,
-                  vertical: 12.h,
+                  horizontal: 16.w,
+                  vertical: 16.h,
                 ),
               ),
               maxLines: 3,
-              style: TextStyle(fontSize: 13.sp),
+              style: ScheduleTextStyles.value(
+                context,
+                size: AppFontSizes.caption,
+                color: widget.readOnly
+                    ? scheduleTheme.secondaryText
+                    : scheduleTheme.primaryText,
+              ),
             ),
 
-            SizedBox(height: 8.h),
+            SizedBox(height: 12.h),
 
-            // Show media button only if: not readonly OR (readonly but rejected and can edit)
             if (!widget.readOnly)
-              MediaLabel(onTap: _isUploading ? null : _showMediaMenu),
+              Center(
+                child: MediaLabel(onTap: _isUploading ? null : _showMediaMenu),
+              ),
 
             if (_isUploading)
               Padding(
-                padding: EdgeInsets.only(top: 8.h),
+                padding: EdgeInsets.only(top: 12.h),
                 child: Row(
                   children: [
                     SizedBox(
@@ -545,198 +720,23 @@ class _QuestionTileState extends State<QuestionTile> {
                     SizedBox(width: 8.w),
                     Text(
                       'Uploading...',
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: ColorPalette.black.withValues(alpha: 0.6),
+                      style: ScheduleTextStyles.caption(
+                        context,
+                        color: scheduleTheme.secondaryText,
                       ),
                     ),
                   ],
                 ),
               ),
 
-            // Show newly uploaded files in THIS SESSION only (not restored from backend)
-            if (_uploadedPaths.isNotEmpty)
-              Padding(
-                padding: EdgeInsets.only(top: 8.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Uploaded (${_uploadedPaths.length})',
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w600,
-                        color: ColorPalette.black.withValues(alpha: 0.7),
-                      ),
-                    ),
-                    SizedBox(height: 4.h),
-                    // Show newly uploaded files in this session
-                    ..._mediaFiles
-                        .where((f) => _uploadedPaths.contains(f.path))
-                        .map((file) {
-                          final fileName = file.path.split('/').last;
-                          final metadata = _uploadedFileMetadata[file.path];
-                          final attachmentId = metadata?['id'] ?? '';
-                          final isDeleting =
-                              _deletingAttachmentId == attachmentId;
-
-                          final isImage = _isImageUrl(fileName);
-                          final isPdf = _isPdfUrl(fileName);
-                          final isTxt = _isTxtUrl(fileName);
-                          final isViewable = isImage || isPdf || isTxt;
-
-                          return AttachmentRow(
-                            icon: isImage
-                                ? Icons.image
-                                : (isPdf
-                                      ? Icons.picture_as_pdf
-                                      : (isTxt
-                                            ? Icons.description
-                                            : Icons.attach_file)),
-                            fileName: fileName,
-                            id: attachmentId,
-                            isViewable: isViewable,
-                            isDeleting: isDeleting,
-                            showDelete:
-                                !widget.readOnly &&
-                                widget.onAttachmentDeleted != null &&
-                                attachmentId.isNotEmpty,
-                            onDelete: (id, name) =>
-                                _handleDeleteAttachment(id, name),
-                          );
-                        }),
-                  ],
-                ),
-              ),
-
-            // Show existing attachments from backend (including restored from draft)
-            if ((widget.existingAttachments != null &&
-                    widget.existingAttachments!.isNotEmpty) ||
-                _restoredAttachments.isNotEmpty)
-              Padding(
-                padding: EdgeInsets.only(top: 8.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Combine existing attachments and restored attachments
-                    ...() {
-                      // Get existing attachments from backend
-                      final existingAttachments =
-                          widget.existingAttachments
-                              ?.where(
-                                (a) => !_deletedAttachmentIds.contains(a.id),
-                              )
-                              .toList() ??
-                          [];
-
-                      // Get restored attachments (from draft) that aren't deleted
-                      // AND are not already present in the existing attachments
-                      final existingIds = existingAttachments
-                          .map((e) => e.id)
-                          .toSet();
-                      final restoredNotDeleted = _restoredAttachments.where((
-                        a,
-                      ) {
-                        final id = a['id'] ?? '';
-                        return !_deletedAttachmentIds.contains(id) &&
-                            !existingIds.contains(id);
-                      }).toList();
-
-                      final totalCount =
-                          existingAttachments.length +
-                          restoredNotDeleted.length;
-
-                      if (totalCount == 0) return <Widget>[];
-
-                      return [
-                        Text(
-                          'Attachments ($totalCount)',
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w600,
-                            color: ColorPalette.black.withValues(alpha: 0.7),
-                          ),
-                        ),
-                        SizedBox(height: 4.h),
-                        // Show restored attachments first (from draft/rejected)
-                        ...restoredNotDeleted.map((attachment) {
-                          final fileName = attachment['name'] ?? 'Unknown';
-                          final attachmentId = attachment['id'] ?? '';
-                          final isDeleting =
-                              _deletingAttachmentId == attachmentId;
-
-                          final isImage = _isImageUrl(fileName);
-                          final isPdf = _isPdfUrl(fileName);
-                          final isTxt = _isTxtUrl(fileName);
-                          final isViewable = isImage || isPdf || isTxt;
-
-                          return AttachmentRow(
-                            icon: isImage
-                                ? Icons.image
-                                : (isPdf
-                                      ? Icons.picture_as_pdf
-                                      : (isTxt
-                                            ? Icons.description
-                                            : Icons.attach_file)),
-                            fileName: fileName,
-                            id: attachmentId,
-                            isViewable: isViewable,
-                            isDeleting: isDeleting,
-                            showDelete:
-                                !widget.readOnly &&
-                                widget.onAttachmentDeleted != null,
-                            onDelete: (id, name) =>
-                                _handleDeleteAttachment(id, name),
-                          );
-                        }),
-                        // Show existing attachments from backend
-                        ...widget.existingAttachments
-                                ?.where(
-                                  (a) => !_deletedAttachmentIds.contains(a.id),
-                                )
-                                .map((attachment) {
-                                  final isImage = _isImageUrl(attachment.url);
-                                  final isPdf = _isPdfUrl(attachment.url);
-                                  final isTxt = _isTxtUrl(attachment.url);
-                                  final isViewable = isImage || isPdf || isTxt;
-
-                                  final isDeleting =
-                                      _deletingAttachmentId == attachment.id;
-
-                                  return AttachmentRow(
-                                    icon: isImage
-                                        ? Icons.image
-                                        : (isPdf
-                                              ? Icons.picture_as_pdf
-                                              : (isTxt
-                                                    ? Icons.description
-                                                    : Icons.attach_file)),
-                                    fileName: attachment.name,
-                                    id: attachment.id,
-                                    isViewable: isViewable,
-                                    isDeleting: isDeleting,
-                                    showDelete:
-                                        !widget.readOnly &&
-                                        widget.onAttachmentDeleted != null,
-                                    onTap: () {
-                                      if (isImage) {
-                                        _showImageViewer(attachment.url);
-                                      } else if (isPdf) {
-                                        _openPdf(attachment.url);
-                                      } else {
-                                        _openUrl(attachment.url);
-                                      }
-                                    },
-                                    onDelete: (id, name) =>
-                                        _handleDeleteAttachment(id, name),
-                                  );
-                                }) ??
-                            [],
-                      ];
-                    }(),
-                  ],
-                ),
-              ),
+            _buildAttachmentBlock(
+              title: 'Uploaded (${uploadedAttachments.length})',
+              children: uploadedAttachments,
+            ),
+            _buildAttachmentBlock(
+              title: 'Attachments (${persistedAttachments.length})',
+              children: persistedAttachments,
+            ),
           ],
         ),
       ),

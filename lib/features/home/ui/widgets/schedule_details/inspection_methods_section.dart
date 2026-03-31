@@ -1,7 +1,10 @@
-import 'package:asset_shield/core/theme/app_text_styles.dart';
-import 'package:asset_shield/core/theme/color_palette.dart';
+import 'package:asset_shield/core/theme/schedule_styles.dart';
+import 'package:asset_shield/core/theme/schedule_theme.dart';
 import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
+import 'package:asset_shield/features/home/ui/widgets/schedule_details/schedule_details_card.dart';
+import 'package:asset_shield/features/home/ui/widgets/schedule_ui/schedule_surface.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class InspectionMethodsSection extends StatelessWidget {
   final List<InspectionMethodV2> inspectionMethods;
@@ -10,30 +13,32 @@ class InspectionMethodsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 2,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _SectionHeaderWithCount(
-              title: 'Inspection Methods',
-              count: inspectionMethods.length,
-            ),
-            const SizedBox(height: 16),
-            if (inspectionMethods.isEmpty)
-              _EmptyMessage(message: 'No inspection methods available')
-            else
-              ...List.generate(
-                inspectionMethods.length,
-                (index) => _InspectionMethodCard(
+    return ScheduleDetailsCard(
+      padding: EdgeInsets.fromLTRB(24.w, 24.h, 24.w, 24.h),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _SectionHeaderWithCount(
+            title: 'Inspection Methods',
+            count: inspectionMethods.length,
+          ),
+          SizedBox(height: 18.h),
+          if (inspectionMethods.isEmpty)
+            const _EmptyMessage(message: 'No inspection methods available')
+          else
+            ...List.generate(
+              inspectionMethods.length,
+              (index) => Padding(
+                padding: EdgeInsets.only(
+                  bottom: index == inspectionMethods.length - 1 ? 0 : 14.h,
+                ),
+                child: _InspectionMethodCard(
                   method: inspectionMethods[index],
                   index: index + 1,
                 ),
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }
@@ -47,32 +52,19 @@ class _SectionHeaderWithCount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: Text(
-            title,
-            style: AppTextStyles.h2(
-              context,
-            ).copyWith(fontWeight: FontWeight.w700),
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-          decoration: BoxDecoration(
-            color: ColorPalette.primary.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Text(
-            '$count',
-            style: AppTextStyles.base(context).copyWith(
-              color: ColorPalette.primary,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
-      ],
+    final scheduleTheme = context.scheduleTheme;
+
+    return ScheduleSectionTitle(
+      title: title,
+      trailing: ScheduleBadge(
+        label: '$count',
+        backgroundColor: scheduleTheme.countBadgeTone.background,
+        foregroundColor: scheduleTheme.countBadgeTone.foreground,
+        minWidth: 48.w,
+        minHeight: 48.h,
+        padding: EdgeInsets.zero,
+        radius: scheduleTheme.badgeRadius,
+      ),
     );
   }
 }
@@ -85,96 +77,59 @@ class _InspectionMethodCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: ColorPalette.white,
-        border: Border.all(color: Colors.grey.shade300),
-        borderRadius: BorderRadius.circular(8),
-      ),
+    final scheduleTheme = context.scheduleTheme;
+
+    return ScheduleDetailsCard(
+      padding: EdgeInsets.fromLTRB(24.w, 24.h, 24.w, 12.h),
+      boxShadow: const [],
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: ColorPalette.primary,
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Text(
-                  '#$index',
-                  style: AppTextStyles.label(context).copyWith(
-                    color: ColorPalette.white,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
+              ScheduleBadge(
+                label: '#$index',
+                backgroundColor: scheduleTheme.indexBadgeTone.background,
+                foregroundColor: scheduleTheme.indexBadgeTone.foreground,
+                minWidth: 52.w,
+                minHeight: 50.h,
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+                radius: scheduleTheme.detailCardRadius,
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 14.w),
               Expanded(
                 child: Text(
                   method.method?.value ?? 'N/A',
-                  style: AppTextStyles.base(
+                  style: ScheduleTextStyles.caption(
                     context,
-                  ).copyWith(fontWeight: FontWeight.w600),
+                  ).copyWith(fontWeight: FontWeight.w700),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
-          _MethodDetail(label: 'Location', value: method.location ?? 'N/A'),
-          _MethodDetail(
-            label: 'Special Access',
+          SizedBox(height: 20.h),
+          ScheduleInfoRow(label: 'Location:', value: method.location ?? 'N/A'),
+          ScheduleInfoRow(
+            label: 'Special Access:',
             value: method.specialAccess?.value ?? 'N/A',
           ),
-          _MethodDetail(
-            label: 'Insulation Removal',
+          ScheduleInfoRow(
+            label: 'Insulation Removal:',
             value: method.insulationRemoval?.value ?? 'N/A',
           ),
-          _MethodDetail(
-            label: 'Cleaning',
+          ScheduleInfoRow(
+            label: 'Cleaning:',
             value: method.cleaning?.value ?? 'N/A',
+            padding: EdgeInsets.only(
+              bottom: method.notes == null ? 16.h : 12.h,
+            ),
           ),
           if (method.notes != null && method.notes!.isNotEmpty)
-            _MethodDetail(label: 'Notes', value: method.notes!),
-        ],
-      ),
-    );
-  }
-}
-
-class _MethodDetail extends StatelessWidget {
-  final String label;
-  final String value;
-
-  const _MethodDetail({required this.label, required this.value});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 140,
-            child: Text(
-              label,
-              style: AppTextStyles.label(
-                context,
-              ).copyWith(color: Colors.grey.shade700),
+            ScheduleInfoRow(
+              label: 'Notes:',
+              value: method.notes!,
+              padding: EdgeInsets.only(bottom: 16.h),
             ),
-          ),
-          Expanded(
-            child: Text(
-              value,
-              style: AppTextStyles.label(
-                context,
-              ).copyWith(fontWeight: FontWeight.w500),
-            ),
-          ),
         ],
       ),
     );
@@ -190,10 +145,13 @@ class _EmptyMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.symmetric(vertical: 12.h),
         child: Text(
           message,
-          style: AppTextStyles.base(context).copyWith(color: Colors.grey),
+          style: ScheduleTextStyles.caption(
+            context,
+            color: context.scheduleTheme.secondaryText,
+          ),
         ),
       ),
     );

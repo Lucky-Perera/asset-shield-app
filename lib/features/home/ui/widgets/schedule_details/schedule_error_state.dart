@@ -33,9 +33,9 @@ class ScheduleErrorState extends StatelessWidget {
           if (!_isNotFoundError())
             Text(
               'Error loading scope details',
-              style: AppTextStyles.h2(
-                context,
-              ).copyWith(color: ColorPalette.error),
+              style: context.appTextTheme.titleMedium!.copyWith(
+                color: ColorPalette.error,
+              ),
             ),
           SizedBox(height: _isNotFoundError() ? 0 : 8),
           Padding(
@@ -43,7 +43,7 @@ class ScheduleErrorState extends StatelessWidget {
             child: Text(
               errorMessage,
               textAlign: TextAlign.center,
-              style: AppTextStyles.base(context).copyWith(
+              style: context.appTextTheme.bodyMedium!.copyWith(
                 color: _isNotFoundError() ? ColorPalette.textSecondary : null,
               ),
             ),

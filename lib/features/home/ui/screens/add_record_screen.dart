@@ -11,8 +11,9 @@ import 'package:asset_shield/features/home/data/providers/record_with_checklist_
 import 'package:asset_shield/features/home/data/providers/schedule_provider.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:asset_shield/core/routes/router.dart';
-import 'package:asset_shield/core/theme/app_text_styles.dart';
-import 'package:asset_shield/core/theme/color_palette.dart';
+import 'package:asset_shield/core/theme/app_typography.dart';
+import 'package:asset_shield/core/theme/schedule_styles.dart';
+import 'package:asset_shield/core/theme/schedule_theme.dart';
 import 'package:asset_shield/features/common/widgets/app_scaffold.dart';
 import 'package:asset_shield/features/common/widgets/form_date_field.dart';
 import 'package:asset_shield/features/common/widgets/form_multi_select_field.dart';
@@ -21,6 +22,7 @@ import 'package:asset_shield/features/common/widgets/reusable_button.dart';
 import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
 import 'package:asset_shield/features/home/ui/widgets/checklist/checklist_section.dart';
 import 'package:asset_shield/features/home/data/models/checklist_answer_data.dart';
+import 'package:asset_shield/features/home/ui/widgets/schedule_ui/schedule_surface.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -660,6 +662,13 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     }
   }
 
+  TextStyle _bottomBarButtonTextStyle(Color color) => AppTypography.style(
+    size: AppFontSizes.body,
+    weight: AppFontWeights.semiBold,
+    color: color,
+    height: 1.3,
+  );
+
   @override
   Widget build(BuildContext context) {
     final recordWithChecklistAsync = ref.watch(
@@ -675,6 +684,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
         recordStatus == RecordStatus.draft ||
         recordStatus == RecordStatus.rejected;
     final isReadOnly = hasSubmittedAnswers && !isEditable;
+    final scheduleTheme = context.scheduleTheme;
 
     // Determine AppBar title based on status
     String appBarTitle;
@@ -733,20 +743,15 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
         }
       },
       child: AppScaffold(
-        backgroundColor: ColorPalette.white,
-        appBar: AppBar(
-          backgroundColor: ColorPalette.white,
-          elevation: 0,
-          leading: IconButton(
-            icon: const Icon(Icons.close, color: ColorPalette.black),
-            onPressed: _handleClose,
+        backgroundColor: scheduleTheme.pageBackground,
+        appBar: SchedulePageAppBar(
+          title: appBarTitle,
+          titleStyle: ScheduleTextStyles.title(
+            context,
+            size: AppFontSizes.body,
           ),
-          title: Text(
-            appBarTitle,
-            style: AppTextStyles.h2(
-              context,
-            ).copyWith(fontWeight: FontWeight.w600),
-          ),
+          leadingIcon: Icons.close_rounded,
+          onLeadingPressed: _handleClose,
         ),
         body: GestureDetector(
           behavior: HitTestBehavior.opaque,
@@ -755,273 +760,242 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
             FocusScope.of(context).unfocus();
           },
           child: SafeArea(
+            top: false,
+            bottom: false,
             child: Form(
               key: _formKey,
-              child: Column(
-                children: [
-                  Expanded(
-                    child: SingleChildScrollView(
-                      padding: EdgeInsets.all(16.w),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          // Equipment Dropdown
-                          FormTextField(
-                            label: 'Equipment',
-                            hint: 'Enter equipment',
-                            controller: _equipmentController,
-                            enabled: false,
-                          ),
-                          SizedBox(height: 20.h),
-
-                          // Description Field
-                          FormTextField(
-                            label: 'Description',
-                            hint: 'Enter description',
-                            controller: _descriptionController,
-                            isRequired: !isReadOnly,
-                            enabled: !isReadOnly,
-                            maxLines: 4,
-                            minLines: 3,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter description';
+              child: SingleChildScrollView(
+                padding: EdgeInsets.fromLTRB(20.w, 12.h, 20.w, 32.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    FormTextField(
+                      label: 'Equipment',
+                      hint: 'Enter equipment',
+                      controller: _equipmentController,
+                      enabled: false,
+                    ),
+                    SizedBox(height: 20.h),
+                    FormTextField(
+                      label: 'Description',
+                      hint: 'Enter description',
+                      controller: _descriptionController,
+                      isRequired: !isReadOnly,
+                      enabled: !isReadOnly,
+                      maxLines: 4,
+                      minLines: 3,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter description';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 20.h),
+                    FormTextField(
+                      label: 'Schedule Item',
+                      hint: ' ',
+                      controller: _scheduleItemController,
+                      enabled: false,
+                    ),
+                    SizedBox(height: 20.h),
+                    FormDateField(
+                      label: 'Record created date',
+                      selectedDate: _recordCreatedDate,
+                      isRequired: !isReadOnly,
+                      readOnly: isReadOnly,
+                      onDateSelected: (date) {
+                        setState(() {
+                          _recordCreatedDate = date;
+                          _hasChange = true;
+                        });
+                        _scheduleSaveDraft();
+                      },
+                    ),
+                    SizedBox(height: 20.h),
+                    FormMultiSelectField<String>(
+                      label: 'Inspected components',
+                      hint: 'Select components',
+                      selectedValues: _selectedInspectedComponents,
+                      isRequired: !isReadOnly,
+                      items: _componentItems,
+                      itemLabel: (componentId) {
+                        final component = widget.schedule.components
+                            .firstWhere((sc) => sc.componentId == componentId)
+                            .component;
+                        return component.name;
+                      },
+                      onChanged: (values) {
+                        if (!isReadOnly) {
+                          setState(() {
+                            _selectedInspectedComponents = values;
+                            _hasChange = true;
+                          });
+                          _scheduleSaveDraft();
+                        }
+                      },
+                      validator: isReadOnly
+                          ? (_) => null
+                          : (values) {
+                              if (values == null || values.isEmpty) {
+                                return 'Please select at least one component';
                               }
                               return null;
                             },
-                          ),
-                          SizedBox(height: 20.h),
-
-                          // Credited Items Dropdown
-                          FormTextField(
-                            label: 'Schedule Item',
-                            hint: ' ',
-                            controller: _scheduleItemController,
-                            enabled: false,
-                          ),
-                          SizedBox(height: 20.h),
-
-                          // Record Created Date
-                          FormDateField(
-                            label: 'Record created date',
-                            selectedDate: _recordCreatedDate,
-                            isRequired: !isReadOnly,
-                            readOnly: isReadOnly,
-                            onDateSelected: (date) {
-                              setState(() {
-                                _recordCreatedDate = date;
-                                _hasChange = true;
-                              });
-                              _scheduleSaveDraft();
-                            },
-                          ),
-                          SizedBox(height: 20.h),
-
-                          // Inspected Components Multi-Select
-                          FormMultiSelectField<String>(
-                            label: 'Inspected components',
-                            hint: 'Select components',
-                            selectedValues: _selectedInspectedComponents,
-                            isRequired: !isReadOnly,
-                            items: _componentItems,
-                            itemLabel: (componentId) {
-                              // Find the component name by ID
-                              final component = widget.schedule.components
-                                  .firstWhere(
-                                    (sc) => sc.componentId == componentId,
-                                  )
-                                  .component;
-                              return component.name;
-                            },
-                            onChanged: (values) {
-                              if (!isReadOnly) {
-                                setState(() {
-                                  _selectedInspectedComponents = values;
-                                  _hasChange = true;
-                                });
-                                _scheduleSaveDraft();
-                              }
-                            },
-                            validator: isReadOnly
-                                ? (_) => null
-                                : (values) {
-                                    if (values == null || values.isEmpty) {
-                                      return 'Please select at least one component';
-                                    }
-                                    return null;
-                                  },
-                            readOnly: isReadOnly,
-                          ),
-                          SizedBox(height: 20.h),
-
-                          // Schedule Type Dropdown
-                          FormTextField(
-                            label: 'Schedule Type',
-                            hint: ' ',
-                            controller: _scheduleTypeController,
-                            enabled: false,
-                          ),
-                          SizedBox(height: 20.h),
-
-                          // Inspection Date
-                          FormDateField(
-                            label: 'Inspection Date',
-                            selectedDate: _inspectionDate,
-                            isRequired: !isReadOnly,
-                            readOnly: isReadOnly,
-                            onDateSelected: (date) {
-                              setState(() {
-                                _inspectionDate = date;
-                                _hasChange = true;
-                              });
-                              _scheduleSaveDraft();
-                            },
-                          ),
-                          SizedBox(height: 20.h),
-
-                          // Action Created Field
-                          FormTextField(
-                            label: 'Action Created',
-                            hint: 'Enter action created',
-                            controller: _actionCreatedController,
-                            isRequired: !isReadOnly,
-                            enabled: !isReadOnly,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter action created';
-                              }
-                              return null;
-                            },
-                          ),
-                          SizedBox(height: 20.h),
-
-                          // Comments Field
-                          FormTextField(
-                            label: 'Comments',
-                            hint: 'Enter comments',
-                            controller: _commentsController,
-                            maxLines: 4,
-                            enabled: !isReadOnly,
-                            minLines: 3,
-                          ),
-                          SizedBox(height: 12.h),
-
-                          // Checklist Sections (Internal / External)
-                          if (widget
-                              .schedule
-                              .checklistQuestionTemplates
-                              .isNotEmpty) ...[
-                            Text(
-                              'Checklist',
-                              style: AppTextStyles.h2(
-                                context,
-                              ).copyWith(fontWeight: FontWeight.w600),
-                            ),
-                            SizedBox(height: 8.h),
-                            recordWithChecklistAsync.isLoading
-                                ? Center(
-                                    child: Padding(
-                                      padding: EdgeInsets.all(24.h),
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                  )
-                                : ChecklistSections(
-                                    questions: widget
-                                        .schedule
-                                        .checklistQuestionTemplates,
-                                    onAnswerChanged: isReadOnly
-                                        ? null
-                                        : _handleChecklistAnswerChanged,
-                                    onAttachmentUploaded: isReadOnly
-                                        ? null
-                                        : _handleAttachmentUploaded,
-                                    onAttachmentDeleted: isReadOnly
-                                        ? null
-                                        : _handleAttachmentDeleted,
-                                    readOnly: isReadOnly,
-                                    initialValues: initialValues,
-                                    questionAttachments: questionAttachments,
-                                    uploadedAttachmentMetadata:
-                                        _questionAttachmentMetadata,
-                                    scheduleV2Id: widget.schedule.id,
-                                    equipmentId: widget.schedule.equipmentId,
-                                  ),
-                            SizedBox(height: 24.h),
-                          ],
-                        ],
+                      readOnly: isReadOnly,
+                    ),
+                    SizedBox(height: 20.h),
+                    FormTextField(
+                      label: 'Schedule Type',
+                      hint: ' ',
+                      controller: _scheduleTypeController,
+                      enabled: false,
+                    ),
+                    SizedBox(height: 20.h),
+                    FormDateField(
+                      label: 'Inspection Date',
+                      selectedDate: _inspectionDate,
+                      isRequired: !isReadOnly,
+                      readOnly: isReadOnly,
+                      onDateSelected: (date) {
+                        setState(() {
+                          _inspectionDate = date;
+                          _hasChange = true;
+                        });
+                        _scheduleSaveDraft();
+                      },
+                    ),
+                    SizedBox(height: 20.h),
+                    FormTextField(
+                      label: 'Action Created',
+                      hint: 'Enter action created',
+                      controller: _actionCreatedController,
+                      isRequired: !isReadOnly,
+                      enabled: !isReadOnly,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter action created';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 20.h),
+                    FormTextField(
+                      label: 'Comments',
+                      hint: 'Enter comments',
+                      controller: _commentsController,
+                      maxLines: 4,
+                      enabled: !isReadOnly,
+                      minLines: 3,
+                    ),
+                    SizedBox(height: 16.h),
+                    if (widget
+                        .schedule
+                        .checklistQuestionTemplates
+                        .isNotEmpty) ...[
+                      Text(
+                        'Checklist',
+                        style: ScheduleTextStyles.title(
+                          context,
+                          size: AppFontSizes.caption,
+                        ),
                       ),
-                    ),
-                  ),
-
-                  // Bottom Action Buttons
-                  Container(
-                    padding: EdgeInsets.all(16.w),
-                    decoration: BoxDecoration(
-                      color: ColorPalette.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: ColorPalette.black.withValues(alpha: 0.1),
-                          blurRadius: 4,
-                          offset: const Offset(0, -2),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: ReusableButton(
-                            text: 'Close',
-                            onPressed: _handleClose,
-                            backgroundColor: ColorPalette.white,
-                            textStyle: TextStyle(
-                              color: ColorPalette.black,
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 12.w),
-                        if (!hasSubmittedAnswers || isEditable) ...[
-                          Expanded(
-                            child: ReusableButton(
-                              text: 'Draft',
-                              onPressed: _handleSaveDraft,
-                              backgroundColor: ColorPalette.grey300,
-                              textStyle: TextStyle(
-                                color: ColorPalette.black,
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w600,
+                      SizedBox(height: 14.h),
+                      recordWithChecklistAsync.isLoading
+                          ? Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(24.h),
+                                child: CircularProgressIndicator(
+                                  color: scheduleTheme.icon,
+                                ),
                               ),
+                            )
+                          : ChecklistSections(
+                              questions:
+                                  widget.schedule.checklistQuestionTemplates,
+                              onAnswerChanged: isReadOnly
+                                  ? null
+                                  : _handleChecklistAnswerChanged,
+                              onAttachmentUploaded: isReadOnly
+                                  ? null
+                                  : _handleAttachmentUploaded,
+                              onAttachmentDeleted: isReadOnly
+                                  ? null
+                                  : _handleAttachmentDeleted,
+                              readOnly: isReadOnly,
+                              initialValues: initialValues,
+                              questionAttachments: questionAttachments,
+                              uploadedAttachmentMetadata:
+                                  _questionAttachmentMetadata,
+                              scheduleV2Id: widget.schedule.id,
+                              equipmentId: widget.schedule.equipmentId,
                             ),
-                          ),
-                          SizedBox(width: 12.w),
-                        ],
-                        Expanded(
-                          child: ReusableButton(
-                            text: recordStatus == RecordStatus.rejected
-                                ? 'Resubmit'
-                                : 'Submit',
-                            textStyle: TextStyle(
-                              color: ColorPalette.white,
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w600,
-                            ),
-                            onPressed: (hasSubmittedAnswers && !isEditable)
-                                ? null
-                                : _handleCreate,
-                            backgroundColor:
-                                (hasSubmittedAnswers && !isEditable)
-                                ? ColorPalette.black.withValues(alpha: 0.3)
-                                : ColorPalette.black,
-                            height: 48.h,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                      SizedBox(height: 24.h),
+                    ],
+                  ],
+                ),
               ),
             ),
+          ),
+        ),
+        bottomNavigationBar: ScheduleBottomBar(
+          child: Row(
+            children: [
+              Expanded(
+                child: ReusableButton(
+                  text: 'Close',
+                  onPressed: _handleClose,
+                  height: 52.h,
+                  borderRadius: 14.r,
+                  backgroundColor: scheduleTheme.cardBackground,
+                  foregroundColor: scheduleTheme.ghostButtonText,
+                  borderColor: scheduleTheme.cardBorder,
+                  textStyle: _bottomBarButtonTextStyle(
+                    scheduleTheme.ghostButtonText,
+                  ),
+                ),
+              ),
+              SizedBox(width: 12.w),
+              if (!hasSubmittedAnswers || isEditable) ...[
+                Expanded(
+                  child: ReusableButton(
+                    text: 'Draft',
+                    onPressed: _handleSaveDraft,
+                    height: 52.h,
+                    borderRadius: 14.r,
+                    backgroundColor: scheduleTheme.draftButtonBackground,
+                    foregroundColor: scheduleTheme.draftButtonText,
+                    textStyle: _bottomBarButtonTextStyle(
+                      scheduleTheme.draftButtonText,
+                    ),
+                  ),
+                ),
+                SizedBox(width: 12.w),
+              ],
+              Expanded(
+                child: ReusableButton(
+                  text: recordStatus == RecordStatus.rejected
+                      ? 'Resubmit'
+                      : 'Submit',
+                  onPressed: (hasSubmittedAnswers && !isEditable)
+                      ? null
+                      : _handleCreate,
+                  height: 52.h,
+                  borderRadius: 14.r,
+                  backgroundColor: (hasSubmittedAnswers && !isEditable)
+                      ? scheduleTheme.draftButtonBackground
+                      : scheduleTheme.paginationActive,
+                  foregroundColor: (hasSubmittedAnswers && !isEditable)
+                      ? scheduleTheme.draftButtonText
+                      : scheduleTheme.cardBackground,
+                  textStyle: _bottomBarButtonTextStyle(
+                    (hasSubmittedAnswers && !isEditable)
+                        ? scheduleTheme.draftButtonText
+                        : scheduleTheme.cardBackground,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
