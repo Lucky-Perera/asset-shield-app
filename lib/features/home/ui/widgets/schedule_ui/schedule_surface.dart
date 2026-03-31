@@ -4,6 +4,8 @@ import 'package:asset_shield/core/theme/schedule_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+enum ScheduleBadgeVariant { standard, sectionCount, detailIndex, detailTone }
+
 class SchedulePageAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   final String title;
@@ -123,8 +125,9 @@ class ScheduleBadge extends StatelessWidget {
   final String label;
   final Color backgroundColor;
   final Color foregroundColor;
+  final ScheduleBadgeVariant variant;
   final EdgeInsetsGeometry? padding;
-  final double radius;
+  final double? radius;
   final double? minWidth;
   final double? minHeight;
   final FontWeight fontWeight;
@@ -134,8 +137,9 @@ class ScheduleBadge extends StatelessWidget {
     required this.label,
     required this.backgroundColor,
     required this.foregroundColor,
+    this.variant = ScheduleBadgeVariant.standard,
     this.padding,
-    this.radius = ScheduleRadii.badge,
+    this.radius,
     this.minWidth,
     this.minHeight,
     this.fontWeight = FontWeight.w600,
@@ -143,16 +147,17 @@ class ScheduleBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final style = _styleForVariant(context);
+
     return Container(
       constraints: BoxConstraints(
-        minWidth: minWidth ?? 0,
-        minHeight: minHeight ?? 0,
+        minWidth: minWidth ?? style.minWidth,
+        minHeight: minHeight ?? style.minHeight,
       ),
-      padding:
-          padding ?? EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
+      padding: padding ?? style.padding,
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(radius.r),
+        borderRadius: BorderRadius.circular((radius ?? style.radius).r),
       ),
       alignment: Alignment.center,
       child: Text(
@@ -164,6 +169,54 @@ class ScheduleBadge extends StatelessWidget {
       ),
     );
   }
+
+  _ScheduleBadgeStyle _styleForVariant(BuildContext context) {
+    final scheduleTheme = context.scheduleTheme;
+
+    switch (variant) {
+      case ScheduleBadgeVariant.sectionCount:
+        return _squareBadgeStyle(radius: scheduleTheme.badgeRadius);
+      case ScheduleBadgeVariant.detailIndex:
+        return _squareBadgeStyle(radius: scheduleTheme.detailCardRadius);
+      case ScheduleBadgeVariant.detailTone:
+        return _ScheduleBadgeStyle(
+          minWidth: 0,
+          minHeight: 36.h,
+          padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 8.h),
+          radius: scheduleTheme.detailCardRadius,
+        );
+      case ScheduleBadgeVariant.standard:
+        return _ScheduleBadgeStyle(
+          minWidth: 0,
+          minHeight: 0,
+          padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
+          radius: ScheduleRadii.badge,
+        );
+    }
+  }
+
+  _ScheduleBadgeStyle _squareBadgeStyle({required double radius}) {
+    return _ScheduleBadgeStyle(
+      minWidth: 40.w,
+      minHeight: 40.h,
+      padding: EdgeInsets.zero,
+      radius: radius,
+    );
+  }
+}
+
+class _ScheduleBadgeStyle {
+  final double minWidth;
+  final double minHeight;
+  final EdgeInsetsGeometry padding;
+  final double radius;
+
+  const _ScheduleBadgeStyle({
+    required this.minWidth,
+    required this.minHeight,
+    required this.padding,
+    required this.radius,
+  });
 }
 
 class ScheduleInfoRow extends StatelessWidget {

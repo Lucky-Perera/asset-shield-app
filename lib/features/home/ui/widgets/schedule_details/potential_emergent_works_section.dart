@@ -1,4 +1,3 @@
-import 'package:asset_shield/core/theme/app_tokens.dart';
 import 'package:asset_shield/core/theme/schedule_styles.dart';
 import 'package:asset_shield/core/theme/schedule_theme.dart';
 import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
@@ -64,10 +63,7 @@ class _SectionHeaderWithCount extends StatelessWidget {
         label: '$count',
         backgroundColor: scheduleTheme.countBadgeTone.background,
         foregroundColor: scheduleTheme.countBadgeTone.foreground,
-        minWidth: AppSizes.badgeHeight.w,
-        minHeight: AppSizes.badgeHeight.h,
-        padding: EdgeInsets.zero,
-        radius: scheduleTheme.badgeRadius,
+        variant: ScheduleBadgeVariant.sectionCount,
       ),
     );
   }
@@ -97,10 +93,7 @@ class _EmergentWorkCard extends StatelessWidget {
                 label: '#$index',
                 backgroundColor: scheduleTheme.rejectedTone.background,
                 foregroundColor: scheduleTheme.rejectedTone.foreground,
-                minWidth: 52.w,
-                minHeight: AppSizes.dialogBadgeHeight.h,
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
-                radius: scheduleTheme.detailCardRadius,
+                variant: ScheduleBadgeVariant.detailIndex,
               ),
               SizedBox(width: 14.w),
               Expanded(
@@ -123,8 +116,7 @@ class _EmergentWorkCard extends StatelessWidget {
                 label: likelihoodValue,
                 backgroundColor: likelihoodTone.background,
                 foregroundColor: likelihoodTone.foreground,
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-                radius: scheduleTheme.detailCardRadius,
+                variant: ScheduleBadgeVariant.detailTone,
               ),
             ],
           ),

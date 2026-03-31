@@ -60,10 +60,7 @@ class _SectionHeaderWithCount extends StatelessWidget {
         label: '$count',
         backgroundColor: scheduleTheme.countBadgeTone.background,
         foregroundColor: scheduleTheme.countBadgeTone.foreground,
-        minWidth: 48.w,
-        minHeight: 48.h,
-        padding: EdgeInsets.zero,
-        radius: scheduleTheme.badgeRadius,
+        variant: ScheduleBadgeVariant.sectionCount,
       ),
     );
   }
@@ -91,10 +88,7 @@ class _InspectionMethodCard extends StatelessWidget {
                 label: '#$index',
                 backgroundColor: scheduleTheme.indexBadgeTone.background,
                 foregroundColor: scheduleTheme.indexBadgeTone.foreground,
-                minWidth: 52.w,
-                minHeight: 50.h,
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
-                radius: scheduleTheme.detailCardRadius,
+                variant: ScheduleBadgeVariant.detailIndex,
               ),
               SizedBox(width: 14.w),
               Expanded(
