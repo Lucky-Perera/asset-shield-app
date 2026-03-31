@@ -34,7 +34,7 @@ _RecordResponse _$RecordResponseFromJson(Map<String, dynamic> json) =>
           : DateTime.parse(json['inspectionDate'] as String),
       actionCreated: json['actionCreated'] as String?,
       attachments: (json['attachments'] as List<dynamic>?)
-          ?.map((e) => e as Map<String, dynamic>)
+          ?.map((e) => AttachmentV2.fromJson(e as Map<String, dynamic>))
           .toList(),
       comments: json['comments'] as String?,
       rejectionReason: json['rejectionReason'] as String?,
@@ -51,6 +51,15 @@ _RecordResponse _$RecordResponseFromJson(Map<String, dynamic> json) =>
       submittedById: json['submittedById'] as String?,
       reviewedById: json['reviewedById'] as String?,
       approvedById: json['approvedById'] as String?,
+      submittedBy: json['submittedBy'] == null
+          ? null
+          : User.fromJson(json['submittedBy'] as Map<String, dynamic>),
+      reviewedBy: json['reviewedBy'] == null
+          ? null
+          : User.fromJson(json['reviewedBy'] as Map<String, dynamic>),
+      approvedBy: json['approvedBy'] == null
+          ? null
+          : User.fromJson(json['approvedBy'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$RecordResponseToJson(_RecordResponse instance) =>
@@ -80,6 +89,9 @@ Map<String, dynamic> _$RecordResponseToJson(_RecordResponse instance) =>
       'submittedById': instance.submittedById,
       'reviewedById': instance.reviewedById,
       'approvedById': instance.approvedById,
+      'submittedBy': instance.submittedBy,
+      'reviewedBy': instance.reviewedBy,
+      'approvedBy': instance.approvedBy,
     };
 
 const _$RecordStatusEnumMap = {

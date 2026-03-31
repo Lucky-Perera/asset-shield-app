@@ -50,7 +50,7 @@ _ScheduleV2Response _$ScheduleV2ResponseFromJson(
 ) => _ScheduleV2Response(
   id: json['id'] as String,
   scheduleName: json['scheduleName'] as String,
-  status: json['status'] as String,
+  status: $enumDecode(_$ScheduleV2StatusEnumMap, json['status']),
   description: json['description'] as String,
   createdAt: DateTime.parse(json['createdAt'] as String),
   updatedAt: DateTime.parse(json['updatedAt'] as String),
@@ -118,7 +118,7 @@ Map<String, dynamic> _$ScheduleV2ResponseToJson(_ScheduleV2Response instance) =>
     <String, dynamic>{
       'id': instance.id,
       'scheduleName': instance.scheduleName,
-      'status': instance.status,
+      'status': _$ScheduleV2StatusEnumMap[instance.status]!,
       'description': instance.description,
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt.toIso8601String(),
@@ -152,11 +152,18 @@ Map<String, dynamic> _$ScheduleV2ResponseToJson(_ScheduleV2Response instance) =>
       'record': instance.record,
     };
 
+const _$ScheduleV2StatusEnumMap = {
+  ScheduleV2Status.draft: 'Draft',
+  ScheduleV2Status.published: 'Published',
+  ScheduleV2Status.underReview: 'UnderReview',
+  ScheduleV2Status.approved: 'Approved',
+};
+
 _User _$UserFromJson(Map<String, dynamic> json) => _User(
   id: json['id'] as String,
   createdAt: DateTime.parse(json['createdAt'] as String),
   updatedAt: DateTime.parse(json['updatedAt'] as String),
-  role: json['role'] as String,
+  role: $enumDecode(_$RoleEnumMap, json['role']),
   title: json['title'] as String,
   name: json['name'] as String,
   email: json['email'] as String,
@@ -168,12 +175,19 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'id': instance.id,
   'createdAt': instance.createdAt.toIso8601String(),
   'updatedAt': instance.updatedAt.toIso8601String(),
-  'role': instance.role,
+  'role': _$RoleEnumMap[instance.role]!,
   'title': instance.title,
   'name': instance.name,
   'email': instance.email,
   'password': instance.password,
   'isDeleted': instance.isDeleted,
+};
+
+const _$RoleEnumMap = {
+  Role.superAdmin: 'SuperAdmin',
+  Role.admin: 'Admin',
+  Role.integrityEngineer: 'IntegrityEngineer',
+  Role.technician: 'Technician',
 };
 
 _Equipment _$EquipmentFromJson(Map<String, dynamic> json) => _Equipment(
@@ -206,7 +220,7 @@ _ReferenceData _$ReferenceDataFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
-      category: json['category'] as String,
+      category: $enumDecode(_$RefDataCategoryEnumMap, json['category']),
       value: json['value'] as String,
       displayValue: json['displayValue'] as String?,
     );
@@ -216,16 +230,54 @@ Map<String, dynamic> _$ReferenceDataToJson(_ReferenceData instance) =>
       'id': instance.id,
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt.toIso8601String(),
-      'category': instance.category,
+      'category': _$RefDataCategoryEnumMap[instance.category]!,
       'value': instance.value,
       'displayValue': instance.displayValue,
     };
+
+const _$RefDataCategoryEnumMap = {
+  RefDataCategory.material: 'Material',
+  RefDataCategory.damageMechanism: 'DamageMechanism',
+  RefDataCategory.scheduleType: 'ScheduleType',
+  RefDataCategory.scheduleStatus: 'ScheduleStatus',
+  RefDataCategory.operation: 'Operation',
+  RefDataCategory.component: 'Component',
+  RefDataCategory.componentFamily: 'ComponentFamily',
+  RefDataCategory.areaHumidity: 'AreaHumidity',
+  RefDataCategory.foundationType: 'FoundationType',
+  RefDataCategory.initialFluidPhase: 'InitialFluidPhase',
+  RefDataCategory.processFluid: 'ProcessFluid',
+  RefDataCategory.toxicFluid: 'ToxicFluid',
+  RefDataCategory.stressLookupTable: 'StressLookupTable',
+  RefDataCategory.weldJointEffy: 'WeldJointEffy',
+  RefDataCategory.insulationType: 'InsulationType',
+  RefDataCategory.isEntryPossible: 'IsEntryPossible',
+  RefDataCategory.internalCorrosionType: 'InternalCorrosionType',
+  RefDataCategory.calculatedCorrosionRateSource:
+      'CalculatedCorrosionRateSource',
+  RefDataCategory.onlineMonitoringFlag: 'OnlineMonitoringFlag',
+  RefDataCategory.keyProcessVariable: 'KeyProcessVariable',
+  RefDataCategory.electricalResistanceProbe: 'ElectricalResistanceProbe',
+  RefDataCategory.corrosionCoupons: 'CorrosionCoupons',
+  RefDataCategory.linerCondition: 'LinerCondition',
+  RefDataCategory.immersionGradeCoatingQuality: 'ImmersionGradeCoatingQuality',
+  RefDataCategory.inspectionMethod: 'InspectionMethod',
+  RefDataCategory.specialAccess: 'SpecialAccess',
+  RefDataCategory.insulationRemoval: 'InsulationRemoval',
+  RefDataCategory.cleaning: 'Cleaning',
+  RefDataCategory.potentialEmergentWork: 'PotentialEmergentWork',
+  RefDataCategory.likelihood: 'Likelihood',
+  RefDataCategory.unknown: 'Unknown',
+};
 
 _ChecklistQuestionTemplate _$ChecklistQuestionTemplateFromJson(
   Map<String, dynamic> json,
 ) => _ChecklistQuestionTemplate(
   id: json['id'] as String,
-  inspectionType: json['inspectionType'] as String?,
+  inspectionType: $enumDecodeNullable(
+    _$InspectionTypeEnumMap,
+    json['inspectionType'],
+  ),
   question: json['question'] as String,
   helpText: json['helpText'] as String?,
   responseType: $enumDecode(_$ResponseTypeEnumMap, json['responseType']),
@@ -242,7 +294,7 @@ Map<String, dynamic> _$ChecklistQuestionTemplateToJson(
   _ChecklistQuestionTemplate instance,
 ) => <String, dynamic>{
   'id': instance.id,
-  'inspectionType': instance.inspectionType,
+  'inspectionType': _$InspectionTypeEnumMap[instance.inspectionType],
   'question': instance.question,
   'helpText': instance.helpText,
   'responseType': _$ResponseTypeEnumMap[instance.responseType]!,
@@ -251,9 +303,15 @@ Map<String, dynamic> _$ChecklistQuestionTemplateToJson(
   'checklistAnswer': instance.checklistAnswer,
 };
 
+const _$InspectionTypeEnumMap = {
+  InspectionType.internal: 'INTERNAL',
+  InspectionType.external: 'EXTERNAL',
+};
+
 const _$ResponseTypeEnumMap = {
   ResponseType.goodFairPoorNA: 'GoodFairPoorNA',
   ResponseType.yesNo: 'YesNo',
+  ResponseType.customOptions: 'CustomOptions',
 };
 
 _ChecklistAnswer _$ChecklistAnswerFromJson(Map<String, dynamic> json) =>
@@ -329,13 +387,33 @@ _RecordV2Response _$RecordV2ResponseFromJson(Map<String, dynamic> json) =>
       inspectionDate: DateTime.parse(json['inspectionDate'] as String),
       actionCreated: json['actionCreated'] as String,
       comments: json['comments'] as String?,
+      rejectionReason: json['rejectionReason'] as String?,
+      approvedAt: json['approvedAt'] == null
+          ? null
+          : DateTime.parse(json['approvedAt'] as String),
+      reviewedAt: json['reviewedAt'] == null
+          ? null
+          : DateTime.parse(json['reviewedAt'] as String),
       isDeleted: json['isDeleted'] as bool?,
       scheduleId: json['scheduleId'] as String,
       referenceDataId: json['referenceDataId'] as String?,
       equipmentId: json['equipmentId'] as String,
       scheduleTypeId: json['scheduleTypeId'] as String,
       submittedById: json['submittedById'] as String?,
+      reviewedById: json['reviewedById'] as String?,
       approvedById: json['approvedById'] as String?,
+      submittedBy: json['submittedBy'] == null
+          ? null
+          : User.fromJson(json['submittedBy'] as Map<String, dynamic>),
+      reviewedBy: json['reviewedBy'] == null
+          ? null
+          : User.fromJson(json['reviewedBy'] as Map<String, dynamic>),
+      approvedBy: json['approvedBy'] == null
+          ? null
+          : User.fromJson(json['approvedBy'] as Map<String, dynamic>),
+      attachments: (json['attachments'] as List<dynamic>?)
+          ?.map((e) => AttachmentV2.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$RecordV2ResponseToJson(_RecordV2Response instance) =>
@@ -349,13 +427,21 @@ Map<String, dynamic> _$RecordV2ResponseToJson(_RecordV2Response instance) =>
       'inspectionDate': instance.inspectionDate.toIso8601String(),
       'actionCreated': instance.actionCreated,
       'comments': instance.comments,
+      'rejectionReason': instance.rejectionReason,
+      'approvedAt': instance.approvedAt?.toIso8601String(),
+      'reviewedAt': instance.reviewedAt?.toIso8601String(),
       'isDeleted': instance.isDeleted,
       'scheduleId': instance.scheduleId,
       'referenceDataId': instance.referenceDataId,
       'equipmentId': instance.equipmentId,
       'scheduleTypeId': instance.scheduleTypeId,
       'submittedById': instance.submittedById,
+      'reviewedById': instance.reviewedById,
       'approvedById': instance.approvedById,
+      'submittedBy': instance.submittedBy,
+      'reviewedBy': instance.reviewedBy,
+      'approvedBy': instance.approvedBy,
+      'attachments': instance.attachments,
     };
 
 const _$RecordStatusEnumMap = {

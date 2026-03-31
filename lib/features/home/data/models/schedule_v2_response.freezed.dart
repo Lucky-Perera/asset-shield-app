@@ -861,7 +861,7 @@ as int,
 /// @nodoc
 mixin _$ScheduleV2Response {
 
- String get id; String get scheduleName; String get status; String get description; DateTime get createdAt; DateTime get updatedAt; DateTime get dueDate; DateTime? get inspectionDate; bool get isRBISchedule; bool get isRecurring; int? get inspectionInterval; String? get damageMechanism; String? get inspectionEffectiveness; String? get aiSummary; String? get comments; bool get isDeleted; String get scheduleTypeId; String get operationId; String get equipmentId; String get createdById; String? get approvedById; String? get reviewedById; List<AttachmentV2> get attachments; List<ChecklistQuestionTemplate> get checklistQuestionTemplates; List<InspectionMethodV2> get inspectionMethods; List<PotentialEmergentWorkV2> get potentialEmergentWorks; List<ScheduleComponent> get components; User? get approvedBy; User? get createdBy; User? get reviewedBy; Equipment? get equipment; ReferenceData? get operation; ReferenceData? get scheduleType; RecordV2Response? get record;
+ String get id; String get scheduleName; ScheduleV2Status get status; String get description; DateTime get createdAt; DateTime get updatedAt; DateTime get dueDate; DateTime? get inspectionDate; bool get isRBISchedule; bool get isRecurring; int? get inspectionInterval; String? get damageMechanism; String? get inspectionEffectiveness; String? get aiSummary; String? get comments; bool get isDeleted; String get scheduleTypeId; String get operationId; String get equipmentId; String get createdById; String? get approvedById; String? get reviewedById; List<AttachmentV2> get attachments; List<ChecklistQuestionTemplate> get checklistQuestionTemplates; List<InspectionMethodV2> get inspectionMethods; List<PotentialEmergentWorkV2> get potentialEmergentWorks; List<ScheduleComponent> get components; User? get approvedBy; User? get createdBy; User? get reviewedBy; Equipment? get equipment; ReferenceData? get operation; ReferenceData? get scheduleType; RecordV2Response? get record;
 /// Create a copy of ScheduleV2Response
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -894,7 +894,7 @@ abstract mixin class $ScheduleV2ResponseCopyWith<$Res>  {
   factory $ScheduleV2ResponseCopyWith(ScheduleV2Response value, $Res Function(ScheduleV2Response) _then) = _$ScheduleV2ResponseCopyWithImpl;
 @useResult
 $Res call({
- String id, String scheduleName, String status, String description, DateTime createdAt, DateTime updatedAt, DateTime dueDate, DateTime? inspectionDate, bool isRBISchedule, bool isRecurring, int? inspectionInterval, String? damageMechanism, String? inspectionEffectiveness, String? aiSummary, String? comments, bool isDeleted, String scheduleTypeId, String operationId, String equipmentId, String createdById, String? approvedById, String? reviewedById, List<AttachmentV2> attachments, List<ChecklistQuestionTemplate> checklistQuestionTemplates, List<InspectionMethodV2> inspectionMethods, List<PotentialEmergentWorkV2> potentialEmergentWorks, List<ScheduleComponent> components, User? approvedBy, User? createdBy, User? reviewedBy, Equipment? equipment, ReferenceData? operation, ReferenceData? scheduleType, RecordV2Response? record
+ String id, String scheduleName, ScheduleV2Status status, String description, DateTime createdAt, DateTime updatedAt, DateTime dueDate, DateTime? inspectionDate, bool isRBISchedule, bool isRecurring, int? inspectionInterval, String? damageMechanism, String? inspectionEffectiveness, String? aiSummary, String? comments, bool isDeleted, String scheduleTypeId, String operationId, String equipmentId, String createdById, String? approvedById, String? reviewedById, List<AttachmentV2> attachments, List<ChecklistQuestionTemplate> checklistQuestionTemplates, List<InspectionMethodV2> inspectionMethods, List<PotentialEmergentWorkV2> potentialEmergentWorks, List<ScheduleComponent> components, User? approvedBy, User? createdBy, User? reviewedBy, Equipment? equipment, ReferenceData? operation, ReferenceData? scheduleType, RecordV2Response? record
 });
 
 
@@ -916,7 +916,7 @@ class _$ScheduleV2ResponseCopyWithImpl<$Res>
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,scheduleName: null == scheduleName ? _self.scheduleName : scheduleName // ignore: cast_nullable_to_non_nullable
 as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as ScheduleV2Status,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,dueDate: null == dueDate ? _self.dueDate : dueDate // ignore: cast_nullable_to_non_nullable
@@ -1116,7 +1116,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String scheduleName,  String status,  String description,  DateTime createdAt,  DateTime updatedAt,  DateTime dueDate,  DateTime? inspectionDate,  bool isRBISchedule,  bool isRecurring,  int? inspectionInterval,  String? damageMechanism,  String? inspectionEffectiveness,  String? aiSummary,  String? comments,  bool isDeleted,  String scheduleTypeId,  String operationId,  String equipmentId,  String createdById,  String? approvedById,  String? reviewedById,  List<AttachmentV2> attachments,  List<ChecklistQuestionTemplate> checklistQuestionTemplates,  List<InspectionMethodV2> inspectionMethods,  List<PotentialEmergentWorkV2> potentialEmergentWorks,  List<ScheduleComponent> components,  User? approvedBy,  User? createdBy,  User? reviewedBy,  Equipment? equipment,  ReferenceData? operation,  ReferenceData? scheduleType,  RecordV2Response? record)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String scheduleName,  ScheduleV2Status status,  String description,  DateTime createdAt,  DateTime updatedAt,  DateTime dueDate,  DateTime? inspectionDate,  bool isRBISchedule,  bool isRecurring,  int? inspectionInterval,  String? damageMechanism,  String? inspectionEffectiveness,  String? aiSummary,  String? comments,  bool isDeleted,  String scheduleTypeId,  String operationId,  String equipmentId,  String createdById,  String? approvedById,  String? reviewedById,  List<AttachmentV2> attachments,  List<ChecklistQuestionTemplate> checklistQuestionTemplates,  List<InspectionMethodV2> inspectionMethods,  List<PotentialEmergentWorkV2> potentialEmergentWorks,  List<ScheduleComponent> components,  User? approvedBy,  User? createdBy,  User? reviewedBy,  Equipment? equipment,  ReferenceData? operation,  ReferenceData? scheduleType,  RecordV2Response? record)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ScheduleV2Response() when $default != null:
 return $default(_that.id,_that.scheduleName,_that.status,_that.description,_that.createdAt,_that.updatedAt,_that.dueDate,_that.inspectionDate,_that.isRBISchedule,_that.isRecurring,_that.inspectionInterval,_that.damageMechanism,_that.inspectionEffectiveness,_that.aiSummary,_that.comments,_that.isDeleted,_that.scheduleTypeId,_that.operationId,_that.equipmentId,_that.createdById,_that.approvedById,_that.reviewedById,_that.attachments,_that.checklistQuestionTemplates,_that.inspectionMethods,_that.potentialEmergentWorks,_that.components,_that.approvedBy,_that.createdBy,_that.reviewedBy,_that.equipment,_that.operation,_that.scheduleType,_that.record);case _:
@@ -1137,7 +1137,7 @@ return $default(_that.id,_that.scheduleName,_that.status,_that.description,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String scheduleName,  String status,  String description,  DateTime createdAt,  DateTime updatedAt,  DateTime dueDate,  DateTime? inspectionDate,  bool isRBISchedule,  bool isRecurring,  int? inspectionInterval,  String? damageMechanism,  String? inspectionEffectiveness,  String? aiSummary,  String? comments,  bool isDeleted,  String scheduleTypeId,  String operationId,  String equipmentId,  String createdById,  String? approvedById,  String? reviewedById,  List<AttachmentV2> attachments,  List<ChecklistQuestionTemplate> checklistQuestionTemplates,  List<InspectionMethodV2> inspectionMethods,  List<PotentialEmergentWorkV2> potentialEmergentWorks,  List<ScheduleComponent> components,  User? approvedBy,  User? createdBy,  User? reviewedBy,  Equipment? equipment,  ReferenceData? operation,  ReferenceData? scheduleType,  RecordV2Response? record)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String scheduleName,  ScheduleV2Status status,  String description,  DateTime createdAt,  DateTime updatedAt,  DateTime dueDate,  DateTime? inspectionDate,  bool isRBISchedule,  bool isRecurring,  int? inspectionInterval,  String? damageMechanism,  String? inspectionEffectiveness,  String? aiSummary,  String? comments,  bool isDeleted,  String scheduleTypeId,  String operationId,  String equipmentId,  String createdById,  String? approvedById,  String? reviewedById,  List<AttachmentV2> attachments,  List<ChecklistQuestionTemplate> checklistQuestionTemplates,  List<InspectionMethodV2> inspectionMethods,  List<PotentialEmergentWorkV2> potentialEmergentWorks,  List<ScheduleComponent> components,  User? approvedBy,  User? createdBy,  User? reviewedBy,  Equipment? equipment,  ReferenceData? operation,  ReferenceData? scheduleType,  RecordV2Response? record)  $default,) {final _that = this;
 switch (_that) {
 case _ScheduleV2Response():
 return $default(_that.id,_that.scheduleName,_that.status,_that.description,_that.createdAt,_that.updatedAt,_that.dueDate,_that.inspectionDate,_that.isRBISchedule,_that.isRecurring,_that.inspectionInterval,_that.damageMechanism,_that.inspectionEffectiveness,_that.aiSummary,_that.comments,_that.isDeleted,_that.scheduleTypeId,_that.operationId,_that.equipmentId,_that.createdById,_that.approvedById,_that.reviewedById,_that.attachments,_that.checklistQuestionTemplates,_that.inspectionMethods,_that.potentialEmergentWorks,_that.components,_that.approvedBy,_that.createdBy,_that.reviewedBy,_that.equipment,_that.operation,_that.scheduleType,_that.record);case _:
@@ -1157,7 +1157,7 @@ return $default(_that.id,_that.scheduleName,_that.status,_that.description,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String scheduleName,  String status,  String description,  DateTime createdAt,  DateTime updatedAt,  DateTime dueDate,  DateTime? inspectionDate,  bool isRBISchedule,  bool isRecurring,  int? inspectionInterval,  String? damageMechanism,  String? inspectionEffectiveness,  String? aiSummary,  String? comments,  bool isDeleted,  String scheduleTypeId,  String operationId,  String equipmentId,  String createdById,  String? approvedById,  String? reviewedById,  List<AttachmentV2> attachments,  List<ChecklistQuestionTemplate> checklistQuestionTemplates,  List<InspectionMethodV2> inspectionMethods,  List<PotentialEmergentWorkV2> potentialEmergentWorks,  List<ScheduleComponent> components,  User? approvedBy,  User? createdBy,  User? reviewedBy,  Equipment? equipment,  ReferenceData? operation,  ReferenceData? scheduleType,  RecordV2Response? record)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String scheduleName,  ScheduleV2Status status,  String description,  DateTime createdAt,  DateTime updatedAt,  DateTime dueDate,  DateTime? inspectionDate,  bool isRBISchedule,  bool isRecurring,  int? inspectionInterval,  String? damageMechanism,  String? inspectionEffectiveness,  String? aiSummary,  String? comments,  bool isDeleted,  String scheduleTypeId,  String operationId,  String equipmentId,  String createdById,  String? approvedById,  String? reviewedById,  List<AttachmentV2> attachments,  List<ChecklistQuestionTemplate> checklistQuestionTemplates,  List<InspectionMethodV2> inspectionMethods,  List<PotentialEmergentWorkV2> potentialEmergentWorks,  List<ScheduleComponent> components,  User? approvedBy,  User? createdBy,  User? reviewedBy,  Equipment? equipment,  ReferenceData? operation,  ReferenceData? scheduleType,  RecordV2Response? record)?  $default,) {final _that = this;
 switch (_that) {
 case _ScheduleV2Response() when $default != null:
 return $default(_that.id,_that.scheduleName,_that.status,_that.description,_that.createdAt,_that.updatedAt,_that.dueDate,_that.inspectionDate,_that.isRBISchedule,_that.isRecurring,_that.inspectionInterval,_that.damageMechanism,_that.inspectionEffectiveness,_that.aiSummary,_that.comments,_that.isDeleted,_that.scheduleTypeId,_that.operationId,_that.equipmentId,_that.createdById,_that.approvedById,_that.reviewedById,_that.attachments,_that.checklistQuestionTemplates,_that.inspectionMethods,_that.potentialEmergentWorks,_that.components,_that.approvedBy,_that.createdBy,_that.reviewedBy,_that.equipment,_that.operation,_that.scheduleType,_that.record);case _:
@@ -1177,7 +1177,7 @@ class _ScheduleV2Response implements ScheduleV2Response {
 
 @override final  String id;
 @override final  String scheduleName;
-@override final  String status;
+@override final  ScheduleV2Status status;
 @override final  String description;
 @override final  DateTime createdAt;
 @override final  DateTime updatedAt;
@@ -1273,7 +1273,7 @@ abstract mixin class _$ScheduleV2ResponseCopyWith<$Res> implements $ScheduleV2Re
   factory _$ScheduleV2ResponseCopyWith(_ScheduleV2Response value, $Res Function(_ScheduleV2Response) _then) = __$ScheduleV2ResponseCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String scheduleName, String status, String description, DateTime createdAt, DateTime updatedAt, DateTime dueDate, DateTime? inspectionDate, bool isRBISchedule, bool isRecurring, int? inspectionInterval, String? damageMechanism, String? inspectionEffectiveness, String? aiSummary, String? comments, bool isDeleted, String scheduleTypeId, String operationId, String equipmentId, String createdById, String? approvedById, String? reviewedById, List<AttachmentV2> attachments, List<ChecklistQuestionTemplate> checklistQuestionTemplates, List<InspectionMethodV2> inspectionMethods, List<PotentialEmergentWorkV2> potentialEmergentWorks, List<ScheduleComponent> components, User? approvedBy, User? createdBy, User? reviewedBy, Equipment? equipment, ReferenceData? operation, ReferenceData? scheduleType, RecordV2Response? record
+ String id, String scheduleName, ScheduleV2Status status, String description, DateTime createdAt, DateTime updatedAt, DateTime dueDate, DateTime? inspectionDate, bool isRBISchedule, bool isRecurring, int? inspectionInterval, String? damageMechanism, String? inspectionEffectiveness, String? aiSummary, String? comments, bool isDeleted, String scheduleTypeId, String operationId, String equipmentId, String createdById, String? approvedById, String? reviewedById, List<AttachmentV2> attachments, List<ChecklistQuestionTemplate> checklistQuestionTemplates, List<InspectionMethodV2> inspectionMethods, List<PotentialEmergentWorkV2> potentialEmergentWorks, List<ScheduleComponent> components, User? approvedBy, User? createdBy, User? reviewedBy, Equipment? equipment, ReferenceData? operation, ReferenceData? scheduleType, RecordV2Response? record
 });
 
 
@@ -1295,7 +1295,7 @@ class __$ScheduleV2ResponseCopyWithImpl<$Res>
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,scheduleName: null == scheduleName ? _self.scheduleName : scheduleName // ignore: cast_nullable_to_non_nullable
 as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as ScheduleV2Status,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,dueDate: null == dueDate ? _self.dueDate : dueDate // ignore: cast_nullable_to_non_nullable
@@ -1421,7 +1421,7 @@ $RecordV2ResponseCopyWith<$Res>? get record {
 /// @nodoc
 mixin _$User {
 
- String get id; DateTime get createdAt; DateTime get updatedAt; String get role; String get title; String get name; String get email; String get password; bool get isDeleted;
+ String get id; DateTime get createdAt; DateTime get updatedAt; Role get role; String get title; String get name; String get email; String get password; bool get isDeleted;
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1454,7 +1454,7 @@ abstract mixin class $UserCopyWith<$Res>  {
   factory $UserCopyWith(User value, $Res Function(User) _then) = _$UserCopyWithImpl;
 @useResult
 $Res call({
- String id, DateTime createdAt, DateTime updatedAt, String role, String title, String name, String email, String password, bool isDeleted
+ String id, DateTime createdAt, DateTime updatedAt, Role role, String title, String name, String email, String password, bool isDeleted
 });
 
 
@@ -1477,7 +1477,7 @@ id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
-as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as Role,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
@@ -1567,7 +1567,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  String role,  String title,  String name,  String email,  String password,  bool isDeleted)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  Role role,  String title,  String name,  String email,  String password,  bool isDeleted)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _User() when $default != null:
 return $default(_that.id,_that.createdAt,_that.updatedAt,_that.role,_that.title,_that.name,_that.email,_that.password,_that.isDeleted);case _:
@@ -1588,7 +1588,7 @@ return $default(_that.id,_that.createdAt,_that.updatedAt,_that.role,_that.title,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  String role,  String title,  String name,  String email,  String password,  bool isDeleted)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  Role role,  String title,  String name,  String email,  String password,  bool isDeleted)  $default,) {final _that = this;
 switch (_that) {
 case _User():
 return $default(_that.id,_that.createdAt,_that.updatedAt,_that.role,_that.title,_that.name,_that.email,_that.password,_that.isDeleted);case _:
@@ -1608,7 +1608,7 @@ return $default(_that.id,_that.createdAt,_that.updatedAt,_that.role,_that.title,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  DateTime createdAt,  DateTime updatedAt,  String role,  String title,  String name,  String email,  String password,  bool isDeleted)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  DateTime createdAt,  DateTime updatedAt,  Role role,  String title,  String name,  String email,  String password,  bool isDeleted)?  $default,) {final _that = this;
 switch (_that) {
 case _User() when $default != null:
 return $default(_that.id,_that.createdAt,_that.updatedAt,_that.role,_that.title,_that.name,_that.email,_that.password,_that.isDeleted);case _:
@@ -1629,7 +1629,7 @@ class _User implements User {
 @override final  String id;
 @override final  DateTime createdAt;
 @override final  DateTime updatedAt;
-@override final  String role;
+@override final  Role role;
 @override final  String title;
 @override final  String name;
 @override final  String email;
@@ -1669,7 +1669,7 @@ abstract mixin class _$UserCopyWith<$Res> implements $UserCopyWith<$Res> {
   factory _$UserCopyWith(_User value, $Res Function(_User) _then) = __$UserCopyWithImpl;
 @override @useResult
 $Res call({
- String id, DateTime createdAt, DateTime updatedAt, String role, String title, String name, String email, String password, bool isDeleted
+ String id, DateTime createdAt, DateTime updatedAt, Role role, String title, String name, String email, String password, bool isDeleted
 });
 
 
@@ -1692,7 +1692,7 @@ id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
-as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as Role,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
@@ -1995,7 +1995,7 @@ as bool,
 /// @nodoc
 mixin _$ReferenceData {
 
- String get id; DateTime get createdAt; DateTime get updatedAt; String get category; String get value; String? get displayValue;
+ String get id; DateTime get createdAt; DateTime get updatedAt; RefDataCategory get category; String get value; String? get displayValue;
 /// Create a copy of ReferenceData
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -2028,7 +2028,7 @@ abstract mixin class $ReferenceDataCopyWith<$Res>  {
   factory $ReferenceDataCopyWith(ReferenceData value, $Res Function(ReferenceData) _then) = _$ReferenceDataCopyWithImpl;
 @useResult
 $Res call({
- String id, DateTime createdAt, DateTime updatedAt, String category, String value, String? displayValue
+ String id, DateTime createdAt, DateTime updatedAt, RefDataCategory category, String value, String? displayValue
 });
 
 
@@ -2051,7 +2051,7 @@ id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
-as String,value: null == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
+as RefDataCategory,value: null == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
 as String,displayValue: freezed == displayValue ? _self.displayValue : displayValue // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
@@ -2138,7 +2138,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  String category,  String value,  String? displayValue)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  RefDataCategory category,  String value,  String? displayValue)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ReferenceData() when $default != null:
 return $default(_that.id,_that.createdAt,_that.updatedAt,_that.category,_that.value,_that.displayValue);case _:
@@ -2159,7 +2159,7 @@ return $default(_that.id,_that.createdAt,_that.updatedAt,_that.category,_that.va
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  String category,  String value,  String? displayValue)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  RefDataCategory category,  String value,  String? displayValue)  $default,) {final _that = this;
 switch (_that) {
 case _ReferenceData():
 return $default(_that.id,_that.createdAt,_that.updatedAt,_that.category,_that.value,_that.displayValue);case _:
@@ -2179,7 +2179,7 @@ return $default(_that.id,_that.createdAt,_that.updatedAt,_that.category,_that.va
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  DateTime createdAt,  DateTime updatedAt,  String category,  String value,  String? displayValue)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  DateTime createdAt,  DateTime updatedAt,  RefDataCategory category,  String value,  String? displayValue)?  $default,) {final _that = this;
 switch (_that) {
 case _ReferenceData() when $default != null:
 return $default(_that.id,_that.createdAt,_that.updatedAt,_that.category,_that.value,_that.displayValue);case _:
@@ -2200,7 +2200,7 @@ class _ReferenceData implements ReferenceData {
 @override final  String id;
 @override final  DateTime createdAt;
 @override final  DateTime updatedAt;
-@override final  String category;
+@override final  RefDataCategory category;
 @override final  String value;
 @override final  String? displayValue;
 
@@ -2237,7 +2237,7 @@ abstract mixin class _$ReferenceDataCopyWith<$Res> implements $ReferenceDataCopy
   factory _$ReferenceDataCopyWith(_ReferenceData value, $Res Function(_ReferenceData) _then) = __$ReferenceDataCopyWithImpl;
 @override @useResult
 $Res call({
- String id, DateTime createdAt, DateTime updatedAt, String category, String value, String? displayValue
+ String id, DateTime createdAt, DateTime updatedAt, RefDataCategory category, String value, String? displayValue
 });
 
 
@@ -2260,7 +2260,7 @@ id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
-as String,value: null == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
+as RefDataCategory,value: null == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
 as String,displayValue: freezed == displayValue ? _self.displayValue : displayValue // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
@@ -2273,7 +2273,7 @@ as String?,
 /// @nodoc
 mixin _$ChecklistQuestionTemplate {
 
- String get id; String? get inspectionType; String get question; String? get helpText; ResponseType get responseType; bool get isDeleted; String get scheduleId; ChecklistAnswer? get checklistAnswer;
+ String get id; InspectionType? get inspectionType; String get question; String? get helpText; ResponseType get responseType; bool get isDeleted; String get scheduleId; ChecklistAnswer? get checklistAnswer;
 /// Create a copy of ChecklistQuestionTemplate
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -2306,7 +2306,7 @@ abstract mixin class $ChecklistQuestionTemplateCopyWith<$Res>  {
   factory $ChecklistQuestionTemplateCopyWith(ChecklistQuestionTemplate value, $Res Function(ChecklistQuestionTemplate) _then) = _$ChecklistQuestionTemplateCopyWithImpl;
 @useResult
 $Res call({
- String id, String? inspectionType, String question, String? helpText, ResponseType responseType, bool isDeleted, String scheduleId, ChecklistAnswer? checklistAnswer
+ String id, InspectionType? inspectionType, String question, String? helpText, ResponseType responseType, bool isDeleted, String scheduleId, ChecklistAnswer? checklistAnswer
 });
 
 
@@ -2327,7 +2327,7 @@ class _$ChecklistQuestionTemplateCopyWithImpl<$Res>
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,inspectionType: freezed == inspectionType ? _self.inspectionType : inspectionType // ignore: cast_nullable_to_non_nullable
-as String?,question: null == question ? _self.question : question // ignore: cast_nullable_to_non_nullable
+as InspectionType?,question: null == question ? _self.question : question // ignore: cast_nullable_to_non_nullable
 as String,helpText: freezed == helpText ? _self.helpText : helpText // ignore: cast_nullable_to_non_nullable
 as String?,responseType: null == responseType ? _self.responseType : responseType // ignore: cast_nullable_to_non_nullable
 as ResponseType,isDeleted: null == isDeleted ? _self.isDeleted : isDeleted // ignore: cast_nullable_to_non_nullable
@@ -2430,7 +2430,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String? inspectionType,  String question,  String? helpText,  ResponseType responseType,  bool isDeleted,  String scheduleId,  ChecklistAnswer? checklistAnswer)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  InspectionType? inspectionType,  String question,  String? helpText,  ResponseType responseType,  bool isDeleted,  String scheduleId,  ChecklistAnswer? checklistAnswer)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ChecklistQuestionTemplate() when $default != null:
 return $default(_that.id,_that.inspectionType,_that.question,_that.helpText,_that.responseType,_that.isDeleted,_that.scheduleId,_that.checklistAnswer);case _:
@@ -2451,7 +2451,7 @@ return $default(_that.id,_that.inspectionType,_that.question,_that.helpText,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String? inspectionType,  String question,  String? helpText,  ResponseType responseType,  bool isDeleted,  String scheduleId,  ChecklistAnswer? checklistAnswer)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  InspectionType? inspectionType,  String question,  String? helpText,  ResponseType responseType,  bool isDeleted,  String scheduleId,  ChecklistAnswer? checklistAnswer)  $default,) {final _that = this;
 switch (_that) {
 case _ChecklistQuestionTemplate():
 return $default(_that.id,_that.inspectionType,_that.question,_that.helpText,_that.responseType,_that.isDeleted,_that.scheduleId,_that.checklistAnswer);case _:
@@ -2471,7 +2471,7 @@ return $default(_that.id,_that.inspectionType,_that.question,_that.helpText,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String? inspectionType,  String question,  String? helpText,  ResponseType responseType,  bool isDeleted,  String scheduleId,  ChecklistAnswer? checklistAnswer)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  InspectionType? inspectionType,  String question,  String? helpText,  ResponseType responseType,  bool isDeleted,  String scheduleId,  ChecklistAnswer? checklistAnswer)?  $default,) {final _that = this;
 switch (_that) {
 case _ChecklistQuestionTemplate() when $default != null:
 return $default(_that.id,_that.inspectionType,_that.question,_that.helpText,_that.responseType,_that.isDeleted,_that.scheduleId,_that.checklistAnswer);case _:
@@ -2490,7 +2490,7 @@ class _ChecklistQuestionTemplate implements ChecklistQuestionTemplate {
   factory _ChecklistQuestionTemplate.fromJson(Map<String, dynamic> json) => _$ChecklistQuestionTemplateFromJson(json);
 
 @override final  String id;
-@override final  String? inspectionType;
+@override final  InspectionType? inspectionType;
 @override final  String question;
 @override final  String? helpText;
 @override final  ResponseType responseType;
@@ -2531,7 +2531,7 @@ abstract mixin class _$ChecklistQuestionTemplateCopyWith<$Res> implements $Check
   factory _$ChecklistQuestionTemplateCopyWith(_ChecklistQuestionTemplate value, $Res Function(_ChecklistQuestionTemplate) _then) = __$ChecklistQuestionTemplateCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String? inspectionType, String question, String? helpText, ResponseType responseType, bool isDeleted, String scheduleId, ChecklistAnswer? checklistAnswer
+ String id, InspectionType? inspectionType, String question, String? helpText, ResponseType responseType, bool isDeleted, String scheduleId, ChecklistAnswer? checklistAnswer
 });
 
 
@@ -2552,7 +2552,7 @@ class __$ChecklistQuestionTemplateCopyWithImpl<$Res>
   return _then(_ChecklistQuestionTemplate(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,inspectionType: freezed == inspectionType ? _self.inspectionType : inspectionType // ignore: cast_nullable_to_non_nullable
-as String?,question: null == question ? _self.question : question // ignore: cast_nullable_to_non_nullable
+as InspectionType?,question: null == question ? _self.question : question // ignore: cast_nullable_to_non_nullable
 as String,helpText: freezed == helpText ? _self.helpText : helpText // ignore: cast_nullable_to_non_nullable
 as String?,responseType: null == responseType ? _self.responseType : responseType // ignore: cast_nullable_to_non_nullable
 as ResponseType,isDeleted: null == isDeleted ? _self.isDeleted : isDeleted // ignore: cast_nullable_to_non_nullable
@@ -3172,7 +3172,7 @@ as String?,
 /// @nodoc
 mixin _$RecordV2Response {
 
- String get id; DateTime get createdAt; DateTime get updatedAt; String get description; DateTime get recordCreatedDate; RecordStatus get status; DateTime get inspectionDate; String get actionCreated; String? get comments; bool? get isDeleted; String get scheduleId; String? get referenceDataId; String get equipmentId; String get scheduleTypeId; String? get submittedById; String? get approvedById;
+ String get id; DateTime get createdAt; DateTime get updatedAt; String get description; DateTime get recordCreatedDate; RecordStatus get status; DateTime get inspectionDate; String get actionCreated; String? get comments; String? get rejectionReason; DateTime? get approvedAt; DateTime? get reviewedAt; bool? get isDeleted; String get scheduleId; String? get referenceDataId; String get equipmentId; String get scheduleTypeId; String? get submittedById; String? get reviewedById; String? get approvedById; User? get submittedBy; User? get reviewedBy; User? get approvedBy; List<AttachmentV2>? get attachments;
 /// Create a copy of RecordV2Response
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -3185,16 +3185,16 @@ $RecordV2ResponseCopyWith<RecordV2Response> get copyWith => _$RecordV2ResponseCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is RecordV2Response&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.description, description) || other.description == description)&&(identical(other.recordCreatedDate, recordCreatedDate) || other.recordCreatedDate == recordCreatedDate)&&(identical(other.status, status) || other.status == status)&&(identical(other.inspectionDate, inspectionDate) || other.inspectionDate == inspectionDate)&&(identical(other.actionCreated, actionCreated) || other.actionCreated == actionCreated)&&(identical(other.comments, comments) || other.comments == comments)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted)&&(identical(other.scheduleId, scheduleId) || other.scheduleId == scheduleId)&&(identical(other.referenceDataId, referenceDataId) || other.referenceDataId == referenceDataId)&&(identical(other.equipmentId, equipmentId) || other.equipmentId == equipmentId)&&(identical(other.scheduleTypeId, scheduleTypeId) || other.scheduleTypeId == scheduleTypeId)&&(identical(other.submittedById, submittedById) || other.submittedById == submittedById)&&(identical(other.approvedById, approvedById) || other.approvedById == approvedById));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RecordV2Response&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.description, description) || other.description == description)&&(identical(other.recordCreatedDate, recordCreatedDate) || other.recordCreatedDate == recordCreatedDate)&&(identical(other.status, status) || other.status == status)&&(identical(other.inspectionDate, inspectionDate) || other.inspectionDate == inspectionDate)&&(identical(other.actionCreated, actionCreated) || other.actionCreated == actionCreated)&&(identical(other.comments, comments) || other.comments == comments)&&(identical(other.rejectionReason, rejectionReason) || other.rejectionReason == rejectionReason)&&(identical(other.approvedAt, approvedAt) || other.approvedAt == approvedAt)&&(identical(other.reviewedAt, reviewedAt) || other.reviewedAt == reviewedAt)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted)&&(identical(other.scheduleId, scheduleId) || other.scheduleId == scheduleId)&&(identical(other.referenceDataId, referenceDataId) || other.referenceDataId == referenceDataId)&&(identical(other.equipmentId, equipmentId) || other.equipmentId == equipmentId)&&(identical(other.scheduleTypeId, scheduleTypeId) || other.scheduleTypeId == scheduleTypeId)&&(identical(other.submittedById, submittedById) || other.submittedById == submittedById)&&(identical(other.reviewedById, reviewedById) || other.reviewedById == reviewedById)&&(identical(other.approvedById, approvedById) || other.approvedById == approvedById)&&(identical(other.submittedBy, submittedBy) || other.submittedBy == submittedBy)&&(identical(other.reviewedBy, reviewedBy) || other.reviewedBy == reviewedBy)&&(identical(other.approvedBy, approvedBy) || other.approvedBy == approvedBy)&&const DeepCollectionEquality().equals(other.attachments, attachments));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,createdAt,updatedAt,description,recordCreatedDate,status,inspectionDate,actionCreated,comments,isDeleted,scheduleId,referenceDataId,equipmentId,scheduleTypeId,submittedById,approvedById);
+int get hashCode => Object.hashAll([runtimeType,id,createdAt,updatedAt,description,recordCreatedDate,status,inspectionDate,actionCreated,comments,rejectionReason,approvedAt,reviewedAt,isDeleted,scheduleId,referenceDataId,equipmentId,scheduleTypeId,submittedById,reviewedById,approvedById,submittedBy,reviewedBy,approvedBy,const DeepCollectionEquality().hash(attachments)]);
 
 @override
 String toString() {
-  return 'RecordV2Response(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, description: $description, recordCreatedDate: $recordCreatedDate, status: $status, inspectionDate: $inspectionDate, actionCreated: $actionCreated, comments: $comments, isDeleted: $isDeleted, scheduleId: $scheduleId, referenceDataId: $referenceDataId, equipmentId: $equipmentId, scheduleTypeId: $scheduleTypeId, submittedById: $submittedById, approvedById: $approvedById)';
+  return 'RecordV2Response(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, description: $description, recordCreatedDate: $recordCreatedDate, status: $status, inspectionDate: $inspectionDate, actionCreated: $actionCreated, comments: $comments, rejectionReason: $rejectionReason, approvedAt: $approvedAt, reviewedAt: $reviewedAt, isDeleted: $isDeleted, scheduleId: $scheduleId, referenceDataId: $referenceDataId, equipmentId: $equipmentId, scheduleTypeId: $scheduleTypeId, submittedById: $submittedById, reviewedById: $reviewedById, approvedById: $approvedById, submittedBy: $submittedBy, reviewedBy: $reviewedBy, approvedBy: $approvedBy, attachments: $attachments)';
 }
 
 
@@ -3205,11 +3205,11 @@ abstract mixin class $RecordV2ResponseCopyWith<$Res>  {
   factory $RecordV2ResponseCopyWith(RecordV2Response value, $Res Function(RecordV2Response) _then) = _$RecordV2ResponseCopyWithImpl;
 @useResult
 $Res call({
- String id, DateTime createdAt, DateTime updatedAt, String description, DateTime recordCreatedDate, RecordStatus status, DateTime inspectionDate, String actionCreated, String? comments, bool? isDeleted, String scheduleId, String? referenceDataId, String equipmentId, String scheduleTypeId, String? submittedById, String? approvedById
+ String id, DateTime createdAt, DateTime updatedAt, String description, DateTime recordCreatedDate, RecordStatus status, DateTime inspectionDate, String actionCreated, String? comments, String? rejectionReason, DateTime? approvedAt, DateTime? reviewedAt, bool? isDeleted, String scheduleId, String? referenceDataId, String equipmentId, String scheduleTypeId, String? submittedById, String? reviewedById, String? approvedById, User? submittedBy, User? reviewedBy, User? approvedBy, List<AttachmentV2>? attachments
 });
 
 
-
+$UserCopyWith<$Res>? get submittedBy;$UserCopyWith<$Res>? get reviewedBy;$UserCopyWith<$Res>? get approvedBy;
 
 }
 /// @nodoc
@@ -3222,7 +3222,7 @@ class _$RecordV2ResponseCopyWithImpl<$Res>
 
 /// Create a copy of RecordV2Response
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? description = null,Object? recordCreatedDate = null,Object? status = null,Object? inspectionDate = null,Object? actionCreated = null,Object? comments = freezed,Object? isDeleted = freezed,Object? scheduleId = null,Object? referenceDataId = freezed,Object? equipmentId = null,Object? scheduleTypeId = null,Object? submittedById = freezed,Object? approvedById = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? description = null,Object? recordCreatedDate = null,Object? status = null,Object? inspectionDate = null,Object? actionCreated = null,Object? comments = freezed,Object? rejectionReason = freezed,Object? approvedAt = freezed,Object? reviewedAt = freezed,Object? isDeleted = freezed,Object? scheduleId = null,Object? referenceDataId = freezed,Object? equipmentId = null,Object? scheduleTypeId = null,Object? submittedById = freezed,Object? reviewedById = freezed,Object? approvedById = freezed,Object? submittedBy = freezed,Object? reviewedBy = freezed,Object? approvedBy = freezed,Object? attachments = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
@@ -3233,17 +3233,61 @@ as DateTime,status: null == status ? _self.status : status // ignore: cast_nulla
 as RecordStatus,inspectionDate: null == inspectionDate ? _self.inspectionDate : inspectionDate // ignore: cast_nullable_to_non_nullable
 as DateTime,actionCreated: null == actionCreated ? _self.actionCreated : actionCreated // ignore: cast_nullable_to_non_nullable
 as String,comments: freezed == comments ? _self.comments : comments // ignore: cast_nullable_to_non_nullable
-as String?,isDeleted: freezed == isDeleted ? _self.isDeleted : isDeleted // ignore: cast_nullable_to_non_nullable
+as String?,rejectionReason: freezed == rejectionReason ? _self.rejectionReason : rejectionReason // ignore: cast_nullable_to_non_nullable
+as String?,approvedAt: freezed == approvedAt ? _self.approvedAt : approvedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,reviewedAt: freezed == reviewedAt ? _self.reviewedAt : reviewedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,isDeleted: freezed == isDeleted ? _self.isDeleted : isDeleted // ignore: cast_nullable_to_non_nullable
 as bool?,scheduleId: null == scheduleId ? _self.scheduleId : scheduleId // ignore: cast_nullable_to_non_nullable
 as String,referenceDataId: freezed == referenceDataId ? _self.referenceDataId : referenceDataId // ignore: cast_nullable_to_non_nullable
 as String?,equipmentId: null == equipmentId ? _self.equipmentId : equipmentId // ignore: cast_nullable_to_non_nullable
 as String,scheduleTypeId: null == scheduleTypeId ? _self.scheduleTypeId : scheduleTypeId // ignore: cast_nullable_to_non_nullable
 as String,submittedById: freezed == submittedById ? _self.submittedById : submittedById // ignore: cast_nullable_to_non_nullable
+as String?,reviewedById: freezed == reviewedById ? _self.reviewedById : reviewedById // ignore: cast_nullable_to_non_nullable
 as String?,approvedById: freezed == approvedById ? _self.approvedById : approvedById // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,submittedBy: freezed == submittedBy ? _self.submittedBy : submittedBy // ignore: cast_nullable_to_non_nullable
+as User?,reviewedBy: freezed == reviewedBy ? _self.reviewedBy : reviewedBy // ignore: cast_nullable_to_non_nullable
+as User?,approvedBy: freezed == approvedBy ? _self.approvedBy : approvedBy // ignore: cast_nullable_to_non_nullable
+as User?,attachments: freezed == attachments ? _self.attachments : attachments // ignore: cast_nullable_to_non_nullable
+as List<AttachmentV2>?,
   ));
 }
+/// Create a copy of RecordV2Response
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserCopyWith<$Res>? get submittedBy {
+    if (_self.submittedBy == null) {
+    return null;
+  }
 
+  return $UserCopyWith<$Res>(_self.submittedBy!, (value) {
+    return _then(_self.copyWith(submittedBy: value));
+  });
+}/// Create a copy of RecordV2Response
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserCopyWith<$Res>? get reviewedBy {
+    if (_self.reviewedBy == null) {
+    return null;
+  }
+
+  return $UserCopyWith<$Res>(_self.reviewedBy!, (value) {
+    return _then(_self.copyWith(reviewedBy: value));
+  });
+}/// Create a copy of RecordV2Response
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserCopyWith<$Res>? get approvedBy {
+    if (_self.approvedBy == null) {
+    return null;
+  }
+
+  return $UserCopyWith<$Res>(_self.approvedBy!, (value) {
+    return _then(_self.copyWith(approvedBy: value));
+  });
+}
 }
 
 
@@ -3325,10 +3369,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  String description,  DateTime recordCreatedDate,  RecordStatus status,  DateTime inspectionDate,  String actionCreated,  String? comments,  bool? isDeleted,  String scheduleId,  String? referenceDataId,  String equipmentId,  String scheduleTypeId,  String? submittedById,  String? approvedById)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  String description,  DateTime recordCreatedDate,  RecordStatus status,  DateTime inspectionDate,  String actionCreated,  String? comments,  String? rejectionReason,  DateTime? approvedAt,  DateTime? reviewedAt,  bool? isDeleted,  String scheduleId,  String? referenceDataId,  String equipmentId,  String scheduleTypeId,  String? submittedById,  String? reviewedById,  String? approvedById,  User? submittedBy,  User? reviewedBy,  User? approvedBy,  List<AttachmentV2>? attachments)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _RecordV2Response() when $default != null:
-return $default(_that.id,_that.createdAt,_that.updatedAt,_that.description,_that.recordCreatedDate,_that.status,_that.inspectionDate,_that.actionCreated,_that.comments,_that.isDeleted,_that.scheduleId,_that.referenceDataId,_that.equipmentId,_that.scheduleTypeId,_that.submittedById,_that.approvedById);case _:
+return $default(_that.id,_that.createdAt,_that.updatedAt,_that.description,_that.recordCreatedDate,_that.status,_that.inspectionDate,_that.actionCreated,_that.comments,_that.rejectionReason,_that.approvedAt,_that.reviewedAt,_that.isDeleted,_that.scheduleId,_that.referenceDataId,_that.equipmentId,_that.scheduleTypeId,_that.submittedById,_that.reviewedById,_that.approvedById,_that.submittedBy,_that.reviewedBy,_that.approvedBy,_that.attachments);case _:
   return orElse();
 
 }
@@ -3346,10 +3390,10 @@ return $default(_that.id,_that.createdAt,_that.updatedAt,_that.description,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  String description,  DateTime recordCreatedDate,  RecordStatus status,  DateTime inspectionDate,  String actionCreated,  String? comments,  bool? isDeleted,  String scheduleId,  String? referenceDataId,  String equipmentId,  String scheduleTypeId,  String? submittedById,  String? approvedById)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  DateTime updatedAt,  String description,  DateTime recordCreatedDate,  RecordStatus status,  DateTime inspectionDate,  String actionCreated,  String? comments,  String? rejectionReason,  DateTime? approvedAt,  DateTime? reviewedAt,  bool? isDeleted,  String scheduleId,  String? referenceDataId,  String equipmentId,  String scheduleTypeId,  String? submittedById,  String? reviewedById,  String? approvedById,  User? submittedBy,  User? reviewedBy,  User? approvedBy,  List<AttachmentV2>? attachments)  $default,) {final _that = this;
 switch (_that) {
 case _RecordV2Response():
-return $default(_that.id,_that.createdAt,_that.updatedAt,_that.description,_that.recordCreatedDate,_that.status,_that.inspectionDate,_that.actionCreated,_that.comments,_that.isDeleted,_that.scheduleId,_that.referenceDataId,_that.equipmentId,_that.scheduleTypeId,_that.submittedById,_that.approvedById);case _:
+return $default(_that.id,_that.createdAt,_that.updatedAt,_that.description,_that.recordCreatedDate,_that.status,_that.inspectionDate,_that.actionCreated,_that.comments,_that.rejectionReason,_that.approvedAt,_that.reviewedAt,_that.isDeleted,_that.scheduleId,_that.referenceDataId,_that.equipmentId,_that.scheduleTypeId,_that.submittedById,_that.reviewedById,_that.approvedById,_that.submittedBy,_that.reviewedBy,_that.approvedBy,_that.attachments);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -3366,10 +3410,10 @@ return $default(_that.id,_that.createdAt,_that.updatedAt,_that.description,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  DateTime createdAt,  DateTime updatedAt,  String description,  DateTime recordCreatedDate,  RecordStatus status,  DateTime inspectionDate,  String actionCreated,  String? comments,  bool? isDeleted,  String scheduleId,  String? referenceDataId,  String equipmentId,  String scheduleTypeId,  String? submittedById,  String? approvedById)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  DateTime createdAt,  DateTime updatedAt,  String description,  DateTime recordCreatedDate,  RecordStatus status,  DateTime inspectionDate,  String actionCreated,  String? comments,  String? rejectionReason,  DateTime? approvedAt,  DateTime? reviewedAt,  bool? isDeleted,  String scheduleId,  String? referenceDataId,  String equipmentId,  String scheduleTypeId,  String? submittedById,  String? reviewedById,  String? approvedById,  User? submittedBy,  User? reviewedBy,  User? approvedBy,  List<AttachmentV2>? attachments)?  $default,) {final _that = this;
 switch (_that) {
 case _RecordV2Response() when $default != null:
-return $default(_that.id,_that.createdAt,_that.updatedAt,_that.description,_that.recordCreatedDate,_that.status,_that.inspectionDate,_that.actionCreated,_that.comments,_that.isDeleted,_that.scheduleId,_that.referenceDataId,_that.equipmentId,_that.scheduleTypeId,_that.submittedById,_that.approvedById);case _:
+return $default(_that.id,_that.createdAt,_that.updatedAt,_that.description,_that.recordCreatedDate,_that.status,_that.inspectionDate,_that.actionCreated,_that.comments,_that.rejectionReason,_that.approvedAt,_that.reviewedAt,_that.isDeleted,_that.scheduleId,_that.referenceDataId,_that.equipmentId,_that.scheduleTypeId,_that.submittedById,_that.reviewedById,_that.approvedById,_that.submittedBy,_that.reviewedBy,_that.approvedBy,_that.attachments);case _:
   return null;
 
 }
@@ -3381,7 +3425,7 @@ return $default(_that.id,_that.createdAt,_that.updatedAt,_that.description,_that
 @JsonSerializable()
 
 class _RecordV2Response implements RecordV2Response {
-  const _RecordV2Response({required this.id, required this.createdAt, required this.updatedAt, required this.description, required this.recordCreatedDate, required this.status, required this.inspectionDate, required this.actionCreated, this.comments, this.isDeleted, required this.scheduleId, this.referenceDataId, required this.equipmentId, required this.scheduleTypeId, this.submittedById, this.approvedById});
+  const _RecordV2Response({required this.id, required this.createdAt, required this.updatedAt, required this.description, required this.recordCreatedDate, required this.status, required this.inspectionDate, required this.actionCreated, this.comments, this.rejectionReason, this.approvedAt, this.reviewedAt, this.isDeleted, required this.scheduleId, this.referenceDataId, required this.equipmentId, required this.scheduleTypeId, this.submittedById, this.reviewedById, this.approvedById, this.submittedBy, this.reviewedBy, this.approvedBy, final  List<AttachmentV2>? attachments}): _attachments = attachments;
   factory _RecordV2Response.fromJson(Map<String, dynamic> json) => _$RecordV2ResponseFromJson(json);
 
 @override final  String id;
@@ -3393,13 +3437,29 @@ class _RecordV2Response implements RecordV2Response {
 @override final  DateTime inspectionDate;
 @override final  String actionCreated;
 @override final  String? comments;
+@override final  String? rejectionReason;
+@override final  DateTime? approvedAt;
+@override final  DateTime? reviewedAt;
 @override final  bool? isDeleted;
 @override final  String scheduleId;
 @override final  String? referenceDataId;
 @override final  String equipmentId;
 @override final  String scheduleTypeId;
 @override final  String? submittedById;
+@override final  String? reviewedById;
 @override final  String? approvedById;
+@override final  User? submittedBy;
+@override final  User? reviewedBy;
+@override final  User? approvedBy;
+ final  List<AttachmentV2>? _attachments;
+@override List<AttachmentV2>? get attachments {
+  final value = _attachments;
+  if (value == null) return null;
+  if (_attachments is EqualUnmodifiableListView) return _attachments;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
 
 /// Create a copy of RecordV2Response
 /// with the given fields replaced by the non-null parameter values.
@@ -3414,16 +3474,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RecordV2Response&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.description, description) || other.description == description)&&(identical(other.recordCreatedDate, recordCreatedDate) || other.recordCreatedDate == recordCreatedDate)&&(identical(other.status, status) || other.status == status)&&(identical(other.inspectionDate, inspectionDate) || other.inspectionDate == inspectionDate)&&(identical(other.actionCreated, actionCreated) || other.actionCreated == actionCreated)&&(identical(other.comments, comments) || other.comments == comments)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted)&&(identical(other.scheduleId, scheduleId) || other.scheduleId == scheduleId)&&(identical(other.referenceDataId, referenceDataId) || other.referenceDataId == referenceDataId)&&(identical(other.equipmentId, equipmentId) || other.equipmentId == equipmentId)&&(identical(other.scheduleTypeId, scheduleTypeId) || other.scheduleTypeId == scheduleTypeId)&&(identical(other.submittedById, submittedById) || other.submittedById == submittedById)&&(identical(other.approvedById, approvedById) || other.approvedById == approvedById));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RecordV2Response&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.description, description) || other.description == description)&&(identical(other.recordCreatedDate, recordCreatedDate) || other.recordCreatedDate == recordCreatedDate)&&(identical(other.status, status) || other.status == status)&&(identical(other.inspectionDate, inspectionDate) || other.inspectionDate == inspectionDate)&&(identical(other.actionCreated, actionCreated) || other.actionCreated == actionCreated)&&(identical(other.comments, comments) || other.comments == comments)&&(identical(other.rejectionReason, rejectionReason) || other.rejectionReason == rejectionReason)&&(identical(other.approvedAt, approvedAt) || other.approvedAt == approvedAt)&&(identical(other.reviewedAt, reviewedAt) || other.reviewedAt == reviewedAt)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted)&&(identical(other.scheduleId, scheduleId) || other.scheduleId == scheduleId)&&(identical(other.referenceDataId, referenceDataId) || other.referenceDataId == referenceDataId)&&(identical(other.equipmentId, equipmentId) || other.equipmentId == equipmentId)&&(identical(other.scheduleTypeId, scheduleTypeId) || other.scheduleTypeId == scheduleTypeId)&&(identical(other.submittedById, submittedById) || other.submittedById == submittedById)&&(identical(other.reviewedById, reviewedById) || other.reviewedById == reviewedById)&&(identical(other.approvedById, approvedById) || other.approvedById == approvedById)&&(identical(other.submittedBy, submittedBy) || other.submittedBy == submittedBy)&&(identical(other.reviewedBy, reviewedBy) || other.reviewedBy == reviewedBy)&&(identical(other.approvedBy, approvedBy) || other.approvedBy == approvedBy)&&const DeepCollectionEquality().equals(other._attachments, _attachments));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,createdAt,updatedAt,description,recordCreatedDate,status,inspectionDate,actionCreated,comments,isDeleted,scheduleId,referenceDataId,equipmentId,scheduleTypeId,submittedById,approvedById);
+int get hashCode => Object.hashAll([runtimeType,id,createdAt,updatedAt,description,recordCreatedDate,status,inspectionDate,actionCreated,comments,rejectionReason,approvedAt,reviewedAt,isDeleted,scheduleId,referenceDataId,equipmentId,scheduleTypeId,submittedById,reviewedById,approvedById,submittedBy,reviewedBy,approvedBy,const DeepCollectionEquality().hash(_attachments)]);
 
 @override
 String toString() {
-  return 'RecordV2Response(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, description: $description, recordCreatedDate: $recordCreatedDate, status: $status, inspectionDate: $inspectionDate, actionCreated: $actionCreated, comments: $comments, isDeleted: $isDeleted, scheduleId: $scheduleId, referenceDataId: $referenceDataId, equipmentId: $equipmentId, scheduleTypeId: $scheduleTypeId, submittedById: $submittedById, approvedById: $approvedById)';
+  return 'RecordV2Response(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, description: $description, recordCreatedDate: $recordCreatedDate, status: $status, inspectionDate: $inspectionDate, actionCreated: $actionCreated, comments: $comments, rejectionReason: $rejectionReason, approvedAt: $approvedAt, reviewedAt: $reviewedAt, isDeleted: $isDeleted, scheduleId: $scheduleId, referenceDataId: $referenceDataId, equipmentId: $equipmentId, scheduleTypeId: $scheduleTypeId, submittedById: $submittedById, reviewedById: $reviewedById, approvedById: $approvedById, submittedBy: $submittedBy, reviewedBy: $reviewedBy, approvedBy: $approvedBy, attachments: $attachments)';
 }
 
 
@@ -3434,11 +3494,11 @@ abstract mixin class _$RecordV2ResponseCopyWith<$Res> implements $RecordV2Respon
   factory _$RecordV2ResponseCopyWith(_RecordV2Response value, $Res Function(_RecordV2Response) _then) = __$RecordV2ResponseCopyWithImpl;
 @override @useResult
 $Res call({
- String id, DateTime createdAt, DateTime updatedAt, String description, DateTime recordCreatedDate, RecordStatus status, DateTime inspectionDate, String actionCreated, String? comments, bool? isDeleted, String scheduleId, String? referenceDataId, String equipmentId, String scheduleTypeId, String? submittedById, String? approvedById
+ String id, DateTime createdAt, DateTime updatedAt, String description, DateTime recordCreatedDate, RecordStatus status, DateTime inspectionDate, String actionCreated, String? comments, String? rejectionReason, DateTime? approvedAt, DateTime? reviewedAt, bool? isDeleted, String scheduleId, String? referenceDataId, String equipmentId, String scheduleTypeId, String? submittedById, String? reviewedById, String? approvedById, User? submittedBy, User? reviewedBy, User? approvedBy, List<AttachmentV2>? attachments
 });
 
 
-
+@override $UserCopyWith<$Res>? get submittedBy;@override $UserCopyWith<$Res>? get reviewedBy;@override $UserCopyWith<$Res>? get approvedBy;
 
 }
 /// @nodoc
@@ -3451,7 +3511,7 @@ class __$RecordV2ResponseCopyWithImpl<$Res>
 
 /// Create a copy of RecordV2Response
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? description = null,Object? recordCreatedDate = null,Object? status = null,Object? inspectionDate = null,Object? actionCreated = null,Object? comments = freezed,Object? isDeleted = freezed,Object? scheduleId = null,Object? referenceDataId = freezed,Object? equipmentId = null,Object? scheduleTypeId = null,Object? submittedById = freezed,Object? approvedById = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? description = null,Object? recordCreatedDate = null,Object? status = null,Object? inspectionDate = null,Object? actionCreated = null,Object? comments = freezed,Object? rejectionReason = freezed,Object? approvedAt = freezed,Object? reviewedAt = freezed,Object? isDeleted = freezed,Object? scheduleId = null,Object? referenceDataId = freezed,Object? equipmentId = null,Object? scheduleTypeId = null,Object? submittedById = freezed,Object? reviewedById = freezed,Object? approvedById = freezed,Object? submittedBy = freezed,Object? reviewedBy = freezed,Object? approvedBy = freezed,Object? attachments = freezed,}) {
   return _then(_RecordV2Response(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
@@ -3462,18 +3522,62 @@ as DateTime,status: null == status ? _self.status : status // ignore: cast_nulla
 as RecordStatus,inspectionDate: null == inspectionDate ? _self.inspectionDate : inspectionDate // ignore: cast_nullable_to_non_nullable
 as DateTime,actionCreated: null == actionCreated ? _self.actionCreated : actionCreated // ignore: cast_nullable_to_non_nullable
 as String,comments: freezed == comments ? _self.comments : comments // ignore: cast_nullable_to_non_nullable
-as String?,isDeleted: freezed == isDeleted ? _self.isDeleted : isDeleted // ignore: cast_nullable_to_non_nullable
+as String?,rejectionReason: freezed == rejectionReason ? _self.rejectionReason : rejectionReason // ignore: cast_nullable_to_non_nullable
+as String?,approvedAt: freezed == approvedAt ? _self.approvedAt : approvedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,reviewedAt: freezed == reviewedAt ? _self.reviewedAt : reviewedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,isDeleted: freezed == isDeleted ? _self.isDeleted : isDeleted // ignore: cast_nullable_to_non_nullable
 as bool?,scheduleId: null == scheduleId ? _self.scheduleId : scheduleId // ignore: cast_nullable_to_non_nullable
 as String,referenceDataId: freezed == referenceDataId ? _self.referenceDataId : referenceDataId // ignore: cast_nullable_to_non_nullable
 as String?,equipmentId: null == equipmentId ? _self.equipmentId : equipmentId // ignore: cast_nullable_to_non_nullable
 as String,scheduleTypeId: null == scheduleTypeId ? _self.scheduleTypeId : scheduleTypeId // ignore: cast_nullable_to_non_nullable
 as String,submittedById: freezed == submittedById ? _self.submittedById : submittedById // ignore: cast_nullable_to_non_nullable
+as String?,reviewedById: freezed == reviewedById ? _self.reviewedById : reviewedById // ignore: cast_nullable_to_non_nullable
 as String?,approvedById: freezed == approvedById ? _self.approvedById : approvedById // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,submittedBy: freezed == submittedBy ? _self.submittedBy : submittedBy // ignore: cast_nullable_to_non_nullable
+as User?,reviewedBy: freezed == reviewedBy ? _self.reviewedBy : reviewedBy // ignore: cast_nullable_to_non_nullable
+as User?,approvedBy: freezed == approvedBy ? _self.approvedBy : approvedBy // ignore: cast_nullable_to_non_nullable
+as User?,attachments: freezed == attachments ? _self._attachments : attachments // ignore: cast_nullable_to_non_nullable
+as List<AttachmentV2>?,
   ));
 }
 
+/// Create a copy of RecordV2Response
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserCopyWith<$Res>? get submittedBy {
+    if (_self.submittedBy == null) {
+    return null;
+  }
 
+  return $UserCopyWith<$Res>(_self.submittedBy!, (value) {
+    return _then(_self.copyWith(submittedBy: value));
+  });
+}/// Create a copy of RecordV2Response
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserCopyWith<$Res>? get reviewedBy {
+    if (_self.reviewedBy == null) {
+    return null;
+  }
+
+  return $UserCopyWith<$Res>(_self.reviewedBy!, (value) {
+    return _then(_self.copyWith(reviewedBy: value));
+  });
+}/// Create a copy of RecordV2Response
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserCopyWith<$Res>? get approvedBy {
+    if (_self.approvedBy == null) {
+    return null;
+  }
+
+  return $UserCopyWith<$Res>(_self.approvedBy!, (value) {
+    return _then(_self.copyWith(approvedBy: value));
+  });
+}
 }
 
 

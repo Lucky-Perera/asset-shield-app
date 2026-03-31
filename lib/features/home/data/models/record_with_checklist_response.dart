@@ -1,3 +1,4 @@
+import 'package:asset_shield/core/enums/enums.dart';
 import 'package:asset_shield/features/home/data/models/record_response.dart';
 import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -35,10 +36,10 @@ abstract class ChecklistQuestionItem with _$ChecklistQuestionItem {
   const factory ChecklistQuestionItem({
     required String id,
     required String scheduleId,
-    required String inspectionType,
+    required InspectionType inspectionType,
     required String question,
     String? helpText,
-    required String responseType,
+    required ResponseType responseType,
     required bool isDeleted,
     String? section,
     int? order,

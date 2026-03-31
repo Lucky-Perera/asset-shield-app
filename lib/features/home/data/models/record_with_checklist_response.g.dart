@@ -45,10 +45,10 @@ _ChecklistQuestionItem _$ChecklistQuestionItemFromJson(
 ) => _ChecklistQuestionItem(
   id: json['id'] as String,
   scheduleId: json['scheduleId'] as String,
-  inspectionType: json['inspectionType'] as String,
+  inspectionType: $enumDecode(_$InspectionTypeEnumMap, json['inspectionType']),
   question: json['question'] as String,
   helpText: json['helpText'] as String?,
-  responseType: json['responseType'] as String,
+  responseType: $enumDecode(_$ResponseTypeEnumMap, json['responseType']),
   isDeleted: json['isDeleted'] as bool,
   section: json['section'] as String?,
   order: (json['order'] as num?)?.toInt(),
@@ -72,10 +72,10 @@ Map<String, dynamic> _$ChecklistQuestionItemToJson(
 ) => <String, dynamic>{
   'id': instance.id,
   'scheduleId': instance.scheduleId,
-  'inspectionType': instance.inspectionType,
+  'inspectionType': _$InspectionTypeEnumMap[instance.inspectionType]!,
   'question': instance.question,
   'helpText': instance.helpText,
-  'responseType': instance.responseType,
+  'responseType': _$ResponseTypeEnumMap[instance.responseType]!,
   'isDeleted': instance.isDeleted,
   'section': instance.section,
   'order': instance.order,
@@ -84,4 +84,15 @@ Map<String, dynamic> _$ChecklistQuestionItemToJson(
   'completedAt': instance.completedAt?.toIso8601String(),
   'attachments': instance.attachments,
   'checklistAnswer': instance.checklistAnswer,
+};
+
+const _$InspectionTypeEnumMap = {
+  InspectionType.internal: 'INTERNAL',
+  InspectionType.external: 'EXTERNAL',
+};
+
+const _$ResponseTypeEnumMap = {
+  ResponseType.goodFairPoorNA: 'GoodFairPoorNA',
+  ResponseType.yesNo: 'YesNo',
+  ResponseType.customOptions: 'CustomOptions',
 };

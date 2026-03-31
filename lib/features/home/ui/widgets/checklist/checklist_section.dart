@@ -33,11 +33,8 @@ class ChecklistSections extends StatelessWidget {
          'onAnswerChanged should be null when readOnly is true',
        );
 
-  List<ChecklistQuestionTemplate> _filter(String type) => questions
-      .where(
-        (q) => (q.inspectionType ?? '').toLowerCase() == type.toLowerCase(),
-      )
-      .toList();
+  List<ChecklistQuestionTemplate> _filter(String type) =>
+      questions.where((q) => q.inspectionType?.apiValue == type).toList();
 
   @override
   Widget build(BuildContext context) {
