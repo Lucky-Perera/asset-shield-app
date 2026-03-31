@@ -14,7 +14,7 @@ class ToastService {
           margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           decoration: BoxDecoration(
-            color: ColorPalette.grey900,
+            color: ColorPalette.toastBackground,
             borderRadius: BorderRadius.circular(20),
           ),
           child: Text(

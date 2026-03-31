@@ -1,4 +1,5 @@
 import 'package:asset_shield/core/routes/router.dart';
+import 'package:asset_shield/core/theme/color_palette.dart';
 import 'package:asset_shield/core/utility/storage_service.dart';
 import 'package:asset_shield/features/common/widgets/app_scaffold.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +41,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AppScaffold(body: Container(color: Colors.white));
+    return AppScaffold(body: Container(color: ColorPalette.background));
   }
 }
