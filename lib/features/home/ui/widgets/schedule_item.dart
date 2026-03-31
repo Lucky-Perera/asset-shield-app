@@ -63,7 +63,12 @@ class _InfoLine extends StatelessWidget {
       text: TextSpan(
         children: [
           TextSpan(text: '$label ', style: ScheduleTextStyles.caption(context)),
-          TextSpan(text: value, style: ScheduleTextStyles.caption(context)),
+          TextSpan(
+            text: value,
+            style: ScheduleTextStyles.caption(
+              context,
+            ).copyWith(fontWeight: FontWeight.w400),
+          ),
         ],
       ),
     );
