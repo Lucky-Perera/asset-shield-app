@@ -1,4 +1,7 @@
-import 'package:asset_shield/core/theme/color_palette.dart';
+import 'package:asset_shield/core/theme/app_tokens.dart';
+import 'package:asset_shield/core/theme/schedule_styles.dart';
+import 'package:asset_shield/core/theme/schedule_theme.dart';
+import 'package:asset_shield/features/home/ui/widgets/schedule_ui/schedule_surface.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -16,23 +19,7 @@ class PaginationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bottomPadding = MediaQuery.of(context).padding.bottom;
-
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: 16.w,
-        vertical: 12.h,
-      ).copyWith(bottom: bottomPadding > 0 ? (12.h + bottomPadding) : 12.h),
-      decoration: BoxDecoration(
-        color: ColorPalette.white,
-        boxShadow: [
-          BoxShadow(
-            color: ColorPalette.black.withValues(alpha: 0.1),
-            blurRadius: 4,
-            offset: const Offset(0, -2),
-          ),
-        ],
-      ),
+    return ScheduleBottomBar(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -51,7 +38,7 @@ class PaginationBar extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
-                children: _buildPageNumbers(),
+                children: _buildPageNumbers(context),
               ),
             ),
           ),
@@ -69,7 +56,8 @@ class PaginationBar extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildPageNumbers() {
+  List<Widget> _buildPageNumbers(BuildContext context) {
+    final scheduleTheme = context.scheduleTheme;
     List<Widget> pages = [];
 
     // Always show first page
@@ -104,10 +92,9 @@ class PaginationBar extends StatelessWidget {
       pages.add(
         Text(
           '...',
-          style: TextStyle(
-            fontSize: 16.sp,
-            color: ColorPalette.grey500,
-            fontWeight: FontWeight.w500,
+          style: ScheduleTextStyles.value(
+            context,
+            color: scheduleTheme.secondaryText,
           ),
         ),
       );
@@ -132,10 +119,9 @@ class PaginationBar extends StatelessWidget {
       pages.add(
         Text(
           '...',
-          style: TextStyle(
-            fontSize: 16.sp,
-            color: ColorPalette.grey500,
-            fontWeight: FontWeight.w500,
+          style: ScheduleTextStyles.value(
+            context,
+            color: scheduleTheme.secondaryText,
           ),
         ),
       );
@@ -171,27 +157,38 @@ class _PageNumberButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheduleTheme = context.scheduleTheme;
+
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-        width: 40.w,
-        height: 40.h,
-        constraints: BoxConstraints(minWidth: 40.w, minHeight: 40.h),
+        width: AppSizes.paginationControl.w,
+        height: AppSizes.paginationControl.h,
+        constraints: BoxConstraints(
+          minWidth: AppSizes.paginationControl.w,
+          minHeight: AppSizes.paginationControl.h,
+        ),
         decoration: BoxDecoration(
-          color: isActive ? ColorPalette.black : ColorPalette.white,
-          borderRadius: BorderRadius.circular(8.r),
+          color: isActive
+              ? scheduleTheme.paginationActive
+              : scheduleTheme.cardBackground,
+          borderRadius: BorderRadius.circular(scheduleTheme.badgeRadius.r),
           border: Border.all(
-            color: isActive ? ColorPalette.black : ColorPalette.grey300,
+            color: isActive
+                ? scheduleTheme.paginationActive
+                : scheduleTheme.paginationInactiveBorder,
             width: 1,
           ),
         ),
         alignment: Alignment.center,
         child: Text(
           pageNumber.toString(),
-          style: TextStyle(
-            fontSize: 14.sp,
-            fontWeight: FontWeight.w600,
-            color: isActive ? ColorPalette.white : ColorPalette.black,
+          style: ScheduleTextStyles.value(
+            context,
+            color: isActive
+                ? scheduleTheme.cardBackground
+                : scheduleTheme.primaryText,
+            weight: isActive ? FontWeight.w600 : FontWeight.w500,
           ),
         ),
       ),
@@ -212,25 +209,34 @@ class _PaginationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheduleTheme = context.scheduleTheme;
+
     return GestureDetector(
       onTap: isEnabled ? onPressed : null,
       child: Container(
-        width: 40.w,
-        height: 40.h,
-        constraints: BoxConstraints(minWidth: 40.w, minHeight: 40.h),
+        width: AppSizes.paginationControl.w,
+        height: AppSizes.paginationControl.h,
+        constraints: BoxConstraints(
+          minWidth: AppSizes.paginationControl.w,
+          minHeight: AppSizes.paginationControl.h,
+        ),
         decoration: BoxDecoration(
-          color: ColorPalette.white,
-          borderRadius: BorderRadius.circular(8.r),
+          color: scheduleTheme.cardBackground,
+          borderRadius: BorderRadius.circular(scheduleTheme.badgeRadius.r),
           border: Border.all(
-            color: isEnabled ? ColorPalette.grey300 : ColorPalette.grey200,
+            color: isEnabled
+                ? scheduleTheme.paginationInactiveBorder
+                : scheduleTheme.paginationDisabled,
             width: 1,
           ),
         ),
         alignment: Alignment.center,
         child: Icon(
           icon,
-          size: 16.sp,
-          color: isEnabled ? ColorPalette.black : ColorPalette.grey300,
+          size: 24.sp,
+          color: isEnabled
+              ? scheduleTheme.primaryText
+              : scheduleTheme.paginationDisabled,
         ),
       ),
     );

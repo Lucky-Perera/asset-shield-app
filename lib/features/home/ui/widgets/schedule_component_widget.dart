@@ -1,4 +1,7 @@
+import 'package:asset_shield/core/theme/app_tokens.dart';
+import 'package:asset_shield/core/theme/app_typography.dart';
 import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
+import 'package:asset_shield/core/theme/schedule_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:asset_shield/core/theme/color_palette.dart';
@@ -19,17 +22,19 @@ class ScheduleComponentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheduleTheme = context.scheduleTheme;
+
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(8.r),
+      borderRadius: BorderRadius.circular(AppRadii.sm.r),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
         decoration: BoxDecoration(
-          color: isSelected ? ColorPalette.grey200 : ColorPalette.white,
-          borderRadius: BorderRadius.circular(8.r),
+          color: isSelected ? ColorPalette.surfaceMuted : ColorPalette.surface,
+          borderRadius: BorderRadius.circular(AppRadii.sm.r),
           border: Border.all(
-            color: isSelected ? ColorPalette.primary : ColorPalette.grey300,
-            width: isSelected ? 1.4 : 1,
+            color: isSelected ? ColorPalette.primary : ColorPalette.border,
+            width: isSelected ? AppStrokes.emphasis : AppStrokes.regular,
           ),
         ),
         child: Row(
@@ -39,7 +44,9 @@ class ScheduleComponentWidget extends StatelessWidget {
             Icon(
               isSelected ? Icons.check_circle : Icons.circle_outlined,
               size: 20.sp,
-              color: isSelected ? ColorPalette.primary : ColorPalette.grey400,
+              color: isSelected
+                  ? ColorPalette.primary
+                  : scheduleTheme.secondaryText,
             ),
             SizedBox(width: 12.w),
 
@@ -51,10 +58,10 @@ class ScheduleComponentWidget extends StatelessWidget {
                   /// Component name
                   Text(
                     component.component.name,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w600,
-                      color: ColorPalette.black,
+                    style: AppTypography.style(
+                      size: AppFontSizes.label,
+                      weight: AppFontWeights.semiBold,
+                      color: scheduleTheme.primaryText,
                     ),
                   ),
 
@@ -63,9 +70,9 @@ class ScheduleComponentWidget extends StatelessWidget {
                   /// Component code
                   Text(
                     '(${component.id})',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: ColorPalette.grey600,
+                    style: AppTypography.style(
+                      size: AppFontSizes.caption,
+                      color: scheduleTheme.secondaryText,
                     ),
                   ),
                 ],

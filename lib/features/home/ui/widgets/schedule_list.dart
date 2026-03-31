@@ -1,24 +1,21 @@
 import 'package:asset_shield/core/routes/router.dart';
-import 'package:asset_shield/core/theme/color_palette.dart';
+import 'package:asset_shield/core/theme/schedule_styles.dart';
+import 'package:asset_shield/core/theme/schedule_theme.dart';
 import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
-import 'package:asset_shield/features/home/ui/widgets/pagination_bar.dart';
 import 'package:asset_shield/features/home/ui/widgets/schedule_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ScheduleList extends StatelessWidget {
   final List<ScheduleV2Response> schedules;
-  final Pagination pagination;
   final String searchQuery;
   final VoidCallback onRefresh;
-  final ValueChanged<int> onPageChanged;
 
   const ScheduleList({
     super.key,
     required this.schedules,
-    required this.pagination,
     required this.searchQuery,
     required this.onRefresh,
-    required this.onPageChanged,
   });
 
   List<ScheduleV2Response> get _filteredSchedules {
@@ -34,9 +31,10 @@ class ScheduleList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final filtered = _filteredSchedules;
+    final scheduleTheme = context.scheduleTheme;
 
     if (filtered.isEmpty) {
-      return _buildEmptyState();
+      return _buildEmptyState(context, scheduleTheme);
     }
 
     return Column(
@@ -46,7 +44,7 @@ class ScheduleList extends StatelessWidget {
             onRefresh: () async => onRefresh(),
             child: ListView.builder(
               itemCount: filtered.length,
-              padding: const EdgeInsets.symmetric(vertical: 8),
+              padding: EdgeInsets.fromLTRB(0, 6.h, 0, 18.h),
               itemBuilder: (context, index) {
                 final schedule = filtered[index];
                 return ScheduleItem(
@@ -59,24 +57,23 @@ class ScheduleList extends StatelessWidget {
             ),
           ),
         ),
-        // Pagination Bar - only show when not searching
-        if (searchQuery.isEmpty)
-          PaginationBar(
-            currentPage: pagination.page,
-            totalPages: pagination.totalPages,
-            onPageChanged: onPageChanged,
-          ),
       ],
     );
   }
 
-  Widget _buildEmptyState() {
+  Widget _buildEmptyState(
+    BuildContext context,
+    ScheduleThemeData scheduleTheme,
+  ) {
     return Center(
       child: Text(
         searchQuery.isEmpty
             ? 'No schedules available'
             : 'No schedules found matching "$searchQuery"',
-        style: const TextStyle(fontSize: 16, color: ColorPalette.grey500),
+        style: ScheduleTextStyles.value(
+          context,
+          color: scheduleTheme.secondaryText,
+        ),
       ),
     );
   }

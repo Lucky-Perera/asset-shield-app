@@ -1,7 +1,10 @@
-import 'package:asset_shield/core/theme/color_palette.dart';
+import 'package:asset_shield/core/theme/schedule_styles.dart';
+import 'package:asset_shield/core/theme/schedule_theme.dart';
 import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
 import 'package:asset_shield/features/home/ui/widgets/record_status_pill.dart';
+import 'package:asset_shield/features/home/ui/widgets/schedule_ui/schedule_surface.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ScheduleItem extends StatelessWidget {
   final ScheduleV2Response schedule;
@@ -11,79 +14,57 @@ class ScheduleItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheduleTheme = context.scheduleTheme;
+
     return InkWell(
       onTap: onTap,
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: ColorPalette.whiteSwatch.shade100,
-          border: Border.all(color: ColorPalette.black, width: 0.5),
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: ColorPalette.black.withValues(alpha: 0.1),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
+      borderRadius: BorderRadius.circular(scheduleTheme.detailCardRadius.r),
+      child: ScheduleSurfaceCard(
+        margin: EdgeInsets.symmetric(horizontal: 24.w, vertical: 9.h),
+        padding: EdgeInsets.fromLTRB(18.w, 18.h, 18.w, 18.h),
+        radius: scheduleTheme.detailCardRadius,
+        boxShadow: [scheduleTheme.cardShadow(opacity: 0.26)],
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header Row with S.I. and Record Status
             Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // S.I. Label
                 Expanded(
-                  child: RichText(
-                    text: TextSpan(
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: ColorPalette.black,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      children: [
-                        const TextSpan(
-                          text: 'S.I. : ',
-                          style: TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                        TextSpan(
-                          text: schedule.scheduleName,
-                          style: const TextStyle(fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                    ),
+                  child: _InfoLine(
+                    label: 'S.I. :',
+                    value: schedule.scheduleName,
                   ),
                 ),
-                const SizedBox(width: 8),
-                // Record Status Pill
+                SizedBox(width: 12.w),
                 RecordStatusPill(status: schedule.record?.status),
               ],
             ),
-            const SizedBox(height: 8),
-            // E.I. Label
-            RichText(
-              text: TextSpan(
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: ColorPalette.black,
-                  fontWeight: FontWeight.w500,
-                ),
-                children: [
-                  const TextSpan(
-                    text: 'E.I. : ',
-                    style: TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                  TextSpan(
-                    text: schedule.equipmentId,
-                    style: const TextStyle(fontWeight: FontWeight.w500),
-                  ),
-                ],
-              ),
-            ),
+            SizedBox(height: 18.h),
+            _InfoLine(label: 'E.I. :', value: schedule.equipmentId),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _InfoLine extends StatelessWidget {
+  final String label;
+  final String value;
+
+  const _InfoLine({required this.label, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return RichText(
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      text: TextSpan(
+        children: [
+          TextSpan(text: '$label ', style: ScheduleTextStyles.caption(context)),
+          TextSpan(text: value, style: ScheduleTextStyles.caption(context)),
+        ],
       ),
     );
   }
