@@ -1,3 +1,4 @@
+import 'package:asset_shield/core/enums/enums.dart';
 import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
 import 'package:asset_shield/features/home/ui/widgets/schedule_details/schedule_details_card.dart';
 import 'package:asset_shield/features/home/ui/widgets/schedule_ui/schedule_surface.dart';
@@ -22,7 +23,7 @@ class ScheduleInfoCard extends StatelessWidget {
           ScheduleInfoRow(label: 'Description:', value: schedule.description),
           ScheduleInfoRow(
             label: 'Status:',
-            value: _formatStatus(schedule.status),
+            value: schedule.status.displayName,
           ),
           ScheduleInfoRow(
             label: 'Due Date:',
@@ -40,16 +41,4 @@ class ScheduleInfoCard extends StatelessWidget {
     );
   }
 
-  String _formatStatus(String status) {
-    if (status.isEmpty) return 'N/A';
-    final normalized = status.replaceAll('_', ' ').trim();
-    return normalized
-        .split(' ')
-        .where((part) => part.isNotEmpty)
-        .map(
-          (part) =>
-              '${part[0].toUpperCase()}${part.substring(1).toLowerCase()}',
-        )
-        .join(' ');
-  }
 }
