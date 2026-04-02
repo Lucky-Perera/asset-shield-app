@@ -49,11 +49,8 @@ class SearchHeader extends StatelessWidget {
         ),
         SizedBox(width: 8.w),
         IconButton(
-          icon: Icon(
-            Icons.close_rounded,
-            size: AppSizes.actionIcon.sp,
-            color: scheduleTheme.icon,
-          ),
+          iconSize: AppSizes.actionIcon.sp,
+          icon: Icon(Icons.close_rounded, color: scheduleTheme.icon),
           onPressed: onToggleSearch,
         ),
       ],
@@ -71,27 +68,18 @@ class SearchHeader extends StatelessWidget {
         Row(
           children: [
             IconButton(
-              icon: Icon(
-                Icons.search_rounded,
-                size: AppSizes.actionIcon.sp,
-                color: scheduleTheme.icon,
-              ),
+              iconSize: AppSizes.actionIcon.sp,
+              icon: Icon(Icons.search_rounded, color: scheduleTheme.icon),
               onPressed: onToggleSearch,
             ),
             IconButton(
-              icon: Icon(
-                Icons.autorenew_rounded,
-                size: AppSizes.actionIcon.sp,
-                color: scheduleTheme.icon,
-              ),
+              iconSize: AppSizes.actionIcon.sp,
+              icon: Icon(Icons.autorenew_rounded, color: scheduleTheme.icon),
               onPressed: onRefresh,
             ),
             IconButton(
-              icon: Icon(
-                Icons.menu_rounded,
-                size: AppSizes.actionIcon.sp,
-                color: scheduleTheme.icon,
-              ),
+              iconSize: AppSizes.actionIcon.sp,
+              icon: Icon(Icons.menu_rounded, color: scheduleTheme.icon),
               onPressed: () {
                 Scaffold.of(context).openEndDrawer();
               },

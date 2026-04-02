@@ -71,9 +71,9 @@ class AttachmentRow extends StatelessWidget {
                     ),
                   )
                 : IconButton(
+                    iconSize: 18.sp,
                     icon: Icon(
                       Icons.delete_outline,
-                      size: 18.sp,
                       color: scheduleTheme.rejectedTone.foreground,
                     ),
                     padding: EdgeInsets.zero,

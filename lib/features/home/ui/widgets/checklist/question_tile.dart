@@ -412,11 +412,8 @@ class _QuestionTileState extends State<QuestionTile> {
               top: 10,
               right: 10,
               child: IconButton(
-                icon: Icon(
-                  Icons.close,
-                  color: ColorPalette.textInverse,
-                  size: 30,
-                ),
+                iconSize: 30.sp,
+                icon: Icon(Icons.close, color: ColorPalette.textInverse),
                 onPressed: () => Navigator.of(context).pop(),
               ),
             ),
@@ -515,7 +512,8 @@ class _QuestionTileState extends State<QuestionTile> {
       fileName: fileName,
       attachmentId: attachmentId,
       typeSource: fileName,
-      showDelete: !widget.readOnly &&
+      showDelete:
+          !widget.readOnly &&
           widget.onAttachmentDeleted != null &&
           attachmentId.isNotEmpty,
     );
