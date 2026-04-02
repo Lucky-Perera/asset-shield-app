@@ -3,7 +3,9 @@ import 'package:asset_shield/core/theme/app_typography.dart';
 import 'package:asset_shield/core/theme/app_tokens.dart';
 import 'package:asset_shield/core/theme/schedule_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+// flutter_screenutil import removed — no .w/.h/.r allowed in static theme builders.
+// Screenutil scaling belongs exclusively in Widget build() methods.
 
 class AppTheme {
   static ThemeData get lightTheme {
@@ -82,7 +84,8 @@ class AppTheme {
         size: AppFontSizes.label,
         color: ColorPalette.textMuted,
       ),
-      contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+      // ✅ Raw logical values — screenutil is not available at theme build time
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       border: _inputBorder(ColorPalette.border),
       enabledBorder: _inputBorder(ColorPalette.border),
       focusedBorder: _inputBorder(ColorPalette.focus),
@@ -106,9 +109,11 @@ class AppTheme {
         foregroundColor: ColorPalette.onPrimary,
         disabledBackgroundColor: ColorPalette.primary.withValues(alpha: 0.5),
         disabledForegroundColor: ColorPalette.onPrimary.withValues(alpha: 0.7),
+        // ✅ Raw logical values
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppRadii.sm.r),
+          // ✅ Raw token — no .r
+          borderRadius: BorderRadius.circular(AppRadii.sm),
         ),
         elevation: 0,
         textStyle: textTheme.titleSmall,
@@ -123,9 +128,11 @@ class AppTheme {
       style: OutlinedButton.styleFrom(
         foregroundColor: ColorPalette.textPrimary,
         side: const BorderSide(color: ColorPalette.border),
+        // ✅ Raw logical values
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppRadii.sm.r),
+          // ✅ Raw token — no .r
+          borderRadius: BorderRadius.circular(AppRadii.sm),
         ),
         textStyle: textTheme.labelMedium?.copyWith(
           fontWeight: AppFontWeights.medium,
@@ -153,7 +160,8 @@ class AppTheme {
       checkColor: const WidgetStatePropertyAll(ColorPalette.onPrimary),
       side: const BorderSide(color: ColorPalette.borderStrong),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppRadii.xs.r),
+        // ✅ Raw token — no .r
+        borderRadius: BorderRadius.circular(AppRadii.xs),
       ),
     );
   }
@@ -164,7 +172,8 @@ class AppTheme {
     return DialogThemeData(
       backgroundColor: ColorPalette.surface,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppRadii.lg.r),
+        // ✅ Raw token — no .r
+        borderRadius: BorderRadius.circular(AppRadii.lg),
       ),
       titleTextStyle: textTheme.titleSmall,
       contentTextStyle: textTheme.labelMedium?.copyWith(
@@ -197,7 +206,8 @@ class AppTheme {
       todayForegroundColor: WidgetStatePropertyAll(colorScheme.primary),
       todayBorder: BorderSide(color: colorScheme.primary),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppRadii.lg.r),
+        // ✅ Raw token — no .r
+        borderRadius: BorderRadius.circular(AppRadii.lg),
       ),
       cancelButtonStyle: TextButton.styleFrom(
         foregroundColor: colorScheme.primary,
@@ -213,7 +223,8 @@ class AppTheme {
 
   static OutlineInputBorder _inputBorder(Color borderColor) {
     return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(AppRadii.sm.r),
+      // ✅ Raw token — no .r
+      borderRadius: BorderRadius.circular(AppRadii.sm),
       borderSide: BorderSide(color: borderColor),
     );
   }

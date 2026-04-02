@@ -27,8 +27,10 @@ class SchedulePageAppBar extends StatelessWidget
     this.backgroundColor,
   });
 
+  // ✅ Raw token — preferredSize is evaluated before the widget tree is ready,
+  // so screenutil is not available here.
   @override
-  Size get preferredSize => Size.fromHeight(AppSizes.appBarHeight.h);
+  Size get preferredSize => Size.fromHeight(AppSizes.appBarHeight);
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +47,9 @@ class SchedulePageAppBar extends StatelessWidget
         style: titleStyle ?? ScheduleTextStyles.title(context),
       ),
       leading: IconButton(
-        icon: Icon(leadingIcon, size: 24.sp, color: scheduleTheme.icon),
+        // ✅ .r instead of .sp — icons should scale with screen size only,
+        // not the user's system font size setting.
+        icon: Icon(leadingIcon, size: 24.r, color: scheduleTheme.icon),
         onPressed: onLeadingPressed,
       ),
       actions: actions,
@@ -56,7 +60,7 @@ class SchedulePageAppBar extends StatelessWidget
 class ScheduleSurfaceCard extends StatelessWidget {
   final Widget child;
   final EdgeInsetsGeometry? margin;
-  final EdgeInsetsGeometry padding;
+  final EdgeInsetsGeometry? padding;
   final Color? backgroundColor;
   final Color? borderColor;
   final double radius;
@@ -66,7 +70,7 @@ class ScheduleSurfaceCard extends StatelessWidget {
     super.key,
     required this.child,
     this.margin,
-    this.padding = const EdgeInsets.all(24),
+    this.padding,
     this.backgroundColor,
     this.borderColor,
     this.radius = ScheduleRadii.card,
@@ -77,10 +81,11 @@ class ScheduleSurfaceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheduleTheme = context.scheduleTheme;
     final resolvedBorderColor = borderColor ?? scheduleTheme.cardBorder;
+    final resolvedPadding = padding ?? EdgeInsets.all(24.r);
 
     return Container(
       margin: margin,
-      padding: padding,
+      padding: resolvedPadding,
       decoration: BoxDecoration(
         color: backgroundColor ?? scheduleTheme.cardBackground,
         borderRadius: BorderRadius.circular(radius.r),
@@ -220,10 +225,12 @@ class _ScheduleBadgeStyle {
 }
 
 class ScheduleInfoRow extends StatelessWidget {
+  /// Unscaled logical width for the label column. Scaled internally with `.w`.
+  /// Always pass raw logical values (e.g. `labelWidth: 100`, not `100.w`).
   final String label;
   final String value;
   final double labelWidth;
-  final EdgeInsetsGeometry padding;
+  final EdgeInsetsGeometry? padding;
   final TextStyle? labelStyle;
   final TextStyle? valueStyle;
 
@@ -232,15 +239,17 @@ class ScheduleInfoRow extends StatelessWidget {
     required this.label,
     required this.value,
     this.labelWidth = 132,
-    this.padding = const EdgeInsets.only(bottom: 16),
+    this.padding,
     this.labelStyle,
     this.valueStyle,
   });
 
   @override
   Widget build(BuildContext context) {
+    final resolvedPadding = padding ?? EdgeInsets.only(bottom: 16.h);
+
     return Padding(
-      padding: padding,
+      padding: resolvedPadding,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

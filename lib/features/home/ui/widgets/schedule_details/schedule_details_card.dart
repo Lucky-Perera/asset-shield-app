@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class ScheduleDetailsCard extends StatelessWidget {
   final Widget child;
   final EdgeInsetsGeometry? margin;
-  final EdgeInsetsGeometry padding;
+  final EdgeInsetsGeometry? padding;
   final Color? backgroundColor;
   final Color? borderColor;
   final List<BoxShadow>? boxShadow;
@@ -14,7 +14,7 @@ class ScheduleDetailsCard extends StatelessWidget {
     super.key,
     required this.child,
     this.margin,
-    this.padding = const EdgeInsets.all(24),
+    this.padding,
     this.backgroundColor,
     this.borderColor,
     this.boxShadow,

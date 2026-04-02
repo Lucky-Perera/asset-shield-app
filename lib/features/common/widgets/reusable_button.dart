@@ -1,51 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/theme/app_tokens.dart';
 import '../../../core/theme/app_text_styles.dart';
 import '../../../core/theme/color_palette.dart';
 
 /// A reusable button widget with a black background and rounded corners.
 /// Can be customized with different text, callbacks, and optional parameters.
+///
+/// All dimensional defaults are resolved inside [build] via flutter_screenutil
+/// so callers never need to apply `.w`, `.h`, or `.r` themselves.
 class ReusableButton extends StatelessWidget {
-  /// The text to display on the button
   final String text;
-
-  /// Callback function when button is pressed
   final VoidCallback? onPressed;
 
-  /// Optional width of the button. If null, takes full width of parent
+  /// Pass an unscaled logical width. Defaults to [double.infinity].
+  /// Non-infinite values are automatically scaled with `.w`.
   final double? width;
 
-  /// Optional height of the button. Defaults to 50
-  final double height;
+  /// Pass an unscaled logical height. Defaults to [AppSizes.buttonHeight].
+  /// Automatically scaled with `.h` inside build.
+  final double? height;
 
-  /// Optional border radius. Defaults to 8
-  final double borderRadius;
+  /// Pass an unscaled logical border radius. Defaults to [AppRadii.sm].
+  /// Automatically scaled with `.r` inside build.
+  final double? borderRadius;
 
-  /// Optional text style. If null, uses default white text
   final TextStyle? textStyle;
-
-  /// Optional background color. Defaults to ColorPalette.black
   final Color? backgroundColor;
-
-  /// Optional padding inside the button. Defaults to horizontal 24, vertical 12
   final EdgeInsetsGeometry? padding;
-
-  /// Optional foreground color for text and icons.
   final Color? foregroundColor;
-
-  /// Optional border color.
   final Color? borderColor;
-
-  /// Optional loading state to show a circular progress indicator
   final bool isLoading;
 
   const ReusableButton({
     super.key,
     required this.text,
     this.onPressed,
-    this.width = double.infinity,
-    this.height = AppSizes.buttonHeight,
-    this.borderRadius = AppRadii.sm,
+    this.width,         // ← no raw default; resolved in build
+    this.height,        // ← no raw default; resolved in build
+    this.borderRadius,  // ← no raw default; resolved in build
     this.textStyle,
     this.backgroundColor,
     this.padding,
@@ -58,12 +51,23 @@ class ReusableButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final resolvedBackgroundColor = backgroundColor ?? ColorPalette.primary;
     final resolvedForegroundColor = foregroundColor ?? ColorPalette.onPrimary;
+
+    // All scaling happens here — callers pass raw logical values only.
+    final resolvedWidth =
+        width == null || width == double.infinity
+            ? double.infinity
+            : width!.w;
+    final resolvedHeight = (height ?? AppSizes.buttonHeight).h;
+    final resolvedBorderRadius = (borderRadius ?? AppRadii.sm).r;
+    final resolvedPadding =
+        padding ?? EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h);
+
     final buttonStyle =
         Theme.of(context).elevatedButtonTheme.style ?? const ButtonStyle();
 
     return SizedBox(
-      width: width,
-      height: height,
+      width: resolvedWidth,
+      height: resolvedHeight,
       child: ElevatedButton(
         onPressed: isLoading ? null : onPressed,
         style: buttonStyle.copyWith(
@@ -79,19 +83,17 @@ class ReusableButton extends StatelessWidget {
               : WidgetStatePropertyAll(BorderSide(color: borderColor!)),
           shape: WidgetStatePropertyAll(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(borderRadius),
+              borderRadius: BorderRadius.circular(resolvedBorderRadius),
             ),
           ),
-          padding: WidgetStatePropertyAll(
-            padding ?? const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-          ),
+          padding: WidgetStatePropertyAll(resolvedPadding),
         ),
         child: isLoading
             ? SizedBox(
-                width: 20,
-                height: 20,
+                width: 20.r,
+                height: 20.r,
                 child: CircularProgressIndicator(
-                  strokeWidth: 2,
+                  strokeWidth: 2.w,
                   valueColor: AlwaysStoppedAnimation<Color>(
                     resolvedForegroundColor,
                   ),

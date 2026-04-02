@@ -1,6 +1,7 @@
 import 'package:asset_shield/core/theme/app_text_styles.dart';
 import 'package:asset_shield/core/theme/color_palette.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ScheduleErrorState extends StatelessWidget {
   final String errorMessage;
@@ -24,12 +25,12 @@ class ScheduleErrorState extends StatelessWidget {
         children: [
           Icon(
             _isNotFoundError() ? Icons.info_outline : Icons.error_outline,
-            size: 48,
+            size: 48.r,
             color: _isNotFoundError()
                 ? ColorPalette.warning
                 : ColorPalette.error,
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           if (!_isNotFoundError())
             Text(
               'Error loading scope details',
@@ -37,9 +38,9 @@ class ScheduleErrorState extends StatelessWidget {
                 color: ColorPalette.error,
               ),
             ),
-          SizedBox(height: _isNotFoundError() ? 0 : 8),
+          SizedBox(height: _isNotFoundError() ? 0 : 8.h),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32),
+            padding: EdgeInsets.symmetric(horizontal: 32.w),
             child: Text(
               errorMessage,
               textAlign: TextAlign.center,
@@ -49,7 +50,7 @@ class ScheduleErrorState extends StatelessWidget {
             ),
           ),
           if (!_isNotFoundError()) ...[
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             ElevatedButton(onPressed: onRetry, child: const Text('Retry')),
           ],
         ],
