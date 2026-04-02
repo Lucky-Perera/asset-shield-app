@@ -465,6 +465,88 @@ class _QuestionTileState extends State<QuestionTile> {
     return Icons.attach_file_rounded;
   }
 
+  /// Single source of truth for building an [AttachmentRow].
+  ///
+  /// [typeSource] is the string used to resolve the attachment type — pass the
+  /// file name for local files (no remote URL yet) or the remote URL for
+  /// server-persisted attachments so the correct icon and viewer are selected.
+  /// [url] is the remote URL forwarded to the tap handler; omit it for
+  /// newly-uploaded files that have no viewable remote URL.
+  AttachmentRow _buildAttachmentRow({
+    required String fileName,
+    required String attachmentId,
+    required String typeSource,
+    required bool showDelete,
+    String? url,
+  }) {
+    final isImage = _isImageUrl(typeSource);
+    final isPdf = _isPdfUrl(typeSource);
+    final isTxt = _isTxtUrl(typeSource);
+    final isDeleting = _deletingAttachmentId == attachmentId;
+
+    return AttachmentRow(
+      icon: _attachmentIcon(isImage: isImage, isPdf: isPdf, isTxt: isTxt),
+      fileName: fileName,
+      id: attachmentId,
+      isViewable: isImage || isPdf || isTxt,
+      isDeleting: isDeleting,
+      showDelete: showDelete,
+      onTap: url == null
+          ? null
+          : () {
+              if (isImage) {
+                _showImageViewer(url);
+              } else if (isPdf) {
+                _openPdf(url);
+              } else {
+                _openUrl(url);
+              }
+            },
+      onDelete: (id, name) => _handleDeleteAttachment(id, name),
+    );
+  }
+
+  /// Maps a newly-uploaded [File] (tracked via [_uploadedPaths] /
+  /// [_uploadedFileMetadata]) to an [AttachmentRow].
+  AttachmentRow _toUploadedAttachmentRow(File file) {
+    final fileName = file.path.split('/').last;
+    final attachmentId = _uploadedFileMetadata[file.path]?['id'] ?? '';
+    return _buildAttachmentRow(
+      fileName: fileName,
+      attachmentId: attachmentId,
+      typeSource: fileName,
+      showDelete: !widget.readOnly &&
+          widget.onAttachmentDeleted != null &&
+          attachmentId.isNotEmpty,
+    );
+  }
+
+  /// Maps a restored-session attachment (metadata map with 'id' / 'name' keys)
+  /// to an [AttachmentRow].
+  AttachmentRow _toRestoredAttachmentRow(Map<String, String> attachment) {
+    final fileName = attachment['name'] ?? 'Unknown';
+    final attachmentId = attachment['id'] ?? '';
+    return _buildAttachmentRow(
+      fileName: fileName,
+      attachmentId: attachmentId,
+      typeSource: fileName,
+      showDelete: !widget.readOnly && widget.onAttachmentDeleted != null,
+    );
+  }
+
+  /// Maps a server-persisted [AttachmentV2] to an [AttachmentRow].
+  /// Passes [AttachmentV2.url] as both [typeSource] and [url] so the correct
+  /// icon is selected and the tap handler can open the remote file.
+  AttachmentRow _toExistingAttachmentRow(AttachmentV2 attachment) {
+    return _buildAttachmentRow(
+      fileName: attachment.name,
+      attachmentId: attachment.id,
+      typeSource: attachment.url,
+      showDelete: !widget.readOnly && widget.onAttachmentDeleted != null,
+      url: attachment.url,
+    );
+  }
+
   Widget _buildResponseOption(ResponseValue option) {
     final isSelected = _selectedValue == option.apiValue;
     final scheduleTheme = context.scheduleTheme;
@@ -539,91 +621,28 @@ class _QuestionTileState extends State<QuestionTile> {
   @override
   Widget build(BuildContext context) {
     final scheduleTheme = context.scheduleTheme;
+
     final uploadedAttachments = _mediaFiles
         .where((file) => _uploadedPaths.contains(file.path))
-        .map((file) {
-          final fileName = file.path.split('/').last;
-          final metadata = _uploadedFileMetadata[file.path];
-          final attachmentId = metadata?['id'] ?? '';
-          final isDeleting = _deletingAttachmentId == attachmentId;
-          final isImage = _isImageUrl(fileName);
-          final isPdf = _isPdfUrl(fileName);
-          final isTxt = _isTxtUrl(fileName);
-
-          return AttachmentRow(
-            icon: _attachmentIcon(isImage: isImage, isPdf: isPdf, isTxt: isTxt),
-            fileName: fileName,
-            id: attachmentId,
-            isViewable: isImage || isPdf || isTxt,
-            isDeleting: isDeleting,
-            showDelete:
-                !widget.readOnly &&
-                widget.onAttachmentDeleted != null &&
-                attachmentId.isNotEmpty,
-            onDelete: (id, name) => _handleDeleteAttachment(id, name),
-          );
-        })
+        .map(_toUploadedAttachmentRow)
         .toList();
 
     final existingAttachments =
         widget.existingAttachments
-            ?.where(
-              (attachment) => !_deletedAttachmentIds.contains(attachment.id),
-            )
+            ?.where((a) => !_deletedAttachmentIds.contains(a.id))
             .toList() ??
         [];
-    final existingIds = existingAttachments
-        .map((attachment) => attachment.id)
-        .toSet();
-    final restoredAttachments = _restoredAttachments.where((attachment) {
-      final id = attachment['id'] ?? '';
-      return !_deletedAttachmentIds.contains(id) && !existingIds.contains(id);
-    }).toList();
+    final existingIds = existingAttachments.map((a) => a.id).toSet();
 
     final persistedAttachments = [
-      ...restoredAttachments.map((attachment) {
-        final fileName = attachment['name'] ?? 'Unknown';
-        final attachmentId = attachment['id'] ?? '';
-        final isDeleting = _deletingAttachmentId == attachmentId;
-        final isImage = _isImageUrl(fileName);
-        final isPdf = _isPdfUrl(fileName);
-        final isTxt = _isTxtUrl(fileName);
-
-        return AttachmentRow(
-          icon: _attachmentIcon(isImage: isImage, isPdf: isPdf, isTxt: isTxt),
-          fileName: fileName,
-          id: attachmentId,
-          isViewable: isImage || isPdf || isTxt,
-          isDeleting: isDeleting,
-          showDelete: !widget.readOnly && widget.onAttachmentDeleted != null,
-          onDelete: (id, name) => _handleDeleteAttachment(id, name),
-        );
-      }),
-      ...existingAttachments.map((attachment) {
-        final isImage = _isImageUrl(attachment.url);
-        final isPdf = _isPdfUrl(attachment.url);
-        final isTxt = _isTxtUrl(attachment.url);
-        final isDeleting = _deletingAttachmentId == attachment.id;
-
-        return AttachmentRow(
-          icon: _attachmentIcon(isImage: isImage, isPdf: isPdf, isTxt: isTxt),
-          fileName: attachment.name,
-          id: attachment.id,
-          isViewable: isImage || isPdf || isTxt,
-          isDeleting: isDeleting,
-          showDelete: !widget.readOnly && widget.onAttachmentDeleted != null,
-          onTap: () {
-            if (isImage) {
-              _showImageViewer(attachment.url);
-            } else if (isPdf) {
-              _openPdf(attachment.url);
-            } else {
-              _openUrl(attachment.url);
-            }
-          },
-          onDelete: (id, name) => _handleDeleteAttachment(id, name),
-        );
-      }),
+      ..._restoredAttachments
+          .where((a) {
+            final id = a['id'] ?? '';
+            return !_deletedAttachmentIds.contains(id) &&
+                !existingIds.contains(id);
+          })
+          .map(_toRestoredAttachmentRow),
+      ...existingAttachments.map(_toExistingAttachmentRow),
     ];
 
     return ScheduleSurfaceCard(
