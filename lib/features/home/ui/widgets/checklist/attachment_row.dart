@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:asset_shield/core/theme/color_palette.dart';
+import 'package:asset_shield/core/theme/schedule_styles.dart';
+import 'package:asset_shield/core/theme/schedule_theme.dart';
 
 typedef VoidStringCallback = void Function(String id, String name);
 
@@ -28,25 +29,30 @@ class AttachmentRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheduleTheme = context.scheduleTheme;
+
     return Padding(
       padding: EdgeInsets.only(bottom: 4.h),
       child: Row(
         children: [
           Icon(
             icon,
-            size: 16.sp,
-            color: isViewable ? ColorPalette.primary : ColorPalette.primary,
+            size: 18.sp,
+            color: isViewable
+                ? scheduleTheme.draftTone.foreground
+                : scheduleTheme.secondaryText,
           ),
-          SizedBox(width: 6.w),
+          SizedBox(width: 8.w),
           Expanded(
             child: InkWell(
               onTap: onTap,
               child: Text(
                 fileName,
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  color: isViewable ? ColorPalette.primary : ColorPalette.black,
-                  decoration: isViewable ? TextDecoration.underline : null,
+                style: ScheduleTextStyles.caption(
+                  context,
+                  color: isViewable
+                      ? scheduleTheme.draftTone.foreground
+                      : scheduleTheme.primaryText,
                 ),
                 overflow: TextOverflow.ellipsis,
               ),
@@ -59,14 +65,16 @@ class AttachmentRow extends StatelessWidget {
                     height: 16.sp,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        scheduleTheme.rejectedTone.foreground,
+                      ),
                     ),
                   )
                 : IconButton(
+                    iconSize: 18.sp,
                     icon: Icon(
                       Icons.delete_outline,
-                      size: 18.sp,
-                      color: Colors.red,
+                      color: scheduleTheme.rejectedTone.foreground,
                     ),
                     padding: EdgeInsets.zero,
                     constraints: const BoxConstraints(),

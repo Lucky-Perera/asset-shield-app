@@ -1,7 +1,12 @@
 import 'package:asset_shield/core/routes/router.dart';
+import 'package:asset_shield/core/theme/app_typography.dart';
+import 'package:asset_shield/core/theme/app_tokens.dart';
+import 'package:asset_shield/core/theme/color_palette.dart';
+import 'package:asset_shield/core/theme/schedule_styles.dart';
+import 'package:asset_shield/core/theme/schedule_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../core/theme/color_palette.dart';
+import 'schedule_form_primitives.dart';
 
 /// A reusable multi-select field widget with consistent styling
 class FormMultiSelectField<T> extends StatelessWidget {
@@ -33,6 +38,7 @@ class FormMultiSelectField<T> extends StatelessWidget {
     FormFieldState<List<T>> state,
   ) async {
     final List<T> tempSelected = List.from(state.value ?? selectedValues);
+    final scheduleTheme = context.scheduleTheme;
 
     await showDialog(
       context: context,
@@ -40,7 +46,17 @@ class FormMultiSelectField<T> extends StatelessWidget {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: Text(label),
+              backgroundColor: scheduleTheme.cardBackground,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(scheduleTheme.cardRadius.r),
+              ),
+              title: Text(
+                label,
+                style: ScheduleTextStyles.title(
+                  context,
+                  size: AppFontSizes.caption,
+                ),
+              ),
               contentPadding: EdgeInsets.only(top: 16.h),
               content: SizedBox(
                 width: double.maxFinite,
@@ -53,9 +69,15 @@ class FormMultiSelectField<T> extends StatelessWidget {
 
                     return CheckboxListTile(
                       value: isSelected,
-                      title: Text(item.label),
+                      title: Text(
+                        item.label,
+                        style: ScheduleTextStyles.value(
+                          context,
+                          size: AppFontSizes.caption,
+                        ),
+                      ),
+                      activeColor: scheduleTheme.paginationActive,
                       controlAffinity: ListTileControlAffinity.leading,
-                      activeColor: Colors.blue,
                       onChanged: (bool? checked) {
                         setState(() {
                           if (checked == true) {
@@ -74,7 +96,11 @@ class FormMultiSelectField<T> extends StatelessWidget {
                   onPressed: () => router.pop(),
                   child: Text(
                     'Cancel',
-                    style: TextStyle(color: ColorPalette.grey600),
+                    style: ScheduleTextStyles.value(
+                      context,
+                      size: AppFontSizes.caption,
+                      color: scheduleTheme.secondaryText,
+                    ),
                   ),
                 ),
                 TextButton(
@@ -84,7 +110,14 @@ class FormMultiSelectField<T> extends StatelessWidget {
                     state.didChange(tempSelected);
                     router.pop();
                   },
-                  child: const Text('Done'),
+                  child: Text(
+                    'Done',
+                    style: ScheduleTextStyles.label(
+                      context,
+                      size: AppFontSizes.caption,
+                      color: scheduleTheme.draftTone.foreground,
+                    ),
+                  ),
                 ),
               ],
             );
@@ -99,91 +132,83 @@ class FormMultiSelectField<T> extends StatelessWidget {
     final displayText = selectedValues.isEmpty
         ? hint ?? 'Select items'
         : selectedValues.map((v) => itemLabel(v)).join(', ');
+    final scheduleTheme = context.scheduleTheme;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        RichText(
-          text: TextSpan(
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: ColorPalette.black,
-              fontWeight: FontWeight.w500,
-            ),
+    return ScheduleFieldSection(
+      label: label,
+      isRequired: isRequired,
+      child: FormField<List<T>>(
+        validator: validator,
+        initialValue: selectedValues,
+        builder: (FormFieldState<List<T>> state) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (isRequired)
-                const TextSpan(
-                  text: '* ',
-                  style: TextStyle(color: Colors.red),
+              InkWell(
+                onTap: readOnly
+                    ? null
+                    : () => _showMultiSelectDialog(context, state),
+                borderRadius: BorderRadius.circular(
+                  scheduleTheme.fieldRadius.r,
                 ),
-              TextSpan(text: label),
-            ],
-          ),
-        ),
-        SizedBox(height: 8.h),
-        FormField<List<T>>(
-          validator: validator,
-          initialValue: selectedValues,
-          builder: (FormFieldState<List<T>> state) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                InkWell(
-                  onTap: readOnly
-                      ? null
-                      : () => _showMultiSelectDialog(context, state),
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 16.w,
-                      vertical: 14.h,
-                    ),
-                    decoration: BoxDecoration(
-                      color: ColorPalette.white,
-                      borderRadius: BorderRadius.circular(8.r),
-                      border: Border.all(
-                        color: state.hasError
-                            ? Colors.red
-                            : ColorPalette.grey300,
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                    vertical: 15.h,
+                  ),
+                  decoration: ScheduleFormDecorations.container(
+                    context,
+                    enabled: !readOnly,
+                    hasError: state.hasError,
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          displayText,
+                          style: selectedValues.isEmpty
+                              ? ScheduleTextStyles.hint(
+                                  context,
+                                  size: AppFontSizes.caption,
+                                )
+                              : ScheduleTextStyles.value(
+                                  context,
+                                  size: AppFontSizes.caption,
+                                  color: readOnly
+                                      ? scheduleTheme.secondaryText
+                                      : scheduleTheme.primaryText,
+                                ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                        ),
                       ),
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            displayText,
-                            style: TextStyle(
-                              color: selectedValues.isEmpty
-                                  ? ColorPalette.grey400
-                                  : ColorPalette.black,
-                              fontSize: 14.sp,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                          ),
-                        ),
-                        Icon(
-                          Icons.keyboard_arrow_down,
-                          color: readOnly
-                              ? ColorPalette.grey300
-                              : ColorPalette.grey400,
-                        ),
-                      ],
+                      Icon(
+                        Icons.keyboard_arrow_down_rounded,
+                        color: readOnly
+                            ? scheduleTheme.secondaryText
+                            : scheduleTheme.icon,
+                        size: AppSizes.fieldIcon.sp,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              if (state.hasError)
+                Padding(
+                  padding: EdgeInsets.only(left: 16.w, top: 8.h),
+                  child: Text(
+                    state.errorText ?? '',
+                    style: ScheduleTextStyles.caption(
+                      context,
+                      size: AppFontSizes.caption,
+                      color: ColorPalette.error,
                     ),
                   ),
                 ),
-                if (state.hasError)
-                  Padding(
-                    padding: EdgeInsets.only(left: 16.w, top: 8.h),
-                    child: Text(
-                      state.errorText ?? '',
-                      style: TextStyle(color: Colors.red, fontSize: 12.sp),
-                    ),
-                  ),
-              ],
-            );
-          },
-        ),
-      ],
+            ],
+          );
+        },
+      ),
     );
   }
 }

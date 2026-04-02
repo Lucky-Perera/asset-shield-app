@@ -1,4 +1,7 @@
 import 'package:asset_shield/core/theme/color_palette.dart';
+import 'package:asset_shield/core/theme/app_text_styles.dart';
+import 'package:asset_shield/core/theme/app_tokens.dart';
+import 'package:asset_shield/features/common/widgets/reusable_button.dart';
 import 'package:flutter/material.dart';
 
 class ErrorState extends StatelessWidget {
@@ -16,27 +19,32 @@ class ErrorState extends StatelessWidget {
           const Icon(
             Icons.error_outline,
             size: 48,
-            color: ColorPalette.grey400,
+            color: ColorPalette.textMuted,
           ),
           const SizedBox(height: 16),
           Text(
             'Error loading schedules',
-            style: TextStyle(fontSize: 16, color: ColorPalette.grey600),
+            style: context.appTextTheme.bodyMedium!.copyWith(
+              color: ColorPalette.textSecondary,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
             error.toString(),
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 14, color: ColorPalette.grey500),
+            style: context.appTextTheme.bodySmall!.copyWith(
+              color: ColorPalette.textMuted,
+            ),
           ),
           const SizedBox(height: 16),
-          ElevatedButton(
+          ReusableButton(
+            width: null,
+            height: 44,
+            borderRadius: AppRadii.sm,
+            backgroundColor: ColorPalette.black,
+            foregroundColor: ColorPalette.white,
             onPressed: onRetry,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: ColorPalette.black,
-              foregroundColor: ColorPalette.white,
-            ),
-            child: const Text('Retry'),
+            text: 'Retry',
           ),
         ],
       ),

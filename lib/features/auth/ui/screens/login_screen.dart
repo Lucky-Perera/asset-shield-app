@@ -50,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Welcome ${response.data.user.name}!'),
-              backgroundColor: Colors.green,
+              backgroundColor: ColorPalette.success,
             ),
           );
           Routes().home();
@@ -59,7 +59,10 @@ class _LoginScreenState extends State<LoginScreen> {
         if (!mounted) return;
 
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString()), backgroundColor: Colors.red),
+          SnackBar(
+            content: Text(e.toString()),
+            backgroundColor: ColorPalette.error,
+          ),
         );
       } finally {
         if (mounted) {

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../core/theme/color_palette.dart';
+import '../../../core/theme/app_typography.dart';
+import '../../../core/theme/schedule_styles.dart';
+import '../../../core/theme/schedule_theme.dart';
+import 'schedule_form_primitives.dart';
 
 /// A reusable text field widget for forms with consistent styling
 class FormTextField extends StatelessWidget {
@@ -31,70 +34,39 @@ class FormTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        RichText(
-          text: TextSpan(
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: ColorPalette.black,
-              fontWeight: FontWeight.w500,
-            ),
-            children: [
-              if (isRequired)
-                const TextSpan(
-                  text: '* ',
-                  style: TextStyle(color: Colors.red),
-                ),
-              TextSpan(text: label),
-            ],
-          ),
+    final scheduleTheme = context.scheduleTheme;
+
+    return ScheduleFieldSection(
+      label: label,
+      isRequired: isRequired,
+      child: TextFormField(
+        controller: controller,
+        validator: validator,
+        maxLines: maxLines,
+        minLines: minLines,
+        keyboardType: keyboardType,
+        enabled: enabled,
+        onChanged: onChanged,
+        textAlignVertical: maxLines == 1
+            ? TextAlignVertical.center
+            : TextAlignVertical.top,
+        style: ScheduleTextStyles.value(
+          context,
+          size: AppFontSizes.caption,
+          color: enabled
+              ? scheduleTheme.primaryText
+              : scheduleTheme.secondaryText,
         ),
-        SizedBox(height: 8.h),
-        TextFormField(
-          controller: controller,
-          validator: validator,
-          maxLines: maxLines,
-          minLines: minLines,
-          keyboardType: keyboardType,
+        decoration: ScheduleFormDecorations.input(
+          context,
+          hintText: hint,
           enabled: enabled,
-          onChanged: onChanged,
-          decoration: InputDecoration(
-            hintText: hint,
-            hintStyle: TextStyle(
-              color: enabled ? ColorPalette.grey400 : ColorPalette.grey200,
-              fontSize: 14.sp,
-            ),
-            contentPadding: EdgeInsets.symmetric(
-              horizontal: 16.w,
-              vertical: 14.h,
-            ),
-            filled: true,
-            fillColor: ColorPalette.white,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.r),
-              borderSide: const BorderSide(color: ColorPalette.grey300),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.r),
-              borderSide: const BorderSide(color: ColorPalette.grey300),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.r),
-              borderSide: const BorderSide(color: ColorPalette.black),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.r),
-              borderSide: const BorderSide(color: Colors.red),
-            ),
-            disabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.r),
-              borderSide: const BorderSide(color: ColorPalette.grey200),
-            ),
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: 16.w,
+            vertical: maxLines == 1 ? 15.h : 18.h,
           ),
         ),
-      ],
+      ),
     );
   }
 }

@@ -1,5 +1,7 @@
 import 'package:asset_shield/core/theme/app_text_styles.dart';
+import 'package:asset_shield/core/theme/color_palette.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ScheduleErrorState extends StatelessWidget {
   final String errorMessage;
@@ -23,32 +25,33 @@ class ScheduleErrorState extends StatelessWidget {
         children: [
           Icon(
             _isNotFoundError() ? Icons.info_outline : Icons.error_outline,
-            size: 48,
-            color: _isNotFoundError() ? Colors.orange : Colors.red,
+            size: 48.r,
+            color: _isNotFoundError()
+                ? ColorPalette.warning
+                : ColorPalette.error,
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           if (!_isNotFoundError())
             Text(
               'Error loading scope details',
-              style: AppTextStyles.h2(context).copyWith(color: Colors.red),
+              style: context.appTextTheme.titleMedium!.copyWith(
+                color: ColorPalette.error,
+              ),
             ),
-          SizedBox(height: _isNotFoundError() ? 0 : 8),
+          SizedBox(height: _isNotFoundError() ? 0 : 8.h),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32),
+            padding: EdgeInsets.symmetric(horizontal: 32.w),
             child: Text(
               errorMessage,
               textAlign: TextAlign.center,
-              style: AppTextStyles.base(context).copyWith(
-                color: _isNotFoundError() ? Colors.grey.shade700 : null,
+              style: context.appTextTheme.bodyMedium!.copyWith(
+                color: _isNotFoundError() ? ColorPalette.textSecondary : null,
               ),
             ),
           ),
           if (!_isNotFoundError()) ...[
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: onRetry,
-              child: const Text('Retry'),
-            ),
+            SizedBox(height: 16.h),
+            ElevatedButton(onPressed: onRetry, child: const Text('Retry')),
           ],
         ],
       ),

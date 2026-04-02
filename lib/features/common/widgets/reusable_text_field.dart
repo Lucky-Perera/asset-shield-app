@@ -1,4 +1,3 @@
-import 'package:asset_shield/core/theme/color_palette.dart';
 import 'package:flutter/material.dart';
 
 class ReusableTextField extends StatefulWidget {
@@ -44,8 +43,6 @@ class _ReusableTextFieldState extends State<ReusableTextField> {
 
   @override
   Widget build(BuildContext context) {
-    final border = OutlineInputBorder(borderRadius: BorderRadius.circular(12));
-
     return TextFormField(
       controller: widget.controller,
       enabled: widget.enabled,
@@ -65,17 +62,6 @@ class _ReusableTextFieldState extends State<ReusableTextField> {
                 onPressed: () => setState(() => _obscured = !_obscured),
               )
             : null,
-        border: border,
-        enabledBorder: border,
-        focusedBorder: border.copyWith(
-          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
-        ),
-        filled: true,
-        fillColor: ColorPalette.white,
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 14,
-        ),
       ),
     );
   }

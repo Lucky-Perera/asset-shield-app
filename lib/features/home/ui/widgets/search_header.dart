@@ -1,5 +1,9 @@
-import 'package:asset_shield/core/theme/color_palette.dart';
+import 'package:asset_shield/core/theme/app_tokens.dart';
+import 'package:asset_shield/core/theme/schedule_styles.dart';
+import 'package:asset_shield/core/theme/schedule_theme.dart';
+import 'package:asset_shield/features/common/widgets/schedule_form_primitives.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SearchHeader extends StatelessWidget {
   final bool isSearching;
@@ -20,64 +24,62 @@ class SearchHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: isSearching ? _buildSearchField() : _buildHeader(context),
+      padding: EdgeInsets.fromLTRB(24.w, 18.h, 24.w, 14.h),
+      child: isSearching ? _buildSearchField(context) : _buildHeader(context),
     );
   }
 
-  Widget _buildSearchField() {
+  Widget _buildSearchField(BuildContext context) {
+    final scheduleTheme = context.scheduleTheme;
+
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Expanded(
           child: TextField(
             controller: searchController,
             autofocus: true,
-            decoration: InputDecoration(
+            style: ScheduleTextStyles.value(context),
+            decoration: ScheduleFormDecorations.search(
+              context,
               hintText: 'Search by Schedule ID...',
-              hintStyle: const TextStyle(color: ColorPalette.grey500),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: const BorderSide(color: ColorPalette.grey300),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: const BorderSide(color: ColorPalette.black),
-              ),
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 12,
-              ),
             ),
             onChanged: onSearchChanged,
           ),
         ),
-        const SizedBox(width: 8),
-        IconButton(icon: const Icon(Icons.close), onPressed: onToggleSearch),
+        SizedBox(width: 8.w),
+        IconButton(
+          iconSize: AppSizes.actionIcon.sp,
+          icon: Icon(Icons.close_rounded, color: scheduleTheme.icon),
+          onPressed: onToggleSearch,
+        ),
       ],
     );
   }
 
   Widget _buildHeader(BuildContext context) {
+    final scheduleTheme = context.scheduleTheme;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Text(
-          'Schedules',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: ColorPalette.black,
-          ),
-        ),
+        Text('Schedules', style: ScheduleTextStyles.title(context)),
         Row(
           children: [
             IconButton(
-              icon: const Icon(Icons.search),
+              iconSize: AppSizes.actionIcon.sp,
+              icon: Icon(Icons.search_rounded, color: scheduleTheme.icon),
               onPressed: onToggleSearch,
             ),
-            IconButton(icon: const Icon(Icons.refresh), onPressed: onRefresh),
             IconButton(
-              icon: const Icon(Icons.menu),
+              iconSize: AppSizes.actionIcon.sp,
+              icon: Icon(Icons.autorenew_rounded, color: scheduleTheme.icon),
+              onPressed: onRefresh,
+            ),
+            IconButton(
+              iconSize: AppSizes.actionIcon.sp,
+              icon: Icon(Icons.menu_rounded, color: scheduleTheme.icon),
               onPressed: () {
                 Scaffold.of(context).openEndDrawer();
               },

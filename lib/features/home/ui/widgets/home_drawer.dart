@@ -1,45 +1,82 @@
-import 'package:asset_shield/core/theme/color_palette.dart';
+import 'package:asset_shield/core/theme/app_typography.dart';
+import 'package:asset_shield/core/theme/app_tokens.dart';
+import 'package:asset_shield/core/theme/schedule_styles.dart';
+import 'package:asset_shield/core/theme/schedule_theme.dart';
 import 'package:asset_shield/features/auth/data/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeDrawer extends StatelessWidget {
   const HomeDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final scheduleTheme = context.scheduleTheme;
+
     return Drawer(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // FIXED HEIGHT HEADER
-          DrawerHeader(
-            decoration: BoxDecoration(color: ColorPalette.blackSwatch.shade400),
-            child: const Text(
-              'Menu',
-              style: TextStyle(color: Colors.white, fontSize: 24),
+      width: AppSizes.drawerWidth.w,
+      backgroundColor: scheduleTheme.cardBackground,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.horizontal(
+          left: Radius.circular(scheduleTheme.drawerRadius.r),
+        ),
+      ),
+      child: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              height: AppSizes.drawerHeaderHeight.h,
+              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
+              decoration: BoxDecoration(
+                color: scheduleTheme.drawerHeaderBackground,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(scheduleTheme.drawerRadius.r),
+                ),
+              ),
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Menu',
+                style: AppTypography.style(
+                  size: 23,
+                  weight: AppFontWeights.title,
+                  color: scheduleTheme.primaryText,
+                  height: 1,
+                ),
+              ),
             ),
-          ),
-
-          // MAIN CONTENT (put menu items here)
-          Expanded(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: const [
-                // Add more menu items if needed
-              ],
+            const Expanded(child: SizedBox.shrink()),
+            Padding(
+              padding: EdgeInsets.fromLTRB(28.w, 12.h, 28.w, 32.h),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(
+                  scheduleTheme.fieldRadius.r,
+                ),
+                onTap: () => AuthService().logout(),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10.h),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.logout_rounded,
+                        color: scheduleTheme.rejectedTone.foreground,
+                        size: 30.sp,
+                      ),
+                      SizedBox(width: 12.w),
+                      Text(
+                        'Log Out',
+                        style: ScheduleTextStyles.value(
+                          context,
+                          color: scheduleTheme.rejectedTone.foreground,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
-          ),
-
-          // LOG OUT BUTTON AT BOTTOM
-          Padding(
-            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 24),
-            child: ListTile(
-              leading: const Icon(Icons.output_rounded, color: Colors.red),
-              title: const Text('Log Out', style: TextStyle(color: Colors.red)),
-              onTap: () => AuthService().logout(),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

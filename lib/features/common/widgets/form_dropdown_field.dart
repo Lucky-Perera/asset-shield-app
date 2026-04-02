@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../core/theme/color_palette.dart';
+import '../../../core/theme/schedule_styles.dart';
+import '../../../core/theme/schedule_theme.dart';
+import 'schedule_form_primitives.dart';
 
 class FormDropdownField<T> extends StatelessWidget {
   final String label;
@@ -26,63 +28,35 @@ class FormDropdownField<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        RichText(
-          text: TextSpan(
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: ColorPalette.black,
-              fontWeight: FontWeight.w500,
-            ),
-            children: [
-              if (isRequired)
-                const TextSpan(
-                  text: '* ',
-                  style: TextStyle(color: Colors.red),
-                ),
-              TextSpan(text: label),
-            ],
-          ),
+    final scheduleTheme = context.scheduleTheme;
+
+    return ScheduleFieldSection(
+      label: label,
+      isRequired: isRequired,
+      child: DropdownButtonFormField<T>(
+        initialValue: value,
+        items: items,
+        onChanged: readOnly ? null : onChanged,
+        validator: validator,
+        style: ScheduleTextStyles.value(
+          context,
+          color: readOnly
+              ? scheduleTheme.secondaryText
+              : scheduleTheme.primaryText,
         ),
-        SizedBox(height: 8.h),
-        DropdownButtonFormField<T>(
-          initialValue: value,
-          items: items,
-          onChanged: readOnly ? null : onChanged,
-          validator: validator,
-          style: TextStyle(fontSize: 14.sp, color: ColorPalette.black),
-          decoration: InputDecoration(
-            hintText: hint,
-            hintStyle: TextStyle(color: ColorPalette.grey400, fontSize: 14.sp),
-            contentPadding: EdgeInsets.symmetric(
-              horizontal: 16.w,
-              vertical: 14.h,
-            ),
-            filled: true,
-            fillColor: ColorPalette.white,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.r),
-              borderSide: const BorderSide(color: ColorPalette.grey300),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.r),
-              borderSide: const BorderSide(color: ColorPalette.grey300),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.r),
-              borderSide: const BorderSide(color: ColorPalette.black),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.r),
-              borderSide: const BorderSide(color: Colors.red),
-            ),
-          ),
-          icon: const Icon(Icons.keyboard_arrow_down),
-          isExpanded: true,
+        decoration: ScheduleFormDecorations.input(
+          context,
+          hintText: hint,
+          enabled: !readOnly,
         ),
-      ],
+        icon: Icon(
+          Icons.keyboard_arrow_down_rounded,
+          color: readOnly ? scheduleTheme.secondaryText : scheduleTheme.icon,
+          size: 22.sp,
+        ),
+        isExpanded: true,
+        dropdownColor: scheduleTheme.cardBackground,
+      ),
     );
   }
 }

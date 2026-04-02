@@ -1,8 +1,9 @@
-import 'package:asset_shield/core/theme/color_palette.dart';
+import 'package:asset_shield/core/theme/schedule_theme.dart';
 import 'package:asset_shield/features/home/ui/widgets/home_drawer.dart';
 import 'package:asset_shield/features/common/widgets/app_scaffold.dart';
 import 'package:asset_shield/features/home/data/providers/schedule_provider.dart';
 import 'package:asset_shield/features/home/ui/widgets/error_state.dart';
+import 'package:asset_shield/features/home/ui/widgets/pagination_bar.dart';
 import 'package:asset_shield/features/home/ui/widgets/schedule_list.dart';
 import 'package:asset_shield/features/home/ui/widgets/search_header.dart';
 import 'package:flutter/material.dart';
@@ -38,10 +39,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final schedulesAsync = ref.watch(schedulesProvider);
+    final scheduleTheme = context.scheduleTheme;
 
     return AppScaffold(
+      backgroundColor: scheduleTheme.pageBackground,
       endDrawer: const HomeDrawer(),
+      bottomNavigationBar: schedulesAsync.whenOrNull(
+        data: (scheduleState) => scheduleState.schedules.isEmpty
+            ? null
+            : PaginationBar(
+                currentPage: scheduleState.pagination.page,
+                totalPages: scheduleState.pagination.totalPages,
+                onPageChanged: (page) =>
+                    ref.read(schedulesProvider.notifier).goToPage(page),
+              ),
+      ),
       body: SafeArea(
+        bottom: false,
         child: Column(
           children: [
             // Header with Search
@@ -59,16 +73,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: schedulesAsync.when(
                 data: (scheduleState) => ScheduleList(
                   schedules: scheduleState.schedules,
-                  pagination: scheduleState.pagination,
-                  searchQuery: '',
+                  searchQuery: scheduleState.searchQuery ?? '',
                   onRefresh: () =>
                       ref.read(schedulesProvider.notifier).refresh(),
-                  onPageChanged: (page) =>
-                      ref.read(schedulesProvider.notifier).goToPage(page),
                 ),
-                loading: () => const Center(
-                  child: CircularProgressIndicator(color: ColorPalette.black),
-                ),
+                loading: () => const Center(child: CircularProgressIndicator()),
                 error: (error, stack) => ErrorState(
                   error: error,
                   onRetry: () => ref.read(schedulesProvider.notifier).refresh(),

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import '../../../core/theme/color_palette.dart';
+import '../../../core/theme/app_typography.dart';
+import '../../../core/theme/schedule_styles.dart';
+import '../../../core/theme/schedule_theme.dart';
+import 'schedule_form_primitives.dart';
 
 /// A reusable date picker field widget with consistent styling
 class FormDateField extends StatelessWidget {
@@ -29,61 +32,50 @@ class FormDateField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dateFormat = DateFormat('yyyy-MM-dd');
+    final scheduleTheme = context.scheduleTheme;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        RichText(
-          text: TextSpan(
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: ColorPalette.black,
-              fontWeight: FontWeight.w500,
-            ),
+    return ScheduleFieldSection(
+      label: label,
+      isRequired: isRequired,
+      child: GestureDetector(
+        onTap: readOnly ? null : () => _selectDate(context),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 15.h),
+          decoration: ScheduleFormDecorations.container(
+            context,
+            enabled: !readOnly,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              if (isRequired)
-                const TextSpan(
-                  text: '* ',
-                  style: TextStyle(color: Colors.red),
-                ),
-              TextSpan(text: label),
+              Text(
+                selectedDate != null
+                    ? dateFormat.format(selectedDate!)
+                    : 'Select date',
+                style: selectedDate != null
+                    ? ScheduleTextStyles.value(
+                        context,
+                        size: AppFontSizes.caption,
+                        color: readOnly
+                            ? scheduleTheme.secondaryText
+                            : scheduleTheme.primaryText,
+                      )
+                    : ScheduleTextStyles.hint(
+                        context,
+                        size: AppFontSizes.caption,
+                      ),
+              ),
+              Icon(
+                Icons.calendar_today_outlined,
+                color: readOnly
+                    ? scheduleTheme.secondaryText
+                    : scheduleTheme.icon,
+                size: 22.sp,
+              ),
             ],
           ),
         ),
-        SizedBox(height: 8.h),
-        GestureDetector(
-          onTap: readOnly ? null : () => _selectDate(context),
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
-            decoration: BoxDecoration(
-              color: ColorPalette.white,
-              borderRadius: BorderRadius.circular(8.r),
-              border: Border.all(color: ColorPalette.grey300),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  selectedDate != null
-                      ? dateFormat.format(selectedDate!)
-                      : 'Select date',
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    color: selectedDate != null
-                        ? ColorPalette.black
-                        : ColorPalette.grey400,
-                  ),
-                ),
-                const Icon(
-                  Icons.calendar_today,
-                  color: ColorPalette.grey500,
-                  size: 20,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 
@@ -93,19 +85,6 @@ class FormDateField extends StatelessWidget {
       initialDate: selectedDate ?? DateTime.now(),
       firstDate: firstDate ?? DateTime(2000),
       lastDate: lastDate ?? DateTime(2100),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: ColorPalette.black,
-              onPrimary: ColorPalette.white,
-              surface: ColorPalette.white,
-              onSurface: ColorPalette.black,
-            ),
-          ),
-          child: child!,
-        );
-      },
     );
 
     if (picked != null) {
