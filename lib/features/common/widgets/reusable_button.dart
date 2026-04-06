@@ -99,13 +99,17 @@ class ReusableButton extends StatelessWidget {
                   ),
                 ),
               )
-            : Text(
-                text,
-                style:
-                    textStyle ??
-                    context.appTextTheme.titleSmall!.copyWith(
-                      color: resolvedForegroundColor,
-                    ),
+            : FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  text,
+                  maxLines: 1,
+                  style:
+                      textStyle ??
+                      context.appTextTheme.titleSmall!.copyWith(
+                        color: resolvedForegroundColor,
+                      ),
+                ),
               ),
       ),
     );

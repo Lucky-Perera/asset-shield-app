@@ -36,86 +36,14 @@ class Helpers {
 
   static Future<void> requestInitialPermissions() async {
     if (Platform.isAndroid) {
-      // Request broad storage and media-related permissions. On Android 13+
-      // scoped media permissions (READ_MEDIA_IMAGES/VIDEO) are used by the
-      // platform; requesting storage and camera/microphone covers common cases.
-      await [
-        Permission.storage,
-        Permission.manageExternalStorage,
-        Permission.camera,
-        // Permission.microphone,
-      ].request();
+      await [Permission.camera].request();
     } else if (Platform.isIOS) {
-      // Request photo library, camera and microphone on iOS.
+      // Request photo library and camera on iOS.
       await [
         Permission.photos,
         Permission.camera,
-        // Permission.microphone,
       ].request();
     }
-  }
-
-  /// Request storage permissions for file operations
-  /// Returns true if permissions are granted, false otherwise
-  static Future<bool> requestStoragePermissions(BuildContext context) async {
-    if (Platform.isAndroid) {
-      // Request both storage and manage external storage where available.
-      final statuses = await [
-        Permission.storage,
-        Permission.manageExternalStorage,
-      ].request();
-
-      final storageGranted =
-          (statuses[Permission.storage]?.isGranted ?? false) ||
-          (statuses[Permission.manageExternalStorage]?.isGranted ?? false);
-
-      if (!storageGranted) {
-        // Avoid using the provided BuildContext across the async gap above.
-        // Confirm the context is still mounted before showing any dialogs.
-        if (!context.mounted) return false;
-
-        final shouldOpenSettings = await _showPermissionDialog(
-          context,
-          title: 'Storage Permission Required',
-          message:
-              'This app needs storage permission to select files. Would you like to open settings?',
-        );
-
-        if (shouldOpenSettings) {
-          await openAppSettings();
-        }
-
-        return false;
-      }
-      return true;
-    }
-    return true; // iOS doesn't need explicit storage permissions for FilePicker
-  }
-
-  /// Show permission dialog and return user's choice
-  static Future<bool> _showPermissionDialog(
-    BuildContext context, {
-    required String title,
-    required String message,
-  }) async {
-    return await showDialog<bool>(
-          context: context,
-          builder: (ctx) => AlertDialog(
-            title: Text(title),
-            content: Text(message),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(ctx).pop(false),
-                child: const Text('Cancel'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.of(ctx).pop(true),
-                child: const Text('Open Settings'),
-              ),
-            ],
-          ),
-        ) ??
-        false;
   }
 
   /// Pick files with error handling
