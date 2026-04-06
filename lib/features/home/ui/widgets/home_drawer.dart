@@ -21,32 +21,38 @@ class HomeDrawer extends StatelessWidget {
           left: Radius.circular(scheduleTheme.drawerRadius.r),
         ),
       ),
-      child: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              height: AppSizes.drawerHeaderHeight.h,
-              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
-              decoration: BoxDecoration(
-                color: scheduleTheme.drawerHeaderBackground,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(scheduleTheme.drawerRadius.r),
-                ),
-              ),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Menu',
-                style: AppTypography.style(
-                  size: 23,
-                  weight: AppFontWeights.title,
-                  color: scheduleTheme.primaryText,
-                  height: 1,
-                ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            height: AppSizes.drawerHeaderHeight.h + MediaQuery.paddingOf(context).top,
+            padding: EdgeInsets.only(
+              top: MediaQuery.paddingOf(context).top,
+              left: 24.w,
+              right: 24.w,
+              bottom: 24.h,
+            ),
+            decoration: BoxDecoration(
+              color: scheduleTheme.drawerHeaderBackground,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(scheduleTheme.drawerRadius.r),
               ),
             ),
-            const Expanded(child: SizedBox.shrink()),
-            Padding(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Menu',
+              style: AppTypography.style(
+                size: 23,
+                weight: AppFontWeights.title,
+                color: scheduleTheme.primaryText,
+                height: 1,
+              ),
+            ),
+          ),
+          const Expanded(child: SizedBox.shrink()),
+          SafeArea(
+            top: false,
+            child: Padding(
               padding: EdgeInsets.fromLTRB(28.w, 12.h, 28.w, 32.h),
               child: InkWell(
                 borderRadius: BorderRadius.circular(
@@ -75,8 +81,8 @@ class HomeDrawer extends StatelessWidget {
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
