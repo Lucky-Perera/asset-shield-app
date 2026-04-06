@@ -63,7 +63,7 @@ class ScheduleSurfaceCard extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final Color? backgroundColor;
   final Color? borderColor;
-  final double radius;
+  final double? radius;
   final List<BoxShadow>? boxShadow;
 
   const ScheduleSurfaceCard({
@@ -73,7 +73,7 @@ class ScheduleSurfaceCard extends StatelessWidget {
     this.padding,
     this.backgroundColor,
     this.borderColor,
-    this.radius = ScheduleRadii.card,
+    this.radius,
     this.boxShadow,
   });
 
@@ -88,7 +88,7 @@ class ScheduleSurfaceCard extends StatelessWidget {
       padding: resolvedPadding,
       decoration: BoxDecoration(
         color: backgroundColor ?? scheduleTheme.cardBackground,
-        borderRadius: BorderRadius.circular(radius.r),
+        borderRadius: BorderRadius.circular((radius ?? scheduleTheme.radius).r),
         border: Border.all(
           color: resolvedBorderColor,
           width: AppStrokes.regular,
@@ -180,22 +180,22 @@ class ScheduleBadge extends StatelessWidget {
 
     switch (variant) {
       case ScheduleBadgeVariant.sectionCount:
-        return _squareBadgeStyle(radius: scheduleTheme.badgeRadius);
+        return _squareBadgeStyle(radius: scheduleTheme.radius);
       case ScheduleBadgeVariant.detailIndex:
-        return _squareBadgeStyle(radius: scheduleTheme.detailCardRadius);
+        return _squareBadgeStyle(radius: scheduleTheme.radius);
       case ScheduleBadgeVariant.detailTone:
         return _ScheduleBadgeStyle(
           minWidth: 0,
           minHeight: 36.h,
           padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 8.h),
-          radius: scheduleTheme.detailCardRadius,
+          radius: scheduleTheme.radius,
         );
       case ScheduleBadgeVariant.standard:
         return _ScheduleBadgeStyle(
           minWidth: 0,
           minHeight: 0,
           padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
-          radius: ScheduleRadii.badge,
+          radius: scheduleTheme.radius,
         );
     }
   }

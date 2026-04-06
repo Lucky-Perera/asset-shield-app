@@ -29,7 +29,7 @@ class ScheduleDetailsCard extends StatelessWidget {
       padding: padding,
       backgroundColor: backgroundColor ?? scheduleTheme.cardBackground,
       borderColor: borderColor ?? scheduleTheme.cardBorder,
-      radius: scheduleTheme.detailCardRadius,
+      radius: scheduleTheme.radius,
       boxShadow: boxShadow,
       child: child,
     );

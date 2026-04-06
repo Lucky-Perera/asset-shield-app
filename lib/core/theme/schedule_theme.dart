@@ -38,11 +38,7 @@ class ScheduleThemeData extends ThemeExtension<ScheduleThemeData> {
   final Color draftButtonBackground;
   final Color draftButtonText;
   final Color ghostButtonText;
-  final double cardRadius;
-  final double detailCardRadius;
-  final double fieldRadius;
-  final double badgeRadius;
-  final double searchRadius;
+  final double radius;
   final double drawerRadius;
 
   const ScheduleThemeData({
@@ -69,11 +65,7 @@ class ScheduleThemeData extends ThemeExtension<ScheduleThemeData> {
     required this.draftButtonBackground,
     required this.draftButtonText,
     required this.ghostButtonText,
-    required this.cardRadius,
-    required this.detailCardRadius,
-    required this.fieldRadius,
-    required this.badgeRadius,
-    required this.searchRadius,
+    required this.radius,
     required this.drawerRadius,
   });
 
@@ -102,11 +94,7 @@ class ScheduleThemeData extends ThemeExtension<ScheduleThemeData> {
       draftButtonBackground: ColorPalette.surfaceMuted,
       draftButtonText: ColorPalette.textPrimary,
       ghostButtonText: ColorPalette.textPrimary,
-      cardRadius: AppRadii.md,
-      detailCardRadius: AppRadii.md,
-      fieldRadius: AppRadii.md,
-      badgeRadius: AppRadii.md,
-      searchRadius: AppRadii.md,
+      radius: AppRadii.md,
       drawerRadius: AppRadii.drawer,
     );
   }
@@ -213,11 +201,7 @@ class ScheduleThemeData extends ThemeExtension<ScheduleThemeData> {
     Color? draftButtonBackground,
     Color? draftButtonText,
     Color? ghostButtonText,
-    double? cardRadius,
-    double? detailCardRadius,
-    double? fieldRadius,
-    double? badgeRadius,
-    double? searchRadius,
+    double? radius,
     double? drawerRadius,
   }) {
     return ScheduleThemeData(
@@ -249,11 +233,7 @@ class ScheduleThemeData extends ThemeExtension<ScheduleThemeData> {
           draftButtonBackground ?? this.draftButtonBackground,
       draftButtonText: draftButtonText ?? this.draftButtonText,
       ghostButtonText: ghostButtonText ?? this.ghostButtonText,
-      cardRadius: cardRadius ?? this.cardRadius,
-      detailCardRadius: detailCardRadius ?? this.detailCardRadius,
-      fieldRadius: fieldRadius ?? this.fieldRadius,
-      badgeRadius: badgeRadius ?? this.badgeRadius,
-      searchRadius: searchRadius ?? this.searchRadius,
+      radius: radius ?? this.radius,
       drawerRadius: drawerRadius ?? this.drawerRadius,
     );
   }
@@ -332,15 +312,7 @@ class ScheduleThemeData extends ThemeExtension<ScheduleThemeData> {
       )!,
       draftButtonText: Color.lerp(draftButtonText, other.draftButtonText, t)!,
       ghostButtonText: Color.lerp(ghostButtonText, other.ghostButtonText, t)!,
-      cardRadius: lerpDouble(cardRadius, other.cardRadius, t)!,
-      detailCardRadius: lerpDouble(
-        detailCardRadius,
-        other.detailCardRadius,
-        t,
-      )!,
-      fieldRadius: lerpDouble(fieldRadius, other.fieldRadius, t)!,
-      badgeRadius: lerpDouble(badgeRadius, other.badgeRadius, t)!,
-      searchRadius: lerpDouble(searchRadius, other.searchRadius, t)!,
+      radius: lerpDouble(radius, other.radius, t)!,
       drawerRadius: lerpDouble(drawerRadius, other.drawerRadius, t)!,
     );
   }

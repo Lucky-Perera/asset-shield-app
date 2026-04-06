@@ -555,7 +555,7 @@ class _QuestionTileState extends State<QuestionTile> {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        borderRadius: BorderRadius.circular(10.r),
+        borderRadius: BorderRadius.circular(scheduleTheme.radius.r),
         onTap: widget.readOnly ? null : () => _onValueSelected(option.apiValue),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 120),
@@ -570,7 +570,7 @@ class _QuestionTileState extends State<QuestionTile> {
                 : (widget.readOnly
                     ? scheduleTheme.chipBackground.withValues(alpha: 0.5)
                     : scheduleTheme.chipBackground),
-            borderRadius: BorderRadius.circular(10.r),
+            borderRadius: BorderRadius.circular(scheduleTheme.radius.r),
             border: Border.all(
               color: isSelected
                   ? (widget.readOnly
@@ -659,7 +659,7 @@ class _QuestionTileState extends State<QuestionTile> {
       margin: EdgeInsets.symmetric(vertical: 6.h),
       padding: EdgeInsets.zero,
       boxShadow: const [],
-      radius: scheduleTheme.cardRadius,
+      radius: scheduleTheme.radius,
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(

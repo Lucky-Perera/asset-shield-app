@@ -92,13 +92,13 @@ class ScheduleFormDecorations {
       hintStyle: ScheduleTextStyles.hint(context),
       filled: true,
       fillColor: scheduleTheme.cardBackground,
-      border: _border(context, radius: scheduleTheme.searchRadius),
+      border: _border(context, radius: scheduleTheme.radius),
       focusedBorder: _border(
         context,
-        radius: scheduleTheme.searchRadius,
+        radius: scheduleTheme.radius,
         width: AppStrokes.emphasis,
       ),
-      enabledBorder: _border(context, radius: scheduleTheme.searchRadius),
+      enabledBorder: _border(context, radius: scheduleTheme.radius),
       contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 14.h),
     );
   }
@@ -114,7 +114,7 @@ class ScheduleFormDecorations {
       color: enabled
           ? scheduleTheme.cardBackground
           : scheduleTheme.fieldDisabledBackground,
-      borderRadius: BorderRadius.circular(scheduleTheme.fieldRadius.r),
+      borderRadius: BorderRadius.circular(scheduleTheme.radius.r),
       border: Border.all(
         color: hasError ? ColorPalette.error : scheduleTheme.cardBorder,
         width: AppStrokes.regular,
@@ -132,7 +132,7 @@ class ScheduleFormDecorations {
 
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(
-        (radius ?? scheduleTheme.fieldRadius).r,
+        (radius ?? scheduleTheme.radius).r,
       ),
       borderSide: BorderSide(
         color: color ?? scheduleTheme.cardBorder,

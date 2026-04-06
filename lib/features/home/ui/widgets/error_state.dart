@@ -1,6 +1,5 @@
 import 'package:asset_shield/core/theme/color_palette.dart';
 import 'package:asset_shield/core/theme/app_text_styles.dart';
-import 'package:asset_shield/core/theme/app_tokens.dart';
 import 'package:asset_shield/features/common/widgets/reusable_button.dart';
 import 'package:flutter/material.dart';
 
@@ -38,11 +37,8 @@ class ErrorState extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           ReusableButton(
-            width: null,
-            height: 44,
-            borderRadius: AppRadii.sm,
-            backgroundColor: ColorPalette.black,
-            foregroundColor: ColorPalette.white,
+            width: 120,
+            variant: ButtonVariant.primary,
             onPressed: onRetry,
             text: 'Retry',
           ),

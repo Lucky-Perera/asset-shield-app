@@ -47,7 +47,7 @@ class SectionTile extends StatelessWidget {
       borderColor: scheduleTheme.cardBorder,
       boxShadow: const [],
       padding: EdgeInsets.zero,
-      radius: ScheduleRadii.panel,
+      radius: scheduleTheme.radius,
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(

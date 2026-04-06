@@ -48,7 +48,7 @@ class FormMultiSelectField<T> extends StatelessWidget {
             return AlertDialog(
               backgroundColor: scheduleTheme.cardBackground,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(scheduleTheme.cardRadius.r),
+                borderRadius: BorderRadius.circular(scheduleTheme.radius.r),
               ),
               title: Text(
                 label,
@@ -149,7 +149,7 @@ class FormMultiSelectField<T> extends StatelessWidget {
                     ? null
                     : () => _showMultiSelectDialog(context, state),
                 borderRadius: BorderRadius.circular(
-                  scheduleTheme.fieldRadius.r,
+                  scheduleTheme.radius.r,
                 ),
                 child: Container(
                   padding: EdgeInsets.symmetric(

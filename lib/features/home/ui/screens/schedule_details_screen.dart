@@ -72,10 +72,7 @@ class _ScheduleDetailsScreenState extends ConsumerState<ScheduleDetailsScreen> {
           child: ReusableButton(
             text: _buttonText(recordStatus),
             onPressed: () => Routes().addRecord(widget.schedule),
-            height: 64.h,
-            borderRadius: scheduleTheme.cardRadius,
-            backgroundColor: scheduleTheme.paginationActive,
-            foregroundColor: scheduleTheme.cardBackground,
+            variant: ButtonVariant.primary,
           ),
         ),
       ),

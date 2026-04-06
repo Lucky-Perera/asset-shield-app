@@ -18,11 +18,11 @@ class ScheduleItem extends StatelessWidget {
 
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(scheduleTheme.detailCardRadius.r),
+      borderRadius: BorderRadius.circular(scheduleTheme.radius.r),
       child: ScheduleSurfaceCard(
         margin: EdgeInsets.symmetric(horizontal: 24.w, vertical: 9.h),
         padding: EdgeInsets.fromLTRB(18.w, 18.h, 18.w, 18.h),
-        radius: scheduleTheme.detailCardRadius,
+        radius: scheduleTheme.radius,
         boxShadow: [scheduleTheme.cardShadow(opacity: 0.26)],
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

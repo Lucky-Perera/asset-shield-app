@@ -56,7 +56,7 @@ class HomeDrawer extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(28.w, 12.h, 28.w, 32.h),
               child: InkWell(
                 borderRadius: BorderRadius.circular(
-                  scheduleTheme.fieldRadius.r,
+                  scheduleTheme.radius.r,
                 ),
                 onTap: () => AuthService().logout(),
                 child: Padding(
