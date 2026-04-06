@@ -23,9 +23,12 @@ class SearchHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(24.w, 18.h, 24.w, 14.h),
-      child: isSearching ? _buildSearchField(context) : _buildHeader(context),
+    return SafeArea(
+      bottom: false,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 24.w),
+        child: isSearching ? _buildSearchField(context) : _buildHeader(context),
+      ),
     );
   }
 

@@ -55,7 +55,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
       ),
       body: SafeArea(
-        bottom: false,
+        top: false,
         child: Column(
           children: [
             // Header with Search
