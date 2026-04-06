@@ -659,7 +659,7 @@ class _QuestionTileState extends State<QuestionTile> {
       margin: EdgeInsets.symmetric(vertical: 6.h),
       padding: EdgeInsets.zero,
       boxShadow: const [],
-      radius: 14,
+      radius: scheduleTheme.cardRadius,
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class ScheduleRadii {
   const ScheduleRadii._();
 
-  static const double card = AppRadii.xxl;
+  static const double card = AppRadii.md;
   static const double badge = AppRadii.md;
   static const double panel = AppRadii.lg;
 }

@@ -58,7 +58,7 @@ class ReusableButton extends StatelessWidget {
             ? double.infinity
             : width!.w;
     final resolvedHeight = (height ?? AppSizes.buttonHeight).h;
-    final resolvedBorderRadius = (borderRadius ?? AppRadii.sm).r;
+    final resolvedBorderRadius = (borderRadius ?? AppRadii.md).r;
     final resolvedPadding =
         padding ?? EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h);
 

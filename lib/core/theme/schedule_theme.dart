@@ -102,11 +102,11 @@ class ScheduleThemeData extends ThemeExtension<ScheduleThemeData> {
       draftButtonBackground: ColorPalette.surfaceMuted,
       draftButtonText: ColorPalette.textPrimary,
       ghostButtonText: ColorPalette.textPrimary,
-      cardRadius: AppRadii.xxl,
-      detailCardRadius: AppRadii.sm,
-      fieldRadius: AppRadii.xl,
+      cardRadius: AppRadii.md,
+      detailCardRadius: AppRadii.md,
+      fieldRadius: AppRadii.md,
       badgeRadius: AppRadii.md,
-      searchRadius: AppRadii.xl,
+      searchRadius: AppRadii.md,
       drawerRadius: AppRadii.drawer,
     );
   }

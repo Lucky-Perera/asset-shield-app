@@ -73,7 +73,7 @@ class _ScheduleDetailsScreenState extends ConsumerState<ScheduleDetailsScreen> {
             text: _buttonText(recordStatus),
             onPressed: () => Routes().addRecord(widget.schedule),
             height: 64.h,
-            borderRadius: 18.r,
+            borderRadius: scheduleTheme.cardRadius,
             backgroundColor: scheduleTheme.paginationActive,
             foregroundColor: scheduleTheme.cardBackground,
           ),
