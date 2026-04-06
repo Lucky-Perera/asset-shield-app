@@ -564,13 +564,21 @@ class _QuestionTileState extends State<QuestionTile> {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             color: isSelected
-                ? scheduleTheme.chipSelectedBackground
-                : scheduleTheme.chipBackground,
+                ? (widget.readOnly
+                    ? scheduleTheme.chipSelectedBackground.withValues(alpha: 0.5)
+                    : scheduleTheme.chipSelectedBackground)
+                : (widget.readOnly
+                    ? scheduleTheme.chipBackground.withValues(alpha: 0.5)
+                    : scheduleTheme.chipBackground),
             borderRadius: BorderRadius.circular(10.r),
             border: Border.all(
               color: isSelected
-                  ? scheduleTheme.chipSelectedBackground
-                  : scheduleTheme.chipBorder,
+                  ? (widget.readOnly
+                      ? scheduleTheme.chipSelectedBackground.withValues(alpha: 0.5)
+                      : scheduleTheme.chipSelectedBackground)
+                  : (widget.readOnly
+                      ? scheduleTheme.chipBorder.withValues(alpha: 0.5)
+                      : scheduleTheme.chipBorder),
             ),
           ),
           child: Text(
@@ -578,8 +586,12 @@ class _QuestionTileState extends State<QuestionTile> {
             style: ScheduleTextStyles.caption(
               context,
               color: isSelected
-                  ? scheduleTheme.chipSelectedText
-                  : scheduleTheme.primaryText,
+                  ? (widget.readOnly
+                      ? scheduleTheme.chipSelectedText.withValues(alpha: 0.7)
+                      : scheduleTheme.chipSelectedText)
+                  : (widget.readOnly
+                      ? scheduleTheme.primaryText.withValues(alpha: 0.5)
+                      : scheduleTheme.primaryText),
             ),
           ),
         ),
