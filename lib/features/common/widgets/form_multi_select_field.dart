@@ -57,11 +57,13 @@ class FormMultiSelectField<T> extends StatelessWidget {
                   size: AppFontSizes.caption,
                 ),
               ),
-              contentPadding: EdgeInsets.only(top: 16.h),
+              titlePadding: EdgeInsets.fromLTRB(24.w, 24.h, 24.w, 0),
+              contentPadding: EdgeInsets.only(top: 8.h),
               content: SizedBox(
                 width: double.maxFinite,
                 child: ListView.builder(
                   shrinkWrap: true,
+                  padding: EdgeInsets.zero,
                   itemCount: items.length,
                   itemBuilder: (context, index) {
                     final item = items[index];
@@ -69,6 +71,9 @@ class FormMultiSelectField<T> extends StatelessWidget {
 
                     return CheckboxListTile(
                       value: isSelected,
+                      dense: true,
+                      visualDensity: const VisualDensity(vertical: -4),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 0),
                       title: Text(
                         item.label,
                         style: ScheduleTextStyles.value(
