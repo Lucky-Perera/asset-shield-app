@@ -1,3 +1,4 @@
+import 'package:asset_shield/core/theme/app_typography.dart';
 import 'package:asset_shield/core/theme/schedule_styles.dart';
 import 'package:asset_shield/core/theme/schedule_theme.dart';
 import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
@@ -62,12 +63,21 @@ class _InfoLine extends StatelessWidget {
       overflow: TextOverflow.ellipsis,
       text: TextSpan(
         children: [
-          TextSpan(text: '$label ', style: ScheduleTextStyles.caption(context)),
+          TextSpan(
+            text: '$label ',
+            style: ScheduleTextStyles.value(
+              context,
+              size: AppFontSizes.label,
+              weight: FontWeight.w700,
+            ),
+          ),
           TextSpan(
             text: value,
-            style: ScheduleTextStyles.caption(
+            style: ScheduleTextStyles.value(
               context,
-            ).copyWith(fontWeight: FontWeight.w400),
+              size: AppFontSizes.label,
+              weight: FontWeight.w400,
+            ),
           ),
         ],
       ),

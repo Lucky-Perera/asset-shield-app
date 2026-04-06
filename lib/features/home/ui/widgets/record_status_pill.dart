@@ -1,5 +1,4 @@
 import 'package:asset_shield/core/enums/enums.dart';
-import 'package:asset_shield/core/theme/app_tokens.dart';
 import 'package:asset_shield/core/theme/schedule_styles.dart';
 import 'package:asset_shield/core/theme/schedule_theme.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +23,7 @@ class RecordStatusPill extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: tone.background,
-        borderRadius: BorderRadius.circular(AppRadii.lg.r),
+        borderRadius: BorderRadius.circular(scheduleTheme.radius.r),
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),

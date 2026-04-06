@@ -76,7 +76,7 @@ class FormMultiSelectField<T> extends StatelessWidget {
                           size: AppFontSizes.caption,
                         ),
                       ),
-                      activeColor: ColorPalette.primary,
+                      activeColor: scheduleTheme.paginationActive,
                       controlAffinity: ListTileControlAffinity.leading,
                       onChanged: (bool? checked) {
                         setState(() {
