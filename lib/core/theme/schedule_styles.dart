@@ -1,15 +1,7 @@
 import 'package:asset_shield/core/theme/app_typography.dart';
-import 'package:asset_shield/core/theme/app_tokens.dart';
 import 'package:asset_shield/core/theme/schedule_theme.dart';
 import 'package:flutter/material.dart';
 
-class ScheduleRadii {
-  const ScheduleRadii._();
-
-  static const double card = AppRadii.xxl;
-  static const double badge = AppRadii.md;
-  static const double panel = AppRadii.lg;
-}
 
 class ScheduleTextStyles {
   const ScheduleTextStyles._();

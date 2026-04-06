@@ -555,7 +555,7 @@ class _QuestionTileState extends State<QuestionTile> {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        borderRadius: BorderRadius.circular(10.r),
+        borderRadius: BorderRadius.circular(scheduleTheme.radius.r),
         onTap: widget.readOnly ? null : () => _onValueSelected(option.apiValue),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 120),
@@ -564,13 +564,21 @@ class _QuestionTileState extends State<QuestionTile> {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             color: isSelected
-                ? scheduleTheme.chipSelectedBackground
-                : scheduleTheme.chipBackground,
-            borderRadius: BorderRadius.circular(10.r),
+                ? (widget.readOnly
+                    ? scheduleTheme.chipSelectedBackground.withValues(alpha: 0.5)
+                    : scheduleTheme.chipSelectedBackground)
+                : (widget.readOnly
+                    ? scheduleTheme.chipBackground.withValues(alpha: 0.5)
+                    : scheduleTheme.chipBackground),
+            borderRadius: BorderRadius.circular(scheduleTheme.radius.r),
             border: Border.all(
               color: isSelected
-                  ? scheduleTheme.chipSelectedBackground
-                  : scheduleTheme.chipBorder,
+                  ? (widget.readOnly
+                      ? scheduleTheme.chipSelectedBackground.withValues(alpha: 0.5)
+                      : scheduleTheme.chipSelectedBackground)
+                  : (widget.readOnly
+                      ? scheduleTheme.chipBorder.withValues(alpha: 0.5)
+                      : scheduleTheme.chipBorder),
             ),
           ),
           child: Text(
@@ -578,8 +586,12 @@ class _QuestionTileState extends State<QuestionTile> {
             style: ScheduleTextStyles.caption(
               context,
               color: isSelected
-                  ? scheduleTheme.chipSelectedText
-                  : scheduleTheme.primaryText,
+                  ? (widget.readOnly
+                      ? scheduleTheme.chipSelectedText.withValues(alpha: 0.7)
+                      : scheduleTheme.chipSelectedText)
+                  : (widget.readOnly
+                      ? scheduleTheme.primaryText.withValues(alpha: 0.5)
+                      : scheduleTheme.primaryText),
             ),
           ),
         ),
@@ -647,7 +659,7 @@ class _QuestionTileState extends State<QuestionTile> {
       margin: EdgeInsets.symmetric(vertical: 6.h),
       padding: EdgeInsets.zero,
       boxShadow: const [],
-      radius: 14,
+      radius: scheduleTheme.radius,
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(

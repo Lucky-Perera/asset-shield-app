@@ -1,6 +1,6 @@
-import 'package:asset_shield/core/theme/schedule_styles.dart';
 import 'package:asset_shield/core/theme/schedule_theme.dart';
 import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
+import 'package:asset_shield/features/home/ui/widgets/info_line.dart';
 import 'package:asset_shield/features/home/ui/widgets/record_status_pill.dart';
 import 'package:asset_shield/features/home/ui/widgets/schedule_ui/schedule_surface.dart';
 import 'package:flutter/material.dart';
@@ -18,11 +18,11 @@ class ScheduleItem extends StatelessWidget {
 
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(scheduleTheme.detailCardRadius.r),
+      borderRadius: BorderRadius.circular(scheduleTheme.radius.r),
       child: ScheduleSurfaceCard(
-        margin: EdgeInsets.symmetric(horizontal: 24.w, vertical: 9.h),
-        padding: EdgeInsets.fromLTRB(18.w, 18.h, 18.w, 18.h),
-        radius: scheduleTheme.detailCardRadius,
+        margin: EdgeInsets.symmetric(horizontal: 24.w, vertical: 4.h),
+        padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 8.h),
+        radius: scheduleTheme.radius,
         boxShadow: [scheduleTheme.cardShadow(opacity: 0.26)],
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,7 +31,7 @@ class ScheduleItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(
-                  child: _InfoLine(
+                  child: InfoLine(
                     label: 'S.I. :',
                     value: schedule.scheduleName,
                   ),
@@ -40,8 +40,8 @@ class ScheduleItem extends StatelessWidget {
                 RecordStatusPill(status: schedule.record?.status),
               ],
             ),
-            SizedBox(height: 18.h),
-            _InfoLine(label: 'E.I. :', value: schedule.equipmentId),
+            SizedBox(height: 8.h),
+            InfoLine(label: 'E.I. :', value: schedule.equipmentId),
           ],
         ),
       ),
@@ -49,28 +49,3 @@ class ScheduleItem extends StatelessWidget {
   }
 }
 
-class _InfoLine extends StatelessWidget {
-  final String label;
-  final String value;
-
-  const _InfoLine({required this.label, required this.value});
-
-  @override
-  Widget build(BuildContext context) {
-    return RichText(
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
-      text: TextSpan(
-        children: [
-          TextSpan(text: '$label ', style: ScheduleTextStyles.caption(context)),
-          TextSpan(
-            text: value,
-            style: ScheduleTextStyles.caption(
-              context,
-            ).copyWith(fontWeight: FontWeight.w400),
-          ),
-        ],
-      ),
-    );
-  }
-}

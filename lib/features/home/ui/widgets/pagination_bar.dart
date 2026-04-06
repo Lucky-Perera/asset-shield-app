@@ -172,7 +172,7 @@ class _PageNumberButton extends StatelessWidget {
           color: isActive
               ? scheduleTheme.paginationActive
               : scheduleTheme.cardBackground,
-          borderRadius: BorderRadius.circular(scheduleTheme.badgeRadius.r),
+          borderRadius: BorderRadius.circular(scheduleTheme.radius.r),
           border: Border.all(
             color: isActive
                 ? scheduleTheme.paginationActive
@@ -222,7 +222,7 @@ class _PaginationButton extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: scheduleTheme.cardBackground,
-          borderRadius: BorderRadius.circular(scheduleTheme.badgeRadius.r),
+          borderRadius: BorderRadius.circular(scheduleTheme.radius.r),
           border: Border.all(
             color: isEnabled
                 ? scheduleTheme.paginationInactiveBorder

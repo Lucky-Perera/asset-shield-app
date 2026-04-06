@@ -41,15 +41,15 @@ class _ScheduleDetailsScreenState extends ConsumerState<ScheduleDetailsScreen> {
       EasyLoading.dismiss();
     }
 
-    return SafeArea(
-      child: AppScaffold(
-        backgroundColor: scheduleTheme.pageBackground,
-        appBar: SchedulePageAppBar(
-          title: 'Schedule Details',
-          leadingIcon: Icons.arrow_back_ios_new_rounded,
-          onLeadingPressed: () => router.pop(),
-        ),
-        body: SingleChildScrollView(
+    return AppScaffold(
+      backgroundColor: scheduleTheme.pageBackground,
+      appBar: SchedulePageAppBar(
+        title: 'Schedule Details',
+        leadingIcon: Icons.arrow_back_ios_new_rounded,
+        onLeadingPressed: () => router.pop(),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
           padding: EdgeInsets.fromLTRB(24.w, 12.h, 24.w, 24.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,15 +68,12 @@ class _ScheduleDetailsScreenState extends ConsumerState<ScheduleDetailsScreen> {
             ],
           ),
         ),
-        bottomNavigationBar: ScheduleBottomBar(
-          child: ReusableButton(
-            text: _buttonText(recordStatus),
-            onPressed: () => Routes().addRecord(widget.schedule),
-            height: 64.h,
-            borderRadius: 18.r,
-            backgroundColor: scheduleTheme.paginationActive,
-            foregroundColor: scheduleTheme.cardBackground,
-          ),
+      ),
+      bottomNavigationBar: ScheduleBottomBar(
+        child: ReusableButton(
+          text: _buttonText(recordStatus),
+          onPressed: () => Routes().addRecord(widget.schedule),
+          variant: ButtonVariant.primary,
         ),
       ),
     );

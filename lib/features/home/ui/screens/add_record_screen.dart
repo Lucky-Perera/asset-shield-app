@@ -662,12 +662,6 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
     }
   }
 
-  TextStyle _bottomBarButtonTextStyle(Color color) => AppTypography.style(
-    size: AppFontSizes.body,
-    weight: AppFontWeights.semiBold,
-    color: color,
-    height: 1.3,
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -945,15 +939,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                 child: ReusableButton(
                   text: 'Close',
                   onPressed: _handleClose,
-                  height: 52.h,
-                  borderRadius: 14.r,
-                  padding: EdgeInsets.symmetric(horizontal: 12.w),
-                  backgroundColor: scheduleTheme.cardBackground,
-                  foregroundColor: scheduleTheme.ghostButtonText,
-                  borderColor: scheduleTheme.cardBorder,
-                  textStyle: _bottomBarButtonTextStyle(
-                    scheduleTheme.ghostButtonText,
-                  ),
+                  variant: ButtonVariant.ghost,
                 ),
               ),
               SizedBox(width: 12.w),
@@ -962,15 +948,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                   child: ReusableButton(
                     text: 'Draft',
                     onPressed: _handleSaveDraft,
-                    height: 52.h,
-                    borderRadius: 14.r,
-                    padding: EdgeInsets.symmetric(horizontal: 12.w),
-                    backgroundColor: scheduleTheme.draftButtonBackground,
-                    foregroundColor: scheduleTheme.draftButtonText,
-                    borderColor: scheduleTheme.cardBorder.withValues(alpha: 0.5),
-                    textStyle: _bottomBarButtonTextStyle(
-                      scheduleTheme.draftButtonText,
-                    ),
+                    variant: ButtonVariant.secondary,
                   ),
                 ),
                 SizedBox(width: 12.w),
@@ -983,20 +961,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                   onPressed: (hasSubmittedAnswers && !isEditable)
                       ? null
                       : _handleCreate,
-                  height: 52.h,
-                  borderRadius: 14.r,
-                  padding: EdgeInsets.symmetric(horizontal: 12.w),
-                  backgroundColor: (hasSubmittedAnswers && !isEditable)
-                      ? scheduleTheme.draftButtonBackground
-                      : scheduleTheme.paginationActive,
-                  foregroundColor: (hasSubmittedAnswers && !isEditable)
-                      ? scheduleTheme.draftButtonText
-                      : scheduleTheme.cardBackground,
-                  textStyle: _bottomBarButtonTextStyle(
-                    (hasSubmittedAnswers && !isEditable)
-                        ? scheduleTheme.draftButtonText
-                        : scheduleTheme.cardBackground,
-                  ),
+                  variant: ButtonVariant.primary,
                 ),
               ),
             ],
