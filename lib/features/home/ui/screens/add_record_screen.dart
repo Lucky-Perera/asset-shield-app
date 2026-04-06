@@ -947,6 +947,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                   onPressed: _handleClose,
                   height: 52.h,
                   borderRadius: 14.r,
+                  padding: EdgeInsets.symmetric(horizontal: 12.w),
                   backgroundColor: scheduleTheme.cardBackground,
                   foregroundColor: scheduleTheme.ghostButtonText,
                   borderColor: scheduleTheme.cardBorder,
@@ -963,8 +964,10 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                     onPressed: _handleSaveDraft,
                     height: 52.h,
                     borderRadius: 14.r,
+                    padding: EdgeInsets.symmetric(horizontal: 12.w),
                     backgroundColor: scheduleTheme.draftButtonBackground,
                     foregroundColor: scheduleTheme.draftButtonText,
+                    borderColor: scheduleTheme.cardBorder.withValues(alpha: 0.5),
                     textStyle: _bottomBarButtonTextStyle(
                       scheduleTheme.draftButtonText,
                     ),
@@ -982,6 +985,7 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                       : _handleCreate,
                   height: 52.h,
                   borderRadius: 14.r,
+                  padding: EdgeInsets.symmetric(horizontal: 12.w),
                   backgroundColor: (hasSubmittedAnswers && !isEditable)
                       ? scheduleTheme.draftButtonBackground
                       : scheduleTheme.paginationActive,
