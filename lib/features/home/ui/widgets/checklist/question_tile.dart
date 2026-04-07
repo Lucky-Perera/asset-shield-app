@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:asset_shield/core/enums/enums.dart';
+import 'package:asset_shield/core/routes/router.dart';
 import 'package:asset_shield/core/theme/app_typography.dart';
 import 'package:asset_shield/core/theme/color_palette.dart';
 import 'package:asset_shield/core/theme/schedule_styles.dart';
@@ -13,6 +14,7 @@ import 'package:asset_shield/features/home/ui/widgets/checklist/media_label.dart
 import 'package:asset_shield/features/home/ui/widgets/schedule_ui/schedule_surface.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -375,52 +377,8 @@ class _QuestionTileState extends State<QuestionTile> {
   }
 
   void _showImageViewer(String imageUrl) {
-    showDialog(
-      context: context,
-      builder: (context) => Dialog(
-        backgroundColor: ColorPalette.black,
-        child: Stack(
-          children: [
-            InteractiveViewer(
-              child: Center(
-                child: Image.network(
-                  imageUrl,
-                  fit: BoxFit.contain,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.error,
-                            color: ColorPalette.textInverse,
-                            size: 48,
-                          ),
-                          SizedBox(height: 16),
-                          Text(
-                            'Failed to load image',
-                            style: TextStyle(color: ColorPalette.textInverse),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-            Positioned(
-              top: 10,
-              right: 10,
-              child: IconButton(
-                iconSize: 30.sp,
-                icon: Icon(Icons.close, color: ColorPalette.textInverse),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    EasyLoading.show();
+    Routes().imageViewer(imageUrl);
   }
 
   bool _isImageUrl(String url) {

@@ -9,4 +9,5 @@ class RoutePaths {
   static const String home = '/home';
   static const String scheduleDetails = '/schedule-details';
   static const String addRecord = '/add-record';
+  static const String imageViewer = '/image-viewer';
 }

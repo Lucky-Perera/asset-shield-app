@@ -4,6 +4,7 @@ import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart
 import 'package:asset_shield/features/home/ui/screens/add_record_screen.dart';
 import 'package:asset_shield/features/home/ui/screens/home_screen.dart';
 import 'package:asset_shield/features/home/ui/screens/schedule_details_screen.dart';
+import 'package:asset_shield/features/common/widgets/full_screen_image_viewer.dart';
 import 'package:asset_shield/features/splash/splash_screen.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,9 @@ class Routes {
     "${RoutePaths.home}${RoutePaths.scheduleDetails}${RoutePaths.addRecord}",
     extra: schedule,
   );
+
+  void imageViewer(String imageUrl) =>
+      router.push(RoutePaths.imageViewer, extra: imageUrl);
 }
 
 // Router Configuration
@@ -73,16 +77,17 @@ final router = GoRouter(
         ),
       ],
     ),
+    // Full Screen Image Viewer (at top level for modal appearance)
+    GoRoute(
+      path: RoutePaths.imageViewer,
+      builder: (context, state) {
+        final imageUrl = state.extra as String;
+        return FullScreenImageViewer(imageUrl: imageUrl);
+      },
+    ),
   ],
 
-  // Redirect logic (e.g., auth checks)
   redirect: (context, state) {
-    // Add your authentication logic here
-    // Example:
-    // final isLoggedIn = await checkAuthStatus();
-    // if (!isLoggedIn && state.location != RoutePaths.login) {
-    //   return RoutePaths.login;
-    // }
-    return null; // No redirect
+    return null;
   },
 );
