@@ -104,7 +104,7 @@ class FormMultiSelectField<T> extends StatelessWidget {
                     style: ScheduleTextStyles.value(
                       context,
                       size: AppFontSizes.caption,
-                      color: scheduleTheme.secondaryText,
+                      color: ColorPalette.black,
                     ),
                   ),
                 ),
