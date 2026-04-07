@@ -15,14 +15,14 @@ import 'package:asset_shield/core/theme/app_typography.dart';
 import 'package:asset_shield/core/theme/schedule_styles.dart';
 import 'package:asset_shield/core/theme/schedule_theme.dart';
 import 'package:asset_shield/features/common/widgets/app_scaffold.dart';
-import 'package:asset_shield/features/common/widgets/form_date_field.dart';
 import 'package:asset_shield/features/common/widgets/form_multi_select_field.dart';
-import 'package:asset_shield/features/common/widgets/form_text_field.dart';
-import 'package:asset_shield/features/common/widgets/reusable_button.dart';
 import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
-import 'package:asset_shield/features/home/ui/widgets/checklist/checklist_section.dart';
+import 'package:asset_shield/features/home/ui/widgets/record_form/sections/record_checklist_section.dart';
 import 'package:asset_shield/features/home/data/models/checklist_answer_data.dart';
 import 'package:asset_shield/features/home/ui/widgets/schedule_ui/schedule_surface.dart';
+import 'package:asset_shield/features/home/ui/widgets/record_form/sections/basic_info_section.dart';
+import 'package:asset_shield/features/home/ui/widgets/record_form/sections/inspection_info_section.dart';
+import 'package:asset_shield/features/home/ui/widgets/record_form/sections/record_action_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,6 +36,7 @@ class AddRecordScreen extends ConsumerStatefulWidget {
 }
 
 class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
+  final StorageService _storage = StorageService();
   final _formKey = GlobalKey<FormState>();
   bool _prefilled = false;
   bool _hasChange = false; // Track if any changes have been made
@@ -117,8 +118,6 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
       _scheduleSaveDraft();
     }
   }
-
-  final StorageService _storage = StorageService();
 
   // Helper: Convert attachment metadata to draft format
   Map<String, List<AttachmentDraft>> _convertAttachmentMetadataToDraft() {
@@ -763,41 +762,12 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    FormTextField(
-                      label: 'Equipment',
-                      hint: 'Enter equipment',
-                      controller: _equipmentController,
-                      enabled: false,
-                    ),
-                    SizedBox(height: 20.h),
-                    FormTextField(
-                      label: 'Description',
-                      hint: 'Enter description',
-                      controller: _descriptionController,
-                      isRequired: !isReadOnly,
-                      enabled: !isReadOnly,
-                      maxLines: 4,
-                      minLines: 3,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter description';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 20.h),
-                    FormTextField(
-                      label: 'Schedule Item',
-                      hint: ' ',
-                      controller: _scheduleItemController,
-                      enabled: false,
-                    ),
-                    SizedBox(height: 20.h),
-                    FormDateField(
-                      label: 'Record created date',
-                      selectedDate: _recordCreatedDate,
-                      isRequired: !isReadOnly,
-                      readOnly: isReadOnly,
+                    BasicInfoSection(
+                      equipmentController: _equipmentController,
+                      descriptionController: _descriptionController,
+                      scheduleItemController: _scheduleItemController,
+                      recordCreatedDate: _recordCreatedDate,
+                      isReadOnly: isReadOnly,
                       onDateSelected: (date) {
                         setState(() {
                           _recordCreatedDate = date;
@@ -807,165 +777,63 @@ class _AddRecordScreenState extends ConsumerState<AddRecordScreen> {
                       },
                     ),
                     SizedBox(height: 20.h),
-                    FormMultiSelectField<String>(
-                      label: 'Inspected components',
-                      hint: 'Select components',
-                      selectedValues: _selectedInspectedComponents,
-                      isRequired: !isReadOnly,
-                      items: _componentItems,
-                      itemLabel: (componentId) {
-                        final component = widget.schedule.components
-                            .firstWhere((sc) => sc.componentId == componentId)
-                            .component;
-                        return component.name;
-                      },
-                      onChanged: (values) {
-                        if (!isReadOnly) {
-                          setState(() {
-                            _selectedInspectedComponents = values;
-                            _hasChange = true;
-                          });
-                          _scheduleSaveDraft();
-                        }
-                      },
-                      validator: isReadOnly
-                          ? (_) => null
-                          : (values) {
-                              if (values == null || values.isEmpty) {
-                                return 'Please select at least one component';
-                              }
-                              return null;
-                            },
-                      readOnly: isReadOnly,
-                    ),
-                    SizedBox(height: 20.h),
-                    FormTextField(
-                      label: 'Schedule Type',
-                      hint: ' ',
-                      controller: _scheduleTypeController,
-                      enabled: false,
-                    ),
-                    SizedBox(height: 20.h),
-                    FormDateField(
-                      label: 'Inspection Date',
-                      selectedDate: _inspectionDate,
-                      isRequired: !isReadOnly,
-                      readOnly: isReadOnly,
-                      onDateSelected: (date) {
+                    InspectionInfoSection(
+                      selectedInspectedComponents: _selectedInspectedComponents,
+                      componentItems: _componentItems,
+                      scheduleTypeController: _scheduleTypeController,
+                      inspectionDate: _inspectionDate,
+                      actionCreatedController: _actionCreatedController,
+                      commentsController: _commentsController,
+                      isReadOnly: isReadOnly,
+                      onInspectionDateSelected: (date) {
                         setState(() {
                           _inspectionDate = date;
                           _hasChange = true;
                         });
                         _scheduleSaveDraft();
                       },
-                    ),
-                    SizedBox(height: 20.h),
-                    FormTextField(
-                      label: 'Action Created',
-                      hint: 'Enter action created',
-                      controller: _actionCreatedController,
-                      isRequired: !isReadOnly,
-                      enabled: !isReadOnly,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter action created';
-                        }
-                        return null;
+                      onComponentsChanged: (values) {
+                        setState(() {
+                          _selectedInspectedComponents = values;
+                          _hasChange = true;
+                        });
+                        _scheduleSaveDraft();
                       },
+                      schedule: widget.schedule,
                     ),
-                    SizedBox(height: 20.h),
-                    FormTextField(
-                      label: 'Comments',
-                      hint: 'Enter comments',
-                      controller: _commentsController,
-                      maxLines: 4,
-                      enabled: !isReadOnly,
-                      minLines: 3,
+                    RecordChecklistSection(
+                      isLoading: recordWithChecklistAsync.isLoading,
+                      questions: widget.schedule.checklistQuestionTemplates,
+                      isReadOnly: isReadOnly,
+                      onAnswerChanged: isReadOnly
+                          ? null
+                          : _handleChecklistAnswerChanged,
+                      onAttachmentUploaded: isReadOnly
+                          ? null
+                          : _handleAttachmentUploaded,
+                      onAttachmentDeleted: isReadOnly
+                          ? null
+                          : _handleAttachmentDeleted,
+                      initialValues: initialValues,
+                      questionAttachments: questionAttachments,
+                      uploadedAttachmentMetadata: _questionAttachmentMetadata,
+                      scheduleV2Id: widget.schedule.id,
+                      equipmentId: widget.schedule.equipmentId,
                     ),
-                    SizedBox(height: 16.h),
-                    if (widget
-                        .schedule
-                        .checklistQuestionTemplates
-                        .isNotEmpty) ...[
-                      Text(
-                        'Checklist',
-                        style: ScheduleTextStyles.title(
-                          context,
-                          size: AppFontSizes.caption,
-                        ),
-                      ),
-                      SizedBox(height: 14.h),
-                      recordWithChecklistAsync.isLoading
-                          ? Center(
-                              child: Padding(
-                                padding: EdgeInsets.all(24.h),
-                                child: CircularProgressIndicator(
-                                  color: scheduleTheme.icon,
-                                ),
-                              ),
-                            )
-                          : ChecklistSections(
-                              questions:
-                                  widget.schedule.checklistQuestionTemplates,
-                              onAnswerChanged: isReadOnly
-                                  ? null
-                                  : _handleChecklistAnswerChanged,
-                              onAttachmentUploaded: isReadOnly
-                                  ? null
-                                  : _handleAttachmentUploaded,
-                              onAttachmentDeleted: isReadOnly
-                                  ? null
-                                  : _handleAttachmentDeleted,
-                              readOnly: isReadOnly,
-                              initialValues: initialValues,
-                              questionAttachments: questionAttachments,
-                              uploadedAttachmentMetadata:
-                                  _questionAttachmentMetadata,
-                              scheduleV2Id: widget.schedule.id,
-                              equipmentId: widget.schedule.equipmentId,
-                            ),
-                      SizedBox(height: 24.h),
-                    ],
+                    SizedBox(height: 24.h),
                   ],
                 ),
               ),
             ),
           ),
         ),
-        bottomNavigationBar: ScheduleBottomBar(
-          child: Row(
-            children: [
-              Expanded(
-                child: ReusableButton(
-                  text: 'Close',
-                  onPressed: _handleClose,
-                  variant: ButtonVariant.ghost,
-                ),
-              ),
-              SizedBox(width: 12.w),
-              if (!hasSubmittedAnswers || isEditable) ...[
-                Expanded(
-                  child: ReusableButton(
-                    text: 'Draft',
-                    onPressed: _handleSaveDraft,
-                    variant: ButtonVariant.secondary,
-                  ),
-                ),
-                SizedBox(width: 12.w),
-              ],
-              Expanded(
-                child: ReusableButton(
-                  text: recordStatus == RecordStatus.rejected
-                      ? 'Resubmit'
-                      : 'Submit',
-                  onPressed: (hasSubmittedAnswers && !isEditable)
-                      ? null
-                      : _handleCreate,
-                  variant: ButtonVariant.primary,
-                ),
-              ),
-            ],
-          ),
+        bottomNavigationBar: RecordActionBar(
+          onClose: _handleClose,
+          onSaveDraft: _handleSaveDraft,
+          onSubmit: _handleCreate,
+          isEditable: isEditable,
+          hasSubmittedAnswers: hasSubmittedAnswers,
+          recordStatus: recordStatus,
         ),
       ),
     );

@@ -1,22 +1,11 @@
 import 'dart:async';
 
-import 'package:asset_shield/features/home/data/models/schedule_v2_response.dart';
+import 'package:asset_shield/features/home/data/models/schedule_state.dart';
+export 'package:asset_shield/features/home/data/models/schedule_state.dart';
 import 'package:asset_shield/features/home/data/services/schedule_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'schedule_provider.g.dart';
-
-class ScheduleState {
-  final List<ScheduleV2Response> schedules;
-  final Pagination pagination;
-  final String? searchQuery;
-
-  ScheduleState({
-    required this.schedules,
-    required this.pagination,
-    this.searchQuery,
-  });
-}
 
 @Riverpod(keepAlive: true)
 class Schedules extends _$Schedules {
